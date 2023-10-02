@@ -11,8 +11,8 @@
 #pragma comment(lib, "dxguid.lib")
 #include <dxcapi.h>
 #pragma comment(lib, "dxcompiler.lib")
-#include "Vector4.h"
-#include "Matrix4x4.h"
+#include "Math/Vector4.h"
+#include "Math/Matrix4x4.h"
 #include "externals/imgui/imgui.h"
 #include "externals/imgui/imgui_impl_dx12.h"
 #include "externals/imgui/imgui_impl_win32.h"
@@ -21,7 +21,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg
 #include "VertexData.h"
 #include "externals/DirectXTex/d3dx12.h"
 #include <vector>
-#include "calc.h"
+#include "Math/calc.h"
 
 #include<cmath>
 
@@ -223,7 +223,7 @@ ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::Scratc
 void SetTexture(std::vector<ID3D12Resource*> textureResource,
 	std::vector<ID3D12Resource*> intermediateResource, std::vector<D3D12_SHADER_RESOURCE_VIEW_DESC> srvDesc1, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, const std::string& filePath) {
 	// Textureを読んで転送する
-	DirectX::ScratchImage mipImages = LoadTexture("resources/white.png");
+	DirectX::ScratchImage mipImages = LoadTexture("Resources/white.png");
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	ID3D12Resource* t = CreateTextureResource(device, metadata);
 	ID3D12Resource* m = UploadTextureData(CreateTextureResource(device, metadata), mipImages, device, commandList);
@@ -577,10 +577,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 	//Shaderをコンパイルする
-	IDxcBlob* vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl", L"vs_6_0", dxcUtils, dxcCompiler, includeHandler);
+	IDxcBlob* vertexShaderBlob = CompileShader(L"Resources/Shaders/Object3d.VS.hlsl", L"vs_6_0", dxcUtils, dxcCompiler, includeHandler);
 	assert(vertexShaderBlob != nullptr);
 
-	IDxcBlob* pixelShaderBlob = CompileShader(L"Object3d.PS.hlsl", L"ps_6_0", dxcUtils, dxcCompiler, includeHandler);
+	IDxcBlob* pixelShaderBlob = CompileShader(L"Resources/Shaders/Object3d.PS.hlsl", L"ps_6_0", dxcUtils, dxcCompiler, includeHandler);
 	assert(pixelShaderBlob != nullptr);
 
 	// DepthStencilStateの設定
@@ -620,7 +620,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 
 	// モデル読み込み
-	ModelData modelData = ModelData::LoadObjeFile("resources", "axis.obj");
+	ModelData modelData = ModelData::LoadObjeFile("Resources", "axis.obj");
 
 
 
@@ -631,17 +631,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	SetTexture(textureResource, intermediateResource, srvDesc, device, commandList, "resources/white.png");*/
 
 	// Textureを読んで転送する
-	DirectX::ScratchImage mipImages = LoadTexture("resources/white.png");
+	DirectX::ScratchImage mipImages = LoadTexture("Resources/white.png");
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	ID3D12Resource* textureResource = CreateTextureResource(device, metadata);
 	ID3D12Resource* intermediateResource = UploadTextureData(textureResource, mipImages, device, commandList);
 
-	DirectX::ScratchImage mipImages2 = LoadTexture("resources/uvChecker.png");
+	DirectX::ScratchImage mipImages2 = LoadTexture("Resources/uvChecker.png");
 	const DirectX::TexMetadata& metadata2 = mipImages2.GetMetadata();
 	ID3D12Resource* textureResource2 = CreateTextureResource(device, metadata2);
 	ID3D12Resource* intermediateResource2 = UploadTextureData(textureResource2, mipImages2, device, commandList);
 
-	DirectX::ScratchImage mipImages3 = LoadTexture("resources/monsterBall.png");
+	DirectX::ScratchImage mipImages3 = LoadTexture("Resources/monsterBall.png");
 	const DirectX::TexMetadata& metadata3 = mipImages3.GetMetadata();
 	ID3D12Resource* textureResource3 = CreateTextureResource(device, metadata3);
 	ID3D12Resource* intermediateResource3 = UploadTextureData(textureResource3, mipImages3, device, commandList);
