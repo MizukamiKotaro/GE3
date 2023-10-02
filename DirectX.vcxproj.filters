@@ -90,6 +90,9 @@
     <ClCompile Include="Math\calc.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Math\calc.h">
       <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

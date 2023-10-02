@@ -20,30 +20,34 @@ LRESULT CALLBACK WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-WinApp::WinApp() {
-	
+WinApp* WinApp::GetInstance() {
+	static WinApp instance;
+	return &instance;
 }
 
-WinApp::~WinApp() {
-	CloseWindow(hwnd_);
-}
+//WinApp::WinApp() {
+//	
+//}
+//
+//WinApp::~WinApp() {
+//	CloseWindow(hwnd_);
+//}
 
 void WinApp::CreateGameWindow() {
 	//COM(Component Object Model)の初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
 
-	WNDCLASS wc{};
 	//ウィンドウプロシージャ
-	wc.lpfnWndProc = WindowProc;
+	wndClass_.lpfnWndProc = WindowProc;
 	//ウィンドウクラス名(なんでも良い)
-	wc.lpszClassName = L"CG2WindowClass";
+	wndClass_.lpszClassName = L"CG2WindowClass";
 	//インスタンスハンドル
-	wc.hInstance = GetModuleHandle(nullptr);
+	wndClass_.hInstance = GetModuleHandle(nullptr);
 	//カーソル
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wndClass_.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
 	//ウィンドウクラスを登録する
-	RegisterClass(&wc);
+	RegisterClass(&wndClass_);
 
 	//ウィンドウサイズを表す構造体にクライアント領域を入れる
 	RECT wrc = { 0,0,kWindowWidth,kWindowHeight };
@@ -53,7 +57,7 @@ void WinApp::CreateGameWindow() {
 
 	//ウィンドウの生成
 	hwnd_ = CreateWindow(
-		wc.lpszClassName,      // 利用するクラス名
+		wndClass_.lpszClassName,      // 利用するクラス名
 		L"CG2",	               // タイトルバーの文字(何でもいい)
 		WS_OVERLAPPEDWINDOW,   // よく見るウィンドウスタイル
 		CW_USEDEFAULT,         // 表示x座標(windowsに任せる)
@@ -62,7 +66,7 @@ void WinApp::CreateGameWindow() {
 		wrc.bottom - wrc.top,  // ウィンドウ縦幅
 		nullptr,               // 親ウィンドウハンドル
 		nullptr,               // メニューハンドル
-		wc.hInstance,          // インスタンスハンドル
+		wndClass_.hInstance,          // インスタンスハンドル
 		nullptr);              // オプション
 
 	//ウィンドウを表示する

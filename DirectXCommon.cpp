@@ -8,8 +8,7 @@ DirectXCommon::DirectXCommon() {
 }
 
 DirectXCommon::~DirectXCommon() {
-	//winAppが悪さしてる
-	delete winApp_;
+	
 	dxgiFactory_->Release();
 	device_->Release();
 	commandQueue_->Release();
@@ -26,7 +25,6 @@ DirectXCommon::~DirectXCommon() {
 
 void DirectXCommon::Initialize(WinApp* winApp) {
 
-	winApp_ = new WinApp();
 	winApp_ = winApp;
 
 	// DXGIデバイス初期化
@@ -52,7 +50,7 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 void DirectXCommon::Initialize() {
 
 
-	winApp_ = new WinApp();
+	winApp_ = WinApp::GetInstance();
 	winApp_->CreateGameWindow();
 
 	// DXGIデバイス初期化

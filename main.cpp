@@ -38,6 +38,8 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg
 #include "ModelData.h"
 #include <vector>
 
+#include "Input/Input.h"
+
 //コンパイル用関数
 IDxcBlob* CompileShader(
 	//compilerするShaderファイルへパス
@@ -293,7 +295,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	ResourceLeackChecker leakCheck;
 
-	WinApp* winApp = new WinApp();
+	WinApp* winApp = WinApp::GetInstance();
 
 	winApp->CreateGameWindow();
 
@@ -1098,8 +1100,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 		srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 
+	Input* input = Input::GetInstance();
 
-
+	input->Initialize(winApp->GetHwnd(), winApp->GetHInstance());
 
 
 	//ゲームループ前。変数の作成、初期化スペース
@@ -1211,6 +1214,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	};
 
+	bool hoge = false;
+
 
 	MSG msg{};
 	//ウィンドウの×ボタンが押されるまでループ
@@ -1225,7 +1230,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 
+			input->Update();
+
 			//ゲーム処理
+
+			if (input->TriggerKey(DIK_SPACE)) {
+				if (hoge) {
+					hoge = false;
+				}
+				else {
+					hoge = true;
+				}
+			}
 
 			//開発用UIの処理。実際に開発のUIを出す場合はここをゲーム固有の処理に置き換える
 			//ImGui::ShowDemoWindow();
@@ -1524,20 +1540,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 
 
+			if (hoge) {
+				commandList->IASetVertexBuffers(0, 1, &vertexBufferView); // VBVを設定
+				//commandList->IASetIndexBuffer(&indexBufferViewSphere);
 
-
-			//commandList->IASetVertexBuffers(0, 1, &vertexBufferView); // VBVを設定
-			////commandList->IASetIndexBuffer(&indexBufferViewSphere);
-
-			////マテリアルCBufferの場所を設定
-			//commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-			////wvp用のBufferの場所を設定
-			//commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
-			////SRVのDescriptorTableの先頭に設定。2はrootParameter[2]である
-			//commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU2);
-			////描画!!!!（DrawCall/ドローコール）。3頂点で1つのインスタンス。インスタンスについては今後
-			//commandList->DrawInstanced(UINT(modelData.verteces.size()), 1, 0, 0);
-			//
+				//マテリアルCBufferの場所を設定
+				commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
+				//wvp用のBufferの場所を設定
+				commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
+				//SRVのDescriptorTableの先頭に設定。2はrootParameter[2]である
+				commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU2);
+				//描画!!!!（DrawCall/ドローコール）。3頂点で1つのインスタンス。インスタンスについては今後
+				commandList->DrawInstanced(UINT(modelData.verteces.size()), 1, 0, 0);
+			}
+			
 
 			if (drawTr01) {
 				//三角形の描画
@@ -1699,8 +1715,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	debugController->Release();
 #endif // _DEBUG
 	//CloseWindow(winApp->GetHwnd());
-	delete winApp;
-
 
 	////リソースリークチェック
 	//IDXGIDebug1* debug;
