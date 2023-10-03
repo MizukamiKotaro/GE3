@@ -570,6 +570,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	D3D12_BLEND_DESC blendDesc{};
 	//すべての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	//RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1266,7 +1273,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 					transformationMatrixDataTriangle01->World = worldMatrixTr01;
 					if (ImGui::TreeNode("Color")) {
 
-						ImGui::ColorEdit3("color", &materialDataTriangle01->color.x);
+						ImGui::ColorEdit4("color", &materialDataTriangle01->color.x);
 						ImGui::TreePop();
 					}
 
@@ -1322,7 +1329,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 					transformationMatrixDataTriangle02->World = worldMatrixTr02;
 					if (ImGui::TreeNode("Color")) {
 
-						ImGui::ColorEdit3("color", &materialDataTriangle02->color.x);
+						ImGui::ColorEdit4("color", &materialDataTriangle02->color.x);
 						ImGui::TreePop();
 					}
 
@@ -1371,11 +1378,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 					worldMatrixSprite = Matrix4x4::MakeAffinMatrix(transformSprite.scale, transformSprite.rotate, transformSprite.translate);
 					worldViewProjectionMatrixSprite = Matrix4x4::Multiply(worldMatrixSprite, viewProjectionMatrixSprite);
 
-					transformationMatrixDataSphere->WVP = worldMatrixSphere;
-					transformationMatrixDataSphere->World = worldMatrixSphere;
+					transformationMatrixDataSprite->WVP = worldViewProjectionMatrixSprite;
+					transformationMatrixDataSprite->World = worldMatrixSprite;
 					if (ImGui::TreeNode("Color")) {
 
-						ImGui::ColorEdit3("color", &materialDataSprite->color.x);
+						ImGui::ColorEdit4("color", &materialDataSprite->color.x);
 						ImGui::TreePop();
 					}
 
@@ -1419,7 +1426,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 					transformationMatrixDataSphere->World = worldMatrixSphere;
 					if (ImGui::TreeNode("Color")) {
 
-						ImGui::ColorEdit3("color", &materialDataSphere->color.x);
+						ImGui::ColorEdit4("color", &materialDataSphere->color.x);
 						ImGui::TreePop();
 					}
 
@@ -1434,6 +1441,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 					}
 					if (ImGui::TreeNode("Resource")) {
 						ImGui::Checkbox("MonsterBall", &monsterBall);
+						ImGui::TreePop();
 					}
 
 					if (ImGui::TreeNode("Light")) {
@@ -1460,7 +1468,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 				ImGui::TreePop();
 			}
 			if (ImGui::TreeNode("DirectionalLight")) {
-				ImGui::DragFloat4("color", &directionalLightData->color.x, 0.01f);
+				ImGui::ColorEdit4("color", &directionalLightData->color.x);
 				ImGui::DragFloat3("direction", &directionalLightData->direction.x, 0.01f);
 				ImGui::DragFloat("intensity", &directionalLightData->intensity, 0.01f);
 
