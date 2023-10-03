@@ -571,9 +571,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	//すべての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+
 	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+
 	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
 	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
@@ -629,7 +631,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 
 	// モデル読み込み
-	ModelData modelData = ModelData::LoadObjeFile("Resources", "axis.obj");
+	ModelData modelData = ModelData::LoadObjeFile("Resources", "fence.obj");
 
 
 
@@ -1209,10 +1211,31 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	Matrix4x4 uvTransformMatrixTr02 = Matrix4x4::MakeAffinMatrix(uvTransformTr02);
 	materialDataTriangle02->uvTransform = uvTransformMatrixTr02;
 
+
+	Transform trans = { {1.0f,1.0f,1.0f},{0.0f,3.14f,0.0f},{0.0f,0.0f,0.0f} };
+	Matrix4x4 worldMat = Matrix4x4::MakeAffinMatrix(trans);
+	Matrix4x4 worldViewProjectionMat = Matrix4x4::Multiply(worldMat, viewProjectionMatrix);
+
+	worldMat = Matrix4x4::MakeAffinMatrix(trans);
+	worldViewProjectionMat = Matrix4x4::Multiply(worldMat, viewProjectionMatrix);
+
+	transformationMatrixData->WVP = worldViewProjectionMat;
+	transformationMatrixData->World = worldMat;
+
+	Transform uvTrans{
+		{1.0f,1.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f}
+	};
+
+	Matrix4x4 uvTransformMat = Matrix4x4::MakeAffinMatrix(uvTrans);
+	materialData->uvTransform = uvTransformMat;
+
 	bool drawTr01 = false;
 	bool drawTr02 = false;
 	bool drawSprite = false;
 	bool drawSphere = false;
+	bool draw = false;
 
 	enum {
 		None,
@@ -1252,6 +1275,58 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 			//開発用UIの処理。実際に開発のUIを出す場合はここをゲーム固有の処理に置き換える
 			//ImGui::ShowDemoWindow();
+
+			if (ImGui::TreeNode("obj")) {
+
+				ImGui::Checkbox("Draw", &draw);
+
+				if (draw) {
+					if (ImGui::TreeNode("Transform")) {
+
+						ImGui::DragFloat3("scale", &trans.scale.x, 0.01f);
+						ImGui::SliderFloat3("rotate", &trans.rotate.x, -3.14f, 3.14f);
+						ImGui::DragFloat3("translate", &trans.translate.x, 0.01f);
+
+
+						ImGui::TreePop();
+					}
+
+					//Sprite用のWorldProjectionMatrixを作る
+					worldMat = Matrix4x4::MakeAffinMatrix(trans);
+					worldViewProjectionMat = Matrix4x4::Multiply(worldMat, viewProjectionMatrix);
+
+					transformationMatrixData->WVP = worldViewProjectionMat;
+					transformationMatrixData->World = worldMat;
+					if (ImGui::TreeNode("Color")) {
+
+						ImGui::ColorEdit4("color", &materialData->color.x);
+						ImGui::TreePop();
+					}
+
+					if (ImGui::TreeNode("UV")) {
+
+						ImGui::DragFloat2("UVTranslate", &uvTrans.translate.x, 0.01f, -10.0f, 10.0f);
+						ImGui::DragFloat2("UVScale", &uvTrans.scale.x, 0.01f, -10.0f, 10.0f);
+						ImGui::SliderAngle("UVRotate", &uvTrans.rotate.z);
+						uvTransformMat = Matrix4x4::MakeAffinMatrix(uvTrans);
+						materialData->uvTransform = uvTransformMat;
+						ImGui::TreePop();
+					}
+
+					if (ImGui::TreeNode("Light")) {
+
+						ImGui::RadioButton("None", &materialData->enableLighting, None); ImGui::SameLine();
+						ImGui::RadioButton("Lambertian Reflectance", &materialData->enableLighting, Lambertian); ImGui::SameLine();
+						ImGui::RadioButton("Half Lambert", &materialData->enableLighting, Half);
+						ImGui::TreePop();
+					}
+
+
+
+				}
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("Triangle1")) {
 				ImGui::Checkbox("Draw", &drawTr01);
 
@@ -1478,19 +1553,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 
 
-
-
-
-
-
-			worldMatrix = Matrix4x4::MakeAffinMatrix(transform.scale, transform.rotate, transform.translate);
-			worldViewProjectionMatrix = Matrix4x4::Multiply(worldMatrix, viewProjectionMatrix);
-
-			transformationMatrixData->WVP = worldViewProjectionMatrix;
-			transformationMatrixData->World = worldMatrix;
-
-
-
 			//ゲームの処理終了
 
 			//描画の処理に入る前
@@ -1557,7 +1619,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 				//wvp用のBufferの場所を設定
 				commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 				//SRVのDescriptorTableの先頭に設定。2はrootParameter[2]である
-				commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU2);
+				commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU4);
 				//描画!!!!（DrawCall/ドローコール）。3頂点で1つのインスタンス。インスタンスについては今後
 				commandList->DrawInstanced(UINT(modelData.verteces.size()), 1, 0, 0);
 			}
