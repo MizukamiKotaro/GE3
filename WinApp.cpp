@@ -40,7 +40,7 @@ void WinApp::CreateGameWindow() {
 	//ウィンドウプロシージャ
 	wndClass_.lpfnWndProc = WindowProc;
 	//ウィンドウクラス名(なんでも良い)
-	wndClass_.lpszClassName = L"CG2WindowClass";
+	wndClass_.lpszClassName = L"DirectXGame";
 	//インスタンスハンドル
 	wndClass_.hInstance = GetModuleHandle(nullptr);
 	//カーソル
@@ -58,7 +58,7 @@ void WinApp::CreateGameWindow() {
 	//ウィンドウの生成
 	hwnd_ = CreateWindow(
 		wndClass_.lpszClassName,      // 利用するクラス名
-		L"CG2",	               // タイトルバーの文字(何でもいい)
+		L"DirectXGame",	               // タイトルバーの文字(何でもいい)
 		WS_OVERLAPPEDWINDOW,   // よく見るウィンドウスタイル
 		CW_USEDEFAULT,         // 表示x座標(windowsに任せる)
 		CW_USEDEFAULT,         // 表示y座標(windowsに任せる)
@@ -73,4 +73,23 @@ void WinApp::CreateGameWindow() {
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
+bool WinApp::ProcessMessage() {
 
+	MSG msg{};
+
+	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	if (msg.message == WM_QUIT) {
+		return true;
+	}
+
+	return false;
+}
+
+void WinApp::Finalize() {
+	UnregisterClass(wndClass_.lpszClassName, wndClass_.hInstance);
+	CloseWindow(hwnd_);
+}

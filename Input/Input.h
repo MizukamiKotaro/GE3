@@ -10,6 +10,7 @@
 
 #include <vector>
 #include "../Math/Vector2.h"
+#include "../WinApp.h"
 
 class Input
 {
@@ -43,7 +44,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(const HWND hwnd, const HINSTANCE hInstance);
+	void Initialize(WinApp* winApp);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -145,6 +146,8 @@ private:
 	const Input& operator=(const Input&) = delete;
 
 private:
+	WinApp* winApp_ = nullptr;
+
 	ComPtr<IDirectInput8> dInput_;
 	ComPtr<IDirectInputDevice8> devKeyboard_;
 	ComPtr<IDirectInputDevice8> devMouse_;

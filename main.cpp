@@ -1111,7 +1111,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	Input* input = Input::GetInstance();
 
-	input->Initialize(winApp->GetHwnd(), winApp->GetHInstance());
+	input->Initialize(winApp);
 
 
 	//ゲームループ前。変数の作成、初期化スペース
@@ -1247,13 +1247,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	bool hoge = false;
 
 
-	MSG msg{};
+	
 	//ウィンドウの×ボタンが押されるまでループ
-	while (msg.message != WM_QUIT) {
+	while (true) {
 		//windowにメッセージが来たら最優先で処理させる
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+		if (winApp->ProcessMessage()) {
+			break;
 		}
 		else {
 			ImGui_ImplDX12_NewFrame();
@@ -1784,6 +1783,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 #ifdef _DEBUG
 	debugController->Release();
 #endif // _DEBUG
+	winApp->Finalize();
 	//CloseWindow(winApp->GetHwnd());
 
 	////リソースリークチェック

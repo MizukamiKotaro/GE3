@@ -21,6 +21,11 @@ public: // メンバ関数
 
 	void CreateGameWindow();
 
+	// メッセージ処理
+	bool ProcessMessage();
+
+	void Finalize();
+
 	HWND GetHwnd() const { return hwnd_; }
 
 	HINSTANCE GetHInstance() const { return wndClass_.hInstance; }
