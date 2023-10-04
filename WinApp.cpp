@@ -35,7 +35,8 @@ WinApp* WinApp::GetInstance() {
 
 void WinApp::CreateGameWindow() {
 	//COM(Component Object Model)の初期化
-	CoInitializeEx(0, COINIT_MULTITHREADED);
+
+	HRESULT hr = CoInitializeEx(0, COINIT_MULTITHREADED);
 
 	//ウィンドウプロシージャ
 	wndClass_.lpfnWndProc = WindowProc;
