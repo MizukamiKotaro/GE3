@@ -38,7 +38,10 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg
 #include "ModelData.h"
 #include <vector>
 
+#include "DirectXCommon.h"
 #include "Input/Input.h"
+
+using namespace Microsoft::WRL;
 
 //コンパイル用関数
 IDxcBlob* CompileShader(
@@ -88,7 +91,7 @@ IDxcBlob* CompileShader(
 
 	// 3. 警告・エラーが出ていないか確認する
 	IDxcBlobUtf8* shaderError = nullptr;
-	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
+	hr = shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
 	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
 		DebugLog::Log(shaderError->GetStringPointer());
 		assert(false);
@@ -299,9 +302,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	winApp->CreateGameWindow();
 
-	/*DirectXCommon* d = new DirectXCommon();
-	d->Initialize(winApp);*/
+	//DirectXCommon* directXCommon = DirectXCommon::GetInstance();
+	//directXCommon->Initialize(winApp);
 
+	//ID3D12Device* device = directXCommon->GetDevice();
+
+	//ID3D12GraphicsCommandList* commandList = directXCommon->GetCommandList();
+
+	//HRESULT hr;
 
 #ifdef _DEBUG
 	ID3D12Debug1* debugController = nullptr;
@@ -627,13 +635,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&graphicsPipelineState));
 	assert(SUCCEEDED(hr));
 
-
-
-
 	// モデル読み込み
 	ModelData modelData = ModelData::LoadObjeFile("Resources", "fence.obj");
-
-
 
 	/*std::vector<ID3D12Resource*> textureResource;
 	std::vector<ID3D12Resource*> intermediateResource;
@@ -1096,15 +1099,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	scissorRect.right = WinApp::kWindowWidth;
 	scissorRect.top = 0;
 	scissorRect.bottom = WinApp::kWindowHeight;
-
 	//ImGuiの初期化
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 	ImGui_ImplWin32_Init(winApp->GetHwnd());
-	ImGui_ImplDX12_Init(device,
+	/*ImGui_ImplDX12_Init(device,
 		swapChainDesc.BufferCount,
 		rtvDesc.Format,
+		srvDescriptorHeap,
+		srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());*/
+	ImGui_ImplDX12_Init(device,
+		2,
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		srvDescriptorHeap,
 		srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
@@ -1560,8 +1568,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 			//描画処理
 
+			/*IDXGISwapChain4* swapChain = directXCommon->GetSwapChain();
+			std::vector<ComPtr<ID3D12Resource>> swapChainResources = directXCommon->GetSwapChainResources();*/
 
 			//これから書き込むバックバッファのインデックスを取得
+			//UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
 			UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
 
 			//TransitionBarrierの設定
@@ -1571,6 +1582,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			//Noneにしておく
 			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 			//バリアを張る対象リソース。現在のバッグバッファに対して行う
+			//barrier.Transition.pResource = swapChainResources[backBufferIndex].Get();
 			barrier.Transition.pResource = swapChainResources[backBufferIndex];
 			//遷移前（現在）のResourceState
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
@@ -1579,7 +1591,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			//TransitionBarrierを張る
 			commandList->ResourceBarrier(1, &barrier);
 
+			//ID3D12DescriptorHeap* dsvDescriptorHeap = directXCommon->GetDSVDescriptorHeap();
 
+			//std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> rtvHandles = directXCommon->GetRTVHandles();
 
 			//描画先のRTVを設定する
 			// 描画先のRTVとDSVを設定する
@@ -1689,11 +1703,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			hr = commandList->Close();
 			assert(SUCCEEDED(hr));
 
+			//ID3D12CommandQueue* commandQueue = directXCommon->GetCommandQueue();
+
 			//GPUにコマンドリストの実行を行わせる
 			ID3D12CommandList* commandLists[] = { commandList };
 			commandQueue->ExecuteCommandLists(1, commandLists);
 			//GPUとOSに画面の交換を行うように通知する
 			swapChain->Present(1, 0);
+
+			/*ID3D12Fence* fence = directXCommon->GetFence();
+			uint64_t* fenceValue = directXCommon->GetFenceValue();
+			HANDLE* fenceEvent = directXCommon->GetFenceEvent();*/
 
 			//Fenceの値の更新
 			fenceValue++;
@@ -1708,6 +1728,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 				//イベントを待つ
 				WaitForSingleObject(fenceEvent, INFINITE);
 			}
+
+			//ID3D12CommandAllocator* commandAllocator = directXCommon->GetCommandAllocator();
 
 			//次のフレーム用のコマンドリストを準備
 			hr = commandAllocator->Reset();
@@ -1726,19 +1748,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	CloseHandle(fenceEvent);
+	/*CloseHandle(fenceEvent);
 	fence->Release();
-	rtvDescriptorHeap->Release();
+	rtvDescriptorHeap->Release();*/
 	srvDescriptorHeap->Release();
-	swapChainResources[0]->Release();
+	/*swapChainResources[0]->Release();
 	swapChainResources[1]->Release();
-	swapChain->Release();
-	commandList->Release();
-	commandAllocator->Release();
-	commandQueue->Release();
-	device->Release();
-	useAdapter->Release();
-	dxgiFactory->Release();
+	swapChain->Release();*/
+	//commandList->Release();
+	/*commandAllocator->Release();
+	commandQueue->Release();*/
+	//device->Release();
+	/*useAdapter->Release();
+	dxgiFactory->Release();*/
 	vertexResource->Release();
 	graphicsPipelineState->Release();
 	signatureBlob->Release();
@@ -1756,8 +1778,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	intermediateResource->Release();
 	textureResource2->Release();
 	intermediateResource2->Release();
-	depthStencilResource->Release();
-	dsvDescriptorHeap->Release();
+	/*depthStencilResource->Release();
+	dsvDescriptorHeap->Release();*/
 	vertexResourceSprite->Release();
 	transformationMatrixResourceSprite->Release();
 	indexResouseSprite->Release();
@@ -1784,6 +1806,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	debugController->Release();
 #endif // _DEBUG
 	winApp->Finalize();
+	//directXCommon->Finalize();
 	//CloseWindow(winApp->GetHwnd());
 
 	////リソースリークチェック

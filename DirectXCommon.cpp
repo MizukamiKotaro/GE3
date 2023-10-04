@@ -1,30 +1,22 @@
 #include "DirectXCommon.h"
 
+#include <cassert>
 #include "DebugLog.h"
 #include<format>
 
-DirectXCommon::DirectXCommon() {
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
 
-}
+using namespace Microsoft::WRL;
 
-DirectXCommon::~DirectXCommon() {
-	
-	dxgiFactory_->Release();
-	device_->Release();
-	commandQueue_->Release();
-	commandAllocator_->Release();
-	commandList_->Release();
-	swapChainResources_[0]->Release();
-	swapChainResources_[1]->Release();
-	swapChain_->Release();
-	rtvHeap_->Release();
-	dsvHeap_->Release();
-	CloseHandle(fenceEvent_);
-	fence_->Release();
+DirectXCommon* DirectXCommon::GetInstance() {
+	static DirectXCommon instance;
+	return &instance;
 }
 
 void DirectXCommon::Initialize(WinApp* winApp) {
 
+	assert(winApp);
 	winApp_ = winApp;
 
 	// DXGIデバイス初期化
@@ -46,35 +38,29 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 	CreateFence();
 }
 
-//こっちが仮
-void DirectXCommon::Initialize() {
+void DirectXCommon::Finalize() {
 
+	dxgiFactory_->Release();
+	device_->Release();
+	useAdapter_->Release();
+	commandQueue_->Release();
+	commandAllocator_->Release();
+	commandList_->Release();
 
-	winApp_ = WinApp::GetInstance();
-	winApp_->CreateGameWindow();
+	for (ComPtr<ID3D12Resource> swapChainResource : swapChainResources_) {
+		swapChainResource->Release();
+	}
+	swapChain_->Release();
+	rtvHeap_->Release();
+	dsvHeap_->Release();
+	CloseHandle(fenceEvent_);
+	fence_->Release();
 
-	// DXGIデバイス初期化
-	InitializeDXGIDevice();
-
-	// コマンド関連初期化
-	InitializeCommand();
-
-	// スワップチェーンの生成
-	CreateSwapChain();
-
-	// レンダーターゲット生成
-	CreateFinalRenderTargets();
-
-	// 深度バッファ生成
-	CreateDepthBuffer();
-
-	// フェンス生成
-	CreateFence();
 }
 
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
+ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
 	//ディスクリプタヒープの生成
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;
+	ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
 	descriptorHeapDesc.Type = heapType;
 	descriptorHeapDesc.NumDescriptors = numDescriptors;
@@ -86,6 +72,7 @@ Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap
 }
 
 void DirectXCommon::InitializeDXGIDevice() {
+
 	//HRESULはwindows系のエラーコードであり、
 	//関数が成功したかどうかをSUCCEESESマクロで判断できる
 	HRESULT hr = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
@@ -93,14 +80,12 @@ void DirectXCommon::InitializeDXGIDevice() {
 	//どうにもできない場合が多いのでassertにしておく
 	assert(SUCCEEDED(hr));
 
-	//使用するアダプタ用の変数。最初にnullptrを入れておく
-	IDXGIAdapter4* useAdapter = nullptr;
 	//良い順にアダプタを頼む
 	for (UINT i = 0; dxgiFactory_->EnumAdapterByGpuPreference(
-		i, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, IID_PPV_ARGS(&useAdapter)) != DXGI_ERROR_NOT_FOUND; ++i) {
+		i, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, IID_PPV_ARGS(&useAdapter_)) != DXGI_ERROR_NOT_FOUND; ++i) {
 		//アダプタの情報を取得する
 		DXGI_ADAPTER_DESC3 adapterDesc{};
-		hr = useAdapter->GetDesc3(&adapterDesc);
+		hr = useAdapter_->GetDesc3(&adapterDesc);
 		assert(SUCCEEDED(hr)); //取得できないのは一大事
 		//ソフトウェアアダプタでなければ採用
 		if (!(adapterDesc.Flags & DXGI_ADAPTER_FLAG3_SOFTWARE)) {
@@ -108,11 +93,12 @@ void DirectXCommon::InitializeDXGIDevice() {
 			DebugLog::Log(DebugLog::ConvertString(std::format(L"Use Adapter : {}\n", adapterDesc.Description)));
 			break;
 		}
-		useAdapter = nullptr;//ソフトウェアの場合見なかったことにする
+		useAdapter_ = nullptr;//ソフトウェアの場合見なかったことにする
 	}
 	//適切なアダプタが見つからなかったので起動できない
-	assert(useAdapter != nullptr);
+	assert(useAdapter_ != nullptr);
 
+	device_ = nullptr;
 	//機能レベルとログ出力用の文字列
 	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_12_2,D3D_FEATURE_LEVEL_12_1,D3D_FEATURE_LEVEL_12_0
@@ -121,7 +107,7 @@ void DirectXCommon::InitializeDXGIDevice() {
 	//高い順に生成できるか試していく
 	for (size_t i = 0; i < _countof(featureLevels); i++) {
 		//採用したアダプタでデバイスを生成
-		hr = D3D12CreateDevice(useAdapter, featureLevels[i], IID_PPV_ARGS(&device_));
+		hr = D3D12CreateDevice(useAdapter_, featureLevels[i], IID_PPV_ARGS(&device_));
 		//指定した機能レベルでデバイスが生成関たかを確認
 		if (SUCCEEDED(hr)) {
 			//生成できたのでログ出力を行ってループを抜ける
@@ -132,8 +118,6 @@ void DirectXCommon::InitializeDXGIDevice() {
 	//デバイスの生成がうまくいかなかったので起動できない
 	assert(device_ != nullptr);
 	DebugLog::Log("Complete create D3D12Device!!!\n");// 初期化完了のログを出す
-
-	useAdapter->Release();
 }
 
 void DirectXCommon::CreateSwapChain() {
@@ -150,8 +134,11 @@ void DirectXCommon::CreateSwapChain() {
 	HRESULT hr = dxgiFactory_->CreateSwapChainForHwnd(commandQueue_.Get(), winApp_->GetHwnd(), &swapChainDesc, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(swapChain_.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 
+	for (size_t i = 0; i < 2; i++) {
+		swapChainResources_.push_back(ComPtr<ID3D12Resource>());
+	}
+
 	hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(&swapChainResources_[0]));
-	//うまくできなければ起動しない
 	assert(SUCCEEDED(hr));
 	hr = swapChain_->GetBuffer(1, IID_PPV_ARGS(&swapChainResources_[1]));
 	assert(SUCCEEDED(hr));
@@ -200,6 +187,11 @@ void DirectXCommon::CreateFinalRenderTargets() {
 	//RTVを2つ作るのでディスクリプタを2つ用意
 	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2] = {};
 	//まず1つ目を作る。1つ目は最初のところに作る。作る場所をこちらで指定してあげる必要がある。
+	
+	for (size_t i = 0; i < 2; i++) {
+		rtvHandles_.push_back(D3D12_CPU_DESCRIPTOR_HANDLE());
+	}
+	
 	rtvHandles_[0] = rtvStartHandle;
 	device_->CreateRenderTargetView(swapChainResources_[0].Get(), &rtvDesc, rtvHandles_[0]);
 	//2つ目のディスクリプタハンドルを得る（自力で）
@@ -214,7 +206,7 @@ void DirectXCommon::CreateDepthBuffer() {
 	dsvHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 
 	//DepthStencilTextureをウィンドウのサイズで作成
-	Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource = CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);
+	ComPtr<ID3D12Resource> depthStencilResource = CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);
 	//DSVの設定
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // Format。基本的にはResourceに合わせる
@@ -223,7 +215,7 @@ void DirectXCommon::CreateDepthBuffer() {
 	device_->CreateDepthStencilView(depthStencilResource.Get(), &dsvDesc, dsvHeap_->GetCPUDescriptorHandleForHeapStart());
 }
 
-Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, int32_t width, int32_t height) {
+ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height) {
 	//生成するリソースの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
 	resourceDesc.Width = width; // Textureの幅
