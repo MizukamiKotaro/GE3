@@ -40,7 +40,7 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 
 void DirectXCommon::Finalize() {
 
-	dxgiFactory_->Release();
+	/*dxgiFactory_->Release();
 	device_->Release();
 	useAdapter_->Release();
 	commandQueue_->Release();
@@ -52,9 +52,9 @@ void DirectXCommon::Finalize() {
 	}
 	swapChain_->Release();
 	rtvHeap_->Release();
-	dsvHeap_->Release();
+	dsvHeap_->Release();*/
 	CloseHandle(fenceEvent_);
-	fence_->Release();
+	//fence_->Release();
 
 }
 
@@ -65,7 +65,7 @@ ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(ID3D12Device* d
 	descriptorHeapDesc.Type = heapType;
 	descriptorHeapDesc.NumDescriptors = numDescriptors;
 	descriptorHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	HRESULT hr = device->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&descriptorHeap));
+	HRESULT hr = device->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(descriptorHeap.GetAddressOf()));
 	//ディスクリプタヒープが作られなかったので起動しない
 	assert(SUCCEEDED(hr));
 	return descriptorHeap;
@@ -75,14 +75,14 @@ void DirectXCommon::InitializeDXGIDevice() {
 
 	//HRESULはwindows系のエラーコードであり、
 	//関数が成功したかどうかをSUCCEESESマクロで判断できる
-	HRESULT hr = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
+	HRESULT hr = CreateDXGIFactory(IID_PPV_ARGS(dxgiFactory_.GetAddressOf()));
 	//初期化の根本的な部分でエラーが立た場合はプログラムが間違っているか
 	//どうにもできない場合が多いのでassertにしておく
 	assert(SUCCEEDED(hr));
 
 	//良い順にアダプタを頼む
 	for (UINT i = 0; dxgiFactory_->EnumAdapterByGpuPreference(
-		i, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, IID_PPV_ARGS(&useAdapter_)) != DXGI_ERROR_NOT_FOUND; ++i) {
+		i, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, IID_PPV_ARGS(useAdapter_.GetAddressOf())) != DXGI_ERROR_NOT_FOUND; ++i) {
 		//アダプタの情報を取得する
 		DXGI_ADAPTER_DESC3 adapterDesc{};
 		hr = useAdapter_->GetDesc3(&adapterDesc);
@@ -96,9 +96,8 @@ void DirectXCommon::InitializeDXGIDevice() {
 		useAdapter_ = nullptr;//ソフトウェアの場合見なかったことにする
 	}
 	//適切なアダプタが見つからなかったので起動できない
-	assert(useAdapter_ != nullptr);
+	assert(useAdapter_.Get() != nullptr);
 
-	device_ = nullptr;
 	//機能レベルとログ出力用の文字列
 	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_12_2,D3D_FEATURE_LEVEL_12_1,D3D_FEATURE_LEVEL_12_0
@@ -107,7 +106,7 @@ void DirectXCommon::InitializeDXGIDevice() {
 	//高い順に生成できるか試していく
 	for (size_t i = 0; i < _countof(featureLevels); i++) {
 		//採用したアダプタでデバイスを生成
-		hr = D3D12CreateDevice(useAdapter_, featureLevels[i], IID_PPV_ARGS(&device_));
+		hr = D3D12CreateDevice(useAdapter_.Get(), featureLevels[i], IID_PPV_ARGS(device_.GetAddressOf()));
 		//指定した機能レベルでデバイスが生成関たかを確認
 		if (SUCCEEDED(hr)) {
 			//生成できたのでログ出力を行ってループを抜ける
@@ -116,7 +115,7 @@ void DirectXCommon::InitializeDXGIDevice() {
 		}
 	}
 	//デバイスの生成がうまくいかなかったので起動できない
-	assert(device_ != nullptr);
+	assert(device_.Get() != nullptr);
 	DebugLog::Log("Complete create D3D12Device!!!\n");// 初期化完了のログを出す
 }
 
@@ -138,9 +137,9 @@ void DirectXCommon::CreateSwapChain() {
 		swapChainResources_.push_back(ComPtr<ID3D12Resource>());
 	}
 
-	hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(&swapChainResources_[0]));
+	hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(swapChainResources_[0].GetAddressOf()));
 	assert(SUCCEEDED(hr));
-	hr = swapChain_->GetBuffer(1, IID_PPV_ARGS(&swapChainResources_[1]));
+	hr = swapChain_->GetBuffer(1, IID_PPV_ARGS(swapChainResources_[1].GetAddressOf()));
 	assert(SUCCEEDED(hr));
 }
 
@@ -148,17 +147,17 @@ void DirectXCommon::CreateSwapChain() {
 void DirectXCommon::InitializeCommand() {
 	//コマンドキューを生成する
 	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
-	HRESULT hr = device_->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue_));
+	HRESULT hr = device_->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(commandQueue_.GetAddressOf()));
 	//コマンドキューの生成がうまくいかなかったので起動できない
 	assert(SUCCEEDED(hr));
 
 	//コマンドアロケータを生成する
-	hr = device_->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator_));
+	hr = device_->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(commandAllocator_.GetAddressOf()));
 	//コマンドアロケータの生成がうまくいかなかったので起動できない
 	assert(SUCCEEDED(hr));
 
 	//コマンドリストを生成する
-	hr = device_->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(&commandList_));
+	hr = device_->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(commandList_.GetAddressOf()));
 	//コマンドリストの生成がうまくいかなかったので起動できない
 	assert(SUCCEEDED(hr));
 }
@@ -237,14 +236,14 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(ID3D12De
 	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット。Resourceと合わせる
 
 	//Resourceの生成
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
+	ComPtr<ID3D12Resource> resource = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
 		&heapProperties, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし
 		&resourceDesc, // Resourceの設定
 		D3D12_RESOURCE_STATE_DEPTH_WRITE, // 深度値を書き込む状態にしておく
 		&depthClearValue, // Clear最適値
-		IID_PPV_ARGS(&resource)); // 作成するResourceポインタへのポインタ
+		IID_PPV_ARGS(resource.GetAddressOf())); // 作成するResourceポインタへのポインタ
 	assert(SUCCEEDED(hr));
 
 	return resource;
@@ -252,10 +251,10 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(ID3D12De
 
 void DirectXCommon::CreateFence() {
 	//初期値0でFenceを作る
-	HRESULT hr = device_->CreateFence(fenceValue_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
+	HRESULT hr = device_->CreateFence(fenceValue_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence_.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 
 	//FenceのSignalを持つためのイベントを作成する
 	fenceEvent_ = CreateEvent(NULL, FALSE, FALSE, NULL);
-	assert(fence_ != nullptr);
+	assert(fence_.Get() != nullptr);
 }

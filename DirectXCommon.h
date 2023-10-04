@@ -102,7 +102,7 @@ private: // メンバ変数
 
 	ComPtr<IDXGIFactory7> dxgiFactory_;
 	ComPtr<ID3D12Device> device_;
-	IDXGIAdapter4* useAdapter_;
+	ComPtr<IDXGIAdapter4> useAdapter_;
 	ComPtr<ID3D12CommandQueue> commandQueue_;
 	ComPtr<ID3D12CommandAllocator> commandAllocator_;
 	ComPtr<ID3D12GraphicsCommandList> commandList_;
