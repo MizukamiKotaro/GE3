@@ -134,7 +134,7 @@ void DirectXCommon::CreateSwapChain() {
 	assert(SUCCEEDED(hr));
 
 	for (size_t i = 0; i < 2; i++) {
-		swapChainResources_.push_back(ComPtr<ID3D12Resource>());
+		swapChainResources_.push_back(nullptr);
 	}
 
 	hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(swapChainResources_[0].GetAddressOf()));
