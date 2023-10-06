@@ -303,15 +303,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	winApp->CreateGameWindow();
 
-	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
-	directXCommon->Initialize(winApp);
-
-	ID3D12Device* device = directXCommon->GetDevice();
-
-	ID3D12GraphicsCommandList* commandList = directXCommon->GetCommandList();
-
-	HRESULT hr;
-
 #ifdef _DEBUG
 	ID3D12Debug1* debugController = nullptr;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
@@ -321,6 +312,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
 #endif // DEBUG
+
+	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
+	directXCommon->Initialize(winApp);
+
+	ID3D12Device* device = directXCommon->GetDevice();
+
+	ID3D12GraphicsCommandList* commandList = directXCommon->GetCommandList();
+
+	HRESULT hr;
+
 
 	////DXGIファクトリーの生成
 	//IDXGIFactory7* dxgiFactory = nullptr;
@@ -1716,7 +1717,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			HANDLE* fenceEvent = directXCommon->GetFenceEvent();
 
 			//Fenceの値の更新
-			fenceValue++;
+			(*fenceValue)++;
 			//GPUがここまでたどり着いたときに、Fenceの値を指定した値に代入するようにSignelを送る
 			commandQueue->Signal(fence, *fenceValue);
 

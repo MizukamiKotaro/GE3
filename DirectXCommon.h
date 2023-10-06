@@ -93,7 +93,7 @@ public: // メンバ関数
 	/// <summary>
 	/// ディスクリプタヒープの作成関数
 	/// </summary>
-	static ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
+	static ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 
 private: // メンバ変数
 
@@ -152,7 +152,7 @@ private: // メンバ関数
 	/// </summary>
 	void CreateDepthBuffer();
 
-	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
+	ID3D12Resource* CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
 
 	/// <summary>
 	/// フェンス生成
