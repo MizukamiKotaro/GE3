@@ -1807,7 +1807,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	debugController->Release();
 #endif // _DEBUG
 	winApp->Finalize();
-	//directXCommon->Finalize();
+	directXCommon->Finalize();
 	//CloseWindow(winApp->GetHwnd());
 
 	////リソースリークチェック
