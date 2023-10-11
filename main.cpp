@@ -313,7 +313,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	}
 #endif // DEBUG
 
-	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
+	DirectXCommon* directXCommon = new DirectXCommon();
 	directXCommon->Initialize(winApp);
 
 	ID3D12Device* device = directXCommon->GetDevice();
@@ -753,11 +753,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 	std::memcpy(vertexData, modelData.verteces.data(), sizeof(VertexData) * modelData.verteces.size());
 
-
-
-
-
-
 	//VertexResourceを生成する
 	//実際に頂点リソースを作る
 	ID3D12Resource* vertexResourceSphere = CreateBufferResource(device, sizeof(VertexData) * 16 * 16 * 4);
@@ -1069,9 +1064,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	//単位行列を書き込んでいく
 	*transformationMatrixDataSprite = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
 
-
-
-
 	//平行光源用のリソースを作る。
 	ID3D12Resource* directionalLightResource = CreateBufferResource(device, sizeof(DirectionalLight));
 	//データを書き込む
@@ -1083,24 +1075,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
 
-
-	//ビューポート
-	D3D12_VIEWPORT viewport{};
-	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = WinApp::kWindowWidth;
-	viewport.Height = WinApp::kWindowHeight;
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-
-	//シザー矩形
-	D3D12_RECT scissorRect{};
-	//基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = WinApp::kWindowWidth;
-	scissorRect.top = 0;
-	scissorRect.bottom = WinApp::kWindowHeight;
 	//ImGuiの初期化
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -1570,51 +1544,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 			//描画処理
 
-			IDXGISwapChain4* swapChain = directXCommon->GetSwapChain();
-			std::vector<ComPtr<ID3D12Resource>> swapChainResources = directXCommon->GetSwapChainResources();
-
-			//これから書き込むバックバッファのインデックスを取得
-			UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
-
-			//TransitionBarrierの設定
-			D3D12_RESOURCE_BARRIER barrier{};
-			//今回のバリアはTransition
-			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-			//Noneにしておく
-			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-			//バリアを張る対象リソース。現在のバッグバッファに対して行う
-			barrier.Transition.pResource = swapChainResources[backBufferIndex].Get();
-			//barrier.Transition.pResource = swapChainResources[backBufferIndex];
-			//遷移前（現在）のResourceState
-			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
-			//遷移後のResourceState
-			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-			//TransitionBarrierを張る
-			commandList->ResourceBarrier(1, &barrier);
-
-			ID3D12DescriptorHeap* dsvDescriptorHeap = directXCommon->GetDSVDescriptorHeap();
-
-			std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> rtvHandles = directXCommon->GetRTVHandles();
-
-			//描画先のRTVを設定する
-			// 描画先のRTVとDSVを設定する
-			D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-			commandList->OMSetRenderTargets(1, &rtvHandles[backBufferIndex], false, &dsvHandle);
-			//commandList->OMSetRenderTargets(1, &rtvHandles[backBufferIndex], false, nullptr);
-			//指定した深度で画面全体をクリアする
-			commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-			//指定した色で画面全体をクリアする
-			float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; //青っぽい色。RGBAの順
-			commandList->ClearRenderTargetView(rtvHandles[backBufferIndex], clearColor, 0, nullptr);
-
-
+			directXCommon->PreDraw();
 
 			//描画用のDescriptorHeapの設定
 			ID3D12DescriptorHeap* descriptorHeaps[] = { srvDescriptorHeap };
 			commandList->SetDescriptorHeaps(1, descriptorHeaps);
 
-			commandList->RSSetViewports(1, &viewport); // Viewportを設定
-			commandList->RSSetScissorRects(1, &scissorRect); //Scissorを設定
 			//RootSignatureを設定。PSOに設定しているけど別途設定が必要
 			commandList->SetGraphicsRootSignature(rootSignature);
 			commandList->SetPipelineState(graphicsPipelineState); // PSOを設定
@@ -1685,58 +1620,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 				commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 			}
 
-
-
-
 			//実際のcommandListのImGuiの描画コマンドを積む。描画処理の終わったタイミング
 			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 			//描画処理終わり
 
 			//画面に描く処理はすべて終わり、画面にうつすので、状態の遷移
-			//今回はRenderTargetからPresentにする
-			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
-			//TransitionBarrierを張る
-			commandList->ResourceBarrier(1, &barrier);
-
-			//コマンドリストの内容を確定させる
-			hr = commandList->Close();
-			assert(SUCCEEDED(hr));
-
-			ID3D12CommandQueue* commandQueue = directXCommon->GetCommandQueue();
-
-			//GPUにコマンドリストの実行を行わせる
-			ID3D12CommandList* commandLists[] = { commandList };
-			commandQueue->ExecuteCommandLists(1, commandLists);
-			//GPUとOSに画面の交換を行うように通知する
-			swapChain->Present(1, 0);
-
-			ID3D12Fence* fence = directXCommon->GetFence();
-			uint64_t* fenceValue = directXCommon->GetFenceValue();
-			HANDLE* fenceEvent = directXCommon->GetFenceEvent();
-
-			//Fenceの値の更新
-			(*fenceValue)++;
-			//GPUがここまでたどり着いたときに、Fenceの値を指定した値に代入するようにSignelを送る
-			commandQueue->Signal(fence, *fenceValue);
-
-			//Fenceの値が指定したSignal値にたどりすいているか確認する
-			//GetCompletedValueの初期値はFence作成時に渡した初期値
-			if (fence->GetCompletedValue() < *fenceValue) {
-				//指定したSignalにたどり着いていないので、たどり着くまで待つようにイベントする
-				fence->SetEventOnCompletion(*fenceValue, *fenceEvent);
-				//イベントを待つ
-				WaitForSingleObject(*fenceEvent, INFINITE);
-			}
-
-			ID3D12CommandAllocator* commandAllocator = directXCommon->GetCommandAllocator();
-
-			//次のフレーム用のコマンドリストを準備
-			hr = commandAllocator->Reset();
-			assert(SUCCEEDED(hr));
-			hr = commandList->Reset(commandAllocator, nullptr);
-			assert(SUCCEEDED(hr));
+			 
+			directXCommon->PostDraw();
 
 		}
 	}
@@ -1803,11 +1694,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	vertexResourceSphere->Release();
 	materialResourceSphere->Release();
 
+	delete directXCommon;
+	winApp->Finalize();
+
 #ifdef _DEBUG
 	debugController->Release();
 #endif // _DEBUG
-	winApp->Finalize();
-	directXCommon->Finalize();
 	//CloseWindow(winApp->GetHwnd());
 
 	////リソースリークチェック

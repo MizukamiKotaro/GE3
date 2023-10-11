@@ -13,7 +13,10 @@ public: // メンバ関数
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	static DirectXCommon* GetInstance();
+	//static DirectXCommon* GetInstance();
+
+	DirectXCommon() = default;
+	~DirectXCommon() = default;
 
 	/// <summary>
 	/// 初期化
@@ -21,79 +24,26 @@ public: // メンバ関数
 	void Initialize(WinApp* winApp);
 
 	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	void PreDraw();
+
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
+	void PostDraw();
+
+	/// <summary>
 	/// デバイスの取得
 	/// </summary>
 	/// <returns>デバイス</returns>
-	ID3D12Device* GetDevice() { return device_.Get(); }
+	ID3D12Device* GetDevice() const { return device_.Get(); }
 
 	/// <summary>
 	/// コマンドリストの取得
 	/// </summary>
 	/// <returns>コマンドリスト</returns>
-	ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
-
-	/// <summary>
-	/// スワップチェーンの取得
-	/// </summary>
-	/// <returns>スワップチェーン</returns>
-	IDXGISwapChain4* GetSwapChain() { return swapChain_.Get(); }
-
-	/// <summary>
-	/// スワップチェーンリソースの配列の取得
-	/// </summary>
-	/// <returns>スワップチェーンの配列</returns>
-	std::vector<ComPtr<ID3D12Resource>> GetSwapChainResources() { return swapChainResources_; }
-
-	/// <summary>
-	/// コマンドアロケータの取得
-	/// </summary>
-	/// <returns>コマンドアロケータ</returns>
-	ID3D12CommandAllocator* GetCommandAllocator() { return commandAllocator_.Get(); }
-
-	/// <summary>
-	/// コマンドキューの取得
-	/// </summary>
-	/// <returns>コマンドキュー</returns>
-	ID3D12CommandQueue* GetCommandQueue() { return commandQueue_.Get(); }
-
-	/// <summary>
-	/// dsvディスクリプタヒープの取得
-	/// </summary>
-	/// <returns>dsvディスクリプタヒープ</returns>
-	ID3D12DescriptorHeap* GetDSVDescriptorHeap() { return dsvHeap_.Get(); }
-
-	/// <summary>
-	/// rtvハンドルの配列の取得
-	/// </summary>
-	/// <returns>rtvハンドルの配列</returns>
-	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> GetRTVHandles() { return rtvHandles_; }
-
-	/// <summary>
-	/// フェンスの取得
-	/// </summary>
-	/// <returns>フェンス</returns>
-	ID3D12Fence* GetFence() { return fence_.Get(); }
-
-	/// <summary>
-	/// フェンスバリューの取得
-	/// </summary>
-	/// <returns>フェンスバリュー</returns>
-	uint64_t* GetFenceValue() { return &fenceValue_; }
-
-	/// <summary>
-	/// フェンスイベントの取得
-	/// </summary>
-	/// <returns>フェンスイベント</returns>
-	HANDLE* GetFenceEvent() { return &fenceEvent_; }
-
-
-	// 解放処理
-	void Finalize();
-
-	/// <summary>
-	/// ディスクリプタヒープの作成関数
-	/// </summary>
-	static ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
+	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
 
 private: // メンバ変数
 
@@ -107,23 +57,15 @@ private: // メンバ変数
 	ComPtr<ID3D12CommandAllocator> commandAllocator_;
 	ComPtr<ID3D12GraphicsCommandList> commandList_;
 	ComPtr<IDXGISwapChain4> swapChain_;
-	std::vector<ComPtr<ID3D12Resource>> swapChainResources_;
-	//ComPtr<ID3D12Resource> swapChainResources_[2] = {}; // ダブルバッファだから
+	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
 	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 	ComPtr<ID3D12Fence> fence_;
 	uint64_t fenceValue_ = 0;
-	HANDLE fenceEvent_;
 
-	// 確認用
-	//RTVを2つ作るのでハンドルを2つ用意
-	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> rtvHandles_;
-	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2] = {};
 
 private: // メンバ関数
 
-	DirectXCommon() = default;
-	~DirectXCommon() = default;
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
 
@@ -146,6 +88,11 @@ private: // メンバ関数
 	/// レンダーターゲット生成
 	/// </summary>
 	void CreateFinalRenderTargets();
+
+	/// <summary>
+	/// ディスクリプタヒープの作成関数
+	/// </summary>
+	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 
 	/// <summary>
 	/// 深度バッファ生成
