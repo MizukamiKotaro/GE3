@@ -14,6 +14,13 @@ using namespace Microsoft::WRL;
 //	return &instance;
 //}
 
+DirectXCommon::~DirectXCommon() {
+	rtvHeap_->Release();
+	dsvHeap_->Release();
+	depthStencilResource_->Release();
+	CloseHandle(fenceEvent_);
+}
+
 void DirectXCommon::Initialize(WinApp* winApp) {
 
 	assert(winApp);
@@ -125,11 +132,10 @@ void DirectXCommon::PostDraw() {
 	//Fenceの値が指定したSignal値にたどりすいているか確認する
 	//GetCompletedValueの初期値はFence作成時に渡した初期値
 	if (fence_->GetCompletedValue() < fenceValue_) {
-		HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 		//指定したSignalにたどり着いていないので、たどり着くまで待つようにイベントする
-		fence_->SetEventOnCompletion(fenceValue_, fenceEvent);
+		fence_->SetEventOnCompletion(fenceValue_, fenceEvent_);
 		//イベントを待つ
-		WaitForSingleObject(fenceEvent, INFINITE);
+		WaitForSingleObject(fenceEvent_, INFINITE);
 	}
 
 	//次のフレーム用のコマンドリストを準備
@@ -266,13 +272,15 @@ void DirectXCommon::CreateDepthBuffer() {
 	dsvHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 
 	//DepthStencilTextureをウィンドウのサイズで作成
-	ID3D12Resource* depthStencilResource =  CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);
+	depthStencilResource_ =  CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);
 	//DSVの設定
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // Format。基本的にはResourceに合わせる
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D; // 2dTexture
 	// DSVHeapの先頭にDSVを作る
-	device_->CreateDepthStencilView(depthStencilResource, &dsvDesc, dsvHeap_->GetCPUDescriptorHandleForHeapStart());
+	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc, dsvHeap_->GetCPUDescriptorHandleForHeapStart());
+
+
 }
 
 ID3D12Resource* DirectXCommon::CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height) {
@@ -314,6 +322,6 @@ void DirectXCommon::CreateFence() {
 	//初期値0でFenceを作る
 	HRESULT hr = device_->CreateFence(fenceValue_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence_.GetAddressOf()));
 	assert(SUCCEEDED(hr));
-
+	fenceEvent_ = CreateEvent(NULL, FALSE, FALSE, NULL);
 	assert(fence_.Get() != nullptr);
 }

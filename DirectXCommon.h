@@ -16,7 +16,7 @@ public: // メンバ関数
 	//static DirectXCommon* GetInstance();
 
 	DirectXCommon() = default;
-	~DirectXCommon() = default;
+	~DirectXCommon();
 
 	/// <summary>
 	/// 初期化
@@ -60,8 +60,10 @@ private: // メンバ変数
 	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
 	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
+	ComPtr<ID3D12Resource> depthStencilResource_;
 	ComPtr<ID3D12Fence> fence_;
 	uint64_t fenceValue_ = 0;
+	HANDLE fenceEvent_ = nullptr;
 
 
 private: // メンバ関数
