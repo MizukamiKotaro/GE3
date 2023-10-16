@@ -18,10 +18,12 @@ DirectXCommon::~DirectXCommon() {
 	rtvHeap_->Release();
 	dsvHeap_->Release();
 	depthStencilResource_->Release();
-	CloseHandle(fenceEvent_);
 }
 
 void DirectXCommon::Initialize(WinApp* winApp) {
+
+	// FPS固定初期化
+	InitializeFixFPS();
 
 	assert(winApp);
 	winApp_ = winApp;
@@ -124,25 +126,63 @@ void DirectXCommon::PostDraw() {
 	//GPUとOSに画面の交換を行うように通知する
 	swapChain_->Present(1, 0);
 
-	//Fenceの値の更新
-	fenceValue_++;
 	//GPUがここまでたどり着いたときに、Fenceの値を指定した値に代入するようにSignelを送る
-	commandQueue_->Signal(fence_.Get(), fenceValue_);
+	commandQueue_->Signal(fence_.Get(), ++fenceValue_);
 
 	//Fenceの値が指定したSignal値にたどりすいているか確認する
 	//GetCompletedValueの初期値はFence作成時に渡した初期値
 	if (fence_->GetCompletedValue() < fenceValue_) {
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 		//指定したSignalにたどり着いていないので、たどり着くまで待つようにイベントする
-		fence_->SetEventOnCompletion(fenceValue_, fenceEvent_);
+		fence_->SetEventOnCompletion(fenceValue_, event);
 		//イベントを待つ
-		WaitForSingleObject(fenceEvent_, INFINITE);
+		WaitForSingleObject(event, INFINITE);
+		CloseHandle(event);
 	}
+
+	UpdateFixFPS();
 
 	//次のフレーム用のコマンドリストを準備
 	hr = commandAllocator_->Reset();
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
+
+}
+
+void DirectXCommon::InitializeFixFPS() {
+
+	// 現在の時間を記録する
+	reference_ = std::chrono::steady_clock::now();
+
+}
+
+void DirectXCommon::UpdateFixFPS() {
+
+	// 1/60秒ピッタリの時間
+	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+	// 1/60秒よりわずかに短い時間
+	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+
+	// 現在の時間を取得
+	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	//前回記録からの経過時間を取得
+	std::chrono::microseconds elapsed =
+		std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
+
+	// 1/60秒(よりわずかに短い時間)経っていない場合
+	if (elapsed < kMinCheckTime) {
+		// 1/60秒経過するまで微小なスリープを繰り返す
+		while (std::chrono::steady_clock::now() - reference_ < kMinTime) {
+
+			// 1マイクロ秒スリープ
+			std::this_thread::sleep_for(std::chrono::microseconds(1));
+
+		}
+	}
+
+	// 現在の時間を記録
+	reference_ = std::chrono::steady_clock::now();
 
 }
 
@@ -322,6 +362,5 @@ void DirectXCommon::CreateFence() {
 	//初期値0でFenceを作る
 	HRESULT hr = device_->CreateFence(fenceValue_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence_.GetAddressOf()));
 	assert(SUCCEEDED(hr));
-	fenceEvent_ = CreateEvent(NULL, FALSE, FALSE, NULL);
 	assert(fence_.Get() != nullptr);
 }

@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include "WinApp.h"
 #include <vector>
+#include <chrono>
 
 class DirectXCommon
 {
@@ -45,6 +46,19 @@ public: // メンバ関数
 	/// <returns>コマンドリスト</returns>
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
 
+private:
+
+	/// <summary>
+	/// FPS固定初期値
+	/// </summary>
+	void InitializeFixFPS();
+
+	/// <summary>
+	/// FPS固定更新
+	/// </summary>
+	void UpdateFixFPS();
+
+
 private: // メンバ変数
 
 	// ウィンドウズアプリケーション管理
@@ -63,7 +77,9 @@ private: // メンバ変数
 	ComPtr<ID3D12Resource> depthStencilResource_;
 	ComPtr<ID3D12Fence> fence_;
 	uint64_t fenceValue_ = 0;
-	HANDLE fenceEvent_ = nullptr;
+
+	// 記録時間(FPS固定)
+	std::chrono::steady_clock::time_point reference_;
 
 
 private: // メンバ関数
