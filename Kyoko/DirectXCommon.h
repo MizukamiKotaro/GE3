@@ -3,7 +3,7 @@
 #include<d3d12.h>
 #include<dxgi1_6.h>
 #include <wrl.h>
-#include "Kyoko/WinApp/WinApp.h"
+#include "WinApp/WinApp.h"
 #include <vector>
 #include <chrono>
 
@@ -80,7 +80,6 @@ private: // メンバ変数
 
 	// 記録時間(FPS固定)
 	std::chrono::steady_clock::time_point reference_;
-
 
 private: // メンバ関数
 

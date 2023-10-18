@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "../Math/Vector2.h"
-#include "../WinApp.h"
+#include "../Kyoko/WinApp/WinApp.h"
 
 class Input
 {

@@ -117,7 +117,7 @@ namespace
 
 
     //--------------------------------------------------------------------------------------
-    HRESULT Capture(_In_ ID3D12Device* device,
+    HRESULT Capture(_In_ ID3D12Device* device_,
         _In_ ID3D12CommandQueue* pCommandQ,
         _In_ ID3D12Resource* pSource,
         const D3D12_RESOURCE_DESC& desc,
@@ -131,7 +131,7 @@ namespace
         if (!pCommandQ || !pSource)
             return E_INVALIDARG;
 
-        numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
+        numberOfPlanes = D3D12GetFormatPlaneCount(device_, desc.Format);
         if (!numberOfPlanes)
             return E_INVALIDARG;
 
@@ -162,7 +162,7 @@ namespace
         auto pNumRows = reinterpret_cast<UINT*>(pRowSizesInBytes + numberOfResources);
 
         UINT64 totalResourceSize = 0;
-        device->GetCopyableFootprints(&desc, 0, numberOfResources, 0,
+        device_->GetCopyableFootprints(&desc, 0, numberOfResources, 0,
             pLayout, pNumRows, pRowSizesInBytes, &totalResourceSize);
 
         D3D12_HEAP_PROPERTIES sourceHeapProperties;
@@ -176,19 +176,19 @@ namespace
 
         // Create a command allocator
         ComPtr<ID3D12CommandAllocator> commandAlloc;
-        hr = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_GRAPHICS_PPV_ARGS(commandAlloc.GetAddressOf()));
+        hr = device_->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_GRAPHICS_PPV_ARGS(commandAlloc.GetAddressOf()));
         if (FAILED(hr))
             return hr;
 
         // Spin up a new command list
         ComPtr<ID3D12GraphicsCommandList> commandList;
-        hr = device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAlloc.Get(), nullptr, IID_GRAPHICS_PPV_ARGS(commandList.GetAddressOf()));
+        hr = device_->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAlloc.Get(), nullptr, IID_GRAPHICS_PPV_ARGS(commandList.GetAddressOf()));
         if (FAILED(hr))
             return hr;
 
         // Create a fence
         ComPtr<ID3D12Fence> fence;
-        hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.GetAddressOf()));
+        hr = device_->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.GetAddressOf()));
         if (FAILED(hr))
             return hr;
 
@@ -217,7 +217,7 @@ namespace
             descCopy.Alignment = D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
 
             ComPtr<ID3D12Resource> pTemp;
-            hr = device->CreateCommittedResource(
+            hr = device_->CreateCommittedResource(
                 &defaultHeapProperties,
                 D3D12_HEAP_FLAG_NONE,
                 &descCopy,
@@ -238,7 +238,7 @@ namespace
             }
 
             D3D12_FEATURE_DATA_FORMAT_SUPPORT formatInfo = { fmt, D3D12_FORMAT_SUPPORT1_NONE, D3D12_FORMAT_SUPPORT2_NONE };
-            hr = device->CheckFeatureSupport(D3D12_FEATURE_FORMAT_SUPPORT, &formatInfo, sizeof(formatInfo));
+            hr = device_->CheckFeatureSupport(D3D12_FEATURE_FORMAT_SUPPORT, &formatInfo, sizeof(formatInfo));
             if (FAILED(hr))
                 return hr;
 
@@ -261,7 +261,7 @@ namespace
         }
 
         // Create a staging texture
-        hr = device->CreateCommittedResource(
+        hr = device_->CreateCommittedResource(
             &readBackHeapProperties,
             D3D12_HEAP_FLAG_NONE,
             &bufferDesc,
@@ -717,8 +717,8 @@ HRESULT DirectX::CaptureTexture(
     if (!pCommandQueue || !pSource)
         return E_INVALIDARG;
 
-    ComPtr<ID3D12Device> device;
-    pCommandQueue->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+    ComPtr<ID3D12Device> device_;
+    pCommandQueue->GetDevice(IID_GRAPHICS_PPV_ARGS(device_.GetAddressOf()));
 
 #if defined(_MSC_VER) || !defined(_WIN32)
     auto const desc = pSource->GetDesc();
@@ -730,7 +730,7 @@ HRESULT DirectX::CaptureTexture(
     ComPtr<ID3D12Resource> pStaging;
     std::unique_ptr<uint8_t[]> layoutBuff;
     UINT numberOfPlanes, numberOfResources;
-    HRESULT hr = Capture(device.Get(),
+    HRESULT hr = Capture(device_.Get(),
         pCommandQueue,
         pSource,
         desc,

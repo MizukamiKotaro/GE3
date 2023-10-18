@@ -6,7 +6,7 @@
 MaterialData MaterialData::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& fileName) {
 
 	// 1. 中で必要となる変数の宣言
-	MaterialData materialData; // 構築するMaterialData
+	MaterialData materialData_; // 構築するMaterialData
 	std::string line; // ファイルから読んだ１行を格納するもの
 
 	// 2. ファイルを開く
@@ -24,12 +24,12 @@ MaterialData MaterialData::LoadMaterialTemplateFile(const std::string& directory
 			std::string textureFileName;
 			s >> textureFileName;
 			// 連結してファイルパスにする
-			materialData.textureFilePath = directoryPath + "/" + textureFileName;
+			materialData_.textureFilePath = directoryPath + "/" + textureFileName;
 
 		}
 
 	}
 
 	// 4. MaterialDataを返す
-	return materialData;
+	return materialData_;
 }

@@ -57,23 +57,11 @@
     <ClCompile Include="externals\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugLog.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ModelData.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="MaterialData.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Kyoko.cpp">
-      <Filter>Adapter</Filter>
     </ClCompile>
     <ClCompile Include="Math\Vector2.cpp">
       <Filter>ソース ファイル\Math</Filter>
@@ -91,6 +79,24 @@
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="Input\Input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\DebugLog.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\DirectXCommon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\Sprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\SpriteCommon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\Kyoko.cpp">
+      <Filter>Adapter</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\WinApp\WinApp.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,26 +140,11 @@
     <ClInclude Include="VertexData.h">
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugLog.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
     <ClInclude Include="ModelData.h">
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
     <ClInclude Include="MaterialData.h">
       <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="Kyoko.h">
-      <Filter>Adapter</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXCommon.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceLeakChecker.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>ヘッダー ファイル\Math</Filter>
@@ -173,7 +164,25 @@
     <ClInclude Include="Math\calc.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Input\Input.h">
+    <ClInclude Include="Kyoko\DebugLog.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\DirectXCommon.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\ResourceLeakChecker.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\Sprite.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\SpriteCommon.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\Kyoko.h">
+      <Filter>Adapter</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\WinApp\WinApp.h">
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -189,9 +198,18 @@
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\Sprite.PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Sprite.VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Sprite.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

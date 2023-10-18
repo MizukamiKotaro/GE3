@@ -1,7 +1,7 @@
 #include "DirectXCommon.h"
 
 #include <cassert>
-#include "Kyoko/DebugLog.h"
+#include "DebugLog.h"
 #include<format>
 
 #pragma comment(lib, "d3d12.lib")
