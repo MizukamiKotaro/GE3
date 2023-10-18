@@ -101,8 +101,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの更新
 
+		sprite->rotate_.y += 0.01f;
 
-
+		sprite->Update();
 
 #pragma endregion 最初のシーンの更新
 

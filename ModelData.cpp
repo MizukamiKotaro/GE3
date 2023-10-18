@@ -103,11 +103,11 @@ ModelData ModelData::LoadObjeFile(const std::string& directoryPath, const std::s
 		// identifierに応じた処理
 
 		if (identifier == "v") {
-			Vector4 position = {};
-			s >> position.x >> position.y >> position.z;
-			position.x = -1.0f * position.x;
-			position.w = 1.0f;
-			positions.push_back(position);
+			Vector4 vertexPos = {};
+			s >> vertexPos.x >> vertexPos.y >> vertexPos.z;
+			vertexPos.x = -1.0f * vertexPos.x;
+			vertexPos.w = 1.0f;
+			positions.push_back(vertexPos);
 		}
 		else if (identifier == "vt") {
 			Vector2 texcoord = {};
@@ -137,10 +137,10 @@ ModelData ModelData::LoadObjeFile(const std::string& directoryPath, const std::s
 					elementIndices[element] = std::stoi(index);
 				}
 				// 要素へのIndexから、実際の要素の値を取得して、頂点を構築する
-				Vector4 position = positions[elementIndices[0] - 1];
+				Vector4 vertexPos = positions[elementIndices[0] - 1];
 				Vector2 texcoord = texcoords[elementIndices[1] - 1];
 				Vector3 normal = normals[elementIndices[2] - 1];
-				triangle[faceVertex] = { position,texcoord,normal };
+				triangle[faceVertex] = { vertexPos,texcoord,normal };
 
 			}
 

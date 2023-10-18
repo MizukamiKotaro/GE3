@@ -6,7 +6,7 @@
 class VertexData
 {
 public:
-	Vector4 position;
+	Vector4 vertexPos;
 	Vector2 texcoord;
 	Vector3 normal;
 };
