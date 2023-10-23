@@ -99,6 +99,9 @@
     <ClCompile Include="Kyoko\WinApp\WinApp.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Kyoko\TextureManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -183,6 +186,9 @@
       <Filter>Adapter</Filter>
     </ClInclude>
     <ClInclude Include="Kyoko\WinApp\WinApp.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\TextureManager.h">
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,10 +5,10 @@
 #include "Kyoko/SpriteCommon.h"
 #include "Kyoko/Sprite.h"
 
+static ResourceLeackChecker leakCheck;
+
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
-
-	ResourceLeackChecker leakCheck;
 
 #ifdef _DEBUG
 	ID3D12Debug1* debugController = nullptr;
@@ -25,7 +25,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	WinApp* winApp = WinApp::GetInstance();
 	winApp->CreateGameWindow();
 
-	DirectXCommon* dxCommon = new DirectXCommon();
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp);
 
 	Input* input = Input::GetInstance();
@@ -130,7 +130,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 基盤システムの終了
 
-	delete dxCommon;
+	dxCommon->Finalize();
 	winApp->Finalize();
 
 	delete sprite;

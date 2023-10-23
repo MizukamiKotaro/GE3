@@ -26,14 +26,6 @@ WinApp* WinApp::GetInstance() {
 	return &instance;
 }
 
-//WinApp::WinApp() {
-//	
-//}
-//
-//WinApp::~WinApp() {
-//	CloseWindow(hwnd_);
-//}
-
 void WinApp::CreateGameWindow() {
 	//COM(Component Object Model)の初期化
 

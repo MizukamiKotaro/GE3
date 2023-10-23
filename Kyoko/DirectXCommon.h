@@ -14,15 +14,14 @@ public: // メンバ関数
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//static DirectXCommon* GetInstance();
-
-	DirectXCommon() = default;
-	~DirectXCommon();
+	static DirectXCommon* GetInstance();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize(WinApp* winApp);
+
+	void Finalize();
 
 	/// <summary>
 	/// 描画前処理
@@ -82,7 +81,8 @@ private: // メンバ変数
 	std::chrono::steady_clock::time_point reference_;
 
 private: // メンバ関数
-
+	DirectXCommon() = default;
+	~DirectXCommon() = default;
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
 

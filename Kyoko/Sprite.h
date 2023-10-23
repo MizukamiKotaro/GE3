@@ -70,6 +70,7 @@ public:
 	Vector3 rotate_;
 	Vector3 pos_;
 
+private:
 
 
 };

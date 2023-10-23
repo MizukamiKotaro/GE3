@@ -9,15 +9,9 @@
 
 using namespace Microsoft::WRL;
 
-//DirectXCommon* DirectXCommon::GetInstance() {
-//	static DirectXCommon instance;
-//	return &instance;
-//}
-
-DirectXCommon::~DirectXCommon() {
-	rtvHeap_->Release();
-	dsvHeap_->Release();
-	depthStencilResource_->Release();
+DirectXCommon* DirectXCommon::GetInstance() {
+	static DirectXCommon instance;
+	return &instance;
 }
 
 void DirectXCommon::Initialize(WinApp* winApp) {
@@ -45,6 +39,13 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 
 	// フェンス生成
 	CreateFence();
+}
+
+void DirectXCommon::Finalize()
+{
+	rtvHeap_->Release();
+	dsvHeap_->Release();
+	depthStencilResource_->Release();
 }
 
 void DirectXCommon::PreDraw() {

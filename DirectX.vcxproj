@@ -158,6 +158,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Kyoko\Kyoko.cpp" />
     <ClCompile Include="Kyoko\Sprite.cpp" />
     <ClCompile Include="Kyoko\SpriteCommon.cpp" />
+    <ClCompile Include="Kyoko\TextureManager.cpp" />
     <ClCompile Include="Kyoko\WinApp\WinApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MaterialData.cpp" />
@@ -183,6 +184,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Kyoko\ResourceLeakChecker.h" />
     <ClInclude Include="Kyoko\Sprite.h" />
     <ClInclude Include="Kyoko\SpriteCommon.h" />
+    <ClInclude Include="Kyoko\TextureManager.h" />
     <ClInclude Include="Kyoko\WinApp\WinApp.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
