@@ -4,11 +4,14 @@
 #include "Input/Input.h"
 #include "Kyoko/SpriteCommon.h"
 #include "Kyoko/Sprite.h"
+#include "Kyoko/TextureManager.h"
 
 static ResourceLeackChecker leakCheck;
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
+
+	CoInitializeEx(0, COINIT_MULTITHREADED);
 
 #ifdef _DEBUG
 	ID3D12Debug1* debugController = nullptr;
@@ -28,6 +31,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp);
 
+	TextureManager* textureManager = TextureManager::GetInstance();
+	textureManager->Initialize(dxCommon->GetDevice());
+
 	Input* input = Input::GetInstance();
 	input->Initialize(winApp);
 
@@ -39,6 +45,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	sprite->SetSpriteCommon(spriteCommon);
 	sprite->SetCommandList(dxCommon->GetCommandList());
 	sprite->Initialize();
+	sprite->LoadTexture("Resources/uvChecker.png");
 
 #pragma endregion 基盤システムの初期化
 
@@ -130,6 +137,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 基盤システムの終了
 
+	CoUninitialize();
+	textureManager->Finalize();
 	dxCommon->Finalize();
 	winApp->Finalize();
 

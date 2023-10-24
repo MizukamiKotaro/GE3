@@ -3,6 +3,12 @@
 #include "DebugLog.h"
 #include<format>
 
+TextureManager* TextureManager::GetInstance()
+{
+	static TextureManager instance;
+	return &instance;
+}
+
 void TextureManager::Initialize(ID3D12Device* device)
 {
 	assert(device);

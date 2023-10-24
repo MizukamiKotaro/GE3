@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include "SpriteCommon.h"
+#include "TextureManager.h"
 
 Sprite::~Sprite()
 {
@@ -95,6 +96,16 @@ void Sprite::Draw()
 	//描画!!!!（DrawCall/ドローコール）
 	commandList_->DrawInstanced(3, 1, 0, 0);
 
+}
+
+void Sprite::LoadTexture(const std::string& filePath)
+{
+
+	TextureManager* texManager = TextureManager::GetInstance();
+
+	textureHundle_ = texManager->LoadTexture(filePath);
+
+	isLoad_ = true;
 }
 
 

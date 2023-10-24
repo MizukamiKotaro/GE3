@@ -3,7 +3,7 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <stdint.h>
-
+#include <string>
 #include "../Math/Vector4.h"
 #include "../Math/Matrix4x4.h"
 
@@ -43,6 +43,8 @@ public:
 
 public:
 
+	void LoadTexture(const std::string& filePath);
+
 	void SetSpriteCommon(SpriteCommon* spriteCommon) { spriteCommon_ = spriteCommon; }
 	void SetCommandList(ID3D12GraphicsCommandList* commandList) { commandList_ = commandList; }
 
@@ -72,6 +74,8 @@ public:
 
 private:
 
+	bool isLoad_;
+	uint16_t textureHundle_;
 
 };
 

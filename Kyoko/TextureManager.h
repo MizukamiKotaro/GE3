@@ -14,8 +14,7 @@ public:
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	TextureManager() = default;
-	~TextureManager() = default;
+	static TextureManager* GetInstance();
 
 	void Initialize(ID3D12Device* device);
 
@@ -35,6 +34,8 @@ public:
 	uint32_t LoadTexture(const std::string& filePath);
 
 private:
+	TextureManager() = default;
+	~TextureManager() = default;
 	TextureManager(const TextureManager&) = delete;
 	TextureManager& operator=(const TextureManager&) = delete;
 
