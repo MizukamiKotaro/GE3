@@ -6,6 +6,7 @@
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
+#include "TextureManager.h"
 
 using namespace Microsoft::WRL;
 
@@ -100,6 +101,10 @@ void DirectXCommon::PreDraw() {
 	scissorRect.top = 0;
 	scissorRect.bottom = WinApp::kWindowHeight;
 	commandList_->RSSetScissorRects(1, &scissorRect); //Scissorを設定
+
+	//描画用のDescriptorHeapの設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = { TextureManager::GetInstance()->GetSRVHeap()};
+	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
 }
 
 void DirectXCommon::PostDraw() {
@@ -125,7 +130,7 @@ void DirectXCommon::PostDraw() {
 	ID3D12CommandList* commandLists[] = { commandList_.Get()};
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 	//GPUとOSに画面の交換を行うように通知する
-	swapChain_->Present(1, 0);
+	hr = swapChain_->Present(1, 0);
 
 	//GPUがここまでたどり着いたときに、Fenceの値を指定した値に代入するようにSignelを送る
 	commandQueue_->Signal(fence_.Get(), ++fenceValue_);

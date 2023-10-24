@@ -155,6 +155,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Kyoko\DebugLog.cpp" />
     <ClCompile Include="Kyoko\DirectXCommon.cpp" />
+    <ClCompile Include="Kyoko\ImGuiManager.cpp" />
     <ClCompile Include="Kyoko\Kyoko.cpp" />
     <ClCompile Include="Kyoko\Sprite.cpp" />
     <ClCompile Include="Kyoko\SpriteCommon.cpp" />
@@ -180,6 +181,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Kyoko\DebugLog.h" />
     <ClInclude Include="Kyoko\DirectXCommon.h" />
+    <ClInclude Include="Kyoko\ImGuiManager.h" />
     <ClInclude Include="Kyoko\Kyoko.h" />
     <ClInclude Include="Kyoko\ResourceLeakChecker.h" />
     <ClInclude Include="Kyoko\Sprite.h" />

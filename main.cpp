@@ -5,6 +5,8 @@
 #include "Kyoko/SpriteCommon.h"
 #include "Kyoko/Sprite.h"
 #include "Kyoko/TextureManager.h"
+#include "Kyoko/ImGuiManager.h"
+#include "externals/imgui/imgui.h"
 
 static ResourceLeackChecker leakCheck;
 
@@ -86,11 +88,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの初期化
 
-
+	
 
 #pragma endregion 最初のシーンの初期化
 	
-
+	ImGuiManager::Initialize();
 	
 	//ウィンドウの×ボタンが押されるまでループ
 	while (true) {
@@ -100,7 +102,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 		if (winApp->ProcessMessage()) {
 			break;
 		}
-
+		ImGuiManager::Begin();
 		input->Update();
 
 #pragma endregion 基盤システムの更新
@@ -114,15 +116,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma endregion 最初のシーンの更新
 
+		ImGuiManager::End();
+
 		// 描画前処理
 		dxCommon->PreDraw();
 
 #pragma region 最初のシーンの描画
 
-		sprite->Draw();
+		//sprite->Draw();
 
 
 #pragma endregion 最初のシーンの描画
+		ImGuiManager::Draw();
 
 		// 描画後処理
 		dxCommon->PostDraw();
@@ -136,6 +141,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
+	ImGuiManager::Finalize();
 
 	CoUninitialize();
 	textureManager->Finalize();

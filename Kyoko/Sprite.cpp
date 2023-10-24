@@ -30,14 +30,14 @@ void Sprite::Initialize()
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	//1枚目の三角形
 	vertexData_[0].vertexPos = { -0.5f,-0.5f,0.0f,1.0f}; // 左下
-	/*vertexData_[0].texcoord = { 0.0f,1.0f };
-	vertexData_[0].normal = { 0.0f,0.0f, -1.0f };*/
+	vertexData_[0].texcoord = { 0.0f,1.0f };
+	//vertexData_[0].normal = { 0.0f,0.0f, -1.0f };
 	vertexData_[1].vertexPos = { -0.5f,0.5f,0.0f,1.0f }; // 左上
-	/*vertexData_[1].texcoord = { 0.0f,0.0f };
-	vertexData_[1].normal = { 0.0f,0.0f, -1.0f };*/
+	vertexData_[1].texcoord = { 0.0f,0.0f };
+	//vertexData_[1].normal = { 0.0f,0.0f, -1.0f };
 	vertexData_[2].vertexPos = { 0.5f,-0.5f,0.0f,1.0f }; // 右下
-	/*vertexData_[2].texcoord = { 1.0f,1.0f };
-	vertexData_[2].normal = { 0.0f,0.0f, -1.0f };*/
+	vertexData_[2].texcoord = { 1.0f,1.0f };
+	//vertexData_[2].normal = { 0.0f,0.0f, -1.0f };
 	//vertexData_[3].position = { 0.5f,0.5f,0.0f}; // 右上
 	/*vertexData_[3].texcoord = { 1.0f,0.0f };
 	vertexData_[3].normal = { 0.0f,0.0f, -1.0f };*/
@@ -83,6 +83,8 @@ void Sprite::Update()
 void Sprite::Draw()
 {
 
+	TextureManager* texManager = TextureManager::GetInstance();
+
 	spriteCommon_->PreDraw();
 
 	//Spriteの描画。変更に必要なものだけ変更する
@@ -91,8 +93,9 @@ void Sprite::Draw()
 	commandList_->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
 	commandList_->SetGraphicsRootConstantBufferView(1, transformationMatrixResource_->GetGPUVirtualAddress());
-
-	//commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU2);
+	if (isLoad_) {
+		commandList_->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+	}
 	//描画!!!!（DrawCall/ドローコール）
 	commandList_->DrawInstanced(3, 1, 0, 0);
 

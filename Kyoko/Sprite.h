@@ -4,6 +4,7 @@
 #include <d3d12.h>
 #include <stdint.h>
 #include <string>
+#include "../Math/Vector2.h"
 #include "../Math/Vector4.h"
 #include "../Math/Matrix4x4.h"
 
@@ -20,6 +21,7 @@ public:
 	struct VertexData
 	{
 		Vector4 vertexPos;
+		Vector2 texcoord;
 	};
 
 	struct Material

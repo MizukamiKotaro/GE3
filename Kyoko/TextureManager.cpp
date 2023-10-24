@@ -35,23 +35,22 @@ uint32_t TextureManager::LoadTexture(const std::string& filePath)
 		}
 	}
 
+	textures_.push_back(Texture());
+
 	DirectX::ScratchImage mipImages = Load(filePath);
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	ID3D12Resource* textureResource = CreateTextureResource(metadata);
+	textures_.back().resource_ = CreateTextureResource(metadata);
 
 	//metadataを基にSRVの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = metadata.format;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
+	textures_.back().srvDesc.Format = metadata.format;
+	textures_.back().srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	textures_.back().srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
+	textures_.back().srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
-	D3D12_CPU_DESCRIPTOR_HANDLE textureSRVCPUHandle = GetCPUDescriptorHandle(static_cast<uint32_t>(textures_.size()) + 1);
-	D3D12_GPU_DESCRIPTOR_HANDLE textureSRVGPUHandle = GetGPUDescriptorHandle(static_cast<uint32_t>(textures_.size()) + 1);
+	textures_.back().srvCPUDescriptorHandle_ = GetCPUDescriptorHandle(static_cast<uint32_t>(textures_.size()));
+	textures_.back().srvGPUDescriptorHandle_ = GetGPUDescriptorHandle(static_cast<uint32_t>(textures_.size()));
 
-	device_->CreateShaderResourceView(textureResource, &srvDesc, textureSRVCPUHandle);
-
-	textures_.push_back(Texture(textureResource, textureSRVCPUHandle, textureSRVGPUHandle, filePath));
+	device_->CreateShaderResourceView(textures_.back().resource_.Get(), &textures_.back().srvDesc, textures_.back().srvCPUDescriptorHandle_);
 
 	return static_cast<uint32_t>(textures_.size()) - 1;
 }

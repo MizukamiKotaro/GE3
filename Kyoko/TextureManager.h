@@ -22,6 +22,7 @@ public:
 
 	struct Texture {
 		ComPtr<ID3D12Resource> resource_;
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;
 		D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
 		std::string filePath_;
@@ -29,7 +30,10 @@ public:
 
 public:
 
-	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(uint32_t textureHandle);
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(const uint32_t& textureHandle)
+	{ return textures_[textureHandle].srvGPUDescriptorHandle_; }
+
+	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); }
 
 	uint32_t LoadTexture(const std::string& filePath);
 
