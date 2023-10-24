@@ -22,7 +22,7 @@ public:
 
 	struct Texture {
 		ComPtr<ID3D12Resource> resource_;
-		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		ComPtr<ID3D12Resource> intermediateResource_;
 		D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
 		std::string filePath_;
@@ -47,13 +47,17 @@ private:
 
 	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
 
-	void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
-
 	void CreateSRVHeap();
 
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(uint32_t index);
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(uint32_t index);
+
+	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
+
+	//void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+
+	ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 private:
 

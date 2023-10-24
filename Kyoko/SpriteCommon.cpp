@@ -1,16 +1,20 @@
 #include "SpriteCommon.h"
-
+#include "DirectXCommon.h"
 #include <cassert>
 #include "DebugLog.h"
 #include <format>
 
-void SpriteCommon::Initialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList)
+SpriteCommon* SpriteCommon::GetInstance()
 {
-	assert(device);
-	device_ = device;
+	static SpriteCommon instance;
+	return &instance;
+}
 
-	assert(commandList);
-	commandList_ = commandList;
+void SpriteCommon::Initialize()
+{
+
+	device_ = DirectXCommon::GetInstance()->GetDevice();
+	commandList_ = DirectXCommon::GetInstance()->GetCommandList();
 
 	InitializeDXC();
 
@@ -173,14 +177,14 @@ void SpriteCommon::InitializePSO()
 	pixelShaderBlob_ = CompileShader(L"Resources/Shaders/Sprite.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
 	assert(pixelShaderBlob_ != nullptr);
 
-	//// DepthStencilStateの設定
-	//D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	//// Depthの機能を有効化する
-	//depthStencilDesc.DepthEnable = true;
-	//// 書き込みします
-	//depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	//// 比較関数はLessEqual。つまり、近ければ描画される
-	//depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	// DepthStencilStateの設定
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	// Depthの機能を有効化する
+	depthStencilDesc.DepthEnable = true;
+	// 書き込みします
+	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	// 比較関数はLessEqual。つまり、近ければ描画される
+	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
 	//PSOを生成する
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
@@ -198,9 +202,9 @@ void SpriteCommon::InitializePSO()
 	//どのように画面に描き込むかの設定（気にしなくていい）
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	//// DepthStencilの設定
-	//graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc;
-	//graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	// DepthStencilの設定
+	graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc;
+	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	//実際に生成
 	hr = device_->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(graphicsPipelineState_.GetAddressOf()));
 	assert(SUCCEEDED(hr));

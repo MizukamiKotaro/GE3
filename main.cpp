@@ -39,15 +39,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	Input* input = Input::GetInstance();
 	input->Initialize(winApp);
 
-	SpriteCommon* spriteCommon = nullptr;
-	spriteCommon = new SpriteCommon();
-	spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCommandList());
-
-	Sprite* sprite = new Sprite();
-	sprite->SetSpriteCommon(spriteCommon);
-	sprite->SetCommandList(dxCommon->GetCommandList());
-	sprite->Initialize();
-	sprite->LoadTexture("Resources/uvChecker.png");
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	spriteCommon->Initialize();
 
 #pragma endregion 基盤システムの初期化
 
@@ -88,7 +81,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの初期化
 
-	
+	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
+	//sprite->Initialize();
+	sprite->LoadTexture("Resources/uvChecker.png");
+
+	std::unique_ptr<Sprite> sprite2 = std::make_unique<Sprite>();
+	//sprite->Initialize();
+	sprite2->LoadTexture("Resources/uvChecker.png");
 
 #pragma endregion 最初のシーンの初期化
 	
@@ -110,9 +109,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの更新
 
-		sprite->rotate_.y += 0.01f;
+		ImGui::Begin("sprite");
+		ImGui::DragFloat3("pos", &sprite->pos_.x, 0.01f);
+		ImGui::End();
+
+		sprite2->rotate_.y += 0.01f;
 
 		sprite->Update();
+		sprite2->Update();
 
 #pragma endregion 最初のシーンの更新
 
@@ -123,7 +127,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの描画
 
-		//sprite->Draw();
+		sprite->Draw();
+		sprite2->Draw();
 
 
 #pragma endregion 最初のシーンの描画
@@ -148,9 +153,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	dxCommon->Finalize();
 	winApp->Finalize();
 
-	delete sprite;
-	delete spriteCommon;
-
 #ifdef _DEBUG
 	debugController->Release();
 #endif // _DEBUG
@@ -159,3 +161,4 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	return 0;
 }
+

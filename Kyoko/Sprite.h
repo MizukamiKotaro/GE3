@@ -15,7 +15,7 @@ class Sprite
 {
 public:
 
-	Sprite() = default;
+	Sprite();
 	~Sprite();
 
 	struct VertexData
@@ -47,16 +47,7 @@ public:
 
 	void LoadTexture(const std::string& filePath);
 
-	void SetSpriteCommon(SpriteCommon* spriteCommon) { spriteCommon_ = spriteCommon; }
-	void SetCommandList(ID3D12GraphicsCommandList* commandList) { commandList_ = commandList; }
-
 private:
-
-
-private:
-
-	SpriteCommon* spriteCommon_;
-	ID3D12GraphicsCommandList* commandList_;
 
 	ComPtr<ID3D12Resource> vertexResource_;
 	VertexData* vertexData_;

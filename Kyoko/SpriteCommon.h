@@ -11,10 +11,12 @@ class SpriteCommon
 {
 public:
 
+	static SpriteCommon* GetInstance();
+
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	void Initialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList);
+	void Initialize();
 
 	void PreDraw();
 
@@ -41,6 +43,10 @@ private:
 	ComPtr<ID3D12PipelineState> graphicsPipelineState_;
 
 private:
+	SpriteCommon() = default;
+	~SpriteCommon() = default;
+	SpriteCommon(const SpriteCommon&) = delete;
+	SpriteCommon& operator=(const SpriteCommon&) = delete;
 
 	void InitializeDXC();
 
