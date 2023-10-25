@@ -40,6 +40,8 @@ uint32_t TextureManager::LoadTexture(const std::string& filePath)
 
 	textures_.push_back(Texture());
 
+	textures_.back().filePath_ = filePath;
+
 	DirectX::ScratchImage mipImages = Load(filePath);
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	textures_.back().resource_ = CreateTextureResource(metadata);

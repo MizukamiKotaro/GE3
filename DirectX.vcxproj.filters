@@ -105,6 +105,15 @@
     <ClCompile Include="Kyoko\ImGuiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Kyoko\ModelCommon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Kyoko\Model.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -195,6 +204,15 @@
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
     <ClInclude Include="Kyoko\ImGuiManager.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\ModelCommon.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Kyoko\Model.h">
+      <Filter>ヘッダー ファイル\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
   </ItemGroup>
