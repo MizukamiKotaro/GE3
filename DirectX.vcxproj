@@ -165,13 +165,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Kyoko\TextureManager.cpp" />
     <ClCompile Include="Kyoko\WinApp\WinApp.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MaterialData.cpp" />
     <ClCompile Include="Math\calc.cpp" />
     <ClCompile Include="Math\Matrix3x3.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
-    <ClCompile Include="ModelData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
@@ -194,19 +192,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Kyoko\SpriteCommon.h" />
     <ClInclude Include="Kyoko\TextureManager.h" />
     <ClInclude Include="Kyoko\WinApp\WinApp.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="MaterialData.h" />
     <ClInclude Include="Math\calc.h" />
     <ClInclude Include="Math\Matrix3x3.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector4.h" />
-    <ClInclude Include="ModelData.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="TransformationMatrix.h" />
-    <ClInclude Include="VertexData.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />

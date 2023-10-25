@@ -57,12 +57,6 @@
     <ClCompile Include="externals\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="ModelData.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialData.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Vector2.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
@@ -140,25 +134,7 @@
     <ClInclude Include="externals\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformationMatrix.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexData.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelData.h">
-      <Filter>ヘッダー ファイル\include</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialData.h">
       <Filter>ヘッダー ファイル\include</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
