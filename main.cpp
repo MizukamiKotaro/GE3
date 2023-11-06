@@ -1,15 +1,14 @@
 #include "Kyoko/WinApp/WinApp.h"
 #include "Kyoko/ResourceLeakChecker.h"
-#include "Kyoko/DirectXCommon.h"
+#include "Kyoko/DirectXCommon/DirectXCommon.h"
 #include "Input/Input.h"
-#include "Kyoko/SpriteCommon.h"
-#include "Kyoko/Sprite.h"
-#include "Kyoko/TextureManager.h"
-#include "Kyoko/ImGuiManager.h"
+#include "SpriteCommon/SpriteCommon.h"
+#include "SpriteCommon/Sprite/Sprite.h"
+#include "TextureManager/TextureManager.h"
+#include "ImGuiManager/ImGuiManager.h"
 #include "externals/imgui/imgui.h"
-#include "Kyoko/ModelCommon.h"
-#include "Kyoko/Model.h"
-#include "Camera/Camera.h"
+#include "ModelCommon/ModelCommon.h"
+#include "GlobalVariables/GlobalVariables.h"
 
 static ResourceLeackChecker leakCheck;
 
@@ -47,6 +46,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	spriteCommon->Initialize();
+
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables->LoadFiles();
 
 #pragma endregion 基盤システムの初期化
 
@@ -87,17 +89,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの初期化
 
-	std::unique_ptr<Camera> camera = std::make_unique<Camera>();
-
-	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
-	//sprite->Initialize();
-	sprite->LoadTexture("Resources/uvChecker.png");
-
-	std::unique_ptr<Sprite> sprite2 = std::make_unique<Sprite>();
-	//sprite->Initialize();
-	sprite2->LoadTexture("Resources/uvChecker.png");
-
-	std::unique_ptr<Model> model = std::make_unique<Model>("Resources", "fence.obj");
 
 #pragma endregion 最初のシーンの初期化
 	
@@ -114,28 +105,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 		ImGuiManager::Begin();
 		input->Update();
 
+		globalVariables->Update();
+
 #pragma endregion 基盤システムの更新
 
 
 #pragma region 最初のシーンの更新
 
-		camera->Update();
-
-		ImGui::Begin("sprite");
-		ImGui::DragFloat3("pos", &model->pos_.x, 0.01f);
-		ImGui::DragFloat3("scale", &model->scale_.x, 0.01f);
-		ImGui::DragFloat3("rotate", &model->rotate_.x, 0.01f);
-		ImGui::DragFloat3("cameraPos", &camera->pos_.x, 0.01f);
-		ImGui::DragFloat3("cameraScale", &camera->scale_.x, 0.01f);
-		ImGui::DragFloat3("cameraRotate", &camera->rotate_.x, 0.01f);
-		ImGui::End();
-
-		sprite2->rotate_.y += 0.01f;
-
-		sprite->Update();
-		sprite2->Update();
-
-		model->Update();
+		
 
 #pragma endregion 最初のシーンの更新
 
@@ -146,9 +123,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの描画
 
-		//sprite->Draw();
-		//sprite2->Draw();
-		model->Draw(camera->GetViewProjection());
+		
+		
 
 
 #pragma endregion 最初のシーンの描画
