@@ -1,8 +1,8 @@
 #include "Model.h"
 
 #include <cassert>
-#include "../../TextureManager/TextureManager.h"
-#include "../../Kyoko/DirectXCommon/DirectXCommon.h"
+#include "TextureManager/TextureManager.h"
+#include "Engine/DirectXCommon/DirectXCommon.h"
 
 Model::Model(const std::string& directoryPath, const std::string& fileName)
 {

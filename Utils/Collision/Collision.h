@@ -1,11 +1,11 @@
 #pragma once
-#include "../Shape/Sphere.h"
-#include "../Shape/Plane.h"
-#include "../Shape/Line.h"
-#include "../Shape/Triangle.h"
-#include "../Shape/AABB.h"
-#include "../Shape/Quadrangle.h"
-#include "../Shape/OBB.h"
+#include "Utils/Shape/Sphere.h"
+#include "Utils/Shape/Plane.h"
+#include "Utils/Shape/Line.h"
+#include "Utils/Shape/Triangle.h"
+#include "Utils/Shape/AABB.h"
+#include "Utils/Shape/Quadrangle.h"
+#include "Utils/Shape/OBB.h"
 
 class Collision
 {

@@ -1,9 +1,9 @@
 #include "Sprite.h"
 
 #include <cassert>
-#include "../SpriteCommon.h"
-#include "../../TextureManager/TextureManager.h"
-#include "../../Kyoko/DirectXCommon/DirectXCommon.h"
+#include "SpriteCommon/SpriteCommon.h"
+#include "TextureManager/TextureManager.h"
+#include "Engine/DirectXCommon/DirectXCommon.h"
 
 Sprite::Sprite()
 {

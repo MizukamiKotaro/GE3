@@ -1,9 +1,9 @@
 #include "TextureManager.h"
 #include <cassert>
-#include "../Kyoko/DebugLog/DebugLog.h"
+#include "Engine/DebugLog/DebugLog.h"
 #include <format>
-#include "../Externals/DirectXTex/d3dx12.h"
-#include "../Kyoko/DirectXCommon/DirectXCommon.h"
+#include "Externals/DirectXTex/d3dx12.h"
+#include "Engine/DirectXCommon/DirectXCommon.h"
 
 TextureManager* TextureManager::GetInstance()
 {

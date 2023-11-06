@@ -1,7 +1,7 @@
 #include "ModelCommon.h"
-#include "../Kyoko/DirectXCommon/DirectXCommon.h"
+#include "../Engine/DirectXCommon/DirectXCommon.h"
 #include <cassert>
-#include "../Kyoko/DebugLog/DebugLog.h"
+#include "../Engine/DebugLog/DebugLog.h"
 #include <format>
 #include <fstream>
 #include <sstream>

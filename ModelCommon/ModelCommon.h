@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 #include <d3d12.h>
-#include "../Utils/Math/Vector2.h"
-#include "../Utils/Math/Vector3.h"
-#include "../Utils/Math/Vector4.h"
+#include "Utils/Math/Vector2.h"
+#include "Utils/Math/Vector3.h"
+#include "Utils/Math/Vector4.h"
 
 // スプライト共通部分
 class ModelCommon

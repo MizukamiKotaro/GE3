@@ -3,8 +3,8 @@
 #include "../Externals/imgui/imgui_impl_dx12.h"
 #include "../Externals/imgui/imgui_impl_win32.h"
 #pragma comment(lib, "winmm.lib")
-#include "../Kyoko/DirectXCommon/DirectXCommon.h"
-#include "../Kyoko/WinApp/WinApp.h"
+#include "../Engine/DirectXCommon/DirectXCommon.h"
+#include "../Engine/WinApp/WinApp.h"
 #include "../TextureManager/TextureManager.h"
 
 //ImGuiManager* ImGuiManager::GetInstance()

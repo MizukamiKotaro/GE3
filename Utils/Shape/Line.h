@@ -1,5 +1,5 @@
 #pragma once
-#include "../Math/Vector3.h"
+#include "Utils/Math/Vector3.h"
 
 struct Line
 {

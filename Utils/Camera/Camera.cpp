@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "../../Kyoko/WinApp/WinApp.h"
+#include "Engine/WinApp/WinApp.h"
 
 Camera::Camera()
 {

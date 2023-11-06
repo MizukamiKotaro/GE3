@@ -1,6 +1,6 @@
 #pragma once
-#include "../Math/Vector3.h"
-#include "../Math/Matrix4x4.h"
+#include "Utils/Math/Vector3.h"
+#include "Utils/Math/Matrix4x4.h"
 #include <cstdint>
 
 class Triangle

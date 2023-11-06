@@ -4,11 +4,11 @@
 #include <d3d12.h>
 #include <stdint.h>
 #include <string>
-#include "../../Utils/Math/Vector2.h"
-#include "../../Utils/Math/Vector4.h"
-#include "../../Utils/Math/Matrix4x4.h"
-#include "../../Utils/Transform/Transform.h"
-#include "../ModelCommon.h"
+#include "Utils/Math/Vector2.h"
+#include "Utils/Math/Vector4.h"
+#include "Utils/Math/Matrix4x4.h"
+#include "Utils/Transform/Transform.h"
+#include "ModelCommon/ModelCommon.h"
 
 class Model
 {

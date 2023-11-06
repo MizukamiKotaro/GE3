@@ -25,9 +25,6 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{81b069ba-c471-4d14-950d-9136fb82e22d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Kyoko">
-      <UniqueIdentifier>{92b530f5-f9a7-4b9e-9ad9-34909d8f01da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GlobalVariables">
       <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
     </Filter>
@@ -45,15 +42,6 @@
     </Filter>
     <Filter Include="TextureManager">
       <UniqueIdentifier>{a31d3de8-c631-435d-9ea0-0a2bd605b732}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Kyoko\DebugLog">
-      <UniqueIdentifier>{da14fcb3-447f-49f4-94ae-40486ab30d54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Kyoko\DirectXCommon">
-      <UniqueIdentifier>{d6e681b2-d657-429c-b6d8-6302af791dc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Kyoko\WinApp">
-      <UniqueIdentifier>{252bb9a8-5252-4508-b5a6-6a9888718a3d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ModelCommon\Model">
       <UniqueIdentifier>{9b3d7ddc-abf8-49d9-82a2-5883563904f0}</UniqueIdentifier>
@@ -78,6 +66,18 @@
     </Filter>
     <Filter Include="Utils\Transform">
       <UniqueIdentifier>{3c62a5ac-6b1b-4641-986b-f847f3d0e65f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{92b530f5-f9a7-4b9e-9ad9-34909d8f01da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DebugLog">
+      <UniqueIdentifier>{da14fcb3-447f-49f4-94ae-40486ab30d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DirectXCommon">
+      <UniqueIdentifier>{d6e681b2-d657-429c-b6d8-6302af791dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\WinApp">
+      <UniqueIdentifier>{252bb9a8-5252-4508-b5a6-6a9888718a3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +117,6 @@
     <ClCompile Include="Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Kyoko\Kyoko.cpp">
-      <Filter>Kyoko</Filter>
-    </ClCompile>
     <ClCompile Include="ModelCommon\ModelCommon.cpp">
       <Filter>ModelCommon</Filter>
     </ClCompile>
@@ -128,15 +125,6 @@
     </ClCompile>
     <ClCompile Include="TextureManager\TextureManager.cpp">
       <Filter>TextureManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Kyoko\DebugLog\DebugLog.cpp">
-      <Filter>Kyoko\DebugLog</Filter>
-    </ClCompile>
-    <ClCompile Include="Kyoko\DirectXCommon\DirectXCommon.cpp">
-      <Filter>Kyoko\DirectXCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="Kyoko\WinApp\WinApp.cpp">
-      <Filter>Kyoko\WinApp</Filter>
     </ClCompile>
     <ClCompile Include="ModelCommon\Model\Model.cpp">
       <Filter>ModelCommon\Model</Filter>
@@ -189,6 +177,15 @@
     <ClCompile Include="Utils\Transform\Transform.cpp">
       <Filter>Utils\Transform</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\DebugLog\DebugLog.cpp">
+      <Filter>Engine\DebugLog</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DirectXCommon\DirectXCommon.cpp">
+      <Filter>Engine\DirectXCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\WinApp\WinApp.cpp">
+      <Filter>Engine\WinApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -227,29 +224,14 @@
     <ClInclude Include="Input\Input.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="Kyoko\Kyoko.h">
-      <Filter>Kyoko</Filter>
-    </ClInclude>
     <ClInclude Include="ModelCommon\ModelCommon.h">
       <Filter>ModelCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="Kyoko\ResourceLeakChecker.h">
-      <Filter>Kyoko</Filter>
     </ClInclude>
     <ClInclude Include="SpriteCommon\SpriteCommon.h">
       <Filter>SpriteCommon</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager\TextureManager.h">
       <Filter>TextureManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Kyoko\DebugLog\DebugLog.h">
-      <Filter>Kyoko\DebugLog</Filter>
-    </ClInclude>
-    <ClInclude Include="Kyoko\DirectXCommon\DirectXCommon.h">
-      <Filter>Kyoko\DirectXCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="Kyoko\WinApp\WinApp.h">
-      <Filter>Kyoko\WinApp</Filter>
     </ClInclude>
     <ClInclude Include="ModelCommon\Model\Model.h">
       <Filter>ModelCommon\Model</Filter>
@@ -310,6 +292,18 @@
     </ClInclude>
     <ClInclude Include="Utils\Transform\Transform.h">
       <Filter>Utils\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ResourceLeakChecker.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DebugLog\DebugLog.h">
+      <Filter>Engine\DebugLog</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DirectXCommon\DirectXCommon.h">
+      <Filter>Engine\DirectXCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\WinApp\WinApp.h">
+      <Filter>Engine\WinApp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
