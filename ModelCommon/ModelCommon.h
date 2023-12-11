@@ -15,6 +15,9 @@ class ModelCommon
 {
 public:
 
+	// namespace省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	struct VertexData
 	{
 		Vector4 vertexPos;
@@ -27,42 +30,43 @@ public:
 		std::string textureFilePath;
 	};
 
-	struct ModelData 
+	struct MeshData 
 	{
 		std::vector<VertexData> verteces;
 		MaterialData material;
-		std::string directoryPath;
 		std::string fileName;
 		uint32_t textureHundle_;
+		ComPtr<ID3D12Resource> vertexResource_;
+		VertexData* vertexData_;
+		D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 	};
 
 	static ModelCommon* GetInstance();
 
-	// namespace省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
 	void Initialize();
+
+	void Finalize();
 
 	void PreDraw();
 
-	uint32_t LoadObj(const std::string& directoryPath, const std::string& fileName);
+	uint32_t LoadObj(const std::string& fileName);
 
 	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
 
-	uint32_t GetTextureHundle(uint32_t hundle) { return models_[hundle].textureHundle_; }
+	uint32_t GetTextureHundle(uint32_t hundle) { return meshs_[hundle].textureHundle_; }
 
-	ModelData* GetModelData(uint32_t hundle) { return &models_[hundle]; }
+	MeshData* GetModelData(uint32_t hundle) { return &meshs_[hundle]; }
 
 private:
 
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& fileName);
 
-	ModelData LoadObjeFile(const std::string& directoryPath, const std::string& fileName);
+	MeshData LoadObjeFile(const std::string& directoryPath, const std::string& fileName);
 
 private:
 
-	ID3D12Device* device_;
-	ID3D12GraphicsCommandList* commandList_;
+	ID3D12Device* device_ = nullptr;
+	ID3D12GraphicsCommandList* commandList_ = nullptr;
 
 	ComPtr<IDxcUtils> dxcUtils_;
 	ComPtr<IDxcCompiler3> dxcCompiler_;
@@ -100,7 +104,9 @@ private:
 
 private:
 
-	std::vector<ModelData> models_;
+	std::vector<MeshData> meshs_;
+
+	const std::string& directoryPath_ = "Resources";
 
 };
 

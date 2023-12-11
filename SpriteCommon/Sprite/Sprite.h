@@ -16,6 +16,16 @@ public:
 	Sprite();
 	~Sprite();
 
+	enum class BlendMode
+	{
+		kBlendModeNone, // ブレンドなし
+		kBlendModeNormal, // デフォルト
+		kBlendModeAdd, // 加算
+		kBlendModeSubtract, // 減算
+		kBlendModeMultiply, // 乗算
+		kBlendModeScreen, // スクリーン
+	};
+
 	struct VertexData
 	{
 		Vector4 vertexPos;
@@ -25,6 +35,7 @@ public:
 	struct Material
 	{
 		Vector4 color;
+		Matrix4x4 uvTransform;
 	};
 
 	struct TransformationMatrix {
@@ -39,7 +50,7 @@ public:
 
 	void Update();
 
-	void Draw();
+	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 public:
 
@@ -59,11 +70,15 @@ private:
 
 public:
 
-	Vector3 scale_;
-	Vector3 rotate_;
-	Vector3 pos_;
+	Vector2 scale_;
+	float rotate_;
+	Vector2 pos_;
 
 private:
+
+	Vector2 uvTranslate_;
+	Vector2 uvScale_;
+	float uvRotate_;
 
 	bool isLoad_;
 	uint32_t textureHundle_;

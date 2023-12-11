@@ -14,7 +14,8 @@ class Model
 {
 public:
 
-	Model(const std::string& directoryPath, const std::string& fileName);
+	Model(const std::string& fileName);
+	Model(uint32_t meshHundle);
 	~Model();
 
 	struct Material
@@ -48,13 +49,11 @@ public:
 
 public:
 
-	//void LoadTexture(const std::string& filePath);
+	void SetTex(uint32_t hundle) { textureHundle_ = hundle; }
+
+	void SetMesh(uint32_t hundle);
 
 private:
-
-	ComPtr<ID3D12Resource> vertexResource_;
-	ModelCommon::VertexData* vertexData_;
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
@@ -76,8 +75,9 @@ private:
 	Vector3 uvScale_;
 	Vector3 uvRotate_;
 	Vector3 uvPos_;
-			
-	uint32_t modelHundle_;
+
+	uint32_t meshHundle_;
+
+	uint32_t textureHundle_;
 
 };
-

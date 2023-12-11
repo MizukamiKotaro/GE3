@@ -8,15 +8,13 @@
 
 class TextureManager {
 public:
-
-	static const size_t kNumDescriptors_ = 256;
 	
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	static TextureManager* GetInstance();
 
-	void Initialize(ID3D12Device* device);
+	void Initialize();
 
 	void Finalize();
 
@@ -30,10 +28,10 @@ public:
 
 public:
 
-	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(const uint32_t& textureHandle)
-	{ return textures_[textureHandle].srvGPUDescriptorHandle_; }
-
-	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); }
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(const uint32_t& handle) const
+	{
+		return textures_[handle].srvGPUDescriptorHandle_;
+	};
 
 	uint32_t LoadTexture(const std::string& filePath);
 
@@ -47,12 +45,6 @@ private:
 
 	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
 
-	void CreateSRVHeap();
-
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(uint32_t index);
-
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(uint32_t index);
-
 	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
 
 	//void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
@@ -62,8 +54,6 @@ private:
 private:
 
 	ID3D12Device* device_;
-
-	ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
 	std::vector<Texture> textures_;
 

@@ -28,9 +28,6 @@
     <Filter Include="GlobalVariables">
       <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGUiManager">
-      <UniqueIdentifier>{f2ac2121-57f3-47e6-acfa-90edfaba6499}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{65e5c752-b2ea-4a06-b473-476cd6924e57}</UniqueIdentifier>
     </Filter>
@@ -79,6 +76,15 @@
     <Filter Include="Engine\WinApp">
       <UniqueIdentifier>{252bb9a8-5252-4508-b5a6-6a9888718a3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGuiManager">
+      <UniqueIdentifier>{f2ac2121-57f3-47e6-acfa-90edfaba6499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleCommon">
+      <UniqueIdentifier>{9221d928-522c-462d-ac04-6e656b39b273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DescriptorHeapManager">
+      <UniqueIdentifier>{135ec753-fe7c-4a53-a1c8-c9e9e939d7f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -112,7 +118,7 @@
       <Filter>GlobalVariables</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiManager\ImGuiManager.cpp">
-      <Filter>ImGUiManager</Filter>
+      <Filter>ImGuiManager</Filter>
     </ClCompile>
     <ClCompile Include="Input\Input.cpp">
       <Filter>Input</Filter>
@@ -186,6 +192,15 @@
     <ClCompile Include="Engine\WinApp\WinApp.cpp">
       <Filter>Engine\WinApp</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleCommon\Particle\Particle.cpp">
+      <Filter>ParticleCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleCommon\ParticleCommon.cpp">
+      <Filter>ParticleCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DescriptorHeapManager\DescriptorHeapManager.cpp">
+      <Filter>Engine\DescriptorHeapManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -219,7 +234,7 @@
       <Filter>GlobalVariables</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiManager\ImGuiManager.h">
-      <Filter>ImGUiManager</Filter>
+      <Filter>ImGuiManager</Filter>
     </ClInclude>
     <ClInclude Include="Input\Input.h">
       <Filter>Input</Filter>
@@ -305,6 +320,15 @@
     <ClInclude Include="Engine\WinApp\WinApp.h">
       <Filter>Engine\WinApp</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleCommon\Particle\Particle.h">
+      <Filter>ParticleCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleCommon\ParticleCommon.h">
+      <Filter>ParticleCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DescriptorHeapManager\DescriptorHeapManager.h">
+      <Filter>Engine\DescriptorHeapManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
@@ -324,12 +348,21 @@
     <FxCompile Include="Resources\Shaders\Sprite.VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Sprite.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

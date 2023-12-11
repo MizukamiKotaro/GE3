@@ -11,10 +11,9 @@ BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef)
 	return DIENUM_CONTINUE;
 }
 
-void Input::Initialize(WinApp* winApp) {
+void Input::Initialize() {
 
-	assert(winApp);
-	winApp_ = winApp;
+	winApp_ = WinApp::GetInstance();
 
 	HRESULT hr = DirectInput8Create(winApp_->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&dInput_, nullptr);
 	assert(SUCCEEDED(hr));

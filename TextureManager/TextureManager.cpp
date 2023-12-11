@@ -4,6 +4,7 @@
 #include <format>
 #include "Externals/DirectXTex/d3dx12.h"
 #include "Engine/DirectXCommon/DirectXCommon.h"
+#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
 
 TextureManager* TextureManager::GetInstance()
 {
@@ -11,12 +12,9 @@ TextureManager* TextureManager::GetInstance()
 	return &instance;
 }
 
-void TextureManager::Initialize(ID3D12Device* device)
+void TextureManager::Initialize()
 {
-	assert(device);
-	device_ = device;
-
-	CreateSRVHeap();
+	device_ = DirectXCommon::GetInstance()->GetDevice();
 }
 
 void TextureManager::Finalize()
@@ -25,7 +23,6 @@ void TextureManager::Finalize()
 		textures_[texNum].resource_->Release();
 		textures_[texNum].intermediateResource_->Release();
 	}
-	srvHeap_->Release();
 }
 
 uint32_t TextureManager::LoadTexture(const std::string& filePath)
@@ -54,8 +51,8 @@ uint32_t TextureManager::LoadTexture(const std::string& filePath)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
-	textures_.back().srvCPUDescriptorHandle_ = GetCPUDescriptorHandle(static_cast<uint32_t>(textures_.size()));
-	textures_.back().srvGPUDescriptorHandle_ = GetGPUDescriptorHandle(static_cast<uint32_t>(textures_.size()));
+	textures_.back().srvCPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVCPUDescriptorHandle();
+	textures_.back().srvGPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVGPUDescriptorHandle();
 
 	device_->CreateShaderResourceView(textures_.back().resource_.Get(), &srvDesc, textures_.back().srvCPUDescriptorHandle_);
 
@@ -161,28 +158,3 @@ ID3D12Resource* TextureManager::CreateBufferResource(size_t sizeInBytes) {
 }
 
 
-void TextureManager::CreateSRVHeap()
-{
-	
-	//ディスクリプタヒープの生成
-	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
-	descriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descriptorHeapDesc.NumDescriptors = kNumDescriptors_;
-	descriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	HRESULT hr = device_->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(srvHeap_.GetAddressOf()));
-	//ディスクリプタヒープが作られなかったので起動しない
-	assert(SUCCEEDED(hr));
-	
-}
-
-D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::GetCPUDescriptorHandle(uint32_t index) {
-	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = srvHeap_->GetCPUDescriptorHandleForHeapStart();
-	handleCPU.ptr += (device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * index);
-	return handleCPU;
-}
-
-D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetGPUDescriptorHandle(uint32_t index) {
-	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU = srvHeap_->GetGPUDescriptorHandleForHeapStart();
-	handleGPU.ptr += (device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * index);
-	return handleGPU;
-}

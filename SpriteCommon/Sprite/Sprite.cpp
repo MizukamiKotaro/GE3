@@ -4,6 +4,7 @@
 #include "SpriteCommon/SpriteCommon.h"
 #include "TextureManager/TextureManager.h"
 #include "Engine/DirectXCommon/DirectXCommon.h"
+#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
 
 Sprite::Sprite()
 {
@@ -54,7 +55,7 @@ Sprite::Sprite()
 	//今回は赤を書き込んでいる
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	//*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , false };
-	//materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 
 	//Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
 	transformationMatrixResource_ = spriteCommon->CreateBufferResource(sizeof(TransformationMatrix));
@@ -69,9 +70,15 @@ Sprite::Sprite()
 
 	// 汚いけど座標とかの初期化
 
-	scale_ = { 1.0f,1.0f,1.0f };
-	rotate_ = { 0.0f,0.0f,0.0f };
-	pos_ = { 0.0f,0.0f,0.0f };
+	scale_ = { 1.0f,1.0f };
+	rotate_ = 0.0f;
+	pos_ = { 0.0f,0.0f };
+
+	uvTranslate_ = {};
+	uvScale_ = { 1.0f,1.0f };
+	uvRotate_ = 0.0f;
+
+	Update();
 }
 
 Sprite::~Sprite()
@@ -88,17 +95,39 @@ void Sprite::Initialize()
 
 void Sprite::Update()
 {
-
-	transformationMatrixData_->WVP = Matrix4x4::MakeAffinMatrix(scale_, rotate_, pos_);
-
+	transformationMatrixData_->WVP = Matrix4x4::MakeAffinMatrix({ scale_.x,scale_.y }, { 0.0f,0.0f,rotate_ }, { pos_.x,pos_.y,0.0f });
+	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
 }
 
-void Sprite::Draw()
+void Sprite::Draw(BlendMode blendMode)
 {
-
 	TextureManager* texManager = TextureManager::GetInstance();
 
-	SpriteCommon::GetInstance()->PreDraw();
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	switch (blendMode)
+	{
+	case Sprite::BlendMode::kBlendModeNone:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeNone);
+		break;
+	case Sprite::BlendMode::kBlendModeNormal:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeNormal);
+		break;
+	case Sprite::BlendMode::kBlendModeAdd:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeAdd);
+		break;
+	case Sprite::BlendMode::kBlendModeSubtract:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeSubtract);
+		break;
+	case Sprite::BlendMode::kBlendModeMultiply:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeMultiply);
+		break;
+	case Sprite::BlendMode::kBlendModeScreen:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeScreen);
+		break;
+	default:
+		spriteCommon->PreDraw(SpriteCommon::BlendMode::kBlendModeNormal);
+		break;
+	}
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
@@ -111,8 +140,14 @@ void Sprite::Draw()
 	if (isLoad_) {
 		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	}
+	else {
+		this->LoadTexture("Resources/white.png");
+		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+	}
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(6, 1, 0, 0);
+
+
 
 }
 

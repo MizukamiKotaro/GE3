@@ -149,6 +149,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Engine\DebugLog\DebugLog.cpp" />
+    <ClCompile Include="Engine\DescriptorHeapManager\DescriptorHeapManager.cpp" />
     <ClCompile Include="Engine\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="Engine\WinApp\WinApp.cpp" />
     <ClCompile Include="externals\imgui\imgui.cpp" />
@@ -164,6 +165,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelCommon\ModelCommon.cpp" />
     <ClCompile Include="ModelCommon\Model\Model.cpp" />
+    <ClCompile Include="ParticleCommon\ParticleCommon.cpp" />
+    <ClCompile Include="ParticleCommon\Particle\Particle.cpp" />
     <ClCompile Include="SpriteCommon\SpriteCommon.cpp" />
     <ClCompile Include="SpriteCommon\Sprite\Sprite.cpp" />
     <ClCompile Include="TextureManager\TextureManager.cpp" />
@@ -186,6 +189,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Engine\DebugLog\DebugLog.h" />
+    <ClInclude Include="Engine\DescriptorHeapManager\DescriptorHeapManager.h" />
     <ClInclude Include="Engine\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="Engine\ResourceLeakChecker.h" />
     <ClInclude Include="Engine\WinApp\WinApp.h" />
@@ -202,6 +206,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="ModelCommon\ModelCommon.h" />
     <ClInclude Include="ModelCommon\Model\Model.h" />
+    <ClInclude Include="ParticleCommon\ParticleCommon.h" />
+    <ClInclude Include="ParticleCommon\Particle\Particle.h" />
     <ClInclude Include="SpriteCommon\SpriteCommon.h" />
     <ClInclude Include="SpriteCommon\Sprite\Sprite.h" />
     <ClInclude Include="TextureManager\TextureManager.h" />
@@ -234,6 +240,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli" />
+    <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -249,6 +256,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.0</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

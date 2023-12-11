@@ -4,16 +4,14 @@
 #include "TextureManager/TextureManager.h"
 #include "Engine/DirectXCommon/DirectXCommon.h"
 
-Model::Model(const std::string& directoryPath, const std::string& fileName)
+Model::Model(const std::string& fileName)
 {
 
 	ModelCommon* modelCommon = ModelCommon::GetInstance();
 
-	modelHundle_ = modelCommon->LoadObj(directoryPath, fileName);
+	meshHundle_ = modelCommon->LoadObj(fileName);
 
-	ModelCommon::ModelData* modelData = modelCommon->GetModelData(modelHundle_);
-
-	vertexResource_ = modelCommon->CreateBufferResource(sizeof(ModelCommon::VertexData) * modelData->verteces.size());
+	textureHundle_ = ModelCommon::GetInstance()->GetModelData(meshHundle_)->textureHundle_;
 
 	materialResource_ = modelCommon->CreateBufferResource(sizeof(Material));
 
@@ -27,20 +25,47 @@ Model::Model(const std::string& directoryPath, const std::string& fileName)
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 	*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
 
-	//VertexBufferViewを作成する
-	//頂点バッファビューを作成する
-	//リソースの先頭のアドレスから使う
-	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-	//使用するリソースのサイズは頂点3つ分のサイズ
-	vertexBufferView_.SizeInBytes = UINT(sizeof(ModelCommon::VertexData) * modelData->verteces.size());
-	//頂点当たりのサイズ
-	vertexBufferView_.StrideInBytes = sizeof(ModelCommon::VertexData);
 
-	//Resourceにデータを書き込む
-	//頂点リソースにデータを書き込む
+	//平行光源用のリソースを作る。
+	directionalLightResource_ = modelCommon->CreateBufferResource(sizeof(DirectionalLight));
+	//データを書き込む
+	directionalLightData_ = nullptr;
 	//書き込むためのアドレスを取得
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	std::memcpy(vertexData_, modelData->verteces.data(), sizeof(ModelCommon::VertexData) * modelData->verteces.size());
+	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
+	//書き込んでいく
+	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
+	directionalLightData_->intensity = 1.0f;
+
+	transform_ = Transform();
+
+	uvScale_ = { 1.0f,1.0f,1.0f };
+	uvRotate_ = { 0.0f,0.0f,0.0f };
+	uvPos_ = { 0.0f,0.0f,0.0f };
+
+	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+}
+
+Model::Model(uint32_t meshHundle)
+{
+	ModelCommon* modelCommon = ModelCommon::GetInstance();
+
+	meshHundle_ = meshHundle;
+
+	textureHundle_ = ModelCommon::GetInstance()->GetModelData(meshHundle_)->textureHundle_;
+
+	materialResource_ = modelCommon->CreateBufferResource(sizeof(Material));
+
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
+
+	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
+	transformationMatrixResource_ = modelCommon->CreateBufferResource(sizeof(TransformationMatrix));
+	transformationMatrixData_ = nullptr;
+	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
+	*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
+
 
 	//平行光源用のリソースを作る。
 	directionalLightResource_ = modelCommon->CreateBufferResource(sizeof(DirectionalLight));
@@ -64,7 +89,6 @@ Model::Model(const std::string& directoryPath, const std::string& fileName)
 
 Model::~Model()
 {
-	vertexResource_->Release();
 	transformationMatrixResource_->Release();
 	materialResource_->Release();
 	directionalLightResource_->Release();
@@ -92,14 +116,14 @@ void Model::Draw(const Matrix4x4& viewProjection)
 
 	TextureManager* texManager = TextureManager::GetInstance();
 
-	ModelCommon::ModelData* modelData = ModelCommon::GetInstance()->GetModelData(modelHundle_);
+	ModelCommon::MeshData* modelData = ModelCommon::GetInstance()->GetModelData(meshHundle_);
 
 	ModelCommon::GetInstance()->PreDraw();
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	//Spriteの描画。変更に必要なものだけ変更する
-	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
+	commandList->IASetVertexBuffers(0, 1, &modelData->vertexBufferView_); // VBVを設定
 	//マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
@@ -108,10 +132,18 @@ void Model::Draw(const Matrix4x4& viewProjection)
 	//平行光源CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
 
-	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(modelData->textureHundle_));
+	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(UINT(modelData->verteces.size()), 1, 0, 0);
 
 }
+
+void Model::SetMesh(uint32_t hundle)
+{
+	meshHundle_ = hundle;
+
+	textureHundle_ = ModelCommon::GetInstance()->GetTextureHundle(hundle);
+}
+
 
 

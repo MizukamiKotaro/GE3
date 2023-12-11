@@ -25,6 +25,13 @@ void ModelCommon::Initialize()
 
 }
 
+void ModelCommon::Finalize()
+{
+	for (uint32_t modelNum = 0; modelNum < static_cast<uint32_t>(meshs_.size()); modelNum++) {
+		meshs_[modelNum].vertexResource_->Release();
+	}
+}
+
 void ModelCommon::PreDraw()
 {
 	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
@@ -94,20 +101,19 @@ ModelCommon::MaterialData ModelCommon::LoadMaterialTemplateFile(const std::strin
 	return materialData_;
 }
 
-ModelCommon::ModelData ModelCommon::LoadObjeFile(const std::string& directoryPath, const std::string& fileName)
+ModelCommon::MeshData ModelCommon::LoadObjeFile(const std::string& directoryPath, const std::string& fileName)
 {
 	// 1. 中で必要となる変数の宣言
-	ModelData modelData; // 構築するModelData
+	MeshData modelData; // 構築するModelData
 	std::vector<Vector4> positions; // 位置
 	std::vector<Vector3> normals; // 法線
 	std::vector<Vector2> texcoords; // テクスチャ座標
 	std::string line; // ファイルから読んだ1行を格納するもの
 
-	modelData.directoryPath = directoryPath;
 	modelData.fileName = fileName;
 
 	// 2. ファイルを開く
-	std::ifstream file(directoryPath + "/" + fileName); // ファイルを開く
+	std::ifstream file(directoryPath + "/" + fileName + "/" + fileName + ".obj"); // ファイルを開く
 	assert(file.is_open()); // とりあえず開けなかったら止める
 
 	// 3. 実際にファイルを読み、ModelDataを構築していく
@@ -169,34 +175,51 @@ ModelCommon::ModelData ModelCommon::LoadObjeFile(const std::string& directoryPat
 			std::string materialFileName;
 			s >> materialFileName;
 			// 基本的にobjファイルと同一階層にmtlは存在させるので、ディレクトリ名とファイル名を渡す
-			modelData.material = LoadMaterialTemplateFile(directoryPath, materialFileName);
+			modelData.material = LoadMaterialTemplateFile(directoryPath + "/" + fileName + "/", materialFileName);
 		}
 	}
 
 	modelData.textureHundle_ = TextureManager::GetInstance()->LoadTexture(modelData.material.textureFilePath);
 
+	modelData.vertexResource_ = CreateBufferResource(sizeof(ModelCommon::VertexData) * modelData.verteces.size());
+
+
+	//VertexBufferViewを作成する
+	//頂点バッファビューを作成する
+	//リソースの先頭のアドレスから使う
+	modelData.vertexBufferView_.BufferLocation = modelData.vertexResource_->GetGPUVirtualAddress();
+	//使用するリソースのサイズは頂点3つ分のサイズ
+	modelData.vertexBufferView_.SizeInBytes = UINT(sizeof(ModelCommon::VertexData) * modelData.verteces.size());
+	//頂点当たりのサイズ
+	modelData.vertexBufferView_.StrideInBytes = sizeof(ModelCommon::VertexData);
+
+	//Resourceにデータを書き込む
+	//頂点リソースにデータを書き込む
+	//書き込むためのアドレスを取得
+	modelData.vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&modelData.vertexData_));
+	std::memcpy(modelData.vertexData_, modelData.verteces.data(), sizeof(ModelCommon::VertexData) * modelData.verteces.size());
+
 	// 4. ModelDataを返す
 	return modelData;
 }
 
-uint32_t ModelCommon::LoadObj(const std::string& directoryPath, const std::string& fileName)
+uint32_t ModelCommon::LoadObj(const std::string& fileName)
 {
 
-	for (uint32_t texNum = 0; texNum < static_cast<uint32_t>(models_.size()); texNum++) {
+	for (uint32_t modelNum = 0; modelNum < static_cast<uint32_t>(meshs_.size()); modelNum++) {
 
-		if (models_[texNum].directoryPath == directoryPath && models_[texNum].fileName == fileName) {
-			return texNum;
+		if (meshs_[modelNum].fileName == fileName) {
+			return modelNum;
 		}
 	}
 
-	models_.push_back(LoadObjeFile(directoryPath, fileName));
+	meshs_.push_back(LoadObjeFile(directoryPath_, fileName));
 
-	models_.back().directoryPath = directoryPath;
-	models_.back().fileName = fileName;
+	meshs_.back().fileName = fileName;
 
 	
 
-	return static_cast<uint32_t>(models_.size()) - 1;
+	return static_cast<uint32_t>(meshs_.size()) - 1;
 }
 
 

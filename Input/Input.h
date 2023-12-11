@@ -32,7 +32,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(WinApp* winApp);
+	void Initialize();
 
 	/// <summary>
 	/// 毎フレーム処理

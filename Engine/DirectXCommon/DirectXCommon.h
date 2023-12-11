@@ -19,7 +19,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(WinApp* winApp);
+	void Initialize();
 
 	void Finalize();
 

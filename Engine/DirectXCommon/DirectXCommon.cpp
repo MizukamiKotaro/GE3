@@ -6,7 +6,7 @@
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
-#include "TextureManager/TextureManager.h"
+#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
 
 using namespace Microsoft::WRL;
 
@@ -15,13 +15,12 @@ DirectXCommon* DirectXCommon::GetInstance() {
 	return &instance;
 }
 
-void DirectXCommon::Initialize(WinApp* winApp) {
+void DirectXCommon::Initialize() {
 
 	// FPS固定初期化
 	InitializeFixFPS();
 
-	assert(winApp);
-	winApp_ = winApp;
+	winApp_ = WinApp::GetInstance();
 
 	// DXGIデバイス初期化
 	InitializeDXGIDevice();
@@ -103,7 +102,7 @@ void DirectXCommon::PreDraw() {
 	commandList_->RSSetScissorRects(1, &scissorRect); //Scissorを設定
 
 	//描画用のDescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { TextureManager::GetInstance()->GetSRVHeap()};
+	ID3D12DescriptorHeap* descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVHeap()};
 	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
 }
 

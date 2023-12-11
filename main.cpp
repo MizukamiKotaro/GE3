@@ -9,13 +9,17 @@
 #include "externals/imgui/imgui.h"
 #include "ModelCommon/ModelCommon.h"
 #include "GlobalVariables/GlobalVariables.h"
+#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "ModelCommon/Model/Model.h"
+#include "Utils/Camera/Camera.h"
 
 static ResourceLeackChecker leakCheck;
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
 
-	CoInitializeEx(0, COINIT_MULTITHREADED);
+	HRESULT hr = CoInitializeEx(0, COINIT_MULTITHREADED);
+	SUCCEEDED(hr);
 
 #ifdef _DEBUG
 	ID3D12Debug1* debugController = nullptr;
@@ -33,16 +37,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	winApp->CreateGameWindow();
 
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	dxCommon->Initialize(winApp);
+	dxCommon->Initialize();
+
+	DescriptorHeapManager* descriptorHeapManager = DescriptorHeapManager::GetInstance();
+	descriptorHeapManager->Initialize();
 
 	TextureManager* textureManager = TextureManager::GetInstance();
-	textureManager->Initialize(dxCommon->GetDevice());
+	textureManager->Initialize();
 
 	ModelCommon* modelCommon = ModelCommon::GetInstance();
 	modelCommon->Initialize();
 
 	Input* input = Input::GetInstance();
-	input->Initialize(winApp);
+	input->Initialize();
 
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	spriteCommon->Initialize();
@@ -89,6 +96,25 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの初期化
 
+	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
+	sprite->LoadTexture("Resources/uvChecker.png");
+	sprite->pos_.x += 0.5f;
+	sprite->Update();
+	std::unique_ptr<Sprite> sprite1 = std::make_unique<Sprite>();
+	sprite1->LoadTexture("Resources/uvChecker.png");
+	sprite1->Update();
+
+	uint32_t mesh1 = modelCommon->LoadObj("Cube");
+	uint32_t mesh2 = modelCommon->LoadObj("weapon");
+
+	bool isMesh1 = true;
+
+	std::unique_ptr<Model> model = std::make_unique<Model>(mesh1);
+	model->Initialize();
+
+	Camera camera;
+	camera.Initialize();
+	camera.transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
 #pragma endregion 最初のシーンの初期化
 	
@@ -112,6 +138,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの更新
 
+
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (isMesh1) {
+				isMesh1 = false;
+				model->SetMesh(mesh2);
+			}
+			else {
+				isMesh1 = true;
+				model->SetMesh(mesh1);
+			}
+		}
+
+		model->Update();
+		camera.Update();
 		
 
 #pragma endregion 最初のシーンの更新
@@ -123,9 +163,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの描画
 
-		
-		
+		//sprite->Draw(Sprite::BlendMode::kBlendModeNormal);
+		//sprite1->Draw(Sprite::BlendMode::kBlendModeAdd);
 
+		model->Draw(camera.GetViewProjection());
 
 #pragma endregion 最初のシーンの描画
 		ImGuiManager::Draw();
@@ -146,6 +187,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	CoUninitialize();
 	textureManager->Finalize();
+	modelCommon->Finalize();
+	descriptorHeapManager->Finalize();
 	dxCommon->Finalize();
 	winApp->Finalize();
 
