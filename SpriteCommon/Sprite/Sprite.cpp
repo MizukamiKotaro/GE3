@@ -58,12 +58,12 @@ Sprite::Sprite()
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 
 	//Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	transformationMatrixResource_ = spriteCommon->CreateBufferResource(sizeof(TransformationMatrix));
+	instancingResource_ = spriteCommon->CreateBufferResource(sizeof(TransformationMatrix));
 	//データを書き込む
 	//書き込むためのアドレスを取得
-	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
+	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 	//単位行列を書き込んでいく
-	transformationMatrixData_->WVP = { Matrix4x4::MakeIdentity4x4() };
+	instancingData_->WVP = { Matrix4x4::MakeIdentity4x4() };
 	//*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
 
 
@@ -84,7 +84,7 @@ Sprite::Sprite()
 Sprite::~Sprite()
 {
 	vertexResource_->Release();
-	transformationMatrixResource_->Release();
+	instancingResource_->Release();
 	materialResource_->Release();
 }
 
@@ -95,7 +95,7 @@ void Sprite::Initialize()
 
 void Sprite::Update()
 {
-	transformationMatrixData_->WVP = Matrix4x4::MakeAffinMatrix({ scale_.x,scale_.y }, { 0.0f,0.0f,rotate_ }, { pos_.x,pos_.y,0.0f });
+	instancingData_->WVP = Matrix4x4::MakeAffinMatrix({ scale_.x,scale_.y }, { 0.0f,0.0f,rotate_ }, { pos_.x,pos_.y,0.0f });
 	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
 }
 
@@ -136,7 +136,7 @@ void Sprite::Draw(BlendMode blendMode)
 	//マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
 	if (isLoad_) {
 		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	}

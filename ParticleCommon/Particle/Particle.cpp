@@ -3,47 +3,43 @@
 #include <cassert>
 #include "TextureManager/TextureManager.h"
 #include "Engine/DirectXCommon/DirectXCommon.h"
+#include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
+#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "ParticleCommon/ParticleCommon.h"
 
 Particle::Particle(const std::string& fileName)
 {
 
-	ModelCommon* modelCommon = ModelCommon::GetInstance();
+	ModelDataManager* modelManager = ModelDataManager::GetInstance();
 
-	meshHundle_ = modelCommon->LoadObj(fileName);
+	meshHundle_ = modelManager->LoadObj(fileName);
 
-	ModelCommon::MeshData* modelData = modelCommon->GetModelData(meshHundle_);
+	textureHundle_ = modelManager->GetModelData(meshHundle_)->textureHundle_;
 
-	vertexResource_ = modelCommon->CreateBufferResource(sizeof(ModelCommon::VertexData) * modelData->verteces.size());
-
-	materialResource_ = modelCommon->CreateBufferResource(sizeof(Material));
+	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 
 	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	transformationMatrixResource_ = modelCommon->CreateBufferResource(sizeof(TransformationMatrix));
-	transformationMatrixData_ = nullptr;
-	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
-	*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
+	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix) * kNumInstance);
+	instancingData_ = nullptr;
+	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 
-	//VertexBufferViewを作成する
-	//頂点バッファビューを作成する
-	//リソースの先頭のアドレスから使う
-	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-	//使用するリソースのサイズは頂点3つ分のサイズ
-	vertexBufferView_.SizeInBytes = UINT(sizeof(ModelCommon::VertexData) * modelData->verteces.size());
-	//頂点当たりのサイズ
-	vertexBufferView_.StrideInBytes = sizeof(ModelCommon::VertexData);
+	for (uint32_t index = 0; index < kNumInstance; index++) {
+		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
+		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
 
-	//Resourceにデータを書き込む
-	//頂点リソースにデータを書き込む
-	//書き込むためのアドレスを取得
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	std::memcpy(vertexData_, modelData->verteces.data(), sizeof(ModelCommon::VertexData) * modelData->verteces.size());
+		transforms_[index] = Transform();
+		transforms_[index].translate_ = { index * 0.1f,index * 0.1f ,index * 0.1f };
+		transforms_[index].scale_ *= 10.0f;
+	}
+
+	CreateSRV();
 
 	//平行光源用のリソースを作る。
-	directionalLightResource_ = modelCommon->CreateBufferResource(sizeof(DirectionalLight));
+	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
 	//データを書き込む
 	directionalLightData_ = nullptr;
 	//書き込むためのアドレスを取得
@@ -52,8 +48,6 @@ Particle::Particle(const std::string& fileName)
 	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData_->intensity = 1.0f;
-
-	transform_ = Transform();
 
 	uvScale_ = { 1.0f,1.0f,1.0f };
 	uvRotate_ = { 0.0f,0.0f,0.0f };
@@ -64,8 +58,7 @@ Particle::Particle(const std::string& fileName)
 
 Particle::~Particle()
 {
-	vertexResource_->Release();
-	transformationMatrixResource_->Release();
+	instancingResource_->Release();
 	materialResource_->Release();
 	directionalLightResource_->Release();
 }
@@ -77,40 +70,60 @@ void Particle::Initialize()
 
 void Particle::Update()
 {
-
-	transform_.UpdateMatrix();
+	for (uint32_t index = 0; index < kNumInstance; index++) {
+		transforms_[index].UpdateMatrix();
+	}
 
 	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
 }
 
 void Particle::Draw(const Matrix4x4& viewProjection)
 {
-
-	transformationMatrixData_->World = transform_.worldMat_;
-	transformationMatrixData_->WVP = transform_.worldMat_ * viewProjection;
+	for (uint32_t index = 0; index < kNumInstance; index++) {
+		instancingData_[index].World = transforms_[index].worldMat_;
+		instancingData_[index].WVP = transforms_[index].worldMat_ * viewProjection;
+	}
 	materialData_->uvTransform = uvMatrix_;
 
 	TextureManager* texManager = TextureManager::GetInstance();
 
-	ModelCommon::MeshData* modelData = ModelCommon::GetInstance()->GetModelData(meshHundle_);
+	const ModelData* modelData = ModelDataManager::GetInstance()->GetModelData(meshHundle_);
 
-	ModelCommon::GetInstance()->PreDraw();
+	ParticleCommon::GetInstance()->PreDraw();
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	//Spriteの描画。変更に必要なものだけ変更する
-	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
+	commandList->IASetVertexBuffers(0, 1, &modelData->mesh.vertexBufferView_); // VBVを設定
 	//マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource_->GetGPUVirtualAddress());
-
+	//commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootDescriptorTable(1, srvGPUDescriptorHandle_);
 	//平行光源CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
 
-	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(modelData->textureHundle_));
+	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
-	commandList->DrawInstanced(UINT(modelData->verteces.size()), 1, 0, 0);
+	commandList->DrawInstanced(UINT(modelData->mesh.verteces.size()), kNumInstance, 0, 0);
+
+}
+
+void Particle::CreateSRV()
+{
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	srvDesc.Buffer.FirstElement = 0;
+	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+	srvDesc.Buffer.NumElements = kNumInstance;
+	srvDesc.Buffer.StructureByteStride = sizeof(TransformationMatrix);
+
+	srvCPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVCPUDescriptorHandle();
+	srvGPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVGPUDescriptorHandle();
+
+	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(instancingResource_.Get(), &srvDesc, srvCPUDescriptorHandle_);
 
 }
 

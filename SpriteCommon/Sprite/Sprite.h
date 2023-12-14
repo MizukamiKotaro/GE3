@@ -65,8 +65,8 @@ private:
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
 
-	ComPtr<ID3D12Resource> transformationMatrixResource_;
-	TransformationMatrix* transformationMatrixData_;
+	ComPtr<ID3D12Resource> instancingResource_;
+	TransformationMatrix* instancingData_;
 
 public:
 

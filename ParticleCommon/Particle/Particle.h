@@ -14,6 +14,8 @@ class Particle
 {
 public:
 
+	static const uint32_t kNumInstance = 256;
+
 	Particle(const std::string& fileName);
 	~Particle();
 
@@ -52,15 +54,14 @@ public:
 
 private:
 
-	ComPtr<ID3D12Resource> vertexResource_;
-	ModelCommon::VertexData* vertexData_;
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
+	void CreateSRV();
 
+private:
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
 
-	ComPtr<ID3D12Resource> transformationMatrixResource_;
-	TransformationMatrix* transformationMatrixData_;
+	ComPtr<ID3D12Resource> instancingResource_;
+	TransformationMatrix* instancingData_;
 
 	ComPtr<ID3D12Resource> directionalLightResource_;
 	DirectionalLight* directionalLightData_;
@@ -68,7 +69,7 @@ private:
 
 public:
 
-	Transform transform_;
+	Transform transforms_[kNumInstance];
 
 private:
 	Matrix4x4 uvMatrix_;
@@ -76,8 +77,13 @@ private:
 	Vector3 uvScale_;
 	Vector3 uvRotate_;
 	Vector3 uvPos_;
-			
+
 	uint32_t meshHundle_;
+
+	uint32_t textureHundle_;
+
+	D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
 
 };
 

@@ -45,6 +45,10 @@ public: // メンバ関数
 	/// <returns>コマンドリスト</returns>
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
 
+public:
+
+	static ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
+
 private:
 
 	/// <summary>

@@ -45,15 +45,13 @@ private:
 
 	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
 
-	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
-
 	//void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 	ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 private:
 
-	ID3D12Device* device_;
+	ID3D12Device* device_ = nullptr;
 
 	std::vector<Texture> textures_;
 

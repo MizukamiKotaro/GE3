@@ -12,6 +12,9 @@
 #include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "ModelCommon/Model/Model.h"
 #include "Utils/Camera/Camera.h"
+#include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
+#include "ParticleCommon/ParticleCommon.h"
+#include "ParticleCommon/Particle/Particle.h"
 
 static ResourceLeackChecker leakCheck;
 
@@ -47,6 +50,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	ModelCommon* modelCommon = ModelCommon::GetInstance();
 	modelCommon->Initialize();
+
+	ParticleCommon* particleCommon = ParticleCommon::GetInstance();
+	particleCommon->Initialize();
+
+	ModelDataManager* modelManager = ModelDataManager::GetInstance();
 
 	Input* input = Input::GetInstance();
 	input->Initialize();
@@ -104,17 +112,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	sprite1->LoadTexture("Resources/uvChecker.png");
 	sprite1->Update();
 
-	uint32_t mesh1 = modelCommon->LoadObj("Cube");
-	uint32_t mesh2 = modelCommon->LoadObj("weapon");
+	uint32_t mesh1 = modelManager->LoadObj("Cube");
+	uint32_t mesh2 = modelManager->LoadObj("weapon");
 
 	bool isMesh1 = true;
 
 	std::unique_ptr<Model> model = std::make_unique<Model>(mesh1);
 	model->Initialize();
 
+	std::unique_ptr<Particle> particle = std::make_unique<Particle>("plane");
+	particle->Initialize();
+
 	Camera camera;
 	camera.Initialize();
-	camera.transform_.translate_ = { 0.0f,2.0f,-50.0f };
+	camera.transforms_.translate_ = { 0.0f,2.0f,-50.0f };
 
 #pragma endregion 最初のシーンの初期化
 	
@@ -150,7 +161,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			}
 		}
 
+		if (input->TriggerKey(DIK_A)) {
+			model->SetTex(textureManager->LoadTexture("Resources/uvChecker.png"));
+		}
+
+		ImGui::Begin("a");
+		ImGui::SliderFloat3("a", &model->transforms_.translate_.x, -100.0f, 100.0f);
+		ImGui::End();
+
 		model->Update();
+		particle->Update();
 		camera.Update();
 		
 
@@ -163,12 +183,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの描画
 
-		//sprite->Draw(Sprite::BlendMode::kBlendModeNormal);
-		//sprite1->Draw(Sprite::BlendMode::kBlendModeAdd);
+	/*	model->Draw(camera.GetViewProjection());
+		sprite->Draw(Sprite::BlendMode::kBlendModeNormal);
+		sprite1->Draw(Sprite::BlendMode::kBlendModeAdd);*/
+		particle->Draw(camera.GetViewProjection());
 
-		model->Draw(camera.GetViewProjection());
 
 #pragma endregion 最初のシーンの描画
+
 		ImGuiManager::Draw();
 
 		// 描画後処理
@@ -187,7 +209,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	CoUninitialize();
 	textureManager->Finalize();
-	modelCommon->Finalize();
+	modelManager->Finalize();
 	descriptorHeapManager->Finalize();
 	dxCommon->Finalize();
 	winApp->Finalize();

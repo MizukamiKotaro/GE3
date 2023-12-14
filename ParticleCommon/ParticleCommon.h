@@ -15,27 +15,6 @@ class ParticleCommon
 {
 public:
 
-	struct VertexData
-	{
-		Vector4 vertexPos;
-		Vector2 texcoord;
-		Vector3 normal;
-	};
-
-	struct MaterialData
-	{
-		std::string textureFilePath;
-	};
-
-	struct MeshData 
-	{
-		std::vector<VertexData> verteces;
-		MaterialData material;
-		std::string directoryPath;
-		std::string fileName;
-		uint32_t textureHundle_;
-	};
-
 	static ParticleCommon* GetInstance();
 
 	// namespace省略
@@ -44,20 +23,6 @@ public:
 	void Initialize();
 
 	void PreDraw();
-
-	uint32_t LoadObj(const std::string& directoryPath, const std::string& fileName);
-
-	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
-
-	uint32_t GetTextureHundle(uint32_t hundle) { return meshs_[hundle].textureHundle_; }
-
-	MeshData* GetModelData(uint32_t hundle) { return &meshs_[hundle]; }
-
-private:
-
-	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& fileName);
-
-	MeshData LoadObjeFile(const std::string& directoryPath, const std::string& fileName);
 
 private:
 
@@ -99,8 +64,6 @@ private:
 		IDxcIncludeHandler* includeHandler);
 
 private:
-
-	std::vector<MeshData> meshs_;
 
 };
 

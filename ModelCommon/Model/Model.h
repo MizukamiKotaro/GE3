@@ -58,8 +58,8 @@ private:
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
 
-	ComPtr<ID3D12Resource> transformationMatrixResource_;
-	TransformationMatrix* transformationMatrixData_;
+	ComPtr<ID3D12Resource> instancingResource_;
+	TransformationMatrix* instancingData_;
 
 	ComPtr<ID3D12Resource> directionalLightResource_;
 	DirectionalLight* directionalLightData_;
@@ -67,7 +67,7 @@ private:
 
 public:
 
-	Transform transform_;
+	Transform transforms_;
 
 private:
 	Matrix4x4 uvMatrix_;

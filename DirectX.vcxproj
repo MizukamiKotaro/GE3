@@ -162,8 +162,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="Input\Input.cpp" />
+    <ClCompile Include="Light\Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelCommon\ModelCommon.cpp" />
+    <ClCompile Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp" />
     <ClCompile Include="ModelCommon\Model\Model.cpp" />
     <ClCompile Include="ParticleCommon\ParticleCommon.cpp" />
     <ClCompile Include="ParticleCommon\Particle\Particle.cpp" />
@@ -204,7 +206,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="ImGuiManager\ImGuiManager.h" />
     <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Light\Light.h" />
     <ClInclude Include="ModelCommon\ModelCommon.h" />
+    <ClInclude Include="ModelCommon\ModelData\MaterialData3D\MaterialData3D.h" />
+    <ClInclude Include="ModelCommon\ModelData\MeshData3D\MeshData3D.h" />
+    <ClInclude Include="ModelCommon\ModelData\ModelData.h" />
+    <ClInclude Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.h" />
+    <ClInclude Include="ModelCommon\ModelData\VertexData3D\VertexData3D.h" />
     <ClInclude Include="ModelCommon\Model\Model.h" />
     <ClInclude Include="ParticleCommon\ParticleCommon.h" />
     <ClInclude Include="ParticleCommon\Particle\Particle.h" />

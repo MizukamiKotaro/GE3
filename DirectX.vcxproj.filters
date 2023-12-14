@@ -85,6 +85,15 @@
     <Filter Include="Engine\DescriptorHeapManager">
       <UniqueIdentifier>{135ec753-fe7c-4a53-a1c8-c9e9e939d7f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ModelData">
+      <UniqueIdentifier>{fd8f338d-7211-429a-994c-c7ecf986d445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModelData\ModelDataManager">
+      <UniqueIdentifier>{049d1c8a-cd00-4ee8-a3b9-aa6b7b2786d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{3d09982c-b069-46b8-a791-9faf2375607d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -200,6 +209,12 @@
     </ClCompile>
     <ClCompile Include="Engine\DescriptorHeapManager\DescriptorHeapManager.cpp">
       <Filter>Engine\DescriptorHeapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp">
+      <Filter>ModelData\ModelDataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Light\Light.cpp">
+      <Filter>Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +343,24 @@
     </ClInclude>
     <ClInclude Include="Engine\DescriptorHeapManager\DescriptorHeapManager.h">
       <Filter>Engine\DescriptorHeapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCommon\ModelData\MaterialData3D\MaterialData3D.h">
+      <Filter>ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCommon\ModelData\MeshData3D\MeshData3D.h">
+      <Filter>ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCommon\ModelData\ModelData.h">
+      <Filter>ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCommon\ModelData\VertexData3D\VertexData3D.h">
+      <Filter>ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.h">
+      <Filter>ModelData\ModelDataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Light\Light.h">
+      <Filter>Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,50 +18,14 @@ public:
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	struct VertexData
-	{
-		Vector4 vertexPos;
-		Vector2 texcoord;
-		Vector3 normal;
-	};
-
-	struct MaterialData
-	{
-		std::string textureFilePath;
-	};
-
-	struct MeshData 
-	{
-		std::vector<VertexData> verteces;
-		MaterialData material;
-		std::string fileName;
-		uint32_t textureHundle_;
-		ComPtr<ID3D12Resource> vertexResource_;
-		VertexData* vertexData_;
-		D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
-	};
-
 	static ModelCommon* GetInstance();
 
 	void Initialize();
 
-	void Finalize();
-
 	void PreDraw();
-
-	uint32_t LoadObj(const std::string& fileName);
-
-	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
-
-	uint32_t GetTextureHundle(uint32_t hundle) { return meshs_[hundle].textureHundle_; }
-
-	MeshData* GetModelData(uint32_t hundle) { return &meshs_[hundle]; }
 
 private:
 
-	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& fileName);
-
-	MeshData LoadObjeFile(const std::string& directoryPath, const std::string& fileName);
 
 private:
 
@@ -101,12 +65,6 @@ private:
 		IDxcUtils* dxcUtils,
 		IDxcCompiler3* dxcCompiler,
 		IDxcIncludeHandler* includeHandler);
-
-private:
-
-	std::vector<MeshData> meshs_;
-
-	const std::string& directoryPath_ = "Resources";
 
 };
 
