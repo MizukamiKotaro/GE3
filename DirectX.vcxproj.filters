@@ -19,32 +19,11 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{bb920b16-437b-4c88-945e-f165f871c387}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Audio">
-      <UniqueIdentifier>{b3b23ed5-91b6-474a-83a0-d4ee5a65f6c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{81b069ba-c471-4d14-950d-9136fb82e22d}</UniqueIdentifier>
     </Filter>
     <Filter Include="GlobalVariables">
       <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{65e5c752-b2ea-4a06-b473-476cd6924e57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ModelCommon">
-      <UniqueIdentifier>{4b215bcf-8667-48ce-a3cb-ef8873ff425c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SpriteCommon">
-      <UniqueIdentifier>{12e3c8af-bab1-418c-a0a6-d5328391d763}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TextureManager">
-      <UniqueIdentifier>{a31d3de8-c631-435d-9ea0-0a2bd605b732}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ModelCommon\Model">
-      <UniqueIdentifier>{9b3d7ddc-abf8-49d9-82a2-5883563904f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SpriteCommon\Sprite">
-      <UniqueIdentifier>{a350541b-95e7-4731-93bf-a72bdfda0080}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\Math">
       <UniqueIdentifier>{70169161-5912-428b-8acd-a4048a5482ec}</UniqueIdentifier>
@@ -67,32 +46,56 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{92b530f5-f9a7-4b9e-9ad9-34909d8f01da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\DebugLog">
+    <Filter Include="Engine\Base">
+      <UniqueIdentifier>{f7e1076e-ec7e-428f-a037-68f56c9ca97e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\DebugLog">
       <UniqueIdentifier>{da14fcb3-447f-49f4-94ae-40486ab30d54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\DirectXCommon">
-      <UniqueIdentifier>{d6e681b2-d657-429c-b6d8-6302af791dc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\WinApp">
-      <UniqueIdentifier>{252bb9a8-5252-4508-b5a6-6a9888718a3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGuiManager">
-      <UniqueIdentifier>{f2ac2121-57f3-47e6-acfa-90edfaba6499}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ParticleCommon">
-      <UniqueIdentifier>{9221d928-522c-462d-ac04-6e656b39b273}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\DescriptorHeapManager">
+    <Filter Include="Engine\Base\DescriptorHeapManager">
       <UniqueIdentifier>{135ec753-fe7c-4a53-a1c8-c9e9e939d7f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ModelData">
+    <Filter Include="Engine\Base\DirectXCommon">
+      <UniqueIdentifier>{d6e681b2-d657-429c-b6d8-6302af791dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\WinApp">
+      <UniqueIdentifier>{252bb9a8-5252-4508-b5a6-6a9888718a3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Audio">
+      <UniqueIdentifier>{b3b23ed5-91b6-474a-83a0-d4ee5a65f6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ImGuiManager">
+      <UniqueIdentifier>{f2ac2121-57f3-47e6-acfa-90edfaba6499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{65e5c752-b2ea-4a06-b473-476cd6924e57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Light">
+      <UniqueIdentifier>{3d09982c-b069-46b8-a791-9faf2375607d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ModelCommon">
+      <UniqueIdentifier>{4b215bcf-8667-48ce-a3cb-ef8873ff425c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ModelCommon\Model">
+      <UniqueIdentifier>{9b3d7ddc-abf8-49d9-82a2-5883563904f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ModelCommon\ModelData">
       <UniqueIdentifier>{fd8f338d-7211-429a-994c-c7ecf986d445}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ModelData\ModelDataManager">
+    <Filter Include="Engine\ModelCommon\ModelData\ModelDataManager">
       <UniqueIdentifier>{049d1c8a-cd00-4ee8-a3b9-aa6b7b2786d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Light">
-      <UniqueIdentifier>{3d09982c-b069-46b8-a791-9faf2375607d}</UniqueIdentifier>
+    <Filter Include="Engine\ParticleCommon">
+      <UniqueIdentifier>{9221d928-522c-462d-ac04-6e656b39b273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\SpriteCommon">
+      <UniqueIdentifier>{12e3c8af-bab1-418c-a0a6-d5328391d763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\SpriteCommon\Sprite">
+      <UniqueIdentifier>{a350541b-95e7-4731-93bf-a72bdfda0080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\TextureManager">
+      <UniqueIdentifier>{a31d3de8-c631-435d-9ea0-0a2bd605b732}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,33 +122,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio\Audio.cpp">
-      <Filter>Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="GlobalVariables\GlobalVariables.cpp">
-      <Filter>GlobalVariables</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGuiManager\ImGuiManager.cpp">
-      <Filter>ImGuiManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Input\Input.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelCommon\ModelCommon.cpp">
-      <Filter>ModelCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommon\SpriteCommon.cpp">
-      <Filter>SpriteCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager\TextureManager.cpp">
-      <Filter>TextureManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelCommon\Model\Model.cpp">
-      <Filter>ModelCommon\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommon\Sprite\Sprite.cpp">
-      <Filter>SpriteCommon\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Utils\Shape\AABB.cpp">
       <Filter>Utils\Shape</Filter>
@@ -192,29 +168,56 @@
     <ClCompile Include="Utils\Transform\Transform.cpp">
       <Filter>Utils\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\DebugLog\DebugLog.cpp">
-      <Filter>Engine\DebugLog</Filter>
+    <ClCompile Include="Engine\Base\DebugLog\DebugLog.cpp">
+      <Filter>Engine\Base\DebugLog</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\DirectXCommon\DirectXCommon.cpp">
-      <Filter>Engine\DirectXCommon</Filter>
+    <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeapManager.cpp">
+      <Filter>Engine\Base\DescriptorHeapManager</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\WinApp\WinApp.cpp">
-      <Filter>Engine\WinApp</Filter>
+    <ClCompile Include="Engine\Base\DirectXCommon\DirectXCommon.cpp">
+      <Filter>Engine\Base\DirectXCommon</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleCommon\Particle\Particle.cpp">
-      <Filter>ParticleCommon</Filter>
+    <ClCompile Include="Engine\Base\WinApp\WinApp.cpp">
+      <Filter>Engine\Base\WinApp</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleCommon\ParticleCommon.cpp">
-      <Filter>ParticleCommon</Filter>
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Engine\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\DescriptorHeapManager\DescriptorHeapManager.cpp">
-      <Filter>Engine\DescriptorHeapManager</Filter>
+    <ClCompile Include="Engine\ModelCommon\ModelCommon.cpp">
+      <Filter>Engine\ModelCommon</Filter>
     </ClCompile>
-    <ClCompile Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp">
-      <Filter>ModelData\ModelDataManager</Filter>
+    <ClCompile Include="Engine\ImGuiManager\ImGuiManager.cpp">
+      <Filter>Engine\ImGuiManager</Filter>
     </ClCompile>
-    <ClCompile Include="Light\Light.cpp">
-      <Filter>Light</Filter>
+    <ClCompile Include="Engine\Input\Input.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\Light.cpp">
+      <Filter>Engine\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ParticleCommon\Particle\Particle.cpp">
+      <Filter>Engine\ParticleCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ParticleCommon\ParticleCommon.cpp">
+      <Filter>Engine\ParticleCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SpriteCommon\Sprite\Sprite.cpp">
+      <Filter>Engine\SpriteCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SpriteCommon\SpriteCommon.cpp">
+      <Filter>Engine\SpriteCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\TextureManager\TextureManager.cpp">
+      <Filter>Engine\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalVariables\GlobalVariables.cpp">
+      <Filter>GlobalVariables</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModelCommon\Model\Model.cpp">
+      <Filter>Engine\ModelCommon\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp">
+      <Filter>Engine\ModelCommon\ModelData\ModelDataManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,33 +244,6 @@
     </ClInclude>
     <ClInclude Include="externals\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio\Audio.h">
-      <Filter>Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalVariables\GlobalVariables.h">
-      <Filter>GlobalVariables</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGuiManager\ImGuiManager.h">
-      <Filter>ImGuiManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Input\Input.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelCommon\ModelCommon.h">
-      <Filter>ModelCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteCommon\SpriteCommon.h">
-      <Filter>SpriteCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager\TextureManager.h">
-      <Filter>TextureManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelCommon\Model\Model.h">
-      <Filter>ModelCommon\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteCommon\Sprite\Sprite.h">
-      <Filter>SpriteCommon\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Math\calc.h">
       <Filter>Utils\Math</Filter>
@@ -323,44 +299,71 @@
     <ClInclude Include="Utils\Transform\Transform.h">
       <Filter>Utils\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ResourceLeakChecker.h">
-      <Filter>Engine</Filter>
+    <ClInclude Include="Engine\Base\DebugLog\DebugLog.h">
+      <Filter>Engine\Base\DebugLog</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\DebugLog\DebugLog.h">
-      <Filter>Engine\DebugLog</Filter>
+    <ClInclude Include="Engine\Base\DescriptorHeapManager\DescriptorHeapManager.h">
+      <Filter>Engine\Base\DescriptorHeapManager</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\DirectXCommon\DirectXCommon.h">
-      <Filter>Engine\DirectXCommon</Filter>
+    <ClInclude Include="Engine\Base\DirectXCommon\DirectXCommon.h">
+      <Filter>Engine\Base\DirectXCommon</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\WinApp\WinApp.h">
-      <Filter>Engine\WinApp</Filter>
+    <ClInclude Include="Engine\Base\WinApp\WinApp.h">
+      <Filter>Engine\Base\WinApp</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleCommon\Particle\Particle.h">
-      <Filter>ParticleCommon</Filter>
+    <ClInclude Include="Engine\Audio\Audio.h">
+      <Filter>Engine\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleCommon\ParticleCommon.h">
-      <Filter>ParticleCommon</Filter>
+    <ClInclude Include="Engine\ModelCommon\ModelCommon.h">
+      <Filter>Engine\ModelCommon</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\DescriptorHeapManager\DescriptorHeapManager.h">
-      <Filter>Engine\DescriptorHeapManager</Filter>
+    <ClInclude Include="Engine\ImGuiManager\ImGuiManager.h">
+      <Filter>Engine\ImGuiManager</Filter>
     </ClInclude>
-    <ClInclude Include="ModelCommon\ModelData\MaterialData3D\MaterialData3D.h">
-      <Filter>ModelData</Filter>
+    <ClInclude Include="Engine\Input\Input.h">
+      <Filter>Engine\Input</Filter>
     </ClInclude>
-    <ClInclude Include="ModelCommon\ModelData\MeshData3D\MeshData3D.h">
-      <Filter>ModelData</Filter>
+    <ClInclude Include="Engine\Light\Light.h">
+      <Filter>Engine\Light</Filter>
     </ClInclude>
-    <ClInclude Include="ModelCommon\ModelData\ModelData.h">
-      <Filter>ModelData</Filter>
+    <ClInclude Include="Engine\ParticleCommon\Particle\Particle.h">
+      <Filter>Engine\ParticleCommon</Filter>
     </ClInclude>
-    <ClInclude Include="ModelCommon\ModelData\VertexData3D\VertexData3D.h">
-      <Filter>ModelData</Filter>
+    <ClInclude Include="Engine\ParticleCommon\ParticleCommon.h">
+      <Filter>Engine\ParticleCommon</Filter>
     </ClInclude>
-    <ClInclude Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.h">
-      <Filter>ModelData\ModelDataManager</Filter>
+    <ClInclude Include="Engine\SpriteCommon\Sprite\Sprite.h">
+      <Filter>Engine\SpriteCommon</Filter>
     </ClInclude>
-    <ClInclude Include="Light\Light.h">
-      <Filter>Light</Filter>
+    <ClInclude Include="Engine\SpriteCommon\SpriteCommon.h">
+      <Filter>Engine\SpriteCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\TextureManager\TextureManager.h">
+      <Filter>Engine\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVariables\GlobalVariables.h">
+      <Filter>GlobalVariables</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModelCommon\Model\Model.h">
+      <Filter>Engine\ModelCommon\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModelCommon\ModelData\MaterialData3D\MaterialData3D.h">
+      <Filter>Engine\ModelCommon\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModelCommon\ModelData\MeshData3D\MeshData3D.h">
+      <Filter>Engine\ModelCommon\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModelCommon\ModelData\ModelData.h">
+      <Filter>Engine\ModelCommon\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModelCommon\ModelData\VertexData3D\VertexData3D.h">
+      <Filter>Engine\ModelCommon\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.h">
+      <Filter>Engine\ModelCommon\ModelData\ModelDataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\ResourceLeakChecker.h">
+      <Filter>Engine\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

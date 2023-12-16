@@ -14,7 +14,24 @@ class Model
 {
 public:
 
+	// Model(const std::string& fileName);
+	// 例)
+	// Cubeフォルダ
+	//   Cube.obj
+	//   Cube.mtl
+	//   hoge.png
+	// の状態
+
+	/// <summary>
+	/// モデルの生成
+	/// </summary>
+	/// <param name="fileName">.objが入っているフォルダの名前( "Cube" 等)</param>
 	Model(const std::string& fileName);
+
+	/// <summary>
+	/// モデルの生成
+	/// </summary>
+	/// <param name="meshHundle">モデルデータのハンドル( ModelDataManager::GetInstance()->LoadObj("Cube") 等)</param>
 	Model(uint32_t meshHundle);
 	~Model();
 
@@ -67,7 +84,7 @@ private:
 
 public:
 
-	Transform transforms_;
+	Transform transform_;
 
 private:
 	Matrix4x4 uvMatrix_;

@@ -10,18 +10,28 @@
 #include <wrl.h>
 
 #include <vector>
-#include "../Utils/Math/Vector2.h"
-#include "../Engine/WinApp/WinApp.h"
+#include "Utils/Math/Vector2.h"
+#include "WinApp/WinApp.h"
 
 class Input
 {
 public:
 
 	enum class GamePadButton {
-		kA,
-		kB,
-		kX,
-		kY
+		A,
+		B,
+		X,
+		Y,
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		START,
+		BACK,
+		LEFT_THUMB,
+		RIGHT_THUMB,
+		LEFT_SHOULDER,
+		RIGHT_SHOULDER,
 	};
 
 	// namespace省略
@@ -29,38 +39,63 @@ public:
 
 	static Input* GetInstance();
 
-	/// <summary>
-	/// 初期化
-	/// </summary>
 	void Initialize();
 
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// キーの押下をチェック
+	/// キーボードが押された瞬間
 	/// </summary>
 	/// <param name="keyNumber">キー番号( DIK_0 等)</param>
 	/// <returns>押されているか</returns>
-	bool PushKey(BYTE keyNumber) const;
+	bool PressedKey(BYTE keyNumber) const;
 
 	/// <summary>
-	/// キーのトリガーをチェック
+	/// キーボードが押されている間
 	/// </summary>
 	/// <param name="keyNumber">キー番号( DIK_0 等)</param>
-	/// <returns>トリガーか</returns>
-	bool TriggerKey(BYTE keyNumber) const;
+	/// <returns>押され続けているか</returns>
+	bool PressingKey(BYTE keyNumber) const;
 
+	/// <summary>
+	/// キーボードを離した瞬間
+	/// </summary>
+	/// <param name="keyNumber">キー番号( DIK_0 等)</param>
+	/// <returns>離したか</returns>
+	bool ReleasedKey(BYTE keyNumber) const;
+
+
+	/// <summary>
+	/// ゲームパッドのLスティックの入力
+	/// </summary>
+	/// <returns>Vector2</returns>
 	Vector2 GetGamePadLStick();
 
+	/// <summary>
+	/// ゲームパッドのRスティックの入力
+	/// </summary>
+	/// <returns>Vector2</returns>
 	Vector2 GetGamePadRStick();
 
+	/// <summary>
+	/// キーボードが押された瞬間
+	/// </summary>
+	/// <param name="button">ボタン( Input::GamePadButton::A 等)</param>
+	/// <returns>押されているか</returns>
 	bool PressedGamePadButton(GamePadButton button);
 
+	/// <summary>
+	/// キーボードが押された瞬間
+	/// </summary>
+	/// <param name="button">ボタン( Input::GamePadButton::A 等)</param>
+	/// <returns>押され続けているか</returns>
 	bool PressingGamePadButton(GamePadButton button);
 
+	/// <summary>
+	/// キーボードが押された瞬間
+	/// </summary>
+	/// <param name="button">ボタン( Input::GamePadButton::A 等)</param>
+	/// <returns>離れたか</returns>
 	bool ReleasedGamePadButton(GamePadButton button);
 
 private:
@@ -79,7 +114,7 @@ private:
 	ComPtr<IDirectInput8> dInput_;
 	ComPtr<IDirectInputDevice8> devKeyboard_;
 	ComPtr<IDirectInputDevice8> devMouse_;
-	
+
 	XINPUT_STATE xInputState_ = {};
 	XINPUT_STATE preXInputState_ = {};
 

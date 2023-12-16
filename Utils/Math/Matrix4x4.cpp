@@ -321,33 +321,7 @@ Matrix4x4 Matrix4x4::MakeAffinMatrix(const Vector3& scale, const Vector3& rotate
 
 Matrix4x4 Matrix4x4::MakeAffinMatrix(const Transform& transform) {
 
-	if (transform.isUseOtherRotateMat_) {
-
-		Matrix4x4 result = {
-		transform.scale_.x * transform.otherRotateMat_.m[0][0],
-		transform.scale_.x * transform.otherRotateMat_.m[0][1],
-		transform.scale_.x * transform.otherRotateMat_.m[0][2],
-		0,
-		transform.scale_.y * transform.otherRotateMat_.m[1][0],
-		transform.scale_.y * transform.otherRotateMat_.m[1][1],
-		transform.scale_.y * transform.otherRotateMat_.m[1][2],
-		0,
-		transform.scale_.z * transform.otherRotateMat_.m[2][0],
-		transform.scale_.z * transform.otherRotateMat_.m[2][1],
-		transform.scale_.z * transform.otherRotateMat_.m[2][2],
-		0,
-		transform.translate_.x,
-		transform.translate_.y,
-		transform.translate_.z,
-		1 };
-
-		return result;
-
-
-	}
-	else {
-		return MakeAffinMatrix(transform.scale_, transform.rotate_, transform.translate_);
-	}
+	return MakeAffinMatrix(transform.scale_, transform.rotate_, transform.translate_);
 }
 
 Matrix4x4 Matrix4x4::MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip) {

@@ -3,8 +3,8 @@
 #include <cassert>
 #include "SpriteCommon/SpriteCommon.h"
 #include "TextureManager/TextureManager.h"
-#include "Engine/DirectXCommon/DirectXCommon.h"
-#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 
 Sprite::Sprite()
 {

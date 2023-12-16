@@ -1,9 +1,9 @@
 #include "DescriptorHeapManager.h"
 #include <cassert>
-#include "Engine/DebugLog/DebugLog.h"
+#include "Engine/Base/DebugLog/DebugLog.h"
 #include <format>
 #include "Externals/DirectXTex/d3dx12.h"
-#include "Engine/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
 
 DescriptorHeapManager* DescriptorHeapManager::GetInstance()
 {

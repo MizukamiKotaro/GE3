@@ -1,6 +1,6 @@
-#include "Engine/WinApp/WinApp.h"
-#include "Engine/ResourceLeakChecker.h"
-#include "Engine/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/WinApp/WinApp.h"
+#include "Engine/Base/ResourceLeakChecker.h"
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Input/Input.h"
 #include "SpriteCommon/SpriteCommon.h"
 #include "SpriteCommon/Sprite/Sprite.h"
@@ -9,7 +9,7 @@
 #include "externals/imgui/imgui.h"
 #include "ModelCommon/ModelCommon.h"
 #include "GlobalVariables/GlobalVariables.h"
-#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "ModelCommon/Model/Model.h"
 #include "Utils/Camera/Camera.h"
 #include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
@@ -125,7 +125,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 	Camera camera;
 	camera.Initialize();
-	camera.transforms_.translate_ = { 0.0f,2.0f,-50.0f };
+	camera.transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
 #pragma endregion 最初のシーンの初期化
 	
@@ -150,7 +150,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 #pragma region 最初のシーンの更新
 
 
-		if (input->TriggerKey(DIK_SPACE)) {
+		if (input->PressedKey(DIK_SPACE)) {
 			if (isMesh1) {
 				isMesh1 = false;
 				model->SetMesh(mesh2);
@@ -161,12 +161,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 			}
 		}
 
-		if (input->TriggerKey(DIK_A)) {
+		if (input->PressedKey(DIK_A)) {
 			model->SetTex(textureManager->LoadTexture("Resources/uvChecker.png"));
 		}
 
 		ImGui::Begin("a");
-		ImGui::SliderFloat3("a", &model->transforms_.translate_.x, -100.0f, 100.0f);
+		ImGui::SliderFloat3("a", &model->transform_.translate_.x, -100.0f, 100.0f);
 		ImGui::End();
 
 		model->Update();

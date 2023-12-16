@@ -107,7 +107,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/ModelCommon/Model;$(ProjectDir)/Engine/ModelCommon/ModelData/ModelDataManager;$(ProjectDir)/Engine/SpriteCommon/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Utils/Math;$(ProjectDir)/Utils/Transfrom;$(ProjectDir)/Utils/Camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -131,7 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/ModelCommon/Model;$(ProjectDir)/Engine/ModelCommon/ModelData/ModelDataManager;$(ProjectDir)/Engine/SpriteCommon/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Utils/Math;$(ProjectDir)/Utils/Transfrom;$(ProjectDir)/Utils/Camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,11 +147,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio\Audio.cpp" />
-    <ClCompile Include="Engine\DebugLog\DebugLog.cpp" />
-    <ClCompile Include="Engine\DescriptorHeapManager\DescriptorHeapManager.cpp" />
-    <ClCompile Include="Engine\DirectXCommon\DirectXCommon.cpp" />
-    <ClCompile Include="Engine\WinApp\WinApp.cpp" />
+    <ClCompile Include="Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Engine\Base\DebugLog\DebugLog.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeapManager.cpp" />
+    <ClCompile Include="Engine\Base\DirectXCommon\DirectXCommon.cpp" />
+    <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="Engine\ImGuiManager\ImGuiManager.cpp" />
+    <ClCompile Include="Engine\Input\Input.cpp" />
+    <ClCompile Include="Engine\Light\Light.cpp" />
+    <ClCompile Include="Engine\ModelCommon\ModelCommon.cpp" />
+    <ClCompile Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp" />
+    <ClCompile Include="Engine\ModelCommon\Model\Model.cpp" />
+    <ClCompile Include="Engine\ParticleCommon\ParticleCommon.cpp" />
+    <ClCompile Include="Engine\ParticleCommon\Particle\Particle.cpp" />
+    <ClCompile Include="Engine\SpriteCommon\SpriteCommon.cpp" />
+    <ClCompile Include="Engine\SpriteCommon\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
     <ClCompile Include="externals\imgui\imgui.cpp" />
     <ClCompile Include="externals\imgui\imgui_demo.cpp" />
     <ClCompile Include="externals\imgui\imgui_draw.cpp" />
@@ -160,18 +171,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="GlobalVariables\GlobalVariables.cpp" />
-    <ClCompile Include="ImGuiManager\ImGuiManager.cpp" />
-    <ClCompile Include="Input\Input.cpp" />
-    <ClCompile Include="Light\Light.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ModelCommon\ModelCommon.cpp" />
-    <ClCompile Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp" />
-    <ClCompile Include="ModelCommon\Model\Model.cpp" />
-    <ClCompile Include="ParticleCommon\ParticleCommon.cpp" />
-    <ClCompile Include="ParticleCommon\Particle\Particle.cpp" />
-    <ClCompile Include="SpriteCommon\SpriteCommon.cpp" />
-    <ClCompile Include="SpriteCommon\Sprite\Sprite.cpp" />
-    <ClCompile Include="TextureManager\TextureManager.cpp" />
     <ClCompile Include="Utils\Camera\Camera.cpp" />
     <ClCompile Include="Utils\Collision\Collision.cpp" />
     <ClCompile Include="Utils\Ease\Ease.cpp" />
@@ -189,12 +189,27 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Utils\Transform\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio\Audio.h" />
-    <ClInclude Include="Engine\DebugLog\DebugLog.h" />
-    <ClInclude Include="Engine\DescriptorHeapManager\DescriptorHeapManager.h" />
-    <ClInclude Include="Engine\DirectXCommon\DirectXCommon.h" />
-    <ClInclude Include="Engine\ResourceLeakChecker.h" />
-    <ClInclude Include="Engine\WinApp\WinApp.h" />
+    <ClInclude Include="Engine\Audio\Audio.h" />
+    <ClInclude Include="Engine\Base\DebugLog\DebugLog.h" />
+    <ClInclude Include="Engine\Base\DescriptorHeapManager\DescriptorHeapManager.h" />
+    <ClInclude Include="Engine\Base\DirectXCommon\DirectXCommon.h" />
+    <ClInclude Include="Engine\Base\ResourceLeakChecker.h" />
+    <ClInclude Include="Engine\Base\WinApp\WinApp.h" />
+    <ClInclude Include="Engine\ImGuiManager\ImGuiManager.h" />
+    <ClInclude Include="Engine\Input\Input.h" />
+    <ClInclude Include="Engine\Light\Light.h" />
+    <ClInclude Include="Engine\ModelCommon\ModelCommon.h" />
+    <ClInclude Include="Engine\ModelCommon\ModelData\MaterialData3D\MaterialData3D.h" />
+    <ClInclude Include="Engine\ModelCommon\ModelData\MeshData3D\MeshData3D.h" />
+    <ClInclude Include="Engine\ModelCommon\ModelData\ModelData.h" />
+    <ClInclude Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.h" />
+    <ClInclude Include="Engine\ModelCommon\ModelData\VertexData3D\VertexData3D.h" />
+    <ClInclude Include="Engine\ModelCommon\Model\Model.h" />
+    <ClInclude Include="Engine\ParticleCommon\ParticleCommon.h" />
+    <ClInclude Include="Engine\ParticleCommon\Particle\Particle.h" />
+    <ClInclude Include="Engine\SpriteCommon\SpriteCommon.h" />
+    <ClInclude Include="Engine\SpriteCommon\Sprite\Sprite.h" />
+    <ClInclude Include="Engine\TextureManager\TextureManager.h" />
     <ClInclude Include="externals\imgui\imconfig.h" />
     <ClInclude Include="externals\imgui\imgui.h" />
     <ClInclude Include="externals\imgui\imgui_impl_dx12.h" />
@@ -204,21 +219,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\imgui\imstb_textedit.h" />
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
     <ClInclude Include="GlobalVariables\GlobalVariables.h" />
-    <ClInclude Include="ImGuiManager\ImGuiManager.h" />
-    <ClInclude Include="Input\Input.h" />
-    <ClInclude Include="Light\Light.h" />
-    <ClInclude Include="ModelCommon\ModelCommon.h" />
-    <ClInclude Include="ModelCommon\ModelData\MaterialData3D\MaterialData3D.h" />
-    <ClInclude Include="ModelCommon\ModelData\MeshData3D\MeshData3D.h" />
-    <ClInclude Include="ModelCommon\ModelData\ModelData.h" />
-    <ClInclude Include="ModelCommon\ModelData\ModelDataManager\ModelDataManager.h" />
-    <ClInclude Include="ModelCommon\ModelData\VertexData3D\VertexData3D.h" />
-    <ClInclude Include="ModelCommon\Model\Model.h" />
-    <ClInclude Include="ParticleCommon\ParticleCommon.h" />
-    <ClInclude Include="ParticleCommon\Particle\Particle.h" />
-    <ClInclude Include="SpriteCommon\SpriteCommon.h" />
-    <ClInclude Include="SpriteCommon\Sprite\Sprite.h" />
-    <ClInclude Include="TextureManager\TextureManager.h" />
     <ClInclude Include="Utils\Camera\Camera.h" />
     <ClInclude Include="Utils\Collision\Collision.h" />
     <ClInclude Include="Utils\Ease\Ease.h" />

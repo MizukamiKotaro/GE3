@@ -14,7 +14,7 @@ class Particle
 {
 public:
 
-	static const uint32_t kNumInstance = 256;
+	static const uint32_t kNumInstance = 10;
 
 	Particle(const std::string& fileName);
 	~Particle();
@@ -69,7 +69,7 @@ private:
 
 public:
 
-	Transform transforms_[kNumInstance];
+	Transform transform_[kNumInstance];
 
 private:
 	Matrix4x4 uvMatrix_;

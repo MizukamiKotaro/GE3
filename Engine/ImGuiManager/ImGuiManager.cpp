@@ -3,9 +3,9 @@
 #include "../Externals/imgui/imgui_impl_dx12.h"
 #include "Externals/imgui/imgui_impl_win32.h"
 #pragma comment(lib, "winmm.lib")
-#include "Engine/DirectXCommon/DirectXCommon.h"
-#include "Engine/WinApp/WinApp.h"
-#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/WinApp/WinApp.h"
+#include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 
 //ImGuiManager* ImGuiManager::GetInstance()
 //{

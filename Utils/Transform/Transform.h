@@ -15,15 +15,16 @@ public:
 
 	bool IsCollisionXZ(const Transform& transform);
 
+	/// <summary>
+	/// 平行移動のみの親のセット
+	/// </summary>
+	/// <param name="transform">親にするTransformのポインタ</param>
 	void SetWorldTranslateParent(const Transform* transform);
 
+	/// <summary>
+	/// 平行移動の親子関係の解除
+	/// </summary>
 	void ClearWorldTranslateParent();
-
-	void SetOtherRotateMatrix(const Matrix4x4& mat);
-
-	void SetOtherRotateMatrix(const Vector3& from, const Vector3& to);
-
-	void SetOtherRotateMatrix(const Vector3& from, const Vector3& to, const Matrix4x4& multiplyMat);
 
 public:
 
@@ -38,9 +39,5 @@ public:
 	const Transform* parent_ = nullptr;
 
 	const Transform* worldTranslateParent_ = nullptr;
-
-	Matrix4x4 otherRotateMat_;
-
-	bool isUseOtherRotateMat_;
 
 };

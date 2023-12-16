@@ -1,14 +1,14 @@
 #include "Camera.h"
-#include "Engine/WinApp/WinApp.h"
+#include "Engine/Base/WinApp/WinApp.h"
 
 Camera::Camera()
 {
-	transforms_.scale_ = { 1.0f,1.0f,1.0f };
-	transforms_.rotate_ = { 0.0f,0.0f,0.0f };
-	transforms_.translate_ = { 0.0f,0.0f,-15.0f };
-	transforms_.UpdateMatrix();
+	transform_.scale_ = { 1.0f,1.0f,1.0f };
+	transform_.rotate_ = { 0.0f,0.0f,0.0f };
+	transform_.translate_ = { 0.0f,0.0f,-15.0f };
+	transform_.UpdateMatrix();
 	
-	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transforms_.worldMat_);
+	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transform_.worldMat_);
 	projectionMatrix_ = Matrix4x4::MakePerspectiveFovMatrix(0.45f, float(WinApp::kWindowWidth) / float(WinApp::kWindowHeight), 0.1f, 1050.0f);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
@@ -18,19 +18,19 @@ Camera::Camera()
 
 void Camera::Initialize()
 {
-	transforms_.scale_ = { 1.0f,1.0f,1.0f };
-	transforms_.rotate_ = { 0.0f,0.0f,0.0f };
-	transforms_.translate_ = { 0.0f,0.0f,-15.0f };
-	transforms_.UpdateMatrix();
+	transform_.scale_ = { 1.0f,1.0f,1.0f };
+	transform_.rotate_ = { 0.0f,0.0f,0.0f };
+	transform_.translate_ = { 0.0f,0.0f,-15.0f };
+	transform_.UpdateMatrix();
 
-	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transforms_.worldMat_);
+	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transform_.worldMat_);
 	projectionMatrix_ = Matrix4x4::MakePerspectiveFovMatrix(0.45f, float(WinApp::kWindowWidth) / float(WinApp::kWindowHeight), 0.1f, 1050.0f);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 }
 
 void Camera::Update()
 {
-	transforms_.UpdateMatrix();
-	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transforms_.worldMat_);
+	transform_.UpdateMatrix();
+	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transform_.worldMat_);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 }

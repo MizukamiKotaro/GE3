@@ -1,7 +1,7 @@
 #include "ModelDataManager.h"
-#include "Engine/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include <cassert>
-#include "Engine/DebugLog/DebugLog.h"
+#include "Engine/Base/DebugLog/DebugLog.h"
 #include <format>
 #include <fstream>
 #include <sstream>

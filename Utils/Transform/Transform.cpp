@@ -3,7 +3,6 @@
 
 Transform::Transform()
 {
-	isUseOtherRotateMat_ = false;
 
 	scale_ = { 1.0f,1.0f,1.0f };
 	rotate_ = { 0.0f,0.0f,0.0f };
@@ -76,23 +75,4 @@ void Transform::ClearWorldTranslateParent()
 		translate_ += worldTranslateParent_->worldPos_;
 		worldTranslateParent_ = nullptr;
 	}
-}
-
-void Transform::SetOtherRotateMatrix(const Matrix4x4& mat)
-{
-	otherRotateMat_ = mat;
-	isUseOtherRotateMat_ = true;
-}
-
-void Transform::SetOtherRotateMatrix(const Vector3& from, const Vector3& to)
-{
-	otherRotateMat_ = Matrix4x4::DirectionToDirection(from, to);
-	isUseOtherRotateMat_ = true;
-}
-
-void Transform::SetOtherRotateMatrix(const Vector3& from, const Vector3& to, const Matrix4x4& multiplyMat)
-{
-	otherRotateMat_ = Matrix4x4::DirectionToDirection(from, to);
-	otherRotateMat_ = otherRotateMat_ * multiplyMat;
-	isUseOtherRotateMat_ = true;
 }

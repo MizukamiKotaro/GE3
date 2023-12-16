@@ -18,7 +18,7 @@ public:
 
 public:
 
-	Transform transforms_;
+	Transform transform_;
 
 private:
 

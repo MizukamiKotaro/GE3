@@ -6,7 +6,7 @@
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
-#include "Engine/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 
 using namespace Microsoft::WRL;
 
