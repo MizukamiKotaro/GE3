@@ -22,13 +22,49 @@ void SpriteCommon::Initialize()
 
 }
 
-void SpriteCommon::PreDraw(int blendMode)
+void SpriteCommon::PreDraw()
 {
+	blendMode_ = BlendMode::kBlendModeNormal;
+
 	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
 	commandList_->SetGraphicsRootSignature(rootSignature_.Get());
-	commandList_->SetPipelineState(graphicsPipelineStates_[blendMode].Get()); // PSOを設定
+	commandList_->SetPipelineState(graphicsPipelineStates_[blendMode_].Get()); // PSOを設定
 	//形状を設定。PSOに設定しているものとは別。同じものを設定すると考えておけばいい
 	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+}
+
+void SpriteCommon::SetBlendMode(uint32_t blendMode)
+{
+	if (static_cast<uint32_t>(blendMode_) != blendMode) {
+
+		switch (blendMode)
+		{
+		case 0:
+			blendMode_ = BlendMode::kBlendModeNone;
+			break;
+		case 1:
+			blendMode_ = BlendMode::kBlendModeNormal;
+			break;
+		case 2:
+			blendMode_ = BlendMode::kBlendModeAdd;
+			break;
+		case 3:
+			blendMode_ = BlendMode::kBlendModeSubtract;
+			break;
+		case 4:
+			blendMode_ = BlendMode::kBlendModeMultiply;
+			break;
+		case 5:
+			blendMode_ = BlendMode::kBlendModeScreen;
+			break;
+		default:
+			blendMode_ = BlendMode::kBlendModeNormal;
+			break;
+		}
+
+		commandList_->SetPipelineState(graphicsPipelineStates_[blendMode_].Get());
+	}
 
 }
 

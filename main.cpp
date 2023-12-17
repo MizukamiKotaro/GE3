@@ -104,12 +104,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの初期化
 
-	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
-	sprite->LoadTexture("Resources/uvChecker.png");
-	sprite->pos_.x += 0.5f;
+	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>("Resources/uvChecker.png");
+	sprite->pos_.x += 100.0f;
 	sprite->Update();
-	std::unique_ptr<Sprite> sprite1 = std::make_unique<Sprite>();
-	sprite1->LoadTexture("Resources/uvChecker.png");
+	std::unique_ptr<Sprite> sprite1 = std::make_unique<Sprite>("Resources/uvChecker.png");
 	sprite1->Update();
 
 	uint32_t mesh1 = modelManager->LoadObj("Cube");
@@ -183,11 +181,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの描画
 
-	/*	model->Draw(camera.GetViewProjection());
-		sprite->Draw(Sprite::BlendMode::kBlendModeNormal);
-		sprite1->Draw(Sprite::BlendMode::kBlendModeAdd);*/
+		spriteCommon->PreDraw();
+		sprite->Draw(camera.GetOrthographicMat(), Sprite::BlendMode::kBlendModeNormal);
+		sprite1->Draw(camera.GetOrthographicMat(), Sprite::BlendMode::kBlendModeAdd);
+
+		modelCommon->PreDraw();
+		model->Draw(camera.GetViewProjection());
+
+		ParticleCommon::GetInstance()->PreDraw();
 		particle->Draw(camera.GetViewProjection());
 
+		spriteCommon->PreDraw();
 
 #pragma endregion 最初のシーンの描画
 

@@ -29,7 +29,9 @@ public:
 
 	void Initialize();
 
-	void PreDraw(int blendMode);
+	void PreDraw();
+
+	void SetBlendMode(uint32_t blendMode);
 
 public:
 
@@ -54,6 +56,8 @@ private:
 	//ComPtr<ID3D12PipelineState> graphicsPipelineState_;
 
 	std::array<ComPtr<ID3D12PipelineState>, kCountOfBlendMode> graphicsPipelineStates_;
+
+	BlendMode blendMode_ = BlendMode::kBlendModeNormal;
 
 private:
 	SpriteCommon() = default;

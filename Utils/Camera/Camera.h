@@ -16,6 +16,8 @@ public:
 
 	const Matrix4x4 GetViewProjection() { return viewProjectionMatrix_; }
 
+	const Matrix4x4 GetOrthographicMat() { return orthographicMat_; }
+
 public:
 
 	Transform transform_;
@@ -24,5 +26,7 @@ private:
 
 	Matrix4x4 projectionMatrix_;
 	Matrix4x4 viewProjectionMatrix_;
+
+	Matrix4x4 orthographicMat_;
 
 };

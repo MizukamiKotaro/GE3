@@ -13,7 +13,10 @@ class Sprite
 {
 public:
 
-	Sprite();
+	Sprite(const std::string& filePath, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+		const Vector4 & color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	Sprite(uint32_t texHundle, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+		const Vector4& color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 	~Sprite();
 
 	enum class BlendMode
@@ -50,11 +53,40 @@ public:
 
 	void Update();
 
-	void Draw(BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void Draw(const Matrix4x4& orthographicMat,  BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 public:
 
 	void LoadTexture(const std::string& filePath);
+
+	void SetTextureHandle(uint32_t textureHundle);
+
+	void SetAnchorPoint(const Vector2& anchorpoint);
+
+	void SetColor(const Vector4& color);
+
+	void SetIsFlipX(bool isFlipX);
+
+	void SetIsFlipY(bool isFlipY);
+
+	void SetTextureTopLeft(const Vector2& texTopLeft);
+
+	void SetTextureSize(const Vector2& texSize);
+
+private:
+	Sprite() = default;
+
+	void TransferSize();
+
+	void TransferUV();
+
+	void AdjustTextureSize();
+
+	void CreateVertexRes();
+
+	void CreateMaterialRes();
+
+	void CreateTranformRes();
 
 private:
 
@@ -65,20 +97,35 @@ private:
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
 
-	ComPtr<ID3D12Resource> instancingResource_;
-	TransformationMatrix* instancingData_;
+	ComPtr<ID3D12Resource> transformResource_;
+	TransformationMatrix* transformData_;
 
 public:
 
-	Vector2 scale_;
 	float rotate_;
 	Vector2 pos_;
+	Vector2 size_;
 
 private:
+
+	Matrix4x4 worldMat_;
 
 	Vector2 uvTranslate_;
 	Vector2 uvScale_;
 	float uvRotate_;
+
+	Vector4 color_;
+
+	Vector2 anchorPoint_;
+
+	Vector2 textureLeftTop_;
+
+	Vector2 textureSize_;
+
+	bool isFlipX_ = false;
+	bool isFlipY_ = false;
+
+	bool isInvisible_ = false;
 
 	bool isLoad_;
 	uint32_t textureHundle_;

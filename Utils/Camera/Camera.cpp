@@ -12,6 +12,7 @@ Camera::Camera()
 	projectionMatrix_ = Matrix4x4::MakePerspectiveFovMatrix(0.45f, float(WinApp::kWindowWidth) / float(WinApp::kWindowHeight), 0.1f, 1050.0f);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
+	orthographicMat_ = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kWindowWidth), float(WinApp::kWindowHeight), 0.0f, 1.0f);
 }
 
 

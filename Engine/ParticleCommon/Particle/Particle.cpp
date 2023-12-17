@@ -89,8 +89,6 @@ void Particle::Draw(const Matrix4x4& viewProjection)
 
 	const ModelData* modelData = ModelDataManager::GetInstance()->GetModelData(meshHundle_);
 
-	ParticleCommon::GetInstance()->PreDraw();
-
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	//Spriteの描画。変更に必要なものだけ変更する

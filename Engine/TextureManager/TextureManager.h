@@ -33,6 +33,8 @@ public:
 		return textures_[handle].srvGPUDescriptorHandle_;
 	};
 
+	const D3D12_RESOURCE_DESC GetTextureDesc(uint32_t handle) const { return textures_[handle].resource_->GetDesc(); }
+
 	uint32_t LoadTexture(const std::string& filePath);
 
 private:
