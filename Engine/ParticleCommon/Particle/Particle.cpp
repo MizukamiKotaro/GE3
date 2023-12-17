@@ -6,6 +6,7 @@
 #include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "ParticleCommon/ParticleCommon.h"
+#include "Utils/RandomGenerator/RandomGenerator.h"
 
 Particle::Particle(const std::string& fileName)
 {
@@ -23,17 +24,20 @@ Particle::Particle(const std::string& fileName)
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 
 	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix) * kNumInstance);
+	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(ParticleForGPU) * kNumInstance);
 	instancingData_ = nullptr;
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 
 	for (uint32_t index = 0; index < kNumInstance; index++) {
 		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
 		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
+		instancingData_[index].color = { 1.0f,1.0f,1.0f,1.0f };
 
-		transform_[index] = Transform();
-		transform_[index].translate_ = { index * 0.1f,index * 0.1f ,index * 0.1f };
-		transform_[index].scale_ *= 10.0f;
+		actives_[index].transform = Transform();
+		actives_[index].transform.translate_ = { index * 0.1f,index * 0.1f ,index * 0.1f };
+		actives_[index].transform.scale_ *= 10.0f;
+		actives_[index].velocity = {};
+		actives_[index].color = { 1.0f,1.0f,1.0f,1.0f };
 	}
 
 	CreateSRV();
@@ -65,13 +69,21 @@ Particle::~Particle()
 
 void Particle::Initialize()
 {
-	
+	RandomGenerator* rand = RandomGenerator::GetInstance();
+
+	for (uint32_t index = 0; index < kNumInstance; index++) {
+		actives_[index].transform.translate_ = rand->RandVector3(-1.0f, 1.0f);
+		actives_[index].velocity = rand->RandVector3(-1.0f / 60.0f, 1.0f / 60.0f);
+		actives_[index].color = { rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),1.0f };
+		actives_[index].transform.UpdateMatrix();
+	}
 }
 
 void Particle::Update()
 {
 	for (uint32_t index = 0; index < kNumInstance; index++) {
-		transform_[index].UpdateMatrix();
+		actives_[index].transform.translate_ += actives_[index].velocity;
+		actives_[index].transform.UpdateMatrix();
 	}
 
 	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
@@ -80,8 +92,9 @@ void Particle::Update()
 void Particle::Draw(const Matrix4x4& viewProjection)
 {
 	for (uint32_t index = 0; index < kNumInstance; index++) {
-		instancingData_[index].World = transform_[index].worldMat_;
-		instancingData_[index].WVP = transform_[index].worldMat_ * viewProjection;
+		instancingData_[index].World = actives_[index].transform .worldMat_;
+		instancingData_[index].WVP = actives_[index].transform.worldMat_ * viewProjection;
+		instancingData_[index].color = actives_[index].color;
 	}
 	materialData_->uvTransform = uvMatrix_;
 
@@ -116,7 +129,7 @@ void Particle::CreateSRV()
 	srvDesc.Buffer.FirstElement = 0;
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	srvDesc.Buffer.NumElements = kNumInstance;
-	srvDesc.Buffer.StructureByteStride = sizeof(TransformationMatrix);
+	srvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
 
 	srvCPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVCPUDescriptorHandle();
 	srvGPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVGPUDescriptorHandle();

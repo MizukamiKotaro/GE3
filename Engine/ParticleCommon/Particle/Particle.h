@@ -27,9 +27,10 @@ public:
 		Matrix4x4 uvTransform;
 	};
 
-	struct TransformationMatrix {
+	struct ParticleForGPU {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
+		Vector4 color;
 	};
 
 	struct DirectionalLight
@@ -37,6 +38,12 @@ public:
 		Vector4 color; // ライトの色
 		Vector3 direction; // ライトの向き
 		float intensity; // 輝度
+	};
+
+	struct Active {
+		Transform transform;
+		Vector3 velocity;
+		Vector4 color;
 	};
 
 	// namespace省略
@@ -61,7 +68,7 @@ private:
 	Material* materialData_;
 
 	ComPtr<ID3D12Resource> instancingResource_;
-	TransformationMatrix* instancingData_;
+	ParticleForGPU* instancingData_;
 
 	ComPtr<ID3D12Resource> directionalLightResource_;
 	DirectionalLight* directionalLightData_;
@@ -69,7 +76,7 @@ private:
 
 public:
 
-	Transform transform_[kNumInstance];
+	Active actives_[kNumInstance];
 
 private:
 	Matrix4x4 uvMatrix_;

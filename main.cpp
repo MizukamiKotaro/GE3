@@ -15,6 +15,7 @@
 #include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
 #include "ParticleCommon/ParticleCommon.h"
 #include "ParticleCommon/Particle/Particle.h"
+#include "Utils/RandomGenerator/RandomGenerator.h"
 
 static ResourceLeackChecker leakCheck;
 

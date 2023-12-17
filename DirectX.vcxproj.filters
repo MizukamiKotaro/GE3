@@ -219,6 +219,9 @@
     <ClCompile Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp">
       <Filter>Engine\ModelCommon\ModelData\ModelDataManager</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\RandomGenerator\RandomGenerator.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\ResourceLeakChecker.h">
       <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\RandomGenerator\RandomGenerator.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
