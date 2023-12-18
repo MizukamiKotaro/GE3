@@ -3,12 +3,10 @@
 #include <cassert>
 #include "TextureManager/TextureManager.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
-#include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
+#include "ModelData/ModelDataManager/ModelDataManager.h"
 
 Model::Model(const std::string& fileName)
 {
-
-	ModelCommon* modelCommon = ModelCommon::GetInstance();
 
 	ModelDataManager* modelManager = ModelDataManager::GetInstance();
 
@@ -51,8 +49,6 @@ Model::Model(const std::string& fileName)
 
 Model::Model(uint32_t meshHundle)
 {
-	ModelCommon* modelCommon = ModelCommon::GetInstance();
-
 	ModelDataManager* modelManager = ModelDataManager::GetInstance();
 
 	meshHundle_ = meshHundle;

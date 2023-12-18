@@ -16,9 +16,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{4489984c-89d1-47e6-8f80-b5766a090682}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{bb920b16-437b-4c88-945e-f165f871c387}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{81b069ba-c471-4d14-950d-9136fb82e22d}</UniqueIdentifier>
     </Filter>
@@ -73,29 +70,41 @@
     <Filter Include="Engine\Light">
       <UniqueIdentifier>{3d09982c-b069-46b8-a791-9faf2375607d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\ModelCommon">
-      <UniqueIdentifier>{4b215bcf-8667-48ce-a3cb-ef8873ff425c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ModelCommon\Model">
-      <UniqueIdentifier>{9b3d7ddc-abf8-49d9-82a2-5883563904f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ModelCommon\ModelData">
-      <UniqueIdentifier>{fd8f338d-7211-429a-994c-c7ecf986d445}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ModelCommon\ModelData\ModelDataManager">
-      <UniqueIdentifier>{049d1c8a-cd00-4ee8-a3b9-aa6b7b2786d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ParticleCommon">
-      <UniqueIdentifier>{9221d928-522c-462d-ac04-6e656b39b273}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\SpriteCommon">
-      <UniqueIdentifier>{12e3c8af-bab1-418c-a0a6-d5328391d763}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\SpriteCommon\Sprite">
-      <UniqueIdentifier>{a350541b-95e7-4731-93bf-a72bdfda0080}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\TextureManager">
       <UniqueIdentifier>{a31d3de8-c631-435d-9ea0-0a2bd605b732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines">
+      <UniqueIdentifier>{cef2d969-4cec-445d-8982-128fe6ef7122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline">
+      <UniqueIdentifier>{07299507-6aa1-4da6-8d3a-89ce0f4b5afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\ModelGraphicsPipline">
+      <UniqueIdentifier>{0ce94d8a-bc1f-4820-87d0-9bf7c6f30dab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Shaders">
+      <UniqueIdentifier>{bb920b16-437b-4c88-945e-f165f871c387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\SpirteGraphicsPipeline">
+      <UniqueIdentifier>{39ff2cbd-7c9e-42e7-8607-ed716620abb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\GraphicsPiplineManager">
+      <UniqueIdentifier>{588cb300-bf4c-440f-a8cd-8dac550ed88b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model">
+      <UniqueIdentifier>{9b3d7ddc-abf8-49d9-82a2-5883563904f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\ModelData">
+      <UniqueIdentifier>{fd8f338d-7211-429a-994c-c7ecf986d445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\ModelData\ModelDataManager">
+      <UniqueIdentifier>{049d1c8a-cd00-4ee8-a3b9-aa6b7b2786d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Particle">
+      <UniqueIdentifier>{9221d928-522c-462d-ac04-6e656b39b273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Sprite">
+      <UniqueIdentifier>{a350541b-95e7-4731-93bf-a72bdfda0080}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,49 +132,49 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Shape\AABB.cpp">
+    <ClCompile Include="Engine\Utils\Shape\AABB.cpp">
       <Filter>Utils\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Math\calc.cpp">
+    <ClCompile Include="Engine\Utils\Math\calc.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Camera\Camera.cpp">
+    <ClCompile Include="Engine\Utils\Camera\Camera.cpp">
       <Filter>Utils\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Collision\Collision.cpp">
+    <ClCompile Include="Engine\Utils\Collision\Collision.cpp">
       <Filter>Utils\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Ease\Ease.cpp">
+    <ClCompile Include="Engine\Utils\Ease\Ease.cpp">
       <Filter>Utils\Ease</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Math\Matrix3x3.cpp">
+    <ClCompile Include="Engine\Utils\Math\Matrix3x3.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Math\Matrix4x4.cpp">
+    <ClCompile Include="Engine\Utils\Math\Matrix4x4.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Shape\OBB.cpp">
+    <ClCompile Include="Engine\Utils\Shape\OBB.cpp">
       <Filter>Utils\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Shape\Plane.cpp">
+    <ClCompile Include="Engine\Utils\Shape\Plane.cpp">
       <Filter>Utils\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Shape\Sphere.cpp">
+    <ClCompile Include="Engine\Utils\Shape\Sphere.cpp">
       <Filter>Utils\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Shape\Triangle.cpp">
+    <ClCompile Include="Engine\Utils\Shape\Triangle.cpp">
       <Filter>Utils\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Math\Vector2.cpp">
+    <ClCompile Include="Engine\Utils\Math\Vector2.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Math\Vector3.cpp">
+    <ClCompile Include="Engine\Utils\Math\Vector3.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Math\Quaternion.cpp">
+    <ClCompile Include="Engine\Utils\Math\Quaternion.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Transform\Transform.cpp">
+    <ClCompile Include="Engine\Utils\Transform\Transform.cpp">
       <Filter>Utils\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\DebugLog\DebugLog.cpp">
@@ -183,9 +192,6 @@
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ModelCommon\ModelCommon.cpp">
-      <Filter>Engine\ModelCommon</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ImGuiManager\ImGuiManager.cpp">
       <Filter>Engine\ImGuiManager</Filter>
     </ClCompile>
@@ -195,17 +201,8 @@
     <ClCompile Include="Engine\Light\Light.cpp">
       <Filter>Engine\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ParticleCommon\Particle\Particle.cpp">
-      <Filter>Engine\ParticleCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ParticleCommon\ParticleCommon.cpp">
-      <Filter>Engine\ParticleCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SpriteCommon\Sprite\Sprite.cpp">
-      <Filter>Engine\SpriteCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SpriteCommon\SpriteCommon.cpp">
-      <Filter>Engine\SpriteCommon</Filter>
+    <ClCompile Include="Engine\Particle\Particle.cpp">
+      <Filter>Engine\Particle</Filter>
     </ClCompile>
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp">
       <Filter>Engine\TextureManager</Filter>
@@ -213,14 +210,29 @@
     <ClCompile Include="GlobalVariables\GlobalVariables.cpp">
       <Filter>GlobalVariables</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ModelCommon\Model\Model.cpp">
-      <Filter>Engine\ModelCommon\Model</Filter>
+    <ClCompile Include="Engine\Model\Model.cpp">
+      <Filter>Engine\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp">
-      <Filter>Engine\ModelCommon\ModelData\ModelDataManager</Filter>
+    <ClCompile Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.cpp">
+      <Filter>Engine\Model\ModelData\ModelDataManager</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\RandomGenerator\RandomGenerator.cpp">
+    <ClCompile Include="Engine\Utils\RandomGenerator\RandomGenerator.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\ParticleGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\ModelGraphicsPipline\ModelGraphicsPipline.cpp">
+      <Filter>Engine\GraphicsPipelines\ModelGraphicsPipline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\SpirteGraphicsPipeline\SpriteGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\SpirteGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\Sprite.cpp">
+      <Filter>Engine\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.cpp">
+      <Filter>Engine\GraphicsPipelines\GraphicsPiplineManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,58 +260,58 @@
     <ClInclude Include="externals\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\calc.h">
+    <ClInclude Include="Engine\Utils\Math\calc.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Camera\Camera.h">
+    <ClInclude Include="Engine\Utils\Camera\Camera.h">
       <Filter>Utils\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Collision\Collision.h">
+    <ClInclude Include="Engine\Utils\Collision\Collision.h">
       <Filter>Utils\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\AABB.h">
+    <ClInclude Include="Engine\Utils\Shape\AABB.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Ease\Ease.h">
+    <ClInclude Include="Engine\Utils\Ease\Ease.h">
       <Filter>Utils\Ease</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\Line.h">
+    <ClInclude Include="Engine\Utils\Shape\Line.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\Matrix3x3.h">
+    <ClInclude Include="Engine\Utils\Math\Matrix3x3.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\Matrix4x4.h">
+    <ClInclude Include="Engine\Utils\Math\Matrix4x4.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\OBB.h">
+    <ClInclude Include="Engine\Utils\Shape\OBB.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\Plane.h">
+    <ClInclude Include="Engine\Utils\Shape\Plane.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\Quadrangle.h">
+    <ClInclude Include="Engine\Utils\Shape\Quadrangle.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\Quaternion.h">
+    <ClInclude Include="Engine\Utils\Math\Quaternion.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\Sphere.h">
+    <ClInclude Include="Engine\Utils\Shape\Sphere.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Shape\Triangle.h">
+    <ClInclude Include="Engine\Utils\Shape\Triangle.h">
       <Filter>Utils\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\Vector2.h">
+    <ClInclude Include="Engine\Utils\Math\Vector2.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\Vector3.h">
+    <ClInclude Include="Engine\Utils\Math\Vector3.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\Vector4.h">
+    <ClInclude Include="Engine\Utils\Math\Vector4.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Transform\Transform.h">
+    <ClInclude Include="Engine\Utils\Transform\Transform.h">
       <Filter>Utils\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\DebugLog\DebugLog.h">
@@ -317,9 +329,6 @@
     <ClInclude Include="Engine\Audio\Audio.h">
       <Filter>Engine\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\ModelCommon.h">
-      <Filter>Engine\ModelCommon</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ImGuiManager\ImGuiManager.h">
       <Filter>Engine\ImGuiManager</Filter>
     </ClInclude>
@@ -329,17 +338,8 @@
     <ClInclude Include="Engine\Light\Light.h">
       <Filter>Engine\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ParticleCommon\Particle\Particle.h">
-      <Filter>Engine\ParticleCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ParticleCommon\ParticleCommon.h">
-      <Filter>Engine\ParticleCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SpriteCommon\Sprite\Sprite.h">
-      <Filter>Engine\SpriteCommon</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SpriteCommon\SpriteCommon.h">
-      <Filter>Engine\SpriteCommon</Filter>
+    <ClInclude Include="Engine\Particle\Particle.h">
+      <Filter>Engine\Particle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\TextureManager\TextureManager.h">
       <Filter>Engine\TextureManager</Filter>
@@ -347,29 +347,44 @@
     <ClInclude Include="GlobalVariables\GlobalVariables.h">
       <Filter>GlobalVariables</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\Model\Model.h">
-      <Filter>Engine\ModelCommon\Model</Filter>
+    <ClInclude Include="Engine\Model\Model.h">
+      <Filter>Engine\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\ModelData\MaterialData3D\MaterialData3D.h">
-      <Filter>Engine\ModelCommon\ModelData</Filter>
+    <ClInclude Include="Engine\Model\ModelData\MaterialData3D\MaterialData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\ModelData\MeshData3D\MeshData3D.h">
-      <Filter>Engine\ModelCommon\ModelData</Filter>
+    <ClInclude Include="Engine\Model\ModelData\MeshData3D\MeshData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\ModelData\ModelData.h">
-      <Filter>Engine\ModelCommon\ModelData</Filter>
+    <ClInclude Include="Engine\Model\ModelData\ModelData.h">
+      <Filter>Engine\Model\ModelData</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\ModelData\VertexData3D\VertexData3D.h">
-      <Filter>Engine\ModelCommon\ModelData</Filter>
+    <ClInclude Include="Engine\Model\ModelData\VertexData3D\VertexData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.h">
-      <Filter>Engine\ModelCommon\ModelData\ModelDataManager</Filter>
+    <ClInclude Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.h">
+      <Filter>Engine\Model\ModelData\ModelDataManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\ResourceLeakChecker.h">
       <Filter>Engine\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\RandomGenerator\RandomGenerator.h">
+    <ClInclude Include="Engine\Utils\RandomGenerator\RandomGenerator.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\ParticleGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\ModelGraphicsPipline\ModelGraphicsPipline.h">
+      <Filter>Engine\GraphicsPipelines\ModelGraphicsPipline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\SpirteGraphicsPipeline\SpriteGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\SpirteGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite\Sprite.h">
+      <Filter>Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.h">
+      <Filter>Engine\GraphicsPipelines\GraphicsPiplineManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -379,33 +394,33 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Sprite.PS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Sprite.VS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Sprite.hlsli">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli">
-      <Filter>Shaders</Filter>
+      <Filter>Engine\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

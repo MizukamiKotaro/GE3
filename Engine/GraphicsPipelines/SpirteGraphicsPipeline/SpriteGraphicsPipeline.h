@@ -8,7 +8,7 @@
 #include <array>
 
 // スプライト共通部分
-class SpriteCommon
+class SpriteGraphicsPipeline
 {
 public:
 
@@ -22,7 +22,7 @@ public:
 		kCountOfBlendMode, // 使わない。配列用。
 	};
 
-	static SpriteCommon* GetInstance();
+	static SpriteGraphicsPipeline* GetInstance();
 
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -33,9 +33,6 @@ public:
 
 	void SetBlendMode(uint32_t blendMode);
 
-public:
-
-	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
 
 private:
 
@@ -60,10 +57,10 @@ private:
 	BlendMode blendMode_ = BlendMode::kBlendModeNormal;
 
 private:
-	SpriteCommon() = default;
-	~SpriteCommon() = default;
-	SpriteCommon(const SpriteCommon&) = delete;
-	SpriteCommon& operator=(const SpriteCommon&) = delete;
+	SpriteGraphicsPipeline() = default;
+	~SpriteGraphicsPipeline() = default;
+	SpriteGraphicsPipeline(const SpriteGraphicsPipeline&) = delete;
+	SpriteGraphicsPipeline& operator=(const SpriteGraphicsPipeline&) = delete;
 
 	void InitializeDXC();
 

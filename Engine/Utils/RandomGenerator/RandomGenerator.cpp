@@ -1,7 +1,7 @@
 #include "RandomGenerator.h"
 
 std::random_device RandomGenerator::seedGenerator_;
-std::mt19937 RandomGenerator::randomEngine_(seedGenerator_());
+std::mt19937_64 RandomGenerator::randomEngine_(seedGenerator_());
 
 RandomGenerator* RandomGenerator::GetInstance()
 {

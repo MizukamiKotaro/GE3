@@ -8,7 +8,7 @@
 #include "Utils/Math/Vector4.h"
 #include "Utils/Math/Matrix4x4.h"
 #include "Utils/Transform/Transform.h"
-#include "ModelCommon/ModelCommon.h"
+#include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
 class Model
 {
@@ -64,6 +64,8 @@ public:
 
 	void Draw(const Matrix4x4& viewProjection);
 
+	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
+
 public:
 
 	void SetTex(uint32_t hundle) { textureHundle_ = hundle; }
@@ -87,6 +89,9 @@ public:
 	Transform transform_;
 
 private:
+
+	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::MODEL;
+
 	Matrix4x4 uvMatrix_;
 
 	Vector3 uvScale_;

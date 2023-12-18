@@ -1,4 +1,4 @@
-#include "ModelCommon.h"
+#include "ModelGraphicsPipline.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include <cassert>
 #include "Engine/Base/DebugLog/DebugLog.h"
@@ -7,13 +7,13 @@
 #include <sstream>
 #include "TextureManager/TextureManager.h"
 
-ModelCommon* ModelCommon::GetInstance()
+ModelGraphicsPipline* ModelGraphicsPipline::GetInstance()
 {
-	static ModelCommon instance;
+	static ModelGraphicsPipline instance;
 	return &instance;
 }
 
-void ModelCommon::Initialize()
+void ModelGraphicsPipline::Initialize()
 {
 
 	device_ = DirectXCommon::GetInstance()->GetDevice();
@@ -25,7 +25,7 @@ void ModelCommon::Initialize()
 
 }
 
-void ModelCommon::PreDraw()
+void ModelGraphicsPipline::PreDraw()
 {
 	//RootSignatureを設定。PSOに設定しているけど別途設定が必要
 	commandList_->SetGraphicsRootSignature(rootSignature_.Get());
@@ -35,7 +35,7 @@ void ModelCommon::PreDraw()
 
 }
 
-void ModelCommon::InitializeDXC()
+void ModelGraphicsPipline::InitializeDXC()
 {
 	//DXCの初期化
 	HRESULT hr = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(dxcUtils_.GetAddressOf()));
@@ -48,7 +48,7 @@ void ModelCommon::InitializeDXC()
 	assert(SUCCEEDED(hr));
 }
 
-void ModelCommon::InitializePSO()
+void ModelGraphicsPipline::InitializePSO()
 {
 	//DescriptorRange
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
@@ -184,7 +184,7 @@ void ModelCommon::InitializePSO()
 
 }
 
-IDxcBlob* ModelCommon::CompileShader(const std::wstring& filePath, const wchar_t* profile, IDxcUtils* dxcUtils, IDxcCompiler3* dxcCompiler, IDxcIncludeHandler* includeHandler)
+IDxcBlob* ModelGraphicsPipline::CompileShader(const std::wstring& filePath, const wchar_t* profile, IDxcUtils* dxcUtils, IDxcCompiler3* dxcCompiler, IDxcIncludeHandler* includeHandler)
 {
 	// 1. hlslファイルを読む
 	//これからシェーダーをコンパイルする旨をログに出す

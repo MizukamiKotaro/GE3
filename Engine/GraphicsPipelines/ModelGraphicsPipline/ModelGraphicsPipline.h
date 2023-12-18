@@ -11,14 +11,14 @@
 #include "Utils/Math/Vector4.h"
 
 // スプライト共通部分
-class ModelCommon
+class ModelGraphicsPipline
 {
 public:
 
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	static ModelCommon* GetInstance();
+	static ModelGraphicsPipline* GetInstance();
 
 	void Initialize();
 
@@ -46,10 +46,10 @@ private:
 	ComPtr<ID3D12PipelineState> graphicsPipelineState_;
 
 private:
-	ModelCommon() = default;
-	~ModelCommon() = default;
-	ModelCommon(const ModelCommon&) = delete;
-	ModelCommon& operator=(const ModelCommon&) = delete;
+	ModelGraphicsPipline() = default;
+	~ModelGraphicsPipline() = default;
+	ModelGraphicsPipline(const ModelGraphicsPipline&) = delete;
+	ModelGraphicsPipline& operator=(const ModelGraphicsPipline&) = delete;
 
 	void InitializeDXC();
 

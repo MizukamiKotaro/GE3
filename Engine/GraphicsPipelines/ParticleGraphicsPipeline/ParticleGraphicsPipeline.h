@@ -11,11 +11,11 @@
 #include "Utils/Math/Vector4.h"
 
 // スプライト共通部分
-class ParticleCommon
+class ParticleGraphicsPipeline
 {
 public:
 
-	static ParticleCommon* GetInstance();
+	static ParticleGraphicsPipeline* GetInstance();
 
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -43,10 +43,10 @@ private:
 	ComPtr<ID3D12PipelineState> graphicsPipelineState_;
 
 private:
-	ParticleCommon() = default;
-	~ParticleCommon() = default;
-	ParticleCommon(const ParticleCommon&) = delete;
-	ParticleCommon& operator=(const ParticleCommon&) = delete;
+	ParticleGraphicsPipeline() = default;
+	~ParticleGraphicsPipeline() = default;
+	ParticleGraphicsPipeline(const ParticleGraphicsPipeline&) = delete;
+	ParticleGraphicsPipeline& operator=(const ParticleGraphicsPipeline&) = delete;
 
 	void InitializeDXC();
 

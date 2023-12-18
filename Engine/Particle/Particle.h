@@ -8,7 +8,7 @@
 #include "Utils/Math/Vector4.h"
 #include "Utils/Math/Matrix4x4.h"
 #include "Utils/Transform/Transform.h"
-#include "ModelCommon/ModelCommon.h"
+#include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
 class Particle
 {
@@ -55,6 +55,8 @@ public:
 
 	void Draw(const Matrix4x4& viewProjection);
 
+	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
+
 public:
 
 	//void LoadTexture(const std::string& filePath);
@@ -73,12 +75,14 @@ private:
 	ComPtr<ID3D12Resource> directionalLightResource_;
 	DirectionalLight* directionalLightData_;
 
-
 public:
 
 	Active actives_[kNumInstance];
 
 private:
+
+	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::PARTICLE;
+
 	Matrix4x4 uvMatrix_;
 
 	Vector3 uvScale_;

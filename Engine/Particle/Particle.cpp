@@ -3,9 +3,8 @@
 #include <cassert>
 #include "TextureManager/TextureManager.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
-#include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
+#include "Model/ModelData/ModelDataManager/ModelDataManager.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
-#include "ParticleCommon/ParticleCommon.h"
 #include "Utils/RandomGenerator/RandomGenerator.h"
 
 Particle::Particle(const std::string& fileName)

@@ -25,6 +25,6 @@ private:
 
 private:
 	static std::random_device seedGenerator_;
-	static std::mt19937 randomEngine_;
+	static std::mt19937_64 randomEngine_;
 
 };

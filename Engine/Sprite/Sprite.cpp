@@ -1,7 +1,6 @@
 #include "Sprite.h"
 
 #include <cassert>
-#include "SpriteCommon/SpriteCommon.h"
 #include "TextureManager/TextureManager.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
@@ -107,8 +106,7 @@ void Sprite::Draw(const Matrix4x4& orthographicMat, BlendMode blendMode)
 
 	TextureManager* texManager = TextureManager::GetInstance();
 
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->SetBlendMode(static_cast<uint32_t>(blendMode));
+	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
@@ -237,7 +235,7 @@ void Sprite::AdjustTextureSize()
 void Sprite::CreateVertexRes()
 {
 	//Sprite用の頂点リソースを作る
-	vertexResource_ = SpriteCommon::GetInstance()->CreateBufferResource(sizeof(VertexData) * 6);
+	vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * 6);
 	//頂点バッファーを作成する
 	//リソースの先頭アドレスから使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -252,7 +250,7 @@ void Sprite::CreateVertexRes()
 void Sprite::CreateMaterialRes()
 {
 	//マテリアル用のリソースを作る。今回はcolor1つ分を用意する
-	materialResource_ = SpriteCommon::GetInstance()->CreateBufferResource(sizeof(Material));
+	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 	//マテリアルデータを書き込む
 	//書き込むためのアドレスを取得\l
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
@@ -265,7 +263,7 @@ void Sprite::CreateMaterialRes()
 void Sprite::CreateTranformRes()
 {
 	//Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	transformResource_ = SpriteCommon::GetInstance()->CreateBufferResource(sizeof(TransformationMatrix));
+	transformResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
 	//データを書き込む
 	//書き込むためのアドレスを取得
 	transformResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformData_));

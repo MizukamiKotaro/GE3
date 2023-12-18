@@ -107,7 +107,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/ModelCommon/Model;$(ProjectDir)/Engine/ModelCommon/ModelData/ModelDataManager;$(ProjectDir)/Engine/SpriteCommon/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Utils/Math;$(ProjectDir)/Utils/Transfrom;$(ProjectDir)/Utils/Camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Model;$(ProjectDir)/Engine/Model/ModelData/ModelDataManager;$(ProjectDir)/Engine/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Engine/Utils/Math;$(ProjectDir)/Engine/Utils/Transfrom;$(ProjectDir)/Engine/Utils/Camera;$(ProjectDir)/Engine/Particle;$(ProjectDir)/Engine/Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -131,7 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/ModelCommon/Model;$(ProjectDir)/Engine/ModelCommon/ModelData/ModelDataManager;$(ProjectDir)/Engine/SpriteCommon/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Utils/Math;$(ProjectDir)/Utils/Transfrom;$(ProjectDir)/Utils/Camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Model;$(ProjectDir)/Engine/Model/ModelData/ModelDataManager;$(ProjectDir)/Engine/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Engine/Utils/Math;$(ProjectDir)/Engine/Utils/Transfrom;$(ProjectDir)/Engine/Utils/Camera;$(ProjectDir)/Engine/Particle;$(ProjectDir)/Engine/Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,16 +152,17 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeapManager.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\ModelGraphicsPipline\ModelGraphicsPipline.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\SpirteGraphicsPipeline\SpriteGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Light\Light.cpp" />
-    <ClCompile Include="Engine\ModelCommon\ModelCommon.cpp" />
-    <ClCompile Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.cpp" />
-    <ClCompile Include="Engine\ModelCommon\Model\Model.cpp" />
-    <ClCompile Include="Engine\ParticleCommon\ParticleCommon.cpp" />
-    <ClCompile Include="Engine\ParticleCommon\Particle\Particle.cpp" />
-    <ClCompile Include="Engine\SpriteCommon\SpriteCommon.cpp" />
-    <ClCompile Include="Engine\SpriteCommon\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.cpp" />
+    <ClCompile Include="Engine\Model\Model.cpp" />
+    <ClCompile Include="Engine\Particle\Particle.cpp" />
+    <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
     <ClCompile Include="externals\imgui\imgui.cpp" />
     <ClCompile Include="externals\imgui\imgui_demo.cpp" />
@@ -172,22 +173,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Utils\Camera\Camera.cpp" />
-    <ClCompile Include="Utils\Collision\Collision.cpp" />
-    <ClCompile Include="Utils\Ease\Ease.cpp" />
-    <ClCompile Include="Utils\Math\calc.cpp" />
-    <ClCompile Include="Utils\Math\Matrix3x3.cpp" />
-    <ClCompile Include="Utils\Math\Matrix4x4.cpp" />
-    <ClCompile Include="Utils\Math\Quaternion.cpp" />
-    <ClCompile Include="Utils\Math\Vector2.cpp" />
-    <ClCompile Include="Utils\Math\Vector3.cpp" />
-    <ClCompile Include="Utils\RandomGenerator\RandomGenerator.cpp" />
-    <ClCompile Include="Utils\Shape\AABB.cpp" />
-    <ClCompile Include="Utils\Shape\OBB.cpp" />
-    <ClCompile Include="Utils\Shape\Plane.cpp" />
-    <ClCompile Include="Utils\Shape\Sphere.cpp" />
-    <ClCompile Include="Utils\Shape\Triangle.cpp" />
-    <ClCompile Include="Utils\Transform\Transform.cpp" />
+    <ClCompile Include="Engine\Utils\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\Utils\Collision\Collision.cpp" />
+    <ClCompile Include="Engine\Utils\Ease\Ease.cpp" />
+    <ClCompile Include="Engine\Utils\Math\calc.cpp" />
+    <ClCompile Include="Engine\Utils\Math\Matrix3x3.cpp" />
+    <ClCompile Include="Engine\Utils\Math\Matrix4x4.cpp" />
+    <ClCompile Include="Engine\Utils\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\Utils\Math\Vector2.cpp" />
+    <ClCompile Include="Engine\Utils\Math\Vector3.cpp" />
+    <ClCompile Include="Engine\Utils\RandomGenerator\RandomGenerator.cpp" />
+    <ClCompile Include="Engine\Utils\Shape\AABB.cpp" />
+    <ClCompile Include="Engine\Utils\Shape\OBB.cpp" />
+    <ClCompile Include="Engine\Utils\Shape\Plane.cpp" />
+    <ClCompile Include="Engine\Utils\Shape\Sphere.cpp" />
+    <ClCompile Include="Engine\Utils\Shape\Triangle.cpp" />
+    <ClCompile Include="Engine\Utils\Transform\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -196,20 +197,21 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="Engine\Base\ResourceLeakChecker.h" />
     <ClInclude Include="Engine\Base\WinApp\WinApp.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\ModelGraphicsPipline\ModelGraphicsPipline.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\SpirteGraphicsPipeline\SpriteGraphicsPipeline.h" />
     <ClInclude Include="Engine\ImGuiManager\ImGuiManager.h" />
     <ClInclude Include="Engine\Input\Input.h" />
     <ClInclude Include="Engine\Light\Light.h" />
-    <ClInclude Include="Engine\ModelCommon\ModelCommon.h" />
-    <ClInclude Include="Engine\ModelCommon\ModelData\MaterialData3D\MaterialData3D.h" />
-    <ClInclude Include="Engine\ModelCommon\ModelData\MeshData3D\MeshData3D.h" />
-    <ClInclude Include="Engine\ModelCommon\ModelData\ModelData.h" />
-    <ClInclude Include="Engine\ModelCommon\ModelData\ModelDataManager\ModelDataManager.h" />
-    <ClInclude Include="Engine\ModelCommon\ModelData\VertexData3D\VertexData3D.h" />
-    <ClInclude Include="Engine\ModelCommon\Model\Model.h" />
-    <ClInclude Include="Engine\ParticleCommon\ParticleCommon.h" />
-    <ClInclude Include="Engine\ParticleCommon\Particle\Particle.h" />
-    <ClInclude Include="Engine\SpriteCommon\SpriteCommon.h" />
-    <ClInclude Include="Engine\SpriteCommon\Sprite\Sprite.h" />
+    <ClInclude Include="Engine\Model\ModelData\MaterialData3D\MaterialData3D.h" />
+    <ClInclude Include="Engine\Model\ModelData\MeshData3D\MeshData3D.h" />
+    <ClInclude Include="Engine\Model\ModelData\ModelData.h" />
+    <ClInclude Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.h" />
+    <ClInclude Include="Engine\Model\ModelData\VertexData3D\VertexData3D.h" />
+    <ClInclude Include="Engine\Model\Model.h" />
+    <ClInclude Include="Engine\Particle\Particle.h" />
+    <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\TextureManager\TextureManager.h" />
     <ClInclude Include="externals\imgui\imconfig.h" />
     <ClInclude Include="externals\imgui\imgui.h" />
@@ -220,25 +222,25 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\imgui\imstb_textedit.h" />
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
     <ClInclude Include="GlobalVariables\GlobalVariables.h" />
-    <ClInclude Include="Utils\Camera\Camera.h" />
-    <ClInclude Include="Utils\Collision\Collision.h" />
-    <ClInclude Include="Utils\Ease\Ease.h" />
-    <ClInclude Include="Utils\Math\calc.h" />
-    <ClInclude Include="Utils\Math\Matrix3x3.h" />
-    <ClInclude Include="Utils\Math\Matrix4x4.h" />
-    <ClInclude Include="Utils\Math\Quaternion.h" />
-    <ClInclude Include="Utils\Math\Vector2.h" />
-    <ClInclude Include="Utils\Math\Vector3.h" />
-    <ClInclude Include="Utils\Math\Vector4.h" />
-    <ClInclude Include="Utils\RandomGenerator\RandomGenerator.h" />
-    <ClInclude Include="Utils\Shape\AABB.h" />
-    <ClInclude Include="Utils\Shape\Line.h" />
-    <ClInclude Include="Utils\Shape\OBB.h" />
-    <ClInclude Include="Utils\Shape\Plane.h" />
-    <ClInclude Include="Utils\Shape\Quadrangle.h" />
-    <ClInclude Include="Utils\Shape\Sphere.h" />
-    <ClInclude Include="Utils\Shape\Triangle.h" />
-    <ClInclude Include="Utils\Transform\Transform.h" />
+    <ClInclude Include="Engine\Utils\Camera\Camera.h" />
+    <ClInclude Include="Engine\Utils\Collision\Collision.h" />
+    <ClInclude Include="Engine\Utils\Ease\Ease.h" />
+    <ClInclude Include="Engine\Utils\Math\calc.h" />
+    <ClInclude Include="Engine\Utils\Math\Matrix3x3.h" />
+    <ClInclude Include="Engine\Utils\Math\Matrix4x4.h" />
+    <ClInclude Include="Engine\Utils\Math\Quaternion.h" />
+    <ClInclude Include="Engine\Utils\Math\Vector2.h" />
+    <ClInclude Include="Engine\Utils\Math\Vector3.h" />
+    <ClInclude Include="Engine\Utils\Math\Vector4.h" />
+    <ClInclude Include="Engine\Utils\RandomGenerator\RandomGenerator.h" />
+    <ClInclude Include="Engine\Utils\Shape\AABB.h" />
+    <ClInclude Include="Engine\Utils\Shape\Line.h" />
+    <ClInclude Include="Engine\Utils\Shape\OBB.h" />
+    <ClInclude Include="Engine\Utils\Shape\Plane.h" />
+    <ClInclude Include="Engine\Utils\Shape\Quadrangle.h" />
+    <ClInclude Include="Engine\Utils\Shape\Sphere.h" />
+    <ClInclude Include="Engine\Utils\Shape\Triangle.h" />
+    <ClInclude Include="Engine\Utils\Transform\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />

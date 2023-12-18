@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ModelCommon/ModelData/ModelData.h"
+#include "Model/ModelData/ModelData.h"
 #include <vector>
 
 class ModelDataManager 

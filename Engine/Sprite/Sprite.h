@@ -7,6 +7,7 @@
 #include "Utils/Math/Vector2.h"
 #include "Utils/Math/Vector4.h"
 #include "Utils/Math/Matrix4x4.h"
+#include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
 // スプライト
 class Sprite
@@ -54,6 +55,8 @@ public:
 	void Update();
 
 	void Draw(const Matrix4x4& orthographicMat,  BlendMode blendMode = BlendMode::kBlendModeNormal);
+
+	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
 public:
 
@@ -107,6 +110,8 @@ public:
 	Vector2 size_;
 
 private:
+
+	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::SPRITE;
 
 	Matrix4x4 worldMat_;
 

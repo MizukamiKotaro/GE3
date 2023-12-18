@@ -2,20 +2,18 @@
 #include "Engine/Base/ResourceLeakChecker.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Input/Input.h"
-#include "SpriteCommon/SpriteCommon.h"
-#include "SpriteCommon/Sprite/Sprite.h"
+#include "Sprite.h"
 #include "TextureManager/TextureManager.h"
 #include "ImGuiManager/ImGuiManager.h"
 #include "externals/imgui/imgui.h"
-#include "ModelCommon/ModelCommon.h"
 #include "GlobalVariables/GlobalVariables.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
-#include "ModelCommon/Model/Model.h"
+#include "Model.h"
 #include "Utils/Camera/Camera.h"
-#include "ModelCommon/ModelData/ModelDataManager/ModelDataManager.h"
-#include "ParticleCommon/ParticleCommon.h"
-#include "ParticleCommon/Particle/Particle.h"
+#include "ModelDataManager.h"
+#include "Particle.h"
 #include "Utils/RandomGenerator/RandomGenerator.h"
+#include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
 static ResourceLeackChecker leakCheck;
 
@@ -49,19 +47,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	TextureManager* textureManager = TextureManager::GetInstance();
 	textureManager->Initialize();
 
-	ModelCommon* modelCommon = ModelCommon::GetInstance();
-	modelCommon->Initialize();
-
-	ParticleCommon* particleCommon = ParticleCommon::GetInstance();
-	particleCommon->Initialize();
+	GraphicsPiplineManager* piplineManager = GraphicsPiplineManager::GetInstance();
+	piplineManager->Init();
 
 	ModelDataManager* modelManager = ModelDataManager::GetInstance();
 
 	Input* input = Input::GetInstance();
 	input->Initialize();
-
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->Initialize();
 
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	globalVariables->LoadFiles();
@@ -182,17 +174,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 #pragma region 最初のシーンの描画
 
-		spriteCommon->PreDraw();
+		Sprite::PreDrow();
 		sprite->Draw(camera.GetOrthographicMat(), Sprite::BlendMode::kBlendModeNormal);
 		sprite1->Draw(camera.GetOrthographicMat(), Sprite::BlendMode::kBlendModeAdd);
 
-		modelCommon->PreDraw();
+		Model::PreDrow();
 		model->Draw(camera.GetViewProjection());
 
-		ParticleCommon::GetInstance()->PreDraw();
+		Particle::PreDrow();
 		particle->Draw(camera.GetViewProjection());
 
-		spriteCommon->PreDraw();
+		Sprite::PreDrow();
 
 #pragma endregion 最初のシーンの描画
 
