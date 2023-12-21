@@ -65,7 +65,6 @@ void SpriteGraphicsPipeline::SetBlendMode(uint32_t blendMode)
 
 		commandList_->SetPipelineState(graphicsPipelineStates_[blendMode_].Get());
 	}
-
 }
 
 void SpriteGraphicsPipeline::InitializeDXC()

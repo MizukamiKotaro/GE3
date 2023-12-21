@@ -6,6 +6,9 @@
 #include "Model/ModelData/ModelDataManager/ModelDataManager.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "Utils/RandomGenerator/RandomGenerator.h"
+#include "Camera.h"
+#include <numbers>
+#include <algorithm>
 
 Particle::Particle(const std::string& fileName)
 {
@@ -30,13 +33,7 @@ Particle::Particle(const std::string& fileName)
 	for (uint32_t index = 0; index < kNumInstance; index++) {
 		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
 		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
-		instancingData_[index].color = { 1.0f,1.0f,1.0f,1.0f };
-
-		actives_[index].transform = Transform();
-		actives_[index].transform.translate_ = { index * 0.1f,index * 0.1f ,index * 0.1f };
-		actives_[index].transform.scale_ *= 10.0f;
-		actives_[index].velocity = {};
-		actives_[index].color = { 1.0f,1.0f,1.0f,1.0f };
+		instancingData_[index].color = { 1.0f,1.0f,1.0f,0.0f };
 	}
 
 	CreateSRV();
@@ -70,36 +67,93 @@ void Particle::Initialize()
 {
 	RandomGenerator* rand = RandomGenerator::GetInstance();
 
-	for (uint32_t index = 0; index < kNumInstance; index++) {
-		actives_[index].transform.translate_ = rand->RandVector3(-1.0f, 1.0f);
-		actives_[index].velocity = rand->RandVector3(-1.0f / 60.0f, 1.0f / 60.0f);
-		actives_[index].color = { rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),1.0f };
-		actives_[index].transform.UpdateMatrix();
-	}
+	emitter.generateParticleNum_ = rand->RandInt(3, 6);
+
+	emitter.generateCoolTime_ = 120.0f;
 }
 
 void Particle::Update()
 {
-	for (uint32_t index = 0; index < kNumInstance; index++) {
-		actives_[index].transform.translate_ += actives_[index].velocity;
-		actives_[index].transform.UpdateMatrix();
+	GenerateParticle();
+
+	for (std::list<Active>::iterator iter = actives_.begin(); iter != actives_.end();) {
+		if (iter->lifeTime <= iter->currentTime) {
+			iter = actives_.erase(iter);
+			continue;
+		}
+
+		iter->transform.translate_ += iter->velocity;
+		iter->transform.UpdateMatrix();
+
+		iter->lifeTime++;
+
+		++iter;
 	}
 
 	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
 }
 
-void Particle::Draw(const Matrix4x4& viewProjection)
+void Particle::Draw(const Camera& camera, BlendMode blendMode)
 {
-	for (uint32_t index = 0; index < kNumInstance; index++) {
-		instancingData_[index].World = actives_[index].transform .worldMat_;
-		instancingData_[index].WVP = actives_[index].transform.worldMat_ * viewProjection;
-		instancingData_[index].color = actives_[index].color;
+	Matrix4x4 billboardMat{};
+
+	if (billboardTypeOpt_) {
+		billbordType = billboardTypeOpt_.value();
+
+		float pi = std::numbers::pi_v<float>;
+
+		switch (billbordType)
+		{
+		case Particle::BillboardType::X:
+			billboardMat = Matrix4x4::MakeRotateXMatrix(pi) * camera.transform_.worldMat_;
+			break;
+		case Particle::BillboardType::Y:
+			billboardMat = Matrix4x4::MakeRotateYMatrix(pi) * camera.transform_.worldMat_;
+			break;
+		case Particle::BillboardType::Z:
+			billboardMat = Matrix4x4::MakeRotateZMatrix(pi) * camera.transform_.worldMat_;
+			break;
+		case Particle::BillboardType::ALL:
+			billboardMat = Matrix4x4::MakeRotateXYZMatrix(Vector3{ pi,pi,pi }) * camera.transform_.worldMat_;
+			break;
+		default:
+			break;
+		}
+
+		billboardMat.m[3][0] = 0.0f;
+		billboardMat.m[3][1] = 0.0f;
+		billboardMat.m[3][2] = 0.0f;
 	}
+
+	uint32_t instaceNum = static_cast<uint32_t>(actives_.size());
+	instaceNum = std::clamp<uint32_t>(instaceNum, 0, kNumInstance);
+	uint32_t index = 0;
+
+	for (std::list<Active>::iterator iter = actives_.begin(); iter != actives_.end(); iter++) {
+		if (index >= kNumInstance) {
+			break;
+		}
+
+		if (billboardTypeOpt_) {
+			instancingData_[index].World = Matrix4x4::MakeScaleMatrix(iter->transform.scale_) * billboardMat *
+				Matrix4x4::MakeTranslateMatrix(iter->transform.translate_);
+		}
+		else {
+			instancingData_[index].World = iter->transform.worldMat_;
+		}
+		instancingData_[index].WVP = instancingData_[index].World * camera.GetViewProjection();
+		instancingData_[index].color = iter->color;
+
+		index++;
+	}
+
 	materialData_->uvTransform = uvMatrix_;
 
 	TextureManager* texManager = TextureManager::GetInstance();
 
 	const ModelData* modelData = ModelDataManager::GetInstance()->GetModelData(meshHundle_);
+
+	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
@@ -115,8 +169,27 @@ void Particle::Draw(const Matrix4x4& viewProjection)
 
 	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
-	commandList->DrawInstanced(UINT(modelData->mesh.verteces.size()), kNumInstance, 0, 0);
+	commandList->DrawInstanced(UINT(modelData->mesh.verteces.size()), instaceNum, 0, 0);
 
+}
+
+void Particle::GenerateParticle()
+{
+	if (emitter.countTime_ >= emitter.generateCoolTime_) {
+
+		for (uint32_t index = 0; index < emitter.generateParticleNum_; index++) {
+
+			if (actives_.size() >= kNumInstance) {
+				break;
+			}
+
+			actives_.push_back(CreateActive());
+		}
+
+		emitter.countTime_ = 0.0f;
+	}
+
+	emitter.countTime_++;
 }
 
 void Particle::CreateSRV()
@@ -136,5 +209,19 @@ void Particle::CreateSRV()
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(instancingResource_.Get(), &srvDesc, srvCPUDescriptorHandle_);
 
 }
+
+Particle::Active Particle::CreateActive()
+{
+	RandomGenerator* rand = RandomGenerator::GetInstance();
+
+	Active active{};
+	active.transform.translate_ = rand->RandVector3(-1.0f, 1.0f);
+	active.velocity = rand->RandVector3(-1.0f / 60.0f, 1.0f / 60.0f);
+	active.color = { rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),1.0f };
+	active.transform.UpdateMatrix();
+	active.lifeTime = rand->RandFloat(120.0f, 240.0f);
+	return active;
+}
+
 
 

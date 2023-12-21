@@ -9,12 +9,17 @@
 #include "Utils/Math/Matrix4x4.h"
 #include "Utils/Transform/Transform.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+#include <optional>
+#include <list>
+#include "Utils/Shape/AABB.h"
+
+class Camera;
 
 class Particle
 {
 public:
 
-	static const uint32_t kNumInstance = 10;
+	static const uint32_t kNumInstance = 256;
 
 	Particle(const std::string& fileName);
 	~Particle();
@@ -44,6 +49,22 @@ public:
 		Transform transform;
 		Vector3 velocity;
 		Vector4 color;
+		float lifeTime;
+		float currentTime;
+	};
+
+	struct Emitter
+	{
+		Vector3 pos;
+		uint32_t generateParticleNum_; // 一回に生成する数
+		float generateCoolTime_; // 生成の間隔
+		float countTime_; // 生成をするための時間のカウント
+	};
+
+	struct AccelerationField
+	{
+		Vector3 acceleration;
+		AABB area;
 	};
 
 	// namespace省略
@@ -53,17 +74,31 @@ public:
 
 	void Update();
 
-	void Draw(const Matrix4x4& viewProjection);
+	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
 public:
 
-	//void LoadTexture(const std::string& filePath);
+	enum class BillboardType
+	{
+		X,
+		Y,
+		Z,
+		ALL
+	};
+
+	void SetBillboardType(BillboardType type) { billboardTypeOpt_ = type; }
+
+	void ClearBillboardType() { billboardTypeOpt_ = std::nullopt; }
+
+	void GenerateParticle();
 
 private:
 
 	void CreateSRV();
+
+	Active CreateActive();
 
 private:
 	ComPtr<ID3D12Resource> materialResource_;
@@ -77,11 +112,16 @@ private:
 
 public:
 
-	Active actives_[kNumInstance];
+	std::list<Active> actives_;
+
+	Emitter emitter;
 
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::PARTICLE;
+
+	std::optional<BillboardType> billboardTypeOpt_ = BillboardType::Y;
+	BillboardType billbordType = BillboardType::Y;
 
 	Matrix4x4 uvMatrix_;
 

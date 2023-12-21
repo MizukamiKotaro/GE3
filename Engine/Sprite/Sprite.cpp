@@ -4,6 +4,7 @@
 #include "TextureManager/TextureManager.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "Camera.h"
 
 Sprite::Sprite(const std::string& filePath, const Vector2& pos, const Vector2& texLeftTop, const Vector2& texSize, const Vector4& color, const Vector2& anchorPoint, bool isFlipX, bool isFlipY)
 {
@@ -94,14 +95,14 @@ void Sprite::Update()
 	TransferSize();
 }
 
-void Sprite::Draw(const Matrix4x4& orthographicMat, BlendMode blendMode)
+void Sprite::Draw(const Camera& camera, BlendMode blendMode)
 {
 
 	if (isInvisible_) {
 		return;
 	}
 
-	transformData_->WVP = worldMat_ * orthographicMat;
+	transformData_->WVP = worldMat_ * camera.GetOrthographicMat();
 	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
 
 	TextureManager* texManager = TextureManager::GetInstance();

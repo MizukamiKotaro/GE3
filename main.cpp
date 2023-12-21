@@ -158,6 +158,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 
 		ImGui::Begin("a");
 		ImGui::SliderFloat3("a", &model->transform_.translate_.x, -100.0f, 100.0f);
+		ImGui::SliderFloat3("cameraTra", &camera.transform_.translate_.x, -100.0f, 100.0f);
+		ImGui::SliderFloat3("cameraRot", &camera.transform_.rotate_.x, -3.14f, 3.14f);
 		ImGui::End();
 
 		model->Update();
@@ -175,14 +177,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 #pragma region 最初のシーンの描画
 
 		Sprite::PreDrow();
-		sprite->Draw(camera.GetOrthographicMat(), Sprite::BlendMode::kBlendModeNormal);
-		sprite1->Draw(camera.GetOrthographicMat(), Sprite::BlendMode::kBlendModeAdd);
+		sprite->Draw(camera, BlendMode::kBlendModeNormal);
+		sprite1->Draw(camera, BlendMode::kBlendModeAdd);
 
 		Model::PreDrow();
-		model->Draw(camera.GetViewProjection());
+		model->Draw(camera);
 
 		Particle::PreDrow();
-		particle->Draw(camera.GetViewProjection());
+		particle->Draw(camera,BlendMode::kBlendModeScreen);
 
 		Sprite::PreDrow();
 

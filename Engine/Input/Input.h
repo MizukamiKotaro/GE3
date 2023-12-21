@@ -34,6 +34,12 @@ public:
 		RIGHT_SHOULDER,
 	};
 
+	enum class MouseButton {
+		LEFT,
+		RIGHT,
+		CENTER,
+	};
+
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -78,25 +84,64 @@ public:
 	Vector2 GetGamePadRStick();
 
 	/// <summary>
-	/// キーボードが押された瞬間
+	/// ゲームパッドが押された瞬間
 	/// </summary>
 	/// <param name="button">ボタン( Input::GamePadButton::A 等)</param>
 	/// <returns>押されているか</returns>
 	bool PressedGamePadButton(GamePadButton button);
 
 	/// <summary>
-	/// キーボードが押された瞬間
+	/// ゲームパッドが押され続けているか
 	/// </summary>
 	/// <param name="button">ボタン( Input::GamePadButton::A 等)</param>
 	/// <returns>押され続けているか</returns>
 	bool PressingGamePadButton(GamePadButton button);
 
 	/// <summary>
-	/// キーボードが押された瞬間
+	/// ゲームパッドが離れてか
 	/// </summary>
 	/// <param name="button">ボタン( Input::GamePadButton::A 等)</param>
 	/// <returns>離れたか</returns>
 	bool ReleasedGamePadButton(GamePadButton button);
+
+	/// <summary>
+	/// マウスが押された瞬間
+	/// </summary>
+	/// <param name="button">ボタン( Input::MouseButton::LEFT 等)</param>
+	/// <returns>押されているか</returns>
+	bool PressedMouse(MouseButton button);
+
+	/// <summary>
+	/// マウスが押され続けているか
+	/// </summary>
+	/// <param name="button">ボタン( Input::MouseButton::LEFT 等)</param>
+	/// <returns>押され続けているか</returns>
+	bool PressingMouse(MouseButton button);
+
+	/// <summary>
+	/// マウスが離れたか
+	/// </summary>
+	/// <param name="button">ボタン( Input::MouseButton::LEFT 等)</param>
+	/// <returns>離れたか</returns>
+	bool ReleasedMouse(MouseButton button);
+
+	/// <summary>
+	/// マウスホイールのスクロール量を取得する
+	/// </summary>
+	/// <returns>ホイールのスクロール量</returns>
+	int32_t GetWheel();
+
+	/// <summary>
+	/// マウスの動量を取得する
+	/// </summary>
+	/// <returns>マウスの移動量</returns>
+	Vector2 GetMouseMove();
+
+	/// <summary>
+	/// マウスの座標を取得
+	/// </summary>
+	/// <returns>マウスの座標</returns>
+	Vector2 GetMousePosition();
 
 private:
 	Input() = default;
@@ -107,6 +152,10 @@ private:
 	bool GetGamePadButton(GamePadButton button);
 
 	bool GetPreGamePadButton(GamePadButton button);
+
+	bool GetMouseButton(MouseButton button);
+
+	bool GetPreMouseButton(MouseButton button);
 
 private:
 	WinApp* winApp_ = nullptr;
@@ -124,7 +173,7 @@ private:
 
 	DIMOUSESTATE2 mouse_;
 	DIMOUSESTATE2 mousePre_;
-	Vector2 mousePosition_;
+	POINT mousePos_;
 
 };
 

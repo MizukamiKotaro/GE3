@@ -14,9 +14,9 @@ public:
 
 	void Update();
 
-	const Matrix4x4 GetViewProjection() { return viewProjectionMatrix_; }
+	const Matrix4x4 GetViewProjection() const { return viewProjectionMatrix_; }
 
-	const Matrix4x4 GetOrthographicMat() { return orthographicMat_; }
+	const Matrix4x4 GetOrthographicMat() const { return orthographicMat_; }
 
 public:
 

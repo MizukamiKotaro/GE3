@@ -4,7 +4,7 @@
 #include <dxcapi.h>
 #pragma comment(lib, "dxcompiler.lib")
 #include <string>
-#include <vector>
+#include <array>
 #include <d3d12.h>
 #include "Utils/Math/Vector2.h"
 #include "Utils/Math/Vector3.h"
@@ -15,6 +15,16 @@ class ModelGraphicsPipline
 {
 public:
 
+	enum BlendMode {
+		kBlendModeNone, // ブレンドなし
+		kBlendModeNormal, // デフォルト
+		kBlendModeAdd, // 加算
+		kBlendModeSubtract, // 減算
+		kBlendModeMultiply, // 乗算
+		kBlendModeScreen, // スクリーン
+		kCountOfBlendMode, // 使わない。配列用。
+	};
+
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -23,6 +33,8 @@ public:
 	void Initialize();
 
 	void PreDraw();
+
+	void SetBlendMode(uint32_t blendMode);
 
 private:
 
@@ -43,7 +55,9 @@ private:
 	ComPtr<IDxcBlob> vertexShaderBlob_;
 	ComPtr<IDxcBlob> pixelShaderBlob_;
 
-	ComPtr<ID3D12PipelineState> graphicsPipelineState_;
+	std::array<ComPtr<ID3D12PipelineState>, kCountOfBlendMode> graphicsPipelineStates_;
+
+	BlendMode blendMode_ = BlendMode::kBlendModeNormal;
 
 private:
 	ModelGraphicsPipline() = default;

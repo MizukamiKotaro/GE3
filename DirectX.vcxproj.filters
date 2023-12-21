@@ -16,29 +16,8 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{4489984c-89d1-47e6-8f80-b5766a090682}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{81b069ba-c471-4d14-950d-9136fb82e22d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GlobalVariables">
       <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Math">
-      <UniqueIdentifier>{70169161-5912-428b-8acd-a4048a5482ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Shape">
-      <UniqueIdentifier>{665639fc-069b-4fb5-ab64-e8d9a79c7a5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Camera">
-      <UniqueIdentifier>{bd3f7a2a-5f01-4a3f-9eb3-0a34e5258c25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Collision">
-      <UniqueIdentifier>{27227e56-f856-4b67-b9e9-02e2c9ee02ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Ease">
-      <UniqueIdentifier>{be0771b7-7af5-40f3-b507-782218f07b56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Transform">
-      <UniqueIdentifier>{3c62a5ac-6b1b-4641-986b-f847f3d0e65f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{92b530f5-f9a7-4b9e-9ad9-34909d8f01da}</UniqueIdentifier>
@@ -106,6 +85,27 @@
     <Filter Include="Engine\Sprite">
       <UniqueIdentifier>{a350541b-95e7-4731-93bf-a72bdfda0080}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Utils">
+      <UniqueIdentifier>{81b069ba-c471-4d14-950d-9136fb82e22d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\Math">
+      <UniqueIdentifier>{70169161-5912-428b-8acd-a4048a5482ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\Shape">
+      <UniqueIdentifier>{665639fc-069b-4fb5-ab64-e8d9a79c7a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\Camera">
+      <UniqueIdentifier>{bd3f7a2a-5f01-4a3f-9eb3-0a34e5258c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\Collision">
+      <UniqueIdentifier>{27227e56-f856-4b67-b9e9-02e2c9ee02ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\Ease">
+      <UniqueIdentifier>{be0771b7-7af5-40f3-b507-782218f07b56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\Transform">
+      <UniqueIdentifier>{3c62a5ac-6b1b-4641-986b-f847f3d0e65f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -133,49 +133,49 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Shape\AABB.cpp">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Math\calc.cpp">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Camera\Camera.cpp">
-      <Filter>Utils\Camera</Filter>
+      <Filter>Engine\Utils\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Collision\Collision.cpp">
-      <Filter>Utils\Collision</Filter>
+      <Filter>Engine\Utils\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Ease\Ease.cpp">
-      <Filter>Utils\Ease</Filter>
+      <Filter>Engine\Utils\Ease</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Math\Matrix3x3.cpp">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Math\Matrix4x4.cpp">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Shape\OBB.cpp">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Shape\Plane.cpp">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Shape\Sphere.cpp">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Shape\Triangle.cpp">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Math\Vector2.cpp">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Math\Vector3.cpp">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Math\Quaternion.cpp">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\Transform\Transform.cpp">
-      <Filter>Utils\Transform</Filter>
+      <Filter>Engine\Utils\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\DebugLog\DebugLog.cpp">
       <Filter>Engine\Base\DebugLog</Filter>
@@ -217,7 +217,7 @@
       <Filter>Engine\Model\ModelData\ModelDataManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\RandomGenerator\RandomGenerator.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\ParticleGraphicsPipeline</Filter>
@@ -261,58 +261,58 @@
       <Filter>imgui</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\calc.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Camera\Camera.h">
-      <Filter>Utils\Camera</Filter>
+      <Filter>Engine\Utils\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Collision\Collision.h">
-      <Filter>Utils\Collision</Filter>
+      <Filter>Engine\Utils\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\AABB.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Ease\Ease.h">
-      <Filter>Utils\Ease</Filter>
+      <Filter>Engine\Utils\Ease</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\Line.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\Matrix3x3.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\Matrix4x4.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\OBB.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\Plane.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\Quadrangle.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\Quaternion.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\Sphere.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\Triangle.h">
-      <Filter>Utils\Shape</Filter>
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\Vector2.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\Vector3.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Math\Vector4.h">
-      <Filter>Utils\Math</Filter>
+      <Filter>Engine\Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\Transform\Transform.h">
-      <Filter>Utils\Transform</Filter>
+      <Filter>Engine\Utils\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\DebugLog\DebugLog.h">
       <Filter>Engine\Base\DebugLog</Filter>
@@ -369,7 +369,7 @@
       <Filter>Engine\Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\RandomGenerator\RandomGenerator.h">
-      <Filter>Utils</Filter>
+      <Filter>Engine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\ParticleGraphicsPipeline</Filter>

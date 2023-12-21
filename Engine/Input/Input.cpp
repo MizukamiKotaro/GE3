@@ -27,6 +27,15 @@ void Input::Initialize() {
 	hr = devKeyboard_->SetCooperativeLevel(winApp_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(hr));
 
+
+	hr = dInput_->CreateDevice(GUID_SysMouse, &devMouse_, NULL);
+	assert(SUCCEEDED(hr));
+
+	hr = devMouse_->SetDataFormat(&c_dfDIMouse);
+	assert(SUCCEEDED(hr));
+
+	hr = devMouse_->SetCooperativeLevel(winApp_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	assert(SUCCEEDED(hr));
 }
 
 void Input::Update() {
@@ -36,6 +45,12 @@ void Input::Update() {
 	memcpy(keyPre_, key_, sizeof(key_));
 
 	devKeyboard_->GetDeviceState(sizeof(key_), key_);
+
+	devMouse_->Acquire();
+
+	mousePre_ = mouse_;
+
+	devMouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouse_);
 
 	preXInputState_ = xInputState_;
 	XInputGetState(0, &xInputState_);
@@ -118,6 +133,51 @@ bool Input::ReleasedGamePadButton(GamePadButton button)
 	}
 
 	return false;
+}
+
+bool Input::PressedMouse(MouseButton button)
+{
+	if (GetMouseButton(button) && !GetPreMouseButton(button)) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Input::PressingMouse(MouseButton button)
+{
+	if (GetMouseButton(button) && GetPreMouseButton(button)) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Input::ReleasedMouse(MouseButton button)
+{
+	if (!GetMouseButton(button) && GetPreMouseButton(button)) {
+		return true;
+	}
+
+	return false;
+}
+
+int32_t Input::GetWheel()
+{
+	return static_cast<int32_t>(mouse_.lZ);
+}
+
+Vector2 Input::GetMouseMove()
+{
+	return { (float)mouse_.lX,(float)mouse_.lY };
+}
+
+Vector2 Input::GetMousePosition()
+{
+	GetCursorPos(&mousePos_);
+	ScreenToClient(WinApp::GetInstance()->GetHwnd(), &mousePos_);
+
+	return Vector2(static_cast<float>(mousePos_.x), static_cast<float>(mousePos_.y));
 }
 
 bool Input::GetGamePadButton(GamePadButton button)
@@ -276,6 +336,50 @@ bool Input::GetPreGamePadButton(GamePadButton button)
 		if (preXInputState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 			return true;
 		}
+		break;
+	default:
+		break;
+	}
+
+	return false;
+}
+
+bool Input::GetMouseButton(MouseButton button)
+{
+	uint32_t key = static_cast<uint32_t>(button);
+
+	switch (button)
+	{
+	case Input::MouseButton::LEFT:
+		return mouse_.rgbButtons[key];
+		break;
+	case Input::MouseButton::RIGHT:
+		return mouse_.rgbButtons[key];
+		break;
+	case Input::MouseButton::CENTER:
+		return mouse_.rgbButtons[key];
+		break;
+	default:
+		break;
+	}
+
+	return false;
+}
+
+bool Input::GetPreMouseButton(MouseButton button)
+{
+	uint32_t key = static_cast<uint32_t>(button);
+
+	switch (button)
+	{
+	case Input::MouseButton::LEFT:
+		return mousePre_.rgbButtons[key];
+		break;
+	case Input::MouseButton::RIGHT:
+		return mousePre_.rgbButtons[key];
+		break;
+	case Input::MouseButton::CENTER:
+		return mousePre_.rgbButtons[key];
 		break;
 	default:
 		break;

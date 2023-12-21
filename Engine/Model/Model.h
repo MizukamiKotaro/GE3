@@ -10,6 +10,8 @@
 #include "Utils/Transform/Transform.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
+class Camera;
+
 class Model
 {
 public:
@@ -62,7 +64,7 @@ public:
 
 	void Update();
 
-	void Draw(const Matrix4x4& viewProjection);
+	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 

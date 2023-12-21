@@ -52,8 +52,10 @@ void GraphicsPiplineManager::SetBlendMode(PiplineType type, uint32_t blendMode)
 		spriteGPS_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::MODEL:
+		modelGPS_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::PARTICLE:
+		particleGPS_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 		break;

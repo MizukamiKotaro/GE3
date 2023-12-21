@@ -7,7 +7,6 @@
 #include <d3d12.h>
 #include <array>
 
-// スプライト共通部分
 class SpriteGraphicsPipeline
 {
 public:
@@ -33,7 +32,6 @@ public:
 
 	void SetBlendMode(uint32_t blendMode);
 
-
 private:
 
 	ID3D12Device* device_;
@@ -49,8 +47,6 @@ private:
 
 	ComPtr<IDxcBlob> vertexShaderBlob_;
 	ComPtr<IDxcBlob> pixelShaderBlob_;
-
-	//ComPtr<ID3D12PipelineState> graphicsPipelineState_;
 
 	std::array<ComPtr<ID3D12PipelineState>, kCountOfBlendMode> graphicsPipelineStates_;
 

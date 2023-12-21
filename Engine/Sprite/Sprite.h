@@ -9,6 +9,8 @@
 #include "Utils/Math/Matrix4x4.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
+class Camera;
+
 // スプライト
 class Sprite
 {
@@ -19,16 +21,6 @@ public:
 	Sprite(uint32_t texHundle, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
 		const Vector4& color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 	~Sprite();
-
-	enum class BlendMode
-	{
-		kBlendModeNone, // ブレンドなし
-		kBlendModeNormal, // デフォルト
-		kBlendModeAdd, // 加算
-		kBlendModeSubtract, // 減算
-		kBlendModeMultiply, // 乗算
-		kBlendModeScreen, // スクリーン
-	};
 
 	struct VertexData
 	{
@@ -54,7 +46,7 @@ public:
 
 	void Update();
 
-	void Draw(const Matrix4x4& orthographicMat,  BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void Draw(const Camera& camera,  BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 

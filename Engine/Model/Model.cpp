@@ -4,6 +4,7 @@
 #include "TextureManager/TextureManager.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "ModelData/ModelDataManager/ModelDataManager.h"
+#include "Camera.h"
 
 Model::Model(const std::string& fileName)
 {
@@ -108,16 +109,18 @@ void Model::Update()
 	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
 }
 
-void Model::Draw(const Matrix4x4& viewProjection)
+void Model::Draw(const Camera& camera, BlendMode blendMode)
 {
 
 	instancingData_->World = transform_.worldMat_;
-	instancingData_->WVP = transform_.worldMat_ * viewProjection;
+	instancingData_->WVP = transform_.worldMat_ * camera.GetViewProjection();
 	materialData_->uvTransform = uvMatrix_;
 
 	TextureManager* texManager = TextureManager::GetInstance();
 
 	const ModelData* modelData = ModelDataManager::GetInstance()->GetModelData(meshHundle_);
+
+	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
