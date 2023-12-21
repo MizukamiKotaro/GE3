@@ -111,7 +111,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	std::unique_ptr<Model> model = std::make_unique<Model>(mesh1);
 	model->Initialize();
 
-	std::unique_ptr<Particle> particle = std::make_unique<Particle>("plane");
+	std::unique_ptr<Particle> particle = std::make_unique<Particle>("circle.png");
 	particle->Initialize();
 
 	Camera camera;

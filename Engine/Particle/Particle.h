@@ -22,6 +22,7 @@ public:
 	static const uint32_t kNumInstance = 256;
 
 	Particle(const std::string& fileName);
+	Particle(uint32_t textureHundle);
 	~Particle();
 
 	struct Material

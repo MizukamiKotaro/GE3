@@ -9,15 +9,61 @@
 #include "Camera.h"
 #include <numbers>
 #include <algorithm>
+#include "TextureManager.h"
 
 Particle::Particle(const std::string& fileName)
 {
 
 	ModelDataManager* modelManager = ModelDataManager::GetInstance();
 
-	meshHundle_ = modelManager->LoadObj(fileName);
+	meshHundle_ = modelManager->LoadObj("Plane");
 
-	textureHundle_ = modelManager->GetModelData(meshHundle_)->textureHundle_;
+	textureHundle_ = TextureManager::GetInstance()->LoadTexture("Resources/"+ fileName);
+
+	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
+
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
+
+	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
+	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(ParticleForGPU) * kNumInstance);
+	instancingData_ = nullptr;
+	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
+
+	for (uint32_t index = 0; index < kNumInstance; index++) {
+		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
+		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
+		instancingData_[index].color = { 1.0f,1.0f,1.0f,0.0f };
+	}
+
+	CreateSRV();
+
+	//平行光源用のリソースを作る。
+	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
+	//データを書き込む
+	directionalLightData_ = nullptr;
+	//書き込むためのアドレスを取得
+	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
+	//書き込んでいく
+	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
+	directionalLightData_->intensity = 1.0f;
+
+	uvScale_ = { 1.0f,1.0f,1.0f };
+	uvRotate_ = { 0.0f,0.0f,0.0f };
+	uvPos_ = { 0.0f,0.0f,0.0f };
+
+	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+}
+
+Particle::Particle(uint32_t textureHundle)
+{
+	ModelDataManager* modelManager = ModelDataManager::GetInstance();
+
+	meshHundle_ = modelManager->LoadObj("Plane");
+
+	textureHundle_ = textureHundle;
 
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 
