@@ -119,8 +119,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	camera.Initialize();
 	camera.transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
-	BlockManager::GetInstance()->AddBox(mesh1, IBlock());
-
+	IBlock* hoge = BlockManager::GetInstance()->AddBox(mesh1, IBlock());
+	IBlock* hoge1 = BlockManager::GetInstance()->AddBox(mesh1, IBlock());
+	IBlock* hoge2 = BlockManager::GetInstance()->AddBox(mesh1, IBlock());
+	IBlock* hoge3 = BlockManager::GetInstance()->AddBox(mesh1, IBlock());
+	hoge->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, {});
+	hoge1->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, {1.0f,0.0f,0.0f});
+	hoge2->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, {0.0f,1.0f,0.0f});
+	hoge3->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, {-1.0f,0.0f,0.0f});
 
 #pragma endregion 最初のシーンの初期化
 	
