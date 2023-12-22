@@ -1,5 +1,5 @@
 #include "StageScene.h"
-#include "ImGuiManager/ImGuiManager.h"
+#include "Externals/imgui/imgui.h"
 
 StageScene::StageScene()
 {
@@ -27,6 +27,12 @@ void StageScene::Init()
 	particle->Initialize();
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
+
+	for (uint32_t i = 0; i < 4; i++) {
+		blocks_[i] = BlockManager::GetInstance()->AddBox(mesh1, IBlock());
+		blocks_[i]->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, { 2.0f * i,0.0f,0.0f });
+		blocks_[i]->color_.x = 0.3f * i;
+	}
 }
 
 void StageScene::Update()
@@ -65,4 +71,6 @@ void StageScene::Draw()
 	model->Draw(*camera_.get());
 
 	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
+
+	BlockManager::GetInstance()->Draw(*camera_.get());
 }

@@ -4,6 +4,8 @@
 #include "Sprite.h"
 #include "Model.h"
 #include "Particle.h"
+#include "BlockManager.h"
+#include <array>
 
 class StageScene : public IScene
 {
@@ -28,4 +30,6 @@ private:
 	std::unique_ptr<Model> model;
 
 	std::unique_ptr<Particle> particle;
+
+	std::array<IBlock*, 4> blocks_;
 };
