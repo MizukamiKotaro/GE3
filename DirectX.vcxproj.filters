@@ -16,9 +16,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{4489984c-89d1-47e6-8f80-b5766a090682}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GlobalVariables">
-      <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{92b530f5-f9a7-4b9e-9ad9-34909d8f01da}</UniqueIdentifier>
     </Filter>
@@ -105,6 +102,30 @@
     </Filter>
     <Filter Include="Engine\Utils\Transform">
       <UniqueIdentifier>{3c62a5ac-6b1b-4641-986b-f847f3d0e65f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GlobalVariables">
+      <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{0c4869a2-4a82-4407-a35f-be26dbc2a1e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SceneSystem">
+      <UniqueIdentifier>{609d3a6e-b781-469b-851c-9d5cd2ede99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SceneSystem\ClearScene">
+      <UniqueIdentifier>{8d31b5a5-41a2-4b7c-b452-4ff0d30b5537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SceneSystem\IScene">
+      <UniqueIdentifier>{a2f81868-3fbd-4273-b582-2b203c85caeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SceneSystem\SceneManager">
+      <UniqueIdentifier>{2b3c02ef-4091-470a-91f7-45beef467bae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SceneSystem\StageScene">
+      <UniqueIdentifier>{5d0ee55c-31b8-4017-8932-66745fd5c432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SceneSystem\TitleScene">
+      <UniqueIdentifier>{e2079556-6956-4ef8-9d02-3ca9d800f0d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -207,9 +228,6 @@
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp">
       <Filter>Engine\TextureManager</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalVariables\GlobalVariables.cpp">
-      <Filter>GlobalVariables</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Model\Model.cpp">
       <Filter>Engine\Model</Filter>
     </ClCompile>
@@ -233,6 +251,27 @@
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.cpp">
       <Filter>Engine\GraphicsPipelines\GraphicsPiplineManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Kyoko.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
+      <Filter>Engine\GlobalVariables</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\ClearScene\ClearScene.cpp">
+      <Filter>Game\SceneSystem\ClearScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\IScene\IScene.cpp">
+      <Filter>Game\SceneSystem\IScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\SceneManager\SceneManager.cpp">
+      <Filter>Game\SceneSystem\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\StageScene\StageScene.cpp">
+      <Filter>Game\SceneSystem\StageScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\TitleScene\TitleScene.cpp">
+      <Filter>Game\SceneSystem\TitleScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +383,6 @@
     <ClInclude Include="Engine\TextureManager\TextureManager.h">
       <Filter>Engine\TextureManager</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalVariables\GlobalVariables.h">
-      <Filter>GlobalVariables</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Model\Model.h">
       <Filter>Engine\Model</Filter>
     </ClInclude>
@@ -385,6 +421,27 @@
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.h">
       <Filter>Engine\GraphicsPipelines\GraphicsPiplineManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Kyoko.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h">
+      <Filter>Engine\GlobalVariables</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h">
+      <Filter>Game\SceneSystem\ClearScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\IScene\IScene.h">
+      <Filter>Game\SceneSystem\IScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\SceneManager\SceneManager.h">
+      <Filter>Game\SceneSystem\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\StageScene\StageScene.h">
+      <Filter>Game\SceneSystem\StageScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\TitleScene\TitleScene.h">
+      <Filter>Game\SceneSystem\TitleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -57,5 +57,7 @@ private:
 	ModelGraphicsPipline* modelGPS_ = nullptr;
 	ParticleGraphicsPipeline* particleGPS_ = nullptr;
 
+	PiplineType currentPiplineType_ = PiplineType::SPRITE;
+
 };
 

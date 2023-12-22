@@ -1,6 +1,6 @@
 #include "SceneManager.h"
-#include "Novice.h"
-#include "InputManager/InputManager.h"
+#include "Kyoko.h"
+#include "Input.h"
 
 SceneManager::SceneManager()
 {
@@ -8,8 +8,12 @@ SceneManager::SceneManager()
 	sceneArr_[STAGE] = std::make_unique<StageScene>();
 	sceneArr_[CLEAR] = std::make_unique<ClearScene>();
 
-	IScene::sceneNo_ = TITLE;
-	currentSceneNo_ = TITLE;
+	//IScene::sceneNo_ = TITLE;
+	IScene::sceneNo_ = STAGE;
+	currentSceneNo_ = IScene::sceneNo_;
+	IScene::stagrNo_ = 0;
+
+	sceneArr_[currentSceneNo_]->Init();
 }
 
 SceneManager::~SceneManager()
@@ -18,21 +22,16 @@ SceneManager::~SceneManager()
 
 int SceneManager::Run()
 {
-	
-	InputManager* inputManager = InputManager::GetInstance();
-	inputManager->Init();
-
 	// ウィンドウの×ボタンが押されるまでループ
-	while (Novice::ProcessMessage() == 0) {
+	while (true) {
 		// フレームの開始
-		Novice::BeginFrame();
+		if (Kyoko::ProcessMessage() || (Input::GetInstance()->PressedKey(DIK_ESCAPE) && IScene::sceneNo_ == TITLE)) {
+			break;
+		}
 
-		inputManager->Update();
+		Kyoko::FirstUpdateInLoop();
 
-		///
-		/// ↓更新処理ここから
-		///
-		/// 
+		// 更新処理
 		preSceneNo_ = currentSceneNo_;
 		currentSceneNo_ = sceneArr_[currentSceneNo_]->GetSceneNo();
 
@@ -42,27 +41,13 @@ int SceneManager::Run()
 
 		sceneArr_[currentSceneNo_]->Update();
 
-		///
-		/// ↑更新処理ここまで
-		///
+		Kyoko::PreDraw();
 
-		///
-		/// ↓描画処理ここから
-		///
-
+		// 描画処理ここから
 		sceneArr_[currentSceneNo_]->Draw();
 
-		///
-		/// ↑描画処理ここまで
-		///
-
 		// フレームの終了
-		Novice::EndFrame();
-
-		// ESCキーが押されたらループを抜ける
-		if (inputManager->PressedKey(DIK_ESCAPE)) {
-			break;
-		}
+		Kyoko::PostDraw();
 	}
 
 	return 0;

@@ -112,6 +112,8 @@ void Model::Update()
 void Model::Draw(const Camera& camera, BlendMode blendMode)
 {
 
+	PreDrow();
+
 	instancingData_->World = transform_.worldMat_;
 	instancingData_->WVP = transform_.worldMat_ * camera.GetViewProjection();
 	materialData_->uvTransform = uvMatrix_;

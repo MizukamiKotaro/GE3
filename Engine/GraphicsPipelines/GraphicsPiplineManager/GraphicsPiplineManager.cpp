@@ -22,25 +22,30 @@ void GraphicsPiplineManager::Init()
 	particleGPS_ = ParticleGraphicsPipeline::GetInstance();
 	particleGPS_->Initialize();
 
+	spriteGPS_->PreDraw();
 }
 
 void GraphicsPiplineManager::PreDraw(PiplineType type)
 {
-	switch (type)
-	{
-	case GraphicsPiplineManager::PiplineType::SPRITE:
-		spriteGPS_->PreDraw();
-		break;
-	case GraphicsPiplineManager::PiplineType::MODEL:
-		modelGPS_->PreDraw();
-		break;
-	case GraphicsPiplineManager::PiplineType::PARTICLE:
-		particleGPS_->PreDraw();
-		break;
-	case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
-		break;
-	default:
-		break;
+	if (currentPiplineType_ != type) {
+		currentPiplineType_ = type;
+
+		switch (type)
+		{
+		case GraphicsPiplineManager::PiplineType::SPRITE:
+			spriteGPS_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::MODEL:
+			modelGPS_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::PARTICLE:
+			particleGPS_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
+			break;
+		default:
+			break;
+		}
 	}
 }
 
