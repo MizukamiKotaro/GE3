@@ -66,7 +66,7 @@ private: // メンバ変数
 
 	// ウィンドウズアプリケーション管理
 	WinApp* winApp_ = nullptr;
-
+	ComPtr<ID3D12Debug1> debugController_;
 	ComPtr<IDXGIFactory7> dxgiFactory_;
 	ComPtr<ID3D12Device> device_;
 	ComPtr<IDXGIAdapter4> useAdapter_;
@@ -89,6 +89,10 @@ private: // メンバ関数
 	~DirectXCommon() = default;
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
+	/// <summary>
+	/// デバッグコントローラーの初期化
+	/// </summary>
+	void InitializeDebugController();
 
 	/// <summary>
 	/// DXGIデバイス初期化

@@ -131,7 +131,7 @@ void Particle::Update()
 		iter->transform.translate_ += iter->velocity;
 		iter->transform.UpdateMatrix();
 
-		iter->lifeTime++;
+		iter->currentTime++;
 
 		++iter;
 	}
@@ -141,6 +141,8 @@ void Particle::Update()
 
 void Particle::Draw(const Camera& camera, BlendMode blendMode)
 {
+	PreDrow();
+
 	Matrix4x4 billboardMat{};
 
 	if (billboardTypeOpt_) {

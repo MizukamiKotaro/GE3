@@ -19,14 +19,9 @@ void Audio::Finalize() {
 
 	xAudio2_.Reset();
 
-	/*for (Voice* voice : voices_) {
-		delete voice;
-	}*/
-
 	for (SoundData soundData : soundDatas_) {
 		Unload(&soundData);
 	}
-
 }
 
 uint32_t Audio::LoadWave(const std::string& filename) {
@@ -75,8 +70,11 @@ uint32_t Audio::LoadWave(const std::string& filename) {
 		file.read((char*)&data, sizeof(data));
 	}
 
-	if (strncmp(data.id, "data", 4) != 0) {
-		assert(0);
+	while (strncmp(data.id, "data", 4) != 0) {
+		// 読み取りチャンクを検出した場合
+		file.seekg(data.size, std::ios_base::cur);
+		// 再読み込み
+		file.read((char*)&data, sizeof(data));
 	}
 
 	char* pBuffer = new char[data.size];
