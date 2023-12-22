@@ -131,7 +131,7 @@ void Particle::Update()
 		iter->transform.translate_ += iter->velocity;
 		iter->transform.UpdateMatrix();
 
-		iter->lifeTime++;
+		iter->currentTime++;
 
 		++iter;
 	}
