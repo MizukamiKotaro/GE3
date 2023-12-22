@@ -1,7 +1,4 @@
 #include "ImGuiManager.h"
-#include "../Externals/imgui/imgui.h"
-#include "../Externals/imgui/imgui_impl_dx12.h"
-#include "Externals/imgui/imgui_impl_win32.h"
 #pragma comment(lib, "winmm.lib")
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/WinApp/WinApp.h"

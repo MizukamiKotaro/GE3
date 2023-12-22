@@ -141,6 +141,8 @@ void Particle::Update()
 
 void Particle::Draw(const Camera& camera, BlendMode blendMode)
 {
+	PreDrow();
+
 	Matrix4x4 billboardMat{};
 
 	if (billboardTypeOpt_) {

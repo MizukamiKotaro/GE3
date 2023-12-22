@@ -18,6 +18,9 @@ DirectXCommon* DirectXCommon::GetInstance() {
 
 void DirectXCommon::Initialize() {
 
+	// デバッグコントローラーの初期化
+	InitializeDebugController();
+
 	// FPS固定初期化
 	InitializeFixFPS();
 
@@ -229,6 +232,18 @@ ID3D12DescriptorHeap* DirectXCommon::CreateDescriptorHeap(ID3D12Device* device_,
 	//ディスクリプタヒープが作られなかったので起動しない
 	assert(SUCCEEDED(hr));
 	return descriptorHeap;
+}
+
+void DirectXCommon::InitializeDebugController()
+{
+#ifdef _DEBUG
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(debugController_.GetAddressOf())))) {
+		//デバッグレイヤーを有効にする
+		debugController_->EnableDebugLayer();
+		//さらにGPU側でもチェックを行うようにする
+		debugController_->SetEnableGPUBasedValidation(TRUE);
+	}
+#endif // DEBUG
 }
 
 void DirectXCommon::InitializeDXGIDevice() {

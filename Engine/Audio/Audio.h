@@ -9,7 +9,7 @@
 
 class Audio
 {
-
+public:
 	struct ChunkHeader {
 		char id[4];
 		int32_t size;
@@ -62,18 +62,11 @@ class Audio
 	uint32_t LoadWave(const std::string& filename);
 
 	/// <summary>
-	/// サウンドデータの解放
-	/// </summary>
-	/// <param name="soundData">サウンドデータ</param>
-	void Unload(SoundData* soundData);
-
-	/// <summary>
 	/// 音声再生
 	/// </summary>
 	/// <param name="soundDataHandle">サウンドデータハンドル</param>
 	/// <param name="loopFlag">ループ再生フラグ</param>
 	/// <param name="volume">ボリューム
-	/// 0で無音、1がデフォルト音量。あまり大きくしすぎると音割れする</param>
 	/// <returns>再生ハンドル</returns>
 	uint32_t PlayWave(uint32_t soundDataHandle, bool loopFlag = false, float volume = 1.0f);
 
@@ -107,9 +100,14 @@ class Audio
 	/// </summary>
 	/// <param name="voiceHandle">再生ハンドル</param>
 	/// <param name="volume">ボリューム
-	/// 0で無音、1がデフォルト音量。あまり大きくしすぎると音割れする</param>
 	void SetVolume(uint32_t voiceHandle, float volume);
 
+private:
+	/// <summary>
+	/// サウンドデータの解放
+	/// </summary>
+	/// <param name="soundData">サウンドデータ</param>
+	void Unload(SoundData* soundData);
 
 private:
 
@@ -119,7 +117,7 @@ private:
 	const Audio& operator=(const Audio&) = delete;
 
 	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
-	IXAudio2MasteringVoice* masterVoice_;
+	IXAudio2MasteringVoice* masterVoice_ = nullptr;
 
 	std::vector<SoundData> soundDatas_;
 	std::vector<std::unique_ptr<Voice>> voices_;
