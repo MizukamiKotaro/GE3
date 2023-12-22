@@ -22,6 +22,8 @@ void GraphicsPiplineManager::Init()
 	particleGPS_ = ParticleGraphicsPipeline::GetInstance();
 	particleGPS_->Initialize();
 
+	blocksGPS_ = BlockGraphicsPipeline::GetInstance();
+	blocksGPS_->Initialize();
 }
 
 void GraphicsPiplineManager::PreDraw(PiplineType type)
@@ -36,6 +38,9 @@ void GraphicsPiplineManager::PreDraw(PiplineType type)
 		break;
 	case GraphicsPiplineManager::PiplineType::PARTICLE:
 		particleGPS_->PreDraw();
+		break;
+	case GraphicsPiplineManager::PiplineType::BLOCKS:
+		blocksGPS_->PreDraw();
 		break;
 	case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 		break;
@@ -56,6 +61,9 @@ void GraphicsPiplineManager::SetBlendMode(PiplineType type, uint32_t blendMode)
 		break;
 	case GraphicsPiplineManager::PiplineType::PARTICLE:
 		particleGPS_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::BLOCKS:
+		blocksGPS_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 		break;

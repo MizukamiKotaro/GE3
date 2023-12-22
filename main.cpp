@@ -14,6 +14,7 @@
 #include "Particle.h"
 #include "Utils/RandomGenerator/RandomGenerator.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+#include "BlockManager.h"
 
 static ResourceLeackChecker leakCheck;
 
@@ -118,6 +119,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	camera.Initialize();
 	camera.transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
+	BlockManager::GetInstance()->AddBox(mesh1, IBlock());
+
+
 #pragma endregion 最初のシーンの初期化
 	
 	ImGuiManager::Initialize();
@@ -181,10 +185,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 		sprite1->Draw(camera, BlendMode::kBlendModeAdd);
 
 		Model::PreDrow();
-		model->Draw(camera);
+		//model->Draw(camera);
 
 		Particle::PreDrow();
 		particle->Draw(camera,BlendMode::kBlendModeScreen);
+
+		BlockManager::GetInstance()->Draw(camera);
 
 		Sprite::PreDrow();
 

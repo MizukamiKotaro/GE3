@@ -106,6 +106,12 @@
     <Filter Include="Engine\Utils\Transform">
       <UniqueIdentifier>{3c62a5ac-6b1b-4641-986b-f847f3d0e65f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\BlockManager">
+      <UniqueIdentifier>{b6f8d92a-5d81-4a8d-bc25-3f811dc2f596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\BlockGraphicsPipeline">
+      <UniqueIdentifier>{8248be4c-aa7b-486a-8dce-dbc4144f5ed0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -233,6 +239,12 @@
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.cpp">
       <Filter>Engine\GraphicsPipelines\GraphicsPiplineManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Externals\BlockManager\BlockManager.cpp">
+      <Filter>Engine\BlockManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\BlockGraphicsPipeline\BlockGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\BlockGraphicsPipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +398,12 @@
     <ClInclude Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.h">
       <Filter>Engine\GraphicsPipelines\GraphicsPiplineManager</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Externals\BlockManager\BlockManager.h">
+      <Filter>Engine\BlockManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\BlockGraphicsPipeline\BlockGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\BlockGraphicsPipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
@@ -411,6 +429,12 @@
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
       <Filter>Engine\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\Blocks.PS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Blocks.VS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
@@ -420,6 +444,9 @@
       <Filter>Engine\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli">
+      <Filter>Engine\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Blocks.hlsli">
       <Filter>Engine\Shaders</Filter>
     </None>
   </ItemGroup>
