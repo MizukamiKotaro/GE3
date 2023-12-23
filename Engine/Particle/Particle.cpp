@@ -39,16 +39,7 @@ Particle::Particle(const std::string& fileName)
 
 	CreateSRV();
 
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
+	light_.Init();
 
 	uvScale_ = { 1.0f,1.0f,1.0f };
 	uvRotate_ = { 0.0f,0.0f,0.0f };
@@ -84,16 +75,7 @@ Particle::Particle(uint32_t textureHundle)
 
 	CreateSRV();
 
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
+	light_.Init();
 
 	uvScale_ = { 1.0f,1.0f,1.0f };
 	uvRotate_ = { 0.0f,0.0f,0.0f };
@@ -106,7 +88,6 @@ Particle::~Particle()
 {
 	instancingResource_->Release();
 	materialResource_->Release();
-	directionalLightResource_->Release();
 }
 
 void Particle::Initialize()
@@ -148,21 +129,21 @@ void Particle::Draw(const Camera& camera, BlendMode blendMode)
 	if (billboardTypeOpt_) {
 		billbordType = billboardTypeOpt_.value();
 
-		float pi = std::numbers::pi_v<float>;
+		//float pi = std::numbers::pi_v<float>;
 
 		switch (billbordType)
 		{
 		case Particle::BillboardType::X:
-			billboardMat = Matrix4x4::MakeRotateXMatrix(pi) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateXMatrix(0) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::Y:
-			billboardMat = Matrix4x4::MakeRotateYMatrix(pi) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateYMatrix(0) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::Z:
-			billboardMat = Matrix4x4::MakeRotateZMatrix(pi) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateZMatrix(0) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::ALL:
-			billboardMat = Matrix4x4::MakeRotateXYZMatrix(Vector3{ pi,pi,pi }) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateXYZMatrix(Vector3{}) * camera.transform_.worldMat_;
 			break;
 		default:
 			break;
@@ -213,7 +194,7 @@ void Particle::Draw(const Camera& camera, BlendMode blendMode)
 	//commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootDescriptorTable(1, srvGPUDescriptorHandle_);
 	//平行光源CBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, light_.GetDirectionalLightGPUVirtualAddress());
 
 	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
@@ -269,6 +250,10 @@ Particle::Active Particle::CreateActive()
 	active.transform.UpdateMatrix();
 	active.lifeTime = rand->RandFloat(120.0f, 240.0f);
 	return active;
+}
+
+void Particle::CreateLights()
+{
 }
 
 

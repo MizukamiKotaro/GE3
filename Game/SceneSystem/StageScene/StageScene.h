@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Model.h"
 #include "Particle.h"
+#include "Light/Light.h"
 
 class StageScene : public IScene
 {
@@ -25,7 +26,13 @@ private:
 
 	bool isMesh1;
 
+	std::unique_ptr<DirectionalLight> directionalLight_;
+
+	std::unique_ptr<PointLight> pointLight_;
+
 	std::unique_ptr<Model> model;
+
+	std::unique_ptr<Model> terrain;
 
 	std::unique_ptr<Particle> particle;
 };

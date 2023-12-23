@@ -89,7 +89,7 @@ void ModelDataManager::LoadObjeFile(const std::string& directoryPath, const std:
 		if (identifier == "v") {
 			Vector4 vertexPos = {};
 			s >> vertexPos.x >> vertexPos.y >> vertexPos.z;
-			vertexPos.x = -1.0f * vertexPos.x;
+			vertexPos.z *= -1.0f;
 			vertexPos.w = 1.0f;
 			positions.push_back(vertexPos);
 		}
@@ -102,7 +102,7 @@ void ModelDataManager::LoadObjeFile(const std::string& directoryPath, const std:
 		else if (identifier == "vn") {
 			Vector3 normal = {};
 			s >> normal.x >> normal.y >> normal.z;
-			normal.x = -1.0f * normal.x;
+			normal.z *= -1.0f;
 			normals.push_back(normal);
 		}
 		else if (identifier == "f") {

@@ -11,6 +11,7 @@
 #include "Utils/RandomGenerator/RandomGenerator.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 #include "Audio.h"
+#include "Light/Light.h"
 
 void Kyoko::Init()
 {
@@ -35,6 +36,8 @@ void Kyoko::Init()
 	Audio::GetInstance()->Initialize();
 
 	Input::GetInstance()->Initialize();
+
+	LightSingleton::GetInstance()->Init();
 
 	GlobalVariables::GetInstance()->LoadFiles();
 

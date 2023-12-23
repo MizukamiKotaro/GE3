@@ -9,6 +9,7 @@
 #include "Utils/Math/Matrix4x4.h"
 #include "Utils/Transform/Transform.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+#include "Light/Light.h"
 
 class Camera;
 
@@ -43,18 +44,14 @@ public:
 		int32_t enableLighting;
 		float padding[3];
 		Matrix4x4 uvTransform;
+		float shininess; // 光沢度
+		Vector3 supeqularColor; // 鏡面反射の色
 	};
 
 	struct TransformationMatrix {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
-	};
-
-	struct DirectionalLight
-	{
-		Vector4 color; // ライトの色
-		Vector3 direction; // ライトの向き
-		float intensity; // 輝度
+		Matrix4x4 WorldInverse;
 	};
 
 	// namespace省略
@@ -74,17 +71,25 @@ public:
 
 	void SetMesh(uint32_t hundle);
 
+	void SetDirectionalLight(const DirectionalLight* light) { light_.SetDirectionalLight(light); }
+
+	void SetPointLight(const PointLight* light) { light_.SetPointLight(light); }
+
 private:
 
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
 
-	ComPtr<ID3D12Resource> instancingResource_;
-	TransformationMatrix* instancingData_;
+	ComPtr<ID3D12Resource> transformationResource_;
+	TransformationMatrix* transformationData_;
 
-	ComPtr<ID3D12Resource> directionalLightResource_;
-	DirectionalLight* directionalLightData_;
+private:
 
+	void CreateResources();
+
+	void CreateMaterialResource();
+
+	void CreateTransformationResource();
 
 public:
 
@@ -93,6 +98,8 @@ public:
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::MODEL;
+
+	Light light_;
 
 	Matrix4x4 uvMatrix_;
 

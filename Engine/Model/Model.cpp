@@ -5,6 +5,7 @@
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "ModelData/ModelDataManager/ModelDataManager.h"
 #include "Camera.h"
+#include "Externals/imgui/imgui.h"
 
 Model::Model(const std::string& fileName)
 {
@@ -15,29 +16,9 @@ Model::Model(const std::string& fileName)
 
 	textureHundle_ = modelManager->GetModelData(meshHundle_)->textureHundle_;
 
-	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
+	CreateResources();
 
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
-	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
-
-	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-	*instancingData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
-
-
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
+	light_.Init();
 
 	transform_ = Transform();
 
@@ -56,29 +37,9 @@ Model::Model(uint32_t meshHundle)
 
 	textureHundle_ = modelManager->GetModelData(meshHundle_)->textureHundle_;
 
-	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
+	CreateResources();
 
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
-	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
-
-	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-	*instancingData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
-
-
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
+	light_.Init();
 
 	transform_ = Transform();
 
@@ -91,9 +52,8 @@ Model::Model(uint32_t meshHundle)
 
 Model::~Model()
 {
-	instancingResource_->Release();
+	transformationResource_->Release();
 	materialResource_->Release();
-	directionalLightResource_->Release();
 }
 
 void Model::Initialize()
@@ -103,7 +63,6 @@ void Model::Initialize()
 
 void Model::Update()
 {
-
 	transform_.UpdateMatrix();
 
 	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
@@ -114,8 +73,10 @@ void Model::Draw(const Camera& camera, BlendMode blendMode)
 
 	PreDrow();
 
-	instancingData_->World = transform_.worldMat_;
-	instancingData_->WVP = transform_.worldMat_ * camera.GetViewProjection();
+	transformationData_->World = transform_.worldMat_;
+	transformationData_->WVP = transform_.worldMat_ * camera.GetViewProjection();
+	transformationData_->WorldInverse = Matrix4x4::Inverse(Matrix4x4::MakeScaleMatrix(transform_.scale_)) *
+		Matrix4x4::MakeRotateXYZMatrix(transform_.rotate_) * Matrix4x4::MakeTranslateMatrix(transform_.translate_);
 	materialData_->uvTransform = uvMatrix_;
 
 	TextureManager* texManager = TextureManager::GetInstance();
@@ -131,10 +92,14 @@ void Model::Draw(const Camera& camera, BlendMode blendMode)
 	//マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
 
 	//平行光源CBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, light_.GetDirectionalLightGPUVirtualAddress());
+	// カメラの設定
+	commandList->SetGraphicsRootConstantBufferView(4, camera.GetGPUVirtualAddress());
+	// pointLight の設定
+	commandList->SetGraphicsRootConstantBufferView(5, light_.GetPointLightGPUVirtualAddress());
 
 	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
@@ -147,6 +112,35 @@ void Model::SetMesh(uint32_t hundle)
 	meshHundle_ = hundle;
 
 	textureHundle_ = ModelDataManager::GetInstance()->GetTextureHundle(hundle);
+}
+
+void Model::CreateResources()
+{
+	CreateMaterialResource();
+
+	CreateTransformationResource();
+}
+
+void Model::CreateMaterialResource()
+{
+	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
+
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+
+	materialData_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	materialData_->enableLighting = 3;
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
+	materialData_->shininess = 40.0f;
+	materialData_->supeqularColor = { 1.0f, 1.0f, 1.0f };
+}
+
+void Model::CreateTransformationResource()
+{
+	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
+	transformationResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
+	transformationData_ = nullptr;
+	transformationResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationData_));
+	*transformationData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4(), Matrix4x4::Inverse(Matrix4x4::MakeIdentity4x4()) };
 }
 
 

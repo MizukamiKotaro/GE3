@@ -12,6 +12,7 @@
 #include <optional>
 #include <list>
 #include "Utils/Shape/AABB.h"
+#include "Light/Light.h"
 
 class Camera;
 
@@ -37,13 +38,6 @@ public:
 		Matrix4x4 WVP;
 		Matrix4x4 World;
 		Vector4 color;
-	};
-
-	struct DirectionalLight
-	{
-		Vector4 color; // ライトの色
-		Vector3 direction; // ライトの向き
-		float intensity; // 輝度
 	};
 
 	struct Active {
@@ -95,6 +89,10 @@ public:
 
 	void GenerateParticle();
 
+	void SetDirectionalLight(const DirectionalLight* light) { light_.SetDirectionalLight(light); }
+
+	void SetPointLight(const PointLight* light) { light_.SetPointLight(light); }
+
 private:
 
 	void CreateSRV();
@@ -108,9 +106,6 @@ private:
 	ComPtr<ID3D12Resource> instancingResource_;
 	ParticleForGPU* instancingData_;
 
-	ComPtr<ID3D12Resource> directionalLightResource_;
-	DirectionalLight* directionalLightData_;
-
 public:
 
 	std::list<Active> actives_;
@@ -120,6 +115,10 @@ public:
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::PARTICLE;
+
+	void CreateLights();
+
+	Light light_;
 
 	std::optional<BillboardType> billboardTypeOpt_ = BillboardType::Y;
 	BillboardType billbordType = BillboardType::Y;
