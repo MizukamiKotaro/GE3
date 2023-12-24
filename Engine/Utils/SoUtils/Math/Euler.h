@@ -54,7 +54,7 @@ namespace SoLib {
 template<>
 inline bool SoLib::ImGuiWidget<SoLib::Math::Euler>(const char *const label, SoLib::Math::Euler *const value) {
 #ifdef _DEBUG
-	return SoLib::ImGuiDragEuler(label, &value->x);
+	return SoLib::ImGuiSliderEuler(label, &value->x);
 #else
 	label; value;
 	return false;

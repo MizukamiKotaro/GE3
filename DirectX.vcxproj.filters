@@ -136,6 +136,24 @@
     <Filter Include="Engine\Utils\SoUtils">
       <UniqueIdentifier>{d3d1a064-764b-4843-a523-055b88f1ea95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Utils\SoUtils\Math">
+      <UniqueIdentifier>{102d0eba-6728-4018-ae47-eaf41e85bf09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\SoUtils\Containers">
+      <UniqueIdentifier>{f222d02c-d1b3-4e50-aee9-1b7232320520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\SoUtils\Text">
+      <UniqueIdentifier>{8788eae3-8b5b-4bff-a550-6308340991f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\SoUtils\IO">
+      <UniqueIdentifier>{fc466cc0-438c-4d84-939a-960a611fa3e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\SoUtils\SoLib">
+      <UniqueIdentifier>{7a420aab-d0dc-4605-872c-7e4837e6e552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils\SoUtils\Graphics">
+      <UniqueIdentifier>{119489d1-a2db-4a32-a040-fa2ad871a1b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -288,32 +306,32 @@
     <ClCompile Include="Game\SceneSystem\TitleScene\TitleScene.cpp">
       <Filter>Game\SceneSystem\TitleScene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utils\SoUtils\Graphics\Color.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+    <ClCompile Include="Engine\Utils\SoUtils\Math\Angle.cpp">
+      <Filter>Engine\Utils\SoUtils\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\IO\CSV.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\IO</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\IO\File.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Utils\SoUtils\Math\Angle.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\IO</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_Easing.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_ImGui.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_Json.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_Lerp.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_Timer.cpp">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utils\SoUtils\Graphics\Color.cpp">
+      <Filter>Engine\Utils\SoUtils\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,50 +509,50 @@
     <ClInclude Include="Game\SceneSystem\TitleScene\TitleScene.h">
       <Filter>Game\SceneSystem\TitleScene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\Containers\ConstVector.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\Graphics\Color.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\IO\CSV.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\IO\File.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Utils\SoUtils\Math\Angle.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\SoUtils\Math\Euler.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
+    <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h">
+      <Filter>Engine\Utils\SoUtils\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Easing.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_ImGui.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Json.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Lerp.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Timer.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Traits.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
+    <ClInclude Include="Engine\Utils\SoUtils\Containers\ConstVector.h">
+      <Filter>Engine\Utils\SoUtils\Containers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\SoUtils\Text\ConstString.h">
-      <Filter>Engine\Utils\SoUtils</Filter>
+      <Filter>Engine\Utils\SoUtils\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\IO\CSV.h">
+      <Filter>Engine\Utils\SoUtils\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\IO\File.h">
+      <Filter>Engine\Utils\SoUtils\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Easing.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_ImGui.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Json.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Lerp.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Timer.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Traits.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib.h">
+      <Filter>Engine\Utils\SoUtils\SoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\Graphics\Color.h">
+      <Filter>Engine\Utils\SoUtils\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
