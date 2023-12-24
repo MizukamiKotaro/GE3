@@ -19,14 +19,14 @@ public:
 	}
 
 	//加算
-	void operator+=(Vector3 obj) {
+	void operator+=(const Vector3 &obj) {
 		this->x = this->x + obj.x;
 		this->y = this->y + obj.y;
 		this->z = this->z + obj.z;
 	}
 
 	//減算
-	void  operator-=(Vector3 obj) {
+	void  operator-=(const Vector3 &obj) {
 		this->x -= obj.x;
 		this->y -= obj.y;
 		this->z -= obj.z;
@@ -53,6 +53,9 @@ public:
 	float Length(const Vector3 &pos)const;
 
 	Vector3 Normalize() const;
+
+	static Vector3 zero() { return Vector3{}; }
+	static Vector3 one() { return Vector3{ 1.f,1.f,1.f }; }
 
 public:
 	float x;

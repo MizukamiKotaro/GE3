@@ -1,8 +1,7 @@
 #include "StageScene.h"
 #include "Externals/imgui/imgui.h"
 
-StageScene::StageScene()
-{
+StageScene::StageScene() {
 	FirstInit();
 }
 
@@ -28,15 +27,25 @@ void StageScene::Init()
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
-	for (uint32_t i = 0; i < 4; i++) {
-		blocks_[i] = BlockManager::GetInstance()->AddBox(mesh1, IBlock());
-		blocks_[i]->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, { 2.0f * i,0.0f,0.0f });
-		blocks_[i]->color_.x = 0.3f * i;
-	}
+	//for (uint32_t i = 0; i < 4; i++) {
+	//	blocks_[i] = BlockManager::GetInstance()->AddBox(mesh1, IBlock{});
+	//	blocks_[i]->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, { 2.0f * i,0.0f,0.0f });
+	//	blocks_[i]->color_.r = 0.3f * i;
+	//}
+
+	file_.Load("Resources/LevelData/Level1.csv");
+	csv_ = file_;
+
+	mapChip_ = std::make_unique<MapChip>();
+	mapChip_->Init();
+	mapChip_->Load(csv_);
 }
 
 void StageScene::Update()
 {
+	// 時間差分
+	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
+
 	if (input_->PressedKey(DIK_SPACE)) {
 		if (isMesh1) {
 			isMesh1 = false;
@@ -61,16 +70,19 @@ void StageScene::Update()
 	model->Update();
 	particle->Update();
 	camera_->Update();
+	mapChip_->Update(deltaTime);
 }
 
-void StageScene::Draw()
-{
+void StageScene::Draw() {
 	sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
 	sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
 
 	model->Draw(*camera_.get());
 
 	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
+
+	BlockManager::GetInstance()->clear();
+	mapChip_->Draw();
 
 	BlockManager::GetInstance()->Draw(*camera_.get());
 }

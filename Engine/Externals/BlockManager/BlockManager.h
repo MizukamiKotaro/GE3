@@ -12,6 +12,7 @@
 #include "Utils/Math/Vector4.h"
 #include "Utils/Math/Matrix4x4.h"
 #include "Utils/Transform/Transform.h"
+#include "Utils/SoUtils/Graphics/Color.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 
 class Camera;
@@ -26,7 +27,7 @@ public: // パブリックなメンバ変数
 	Matrix4x4 transformMat_;
 
 	//　色
-	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
+	SoLib::Color::RGB4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 };
 

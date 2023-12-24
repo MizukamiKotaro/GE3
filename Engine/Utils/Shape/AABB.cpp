@@ -1,4 +1,47 @@
 #include "AABB.h"
+#include <SoUtils/SoLib/SoLib_Lerp.h>
+#include <type_traits>
+
+Vector3 AABB::GetCentor() const {
+	return SoLib::Lerp(min, max, 0.5f);
+}
+
+Vector3 AABB::GetRadius() const {
+	return (max - min) / 2.f;
+}
+
+Matrix4x4 AABB::TransMat() const {
+	return Matrix4x4::MakeAffinMatrix(this->GetRadius(), Vector3::zero(), this->GetCentor());
+}
+
+AABB AABB::Create(const Vector3 &origin, const Vector3 &radius) {
+	AABB result{};
+	result.min = -radius;
+	result.max = radius;
+
+
+	return result.Swap().AddPos(origin);
+}
+
+AABB AABB::AddPos(const Vector3 &vec) const {
+	AABB result = *this;
+	result.min += vec;
+	result.max += vec;
+
+	return result;
+}
+
+AABB AABB::Swap() const {
+	AABB result = *this;
+
+	for (uint8_t i = 0u; i < 3u; i++) {
+		if ((&result.min.x)[i] > (&result.max.x)[i]) {
+			std::swap((&result.min.x)[i], (&result.max.x)[i]);
+		}
+	}
+
+	return result;
+}
 
 //void AABB::Draw(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
 //

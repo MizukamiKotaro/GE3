@@ -7,6 +7,10 @@
 #include "BlockManager.h"
 #include <array>
 
+#include "../Engine/Utils/SoUtils/IO/File.h"
+#include "../Engine/Utils/SoUtils/IO/CSV.h"
+#include <GameElement/MapChip.h>
+
 class StageScene : public IScene
 {
 public:
@@ -31,5 +35,12 @@ private:
 
 	std::unique_ptr<Particle> particle;
 
-	std::array<IBlock*, 4> blocks_;
+	std::array<IBlock *, 4> blocks_;
+
+
+	BlockManager *pBlockManager_;
+	std::unique_ptr<MapChip> mapChip_;
+
+	SoLib::IO::File file_;
+	SoLib::IO::CSV csv_;
 };
