@@ -69,6 +69,9 @@ void StageScene::Update()
 		model->SetTex(textureManager_->LoadTexture("Resources/uvChecker.png"));
 	}
 
+#ifdef _DEBUG
+
+
 	ImGui::Begin("a");
 	ImGui::SliderFloat3("modelPos", &model->transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("modelScale", &model->transform_.scale_.x, -100.0f, 100.0f);
@@ -94,6 +97,7 @@ void StageScene::Update()
 	ImGui::DragFloat3("emitter1min", &particle1->emitter.min.x, 0.01f);
 	ImGui::DragFloat3("emitter1max", &particle1->emitter.max.x, 0.01f);
 	ImGui::End();
+#endif // _DEBUG
 
 	directionalLight_->Update();
 	pointLight_->Update();

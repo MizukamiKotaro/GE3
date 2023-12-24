@@ -116,6 +116,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Model;$(ProjectDir)/Engine/Model/ModelData/ModelDataManager;$(ProjectDir)/Engine/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Engine/Utils/Math;$(ProjectDir)/Engine/Utils/Transfrom;$(ProjectDir)/Engine/Utils/Camera;$(ProjectDir)/Engine/Particle;$(ProjectDir)/Engine/Utils;$(ProjectDir)/Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,6 +141,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/Engine;$(ProjectDir)/Engine/Base;$(ProjectDir)/Engine/Audio;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Model;$(ProjectDir)/Engine/Model/ModelData/ModelDataManager;$(ProjectDir)/Engine/Sprite;$(ProjectDir)/Engine/TextureManager;$(ProjectDir)/Engine/Utils/Math;$(ProjectDir)/Engine/Utils/Transfrom;$(ProjectDir)/Engine/Utils/Camera;$(ProjectDir)/Engine/Particle;$(ProjectDir)/Engine/Utils;$(ProjectDir)/Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MinSpace</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
