@@ -37,6 +37,9 @@ void StageScene::Init()
 
 	particle = std::make_unique<Particle>("circle.png");
 	particle->Initialize();
+	
+	particle1 = std::make_unique<Particle>("uvChecker.png");
+	particle1->Initialize();
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 }
@@ -62,14 +65,26 @@ void StageScene::Update()
 	ImGui::SliderFloat3("modelPos", &model->transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("modelScale", &model->transform_.scale_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("modelRotate", &model->transform_.rotate_.x, -3.14f, 3.14f);
+	ImGui::SliderFloat3("cameraPos", &camera_->transform_.translate_.x, -100.0f, 100.0f);
+	ImGui::SliderFloat3("cameraRotate", &camera_->transform_.rotate_.x, -3.14f, 3.14f);
+	ImGui::End();
+
+	ImGui::Begin("Lights");
 	ImGui::SliderFloat3("direction", &directionalLight_->light_->direction.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("directionalLightIntesity", &directionalLight_->light_->intensity, 0.0f, 100.0f);
 	ImGui::SliderFloat3("pointLightPos", &pointLight_->light_->position.x, -100.0f, 100.0f);
 	ImGui::SliderFloat("pointLightIntesity", &pointLight_->light_->intensity, 0.0f, 100.0f);
 	ImGui::SliderFloat("pointLightRadius", &pointLight_->light_->radius, 0.0f, 100.0f);
 	ImGui::SliderFloat("pointLightDecay", &pointLight_->light_->decay, 0.0f, 100.0f);
-	ImGui::SliderFloat3("cameraPos", &camera_->transform_.translate_.x, -100.0f, 100.0f);
-	ImGui::SliderFloat3("cameraRotate", &camera_->transform_.rotate_.x, -3.14f, 3.14f);
+	ImGui::End();
+
+	ImGui::Begin("Particles");
+	ImGui::DragFloat3("emitter0Pos", &particle->emitter.pos.x, 0.01f);
+	ImGui::DragFloat3("emitter0min", &particle->emitter.min.x, 0.01f);
+	ImGui::DragFloat3("emitter0max", &particle->emitter.max.x, 0.01f);
+	ImGui::DragFloat3("emitter1Pos", &particle1->emitter.pos.x, 0.01f);
+	ImGui::DragFloat3("emitter1min", &particle1->emitter.min.x, 0.01f);
+	ImGui::DragFloat3("emitter1max", &particle1->emitter.max.x, 0.01f);
 	ImGui::End();
 
 	directionalLight_->Update();
@@ -78,6 +93,7 @@ void StageScene::Update()
 	model->Update();
 	terrain->Update();
 	particle->Update();
+	particle1->Update();
 	camera_->Update();
 }
 
@@ -90,4 +106,5 @@ void StageScene::Draw()
 	terrain->Draw(*camera_.get());
 
 	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
+	particle1->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 }

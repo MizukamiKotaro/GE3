@@ -51,6 +51,8 @@ public:
 	struct Emitter
 	{
 		Vector3 pos;
+		Vector3 min;
+		Vector3 max;
 		uint32_t generateParticleNum_; // 一回に生成する数
 		float generateCoolTime_; // 生成の間隔
 		float countTime_; // 生成をするための時間のカウント
@@ -97,6 +99,14 @@ private:
 
 	void CreateSRV();
 
+	void CreateResources();
+
+	void CreateMaterialResource();
+
+	void CreateInstancingResource();
+
+	void InitVariables();
+
 	Active CreateActive();
 
 private:
@@ -115,8 +125,6 @@ public:
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::PARTICLE;
-
-	void CreateLights();
 
 	Light light_;
 

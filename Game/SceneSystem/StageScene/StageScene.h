@@ -35,4 +35,5 @@ private:
 	std::unique_ptr<Model> terrain;
 
 	std::unique_ptr<Particle> particle;
+	std::unique_ptr<Particle> particle1;
 };

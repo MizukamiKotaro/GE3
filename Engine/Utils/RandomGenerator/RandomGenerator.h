@@ -17,6 +17,8 @@ public:
 
 	Vector3 RandVector3(float min, float max);
 
+	Vector3 RandVector3(const Vector3& min, const Vector3& max);
+
 private:
 	RandomGenerator() = default;
 	~RandomGenerator() = default;
