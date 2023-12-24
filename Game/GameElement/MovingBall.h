@@ -1,9 +1,9 @@
 #pragma once
 #include "../Collision/Collision.h"
 #include <Camera.h>
+#include "SoUtils/Graphics/Color.h"
 
-class MovingBall
-{
+class MovingBall {
 public:
 	MovingBall() = default;
 	~MovingBall() = default;
@@ -12,7 +12,7 @@ public:
 
 	void Update(const float deltaTime);
 
-	void Draw(const Camera &camera) const;
+	void Draw() ;
 
 	const Vector3 &GetBeforePos() const { return beforePos_; }
 	const Vector3 &GetNowPos() const { return sphere_.center_; }
@@ -22,6 +22,12 @@ private:
 	void UpdateRigidbody(const float deltaTime);
 
 	Sphere sphere_;
+
+	Matrix4x4 transformMat_;
+	SoLib::Color::RGB4 color_;
+
+	uint32_t model_;
+
 
 	Vector3 beforePos_;
 

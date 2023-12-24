@@ -3,6 +3,7 @@
 
 StageScene::StageScene() {
 	FirstInit();
+	pBlockManager_ = BlockManager::GetInstance();
 }
 
 void StageScene::Init()
@@ -39,6 +40,9 @@ void StageScene::Init()
 	mapChip_ = std::make_unique<MapChip>();
 	mapChip_->Init();
 	mapChip_->Load(csv_);
+
+	ball_ = std::make_unique<MovingBall>();
+	ball_->Init();
 }
 
 void StageScene::Update()
@@ -71,18 +75,21 @@ void StageScene::Update()
 	particle->Update();
 	camera_->Update();
 	mapChip_->Update(deltaTime);
+
+	ball_->Update(deltaTime);
 }
 
 void StageScene::Draw() {
 	sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
 	sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
 
-	model->Draw(*camera_.get());
+	// model->Draw(*camera_.get());
 
 	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 
-	BlockManager::GetInstance()->clear();
-	mapChip_->Draw();
+	pBlockManager_->clear();
+	//mapChip_->Draw();
+	ball_->Draw();
 
-	BlockManager::GetInstance()->Draw(*camera_.get());
+	pBlockManager_->Draw(*camera_.get());
 }
