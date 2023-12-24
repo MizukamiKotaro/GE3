@@ -18,15 +18,7 @@ Model::Model(const std::string& fileName)
 
 	CreateResources();
 
-	light_.Init();
-
-	transform_ = Transform();
-
-	uvScale_ = { 1.0f,1.0f,1.0f };
-	uvRotate_ = { 0.0f,0.0f,0.0f };
-	uvPos_ = { 0.0f,0.0f,0.0f };
-
-	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+	InitVariables();
 }
 
 Model::Model(uint32_t meshHundle)
@@ -39,15 +31,7 @@ Model::Model(uint32_t meshHundle)
 
 	CreateResources();
 
-	light_.Init();
-
-	transform_ = Transform();
-
-	uvScale_ = { 1.0f,1.0f,1.0f };
-	uvRotate_ = { 0.0f,0.0f,0.0f };
-	uvPos_ = { 0.0f,0.0f,0.0f };
-
-	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+	InitVariables();
 }
 
 Model::~Model()
@@ -100,6 +84,8 @@ void Model::Draw(const Camera& camera, BlendMode blendMode)
 	commandList->SetGraphicsRootConstantBufferView(4, camera.GetGPUVirtualAddress());
 	// pointLight の設定
 	commandList->SetGraphicsRootConstantBufferView(5, light_.GetPointLightGPUVirtualAddress());
+	// spotLight の設定
+	commandList->SetGraphicsRootConstantBufferView(6, light_.GetSpotLightGPUVirtualAddress());
 
 	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
@@ -141,6 +127,19 @@ void Model::CreateTransformationResource()
 	transformationData_ = nullptr;
 	transformationResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationData_));
 	*transformationData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4(), Matrix4x4::Inverse(Matrix4x4::MakeIdentity4x4()) };
+}
+
+void Model::InitVariables()
+{
+	light_.Init();
+
+	transform_ = Transform();
+
+	uvScale_ = { 1.0f,1.0f,1.0f };
+	uvRotate_ = { 0.0f,0.0f,0.0f };
+	uvPos_ = { 0.0f,0.0f,0.0f };
+
+	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
 }
 
 

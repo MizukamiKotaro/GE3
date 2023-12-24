@@ -24,16 +24,24 @@ void StageScene::Init()
 	
 	pointLight_ = std::make_unique<PointLight>();
 
+	spotLight_ = std::make_unique<SpotLight>();
+	spotLight_->light_->position = { 2.0f,1.25f,0.0f };
+	spotLight_->light_->direction = { -1.0f,-1.0f,0.0f };
+	spotLight_->light_->intensity = 4.0f;
+	spotLight_->light_->decay = 2.0f;
+
 	model = std::make_unique<Model>(mesh1);
 	model->Initialize();
 
 	model->SetDirectionalLight(directionalLight_.get());
 	model->SetPointLight(pointLight_.get());
+	model->SetSpotLight(spotLight_.get());
 
 	terrain = std::make_unique<Model>("terrain");
 	terrain->Initialize();
 	terrain->SetDirectionalLight(directionalLight_.get());
 	terrain->SetPointLight(pointLight_.get());
+	terrain->SetSpotLight(spotLight_.get());
 
 	particle = std::make_unique<Particle>("circle.png");
 	particle->Initialize();
@@ -89,6 +97,7 @@ void StageScene::Update()
 
 	directionalLight_->Update();
 	pointLight_->Update();
+	spotLight_->Update();
 
 	model->Update();
 	terrain->Update();

@@ -127,6 +127,15 @@
     <Filter Include="Game\SceneSystem\TitleScene">
       <UniqueIdentifier>{e2079556-6956-4ef8-9d02-3ca9d800f0d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Light\SpotLight">
+      <UniqueIdentifier>{18347a1a-e13b-4d5c-82b7-9206fdcd1e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Light\DirectionalLight">
+      <UniqueIdentifier>{ec014a28-d9ce-4e48-bf1b-b5aeab7daf16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Light\PointLight">
+      <UniqueIdentifier>{4bcc8c32-55c8-4e3f-846d-9323cabe5d47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -272,6 +281,15 @@
     </ClCompile>
     <ClCompile Include="Game\SceneSystem\TitleScene\TitleScene.cpp">
       <Filter>Game\SceneSystem\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\SpotLight\SpotLight.cpp">
+      <Filter>Engine\Light\SpotLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\DirectionalLight\DirectionalLight.cpp">
+      <Filter>Engine\Light\DirectionalLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\PointLight\PointLight.cpp">
+      <Filter>Engine\Light\PointLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -442,6 +460,15 @@
     </ClInclude>
     <ClInclude Include="Game\SceneSystem\TitleScene\TitleScene.h">
       <Filter>Game\SceneSystem\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Light\SpotLight\SpotLight.h">
+      <Filter>Engine\Light\SpotLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Light\DirectionalLight\DirectionalLight.h">
+      <Filter>Engine\Light\DirectionalLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Light\PointLight\PointLight.h">
+      <Filter>Engine\Light\PointLight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

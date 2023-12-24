@@ -30,6 +30,8 @@ private:
 
 	std::unique_ptr<PointLight> pointLight_;
 
+	std::unique_ptr<SpotLight> spotLight_;
+
 	std::unique_ptr<Model> model;
 
 	std::unique_ptr<Model> terrain;

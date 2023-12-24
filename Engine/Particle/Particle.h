@@ -95,6 +95,8 @@ public:
 
 	void SetPointLight(const PointLight* light) { light_.SetPointLight(light); }
 
+	void SetSpotLight(const SpotLight* light) { light_.SetSpotLight(light); }
+
 private:
 
 	void CreateSRV();

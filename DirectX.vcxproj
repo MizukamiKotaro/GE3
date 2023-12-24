@@ -168,7 +168,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Kyoko.cpp" />
+    <ClCompile Include="Engine\Light\DirectionalLight\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Light\Light.cpp" />
+    <ClCompile Include="Engine\Light\PointLight\PointLight.cpp" />
+    <ClCompile Include="Engine\Light\SpotLight\SpotLight.cpp" />
     <ClCompile Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.cpp" />
     <ClCompile Include="Engine\Model\Model.cpp" />
     <ClCompile Include="Engine\Particle\Particle.cpp" />
@@ -219,7 +222,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\ImGuiManager\ImGuiManager.h" />
     <ClInclude Include="Engine\Input\Input.h" />
     <ClInclude Include="Engine\Kyoko.h" />
+    <ClInclude Include="Engine\Light\DirectionalLight\DirectionalLight.h" />
     <ClInclude Include="Engine\Light\Light.h" />
+    <ClInclude Include="Engine\Light\PointLight\PointLight.h" />
+    <ClInclude Include="Engine\Light\SpotLight\SpotLight.h" />
     <ClInclude Include="Engine\Model\ModelData\MaterialData3D\MaterialData3D.h" />
     <ClInclude Include="Engine\Model\ModelData\MeshData3D\MeshData3D.h" />
     <ClInclude Include="Engine\Model\ModelData\ModelData.h" />

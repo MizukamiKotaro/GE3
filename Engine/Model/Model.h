@@ -75,6 +75,8 @@ public:
 
 	void SetPointLight(const PointLight* light) { light_.SetPointLight(light); }
 
+	void SetSpotLight(const SpotLight* light) { light_.SetSpotLight(light); }
+
 private:
 
 	ComPtr<ID3D12Resource> materialResource_;
@@ -90,6 +92,8 @@ private:
 	void CreateMaterialResource();
 
 	void CreateTransformationResource();
+
+	void InitVariables();
 
 public:
 

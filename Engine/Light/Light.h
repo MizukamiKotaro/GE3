@@ -1,63 +1,8 @@
 #pragma once
 
-#include "Vector3.h"
-#include "Vector4.h"
-#include <wrl.h>
-#include <d3d12.h>
-#include <memory>
-
-class DirectionalLight
-{
-public:
-	struct DirectionalLightData
-	{
-		Vector4 color; // ライトの色
-		Vector3 direction; // ライトの向き
-		float intensity; // 輝度
-	};
-
-	DirectionalLight();
-	~DirectionalLight();
-
-	void Update();
-
-	const D3D12_GPU_VIRTUAL_ADDRESS GetGPUVirtualAddress() const { return resource_->GetGPUVirtualAddress(); }
-
-public:
-	DirectionalLightData* light_ = nullptr;
-
-private:
-
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource_;
-};
-
-class PointLight
-{
-public:
-	struct PointLightData
-	{
-		Vector4 color; // ライトの色
-		Vector3 position; // 位置
-		float intensity; // 輝度
-		float radius; // ライトの届く距離
-		float decay; // 減衰率
-		float padding[2];
-	};
-
-	PointLight();
-	~PointLight();
-
-	void Update();
-
-	const D3D12_GPU_VIRTUAL_ADDRESS GetGPUVirtualAddress() const { return resource_->GetGPUVirtualAddress(); }
-
-public:
-	PointLightData* light_ = nullptr;
-
-private:
-
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource_;
-};
+#include "DirectionalLight/DirectionalLight.h"
+#include "PointLight/PointLight.h"
+#include "SpotLight/SpotLight.h"
 
 // モデルなどを生成したときに最初に入れる用
 class LightSingleton
@@ -72,6 +17,8 @@ public:
 
 	const PointLight* GetPointLight() const { return pointLight_.get(); }
 
+	const SpotLight* GetSpotLight() const { return spotLight_.get(); }
+
 private:
 	LightSingleton() = default;
 	~LightSingleton() = default;
@@ -82,6 +29,8 @@ private:
 	std::unique_ptr<DirectionalLight> directionalLight_;
 
 	std::unique_ptr<PointLight> pointLight_;
+
+	std::unique_ptr<SpotLight> spotLight_;
 };
 
 // モデルなどの変数に使う用
@@ -94,13 +43,19 @@ public:
 
 	void SetPointLight(const PointLight* light) { pointLight_ = light; }
 
+	void SetSpotLight(const SpotLight* light) { spotLight_ = light; }
+
 	const D3D12_GPU_VIRTUAL_ADDRESS GetDirectionalLightGPUVirtualAddress() const { return directionalLight_->GetGPUVirtualAddress(); }
 
 	const D3D12_GPU_VIRTUAL_ADDRESS GetPointLightGPUVirtualAddress() const { return pointLight_->GetGPUVirtualAddress(); }
+
+	const D3D12_GPU_VIRTUAL_ADDRESS GetSpotLightGPUVirtualAddress() const { return spotLight_->GetGPUVirtualAddress(); }
 
 private:
 
 	const DirectionalLight* directionalLight_ = nullptr;
 
 	const PointLight* pointLight_ = nullptr;
+
+	const SpotLight* spotLight_ = nullptr;
 };
