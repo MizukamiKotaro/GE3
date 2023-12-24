@@ -3,7 +3,7 @@ struct Vector3
 {
 public:
 
-	bool operator==(const Vector3& obj) {
+	bool operator==(const Vector3 &obj) const {
 		if (x == obj.x && y == obj.y && z == obj.z) {
 			return true;
 		}
@@ -11,7 +11,7 @@ public:
 	}
 
 	//変換
-	Vector3& operator=(const Vector3& obj) {
+	Vector3 &operator=(const Vector3 &obj) {
 		x = obj.x;
 		y = obj.y;
 		z = obj.z;
@@ -48,11 +48,11 @@ public:
 		this->z /= a;
 	}
 
-	float Length();
+	float Length() const;
 
-	float Length(const Vector3& pos);
+	float Length(const Vector3 &pos)const;
 
-	Vector3 Normalize();
+	Vector3 Normalize() const;
 
 public:
 	float x;
@@ -60,20 +60,20 @@ public:
 	float z;
 };
 
-Vector3 operator+(const Vector3& obj1, const Vector3& obj2);
+Vector3 operator+(const Vector3 &obj1, const Vector3 &obj2);
 
 //減算
-Vector3 operator-(const Vector3& obj1, const Vector3& obj2);
+Vector3 operator-(const Vector3 &obj1, const Vector3 &obj2);
 
 //スカラー
 //乗算
-Vector3 operator*(float a, const Vector3& obj);
+Vector3 operator*(float a, const Vector3 &obj);
 
-Vector3 operator*(const Vector3& obj, float a);
+Vector3 operator*(const Vector3 &obj, float a);
 
 //除算
-Vector3 operator/(const Vector3& obj, float a);
+Vector3 operator/(const Vector3 &obj, float a);
 
-Vector3 operator+(const Vector3& obj);
+Vector3 operator+(const Vector3 &obj);
 
-Vector3 operator-(const Vector3& obj);
+Vector3 operator-(const Vector3 &obj);
