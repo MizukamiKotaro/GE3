@@ -12,7 +12,7 @@ public:
 
 	void Update(const float deltaTime);
 
-	void Draw() ;
+	void Draw();
 
 	const Vector3 &GetBeforePos() const { return beforePos_; }
 	const Vector3 &GetNowPos() const { return sphere_.center_; }
@@ -27,6 +27,7 @@ private:
 	SoLib::Color::RGB4 color_;
 
 	uint32_t model_;
+	float modelScale_ = 0.5f;
 
 
 	Vector3 beforePos_;

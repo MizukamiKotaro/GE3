@@ -43,6 +43,9 @@ void StageScene::Init()
 
 	ball_ = std::make_unique<MovingBall>();
 	ball_->Init();
+
+	player_ = std::make_unique<Player>();
+	player_->Init();
 }
 
 void StageScene::Update()
@@ -77,6 +80,9 @@ void StageScene::Update()
 	mapChip_->Update(deltaTime);
 
 	ball_->Update(deltaTime);
+
+	player_->InputAction(input_, deltaTime);
+	player_->Update(deltaTime);
 }
 
 void StageScene::Draw() {
@@ -88,8 +94,9 @@ void StageScene::Draw() {
 	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 
 	pBlockManager_->clear();
-	//mapChip_->Draw();
+	mapChip_->Draw();
 	ball_->Draw();
+	player_->Draw();
 
 	pBlockManager_->Draw(*camera_.get());
 }

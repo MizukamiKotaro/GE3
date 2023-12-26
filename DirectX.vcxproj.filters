@@ -342,6 +342,12 @@
     <ClCompile Include="Game\GameElement\MapChip.cpp">
       <Filter>Game\GameElement</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Player.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\Barrier.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -567,6 +573,12 @@
       <Filter>Game\GameElement</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\MovingBall.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Player.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Barrier.h">
       <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>

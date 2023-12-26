@@ -11,7 +11,7 @@ Vector3 AABB::GetRadius() const {
 }
 
 Matrix4x4 AABB::TransMat() const {
-	return Matrix4x4::MakeAffinMatrix(this->GetRadius(), Vector3::zero(), this->GetCentor());
+	return Matrix4x4::MakeAffinMatrix(this->GetRadius(), Vector3::zero, this->GetCentor());
 }
 
 AABB AABB::Create(const Vector3 &origin, const Vector3 &radius) {

@@ -54,8 +54,11 @@ public:
 
 	Vector3 Normalize() const;
 
-	static Vector3 zero() { return Vector3{}; }
-	static Vector3 one() { return Vector3{ 1.f,1.f,1.f }; }
+	static const Vector3 zero;
+	static const Vector3 one;
+	static const Vector3 right;
+	static const Vector3 up;
+	static const Vector3 front;
 
 public:
 	float x;

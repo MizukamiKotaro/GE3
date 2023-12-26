@@ -11,6 +11,7 @@
 #include "../Engine/Utils/SoUtils/IO/CSV.h"
 #include <GameElement/MapChip.h>
 #include <GameElement/MovingBall.h>
+#include <GameElement/Player.h>
 
 class StageScene : public IScene
 {
@@ -39,6 +40,7 @@ private:
 	std::array<IBlock *, 4> blocks_;
 
 	std::unique_ptr<MovingBall> ball_;
+	std::unique_ptr<Player> player_;
 
 	BlockManager *pBlockManager_;
 	std::unique_ptr<MapChip> mapChip_;

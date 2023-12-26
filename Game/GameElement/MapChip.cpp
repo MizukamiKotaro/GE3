@@ -26,7 +26,7 @@ void MapChip::Draw() {
 	const Vector3 beginPos = Vector3{ -static_cast<float>(mapData_.GetCols()) + 1.f,-static_cast<float>(mapData_.GetRows()) + 1.f, 0.f } *(0.5f * kChipScale_);
 	Vector3 offset{};
 
-	const Vector3 boxRadius = Vector3::one() * kChipScale_ * kBoxScale;
+	const Vector3 boxRadius = Vector3::one * kChipScale_ * kBoxScale;
 
 	boxList_.clear();
 

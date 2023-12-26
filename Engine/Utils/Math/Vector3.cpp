@@ -2,6 +2,12 @@
 
 #include <cmath>
 
+const Vector3 Vector3::zero = {};
+const Vector3 Vector3::one = { 1.f,1.f,1.f };
+const Vector3 Vector3::right = { .x = 1.f };
+const Vector3 Vector3::up = { .y = 1.f };
+const Vector3 Vector3::front = { .z = 1.f };
+
 float Vector3::Length() const {
 	float result = static_cast<float>(sqrt(powf(this->x, 2) + powf(this->y, 2) + powf(this->z, 2)));
 	return result;

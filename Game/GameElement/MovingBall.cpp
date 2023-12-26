@@ -5,8 +5,9 @@
 void MovingBall::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
-	sphere_.Initialize(Vector3::zero(), 1.f);
+	sphere_.Initialize(Vector3::zero, 1.f);
 	color_ = 0xFFFFFFFF;
+	modelScale_ = 0.5f;
 
 }
 
@@ -15,7 +16,7 @@ void MovingBall::Update([[maybe_unused]] const float deltaTime) {
 	// 物理的に動かす
 	//UpdateRigidbody(deltaTime);
 
-	transformMat_ = Matrix4x4::MakeAffinMatrix(sphere_.scale_ * sphere_.radius_, sphere_.rotate_, sphere_.center_);
+	transformMat_ = Matrix4x4::MakeAffinMatrix(sphere_.scale_ * (sphere_.radius_ * modelScale_), sphere_.rotate_, sphere_.center_);
 
 
 }
