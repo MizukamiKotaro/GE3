@@ -35,6 +35,7 @@ private:
 	Vector3 beforePos_;
 
 	uint32_t model_;
+	SoLib::Color::RGB4 color_;
 
 	std::unique_ptr<BarrierItem> barrier_ = nullptr;
 

@@ -7,7 +7,7 @@ void BarrierItem::Init() {
 	attackTimer_.Start();
 
 	color_ = 0xFF0000FF;
-	eulerRot_.y = 90._deg;
+	//eulerRot_.y = 90._deg;
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Barrier");
 }
