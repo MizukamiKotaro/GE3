@@ -31,22 +31,21 @@ PixelShaderOutput main(VertexShaderOutput input) {
 	float32_t cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
 	float32_t3 halfVector = normalize(-pointLightDirection + toEye);
 	float32_t NdotH = dot(normalize(input.normal), halfVector);
-	float32_t specularPow = pow(saturate(NdotH), 30.0f);
+	float32_t specularPow = pow(saturate(NdotH), 10.0f);
 
 	float32_t distance = length(gPointLight.position - input.worldPosition);
-	float32_t factor = pow(saturate(-distance / gPointLight.radius + 1.0f), gPointLight.decay);
+	float32_t factor = pow(saturate(-distance / gPointLight.radius * 5.0f + 1.0f), gPointLight.decay);
 
 	float32_t3 diffusePL = gPointLight.color.rgb * cos * gPointLight.intensity * factor;
 
 	float32_t3 specularPL = gPointLight.color.rgb * gPointLight.intensity * specularPow * factor;
 
 	output.color.rgb = diffusePL + specularPL;
+	output.color.a = (output.color.r + output.color.g + output.color.b) / 3.0f * 0.6f;
 
-	if (output.color.r == 0 && output.color.g == 0 && output.color.b == 0) {
+	if (output.color.a == 0) {
 		discard;
 	}
-
-	output.color.a = (output.color.r + output.color.g + output.color.b) / 3.0f * 0.8f;
 	
 	return output;
 }
