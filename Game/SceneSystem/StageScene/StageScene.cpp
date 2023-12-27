@@ -87,6 +87,14 @@ void StageScene::Update()
 	ImGui::SliderFloat("pointLightIntesity", &pointLight_->light_->intensity, 0.0f, 100.0f);
 	ImGui::SliderFloat("pointLightRadius", &pointLight_->light_->radius, 0.0f, 100.0f);
 	ImGui::SliderFloat("pointLightDecay", &pointLight_->light_->decay, 0.0f, 100.0f);
+	ImGui::SliderFloat3("spotPos", &spotLight_->light_->position.x, -100.0f, 100.0f);
+	ImGui::SliderFloat3("spotDirection", &spotLight_->light_->direction.x, -1.0f, 1.0f);
+	ImGui::SliderFloat("spotLightIntesity", &spotLight_->light_->intensity, 0.0f, 100.0f);
+	ImGui::SliderFloat("spotLightRadius", &spotLight_->light_->distance, 0.0f, 100.0f);
+	ImGui::SliderFloat("spotLightDecay", &spotLight_->light_->decay, 0.0f, 100.0f);
+	ImGui::SliderFloat("spotLightCos", &spotLight_->light_->cosAngle, -1.0f, 1.0f);
+	ImGui::SliderFloat("spotLightCosFalloffStart", &spotLight_->light_->cosFalloffStart, -1.0f, 1.0f);
+
 	ImGui::End();
 
 	ImGui::Begin("Particles");
@@ -119,6 +127,7 @@ void StageScene::Draw()
 	model->Draw(*camera_.get());
 	terrain->Draw(*camera_.get());
 	pointLight_->Draw(*camera_.get());
+	spotLight_->Draw(*camera_.get());
 
 	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 	particle1->Draw(*camera_.get(), BlendMode::kBlendModeScreen);

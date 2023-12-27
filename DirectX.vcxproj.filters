@@ -151,6 +151,12 @@
     <Filter Include="Engine\Shaders\Sprite">
       <UniqueIdentifier>{0dda2da9-e1b8-4d85-8c1f-0152db589a9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Shaders\SpotLight">
+      <UniqueIdentifier>{6b73d2a6-687e-4bac-8541-df5c7acab588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline">
+      <UniqueIdentifier>{e7bf65a2-ca95-41d1-9009-b581bcb00d2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -308,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\PointLightGraphicsPipline\PointLightGraphicsPipline.cpp">
       <Filter>Engine\GraphicsPipelines\PointLightGraphicsPipline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline\SpotLightGraphicsPipline.cpp">
+      <Filter>Engine\GraphicsPipelines\SpotLightGraphicsPipline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,6 +500,9 @@
     <ClInclude Include="Engine\GraphicsPipelines\PointLightGraphicsPipline\PointLightGraphicsPipline.h">
       <Filter>Engine\GraphicsPipelines\PointLightGraphicsPipline</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline\SpotLightGraphicsPipline.h">
+      <Filter>Engine\GraphicsPipelines\SpotLightGraphicsPipline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
@@ -522,6 +534,12 @@
     <FxCompile Include="Resources\Shaders\Sprite.VS.hlsl">
       <Filter>Engine\Shaders\Sprite</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpotLight.PS.hlsl">
+      <Filter>Engine\Shaders\SpotLight</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpotLight.VS.hlsl">
+      <Filter>Engine\Shaders\SpotLight</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
@@ -535,6 +553,9 @@
     </None>
     <None Include="Resources\Shaders\Sprite.hlsli">
       <Filter>Engine\Shaders\Sprite</Filter>
+    </None>
+    <None Include="Resources\Shaders\SpotLight.hlsli">
+      <Filter>Engine\Shaders\SpotLight</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -5,6 +5,10 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <memory>
+#include "Matrix4x4.h"
+#include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+
+class Camera;
 
 class SpotLight
 {
@@ -22,17 +26,40 @@ public:
 		float padding;
 	};
 
+	struct TransformationMatrix {
+		Matrix4x4 WVP;
+		Matrix4x4 World;
+		Matrix4x4 WorldInverse;
+	};
+
 	SpotLight();
 	~SpotLight();
 
 	void Update();
 
+	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
+
 	const D3D12_GPU_VIRTUAL_ADDRESS GetGPUVirtualAddress() const { return resource_->GetGPUVirtualAddress(); }
+
+private:
+
+	void CreateTransformationResource();
 
 public:
 	SpotLightData* light_ = nullptr;
 
 private:
 
+	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::SPOT_LIGHT;
+
 	Microsoft::WRL::ComPtr<ID3D12Resource> resource_;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> transformationResource_;
+	TransformationMatrix* transformationData_;
+
+	uint32_t meshHundle_;
+
+	static const Matrix4x4 scaleMat_;
+
+	static const Matrix4x4 scaleInverseMat_;
 };

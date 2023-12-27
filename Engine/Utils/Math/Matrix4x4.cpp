@@ -1,7 +1,7 @@
 #include "Matrix3x3.h"
 #include "Matrix4x4.h"
 #include "calc.h"
-#include "Utils/Transform/Transform.h"
+#include "../Transform/Transform.h"
 #include <assert.h>
 #include <cmath>
 
@@ -356,7 +356,7 @@ Matrix4x4 Matrix4x4::MakeViewportMatrix(float left, float top, float width, floa
 
 Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const Vector3& axis, float angle)
 {
-	
+
 	Vector3 n = axis;
 
 	n = n.Normalize();
@@ -389,10 +389,10 @@ Matrix4x4 Matrix4x4::DirectionToDirection(const Vector3& from, const Vector3& to
 
 	if (u.x == -v.x && u.y == -v.y && u.z == -v.z) {
 		if (u.x != 0 || u.y != 0) {
-			n = { u.y,-u.z,0.0f };
+			n = Vector3{ u.y,-u.x,0.0f }.Normalize();
 		}
-		else {
-			n = { u.z,0.0f,-u.x };
+		else if (u.x != 0 || u.z != 0) {
+			n = Vector3{ u.z,0.0f,-u.x }.Normalize();
 		}
 
 		cosfTheta = -1;

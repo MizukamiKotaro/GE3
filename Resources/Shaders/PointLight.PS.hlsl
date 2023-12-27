@@ -31,7 +31,7 @@ PixelShaderOutput main(VertexShaderOutput input) {
 	float32_t cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
 	float32_t3 halfVector = normalize(-pointLightDirection + toEye);
 	float32_t NdotH = dot(normalize(input.normal), halfVector);
-	float32_t specularPow = pow(saturate(NdotH), 10.0f);
+	float32_t specularPow = pow(saturate(NdotH), 40.0f);
 
 	float32_t distance = length(gPointLight.position - input.worldPosition);
 	float32_t factor = pow(saturate(-distance / gPointLight.radius * 5.0f + 1.0f), gPointLight.decay);

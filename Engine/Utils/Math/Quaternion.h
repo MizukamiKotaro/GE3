@@ -1,6 +1,8 @@
 #pragma once
 #include "Vector3.h"
 
+struct Matrix4x4;
+
 struct Quaternion
 {
 public:
@@ -42,7 +44,27 @@ public:
 		this->w /= a;
 	}
 
+	static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+
+	static float Dot(const Quaternion& q0, const Quaternion& q1);
+
 	static Quaternion MakeRotateAxisAngle(const Vector3& axis, float angle);
+
+	static Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);
+
+	static Quaternion Identity();
+	// 共役Quaternionを返す
+	Quaternion Conjugate();
+
+	float Norm();
+
+	Quaternion Normalize();
+
+	Quaternion Inverse();
+
+	Matrix4x4 MakeRotateMatrix();
+
+	Vector3 RotateVector(const Vector3& vector);
 
 public:
 	float x;
@@ -53,6 +75,7 @@ public:
 
 Quaternion operator+(const Quaternion& obj1, const Quaternion& obj2);
 Quaternion operator-(const Quaternion& obj1, const Quaternion& obj2);
+Quaternion operator*(const Quaternion obj1, const Quaternion& obj2);
 Quaternion operator*(const Quaternion& obj, float a);
 Quaternion operator*(float a, const Quaternion& obj);
 Quaternion operator/(const Quaternion& obj, float a);
