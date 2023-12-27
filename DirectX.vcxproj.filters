@@ -136,6 +136,21 @@
     <Filter Include="Engine\Light\PointLight">
       <UniqueIdentifier>{4bcc8c32-55c8-4e3f-846d-9323cabe5d47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsPipelines\PointLightGraphicsPipline">
+      <UniqueIdentifier>{a77d6c70-8841-4f7a-8604-70eff20bf647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Shaders\Object3d">
+      <UniqueIdentifier>{8615682e-5d57-4cd0-8528-5b00db8d89b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Shaders\Particle">
+      <UniqueIdentifier>{4cc84fff-2c8f-41e2-b252-6589c02476cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Shaders\PointLight">
+      <UniqueIdentifier>{8da06c5a-793a-4a32-946a-eeb53744cacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Shaders\Sprite">
+      <UniqueIdentifier>{0dda2da9-e1b8-4d85-8c1f-0152db589a9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -290,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Light\PointLight\PointLight.cpp">
       <Filter>Engine\Light\PointLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\PointLightGraphicsPipline\PointLightGraphicsPipline.cpp">
+      <Filter>Engine\GraphicsPipelines\PointLightGraphicsPipline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +488,9 @@
     <ClInclude Include="Engine\Light\PointLight\PointLight.h">
       <Filter>Engine\Light\PointLight</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\PointLightGraphicsPipline\PointLightGraphicsPipline.h">
+      <Filter>Engine\GraphicsPipelines\PointLightGraphicsPipline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
@@ -478,33 +499,42 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
-      <Filter>Engine\Shaders</Filter>
+      <Filter>Engine\Shaders\Object3d</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
-      <Filter>Engine\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\Sprite.PS.hlsl">
-      <Filter>Engine\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\Sprite.VS.hlsl">
-      <Filter>Engine\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
-      <Filter>Engine\Shaders</Filter>
+      <Filter>Engine\Shaders\Object3d</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
-      <Filter>Engine\Shaders</Filter>
+      <Filter>Engine\Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
+      <Filter>Engine\Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointLight.PS.hlsl">
+      <Filter>Engine\Shaders\PointLight</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointLight.VS.hlsl">
+      <Filter>Engine\Shaders\PointLight</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Sprite.PS.hlsl">
+      <Filter>Engine\Shaders\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Sprite.VS.hlsl">
+      <Filter>Engine\Shaders\Sprite</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
-      <Filter>Engine\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\Sprite.hlsli">
-      <Filter>Engine\Shaders</Filter>
+      <Filter>Engine\Shaders\Object3d</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli">
-      <Filter>Engine\Shaders</Filter>
+      <Filter>Engine\Shaders\Particle</Filter>
+    </None>
+    <None Include="Resources\Shaders\PointLight.hlsli">
+      <Filter>Engine\Shaders\PointLight</Filter>
+    </None>
+    <None Include="Resources\Shaders\Sprite.hlsli">
+      <Filter>Engine\Shaders\Sprite</Filter>
     </None>
   </ItemGroup>
 </Project>

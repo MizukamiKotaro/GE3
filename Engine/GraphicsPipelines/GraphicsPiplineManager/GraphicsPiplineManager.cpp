@@ -13,16 +13,19 @@ GraphicsPiplineManager* GraphicsPiplineManager::GetInstance()
 void GraphicsPiplineManager::Init()
 {
 
-	spriteGPS_ = SpriteGraphicsPipeline::GetInstance();
-	spriteGPS_->Initialize();
+	spritePSO_ = SpriteGraphicsPipeline::GetInstance();
+	spritePSO_->Initialize();
 
-	modelGPS_ = ModelGraphicsPipline::GetInstance();
-	modelGPS_->Initialize();
+	modelPSO_ = ModelGraphicsPipline::GetInstance();
+	modelPSO_->Initialize();
 
-	particleGPS_ = ParticleGraphicsPipeline::GetInstance();
-	particleGPS_->Initialize();
+	particlePSO_ = ParticleGraphicsPipeline::GetInstance();
+	particlePSO_->Initialize();
 
-	spriteGPS_->PreDraw();
+	pointLightPSO_ = PointLightGraphicsPipline::GetInstance();
+	pointLightPSO_->Initialize();
+
+	spritePSO_->PreDraw();
 }
 
 void GraphicsPiplineManager::PreDraw(PiplineType type)
@@ -33,13 +36,16 @@ void GraphicsPiplineManager::PreDraw(PiplineType type)
 		switch (type)
 		{
 		case GraphicsPiplineManager::PiplineType::SPRITE:
-			spriteGPS_->PreDraw();
+			spritePSO_->PreDraw();
 			break;
 		case GraphicsPiplineManager::PiplineType::MODEL:
-			modelGPS_->PreDraw();
+			modelPSO_->PreDraw();
 			break;
 		case GraphicsPiplineManager::PiplineType::PARTICLE:
-			particleGPS_->PreDraw();
+			particlePSO_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::POINT_LIGHT:
+			pointLightPSO_->PreDraw();
 			break;
 		case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 			break;
@@ -54,13 +60,16 @@ void GraphicsPiplineManager::SetBlendMode(PiplineType type, uint32_t blendMode)
 	switch (type)
 	{
 	case GraphicsPiplineManager::PiplineType::SPRITE:
-		spriteGPS_->SetBlendMode(blendMode);
+		spritePSO_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::MODEL:
-		modelGPS_->SetBlendMode(blendMode);
+		modelPSO_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::PARTICLE:
-		particleGPS_->SetBlendMode(blendMode);
+		particlePSO_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::POINT_LIGHT:
+		pointLightPSO_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 		break;
