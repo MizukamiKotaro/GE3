@@ -20,3 +20,7 @@ void TitleScene::Draw()
 {
 	
 }
+
+void TitleScene::DrawPostEffect()
+{
+}

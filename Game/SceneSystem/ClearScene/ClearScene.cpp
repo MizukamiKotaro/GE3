@@ -18,3 +18,8 @@ void ClearScene::Draw()
 {
 	
 }
+
+void ClearScene::DrawPostEffect()
+{
+}
+

@@ -5,7 +5,7 @@
 #include "Model.h"
 #include "Particle.h"
 #include "Light/Light.h"
-//#include "PostEffect/PostEffect.h"
+#include <array>
 
 class StageScene : public IScene
 {
@@ -16,11 +16,13 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
-
+	void DrawPostEffect() override;
 private:
 
 	std::unique_ptr<Sprite> sprite;
 	std::unique_ptr<Sprite> sprite1;
+
+	std::unique_ptr<Sprite> screen_;
 
 	uint32_t mesh1;
 	uint32_t mesh2;
@@ -33,12 +35,12 @@ private:
 
 	std::unique_ptr<SpotLight> spotLight_;
 
+	std::array<std::array<std::unique_ptr<SpotLight>, 2>, 5> spotLights_;
+
 	std::unique_ptr<Model> model;
 
 	std::unique_ptr<Model> terrain;
 
 	std::unique_ptr<Particle> particle;
 	std::unique_ptr<Particle> particle1;
-
-	//std::unique_ptr<PostEffect> postEffect_;
 };
