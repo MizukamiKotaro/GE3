@@ -73,7 +73,7 @@ public:
 
 	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
-	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
+	static void PreDraw() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
 public:
 

@@ -14,6 +14,12 @@ SceneManager::SceneManager()
 	IScene::stagrNo_ = 0;
 
 	sceneArr_[currentSceneNo_]->Init();
+
+	postEffect_ = std::make_unique<PostEffect>("Resources/uvChecker.png");
+	postEffect_->Update();
+
+	camera_ = std::make_unique<Camera>();
+	camera_->Initialize();
 }
 
 SceneManager::~SceneManager()
@@ -40,11 +46,17 @@ int SceneManager::Run()
 		}
 
 		sceneArr_[currentSceneNo_]->Update();
+		
+		postEffect_->PreDrawScene();
+
+		sceneArr_[currentSceneNo_]->Draw();
+
+		postEffect_->PostDrawScene();
 
 		Kyoko::PreDraw();
 
 		// 描画処理ここから
-		sceneArr_[currentSceneNo_]->Draw();
+		postEffect_->Draw(*camera_.get());
 
 		// フレームの終了
 		Kyoko::PostDraw();

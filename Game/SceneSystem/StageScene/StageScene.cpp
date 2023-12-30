@@ -13,7 +13,11 @@ void StageScene::Init()
 	sprite->Update();
 
 	sprite1 = std::make_unique<Sprite>("Resources/uvChecker.png");
+	sprite1->pos_.x += 300.0f;
 	sprite1->Update();
+
+	/*postEffect_ = std::make_unique<PostEffect>("Resources/uvChecker.png");
+	postEffect_->Update();*/
 
 	mesh1 = modelDataManager_->LoadObj("Sphere");
 	mesh2 = modelDataManager_->LoadObj("weapon");
@@ -115,14 +119,17 @@ void StageScene::Update()
 	terrain->Update();
 	particle->Update();
 	particle1->Update();
+	//postEffect_->Update();
 	camera_->Update();
 }
 
 void StageScene::Draw()
 {
+
 	sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
 	sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
 
+	//postEffect_->Draw(*camera_.get());
 
 	model->Draw(*camera_.get());
 	terrain->Draw(*camera_.get());

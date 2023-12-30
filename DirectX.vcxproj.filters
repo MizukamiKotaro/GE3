@@ -157,6 +157,9 @@
     <Filter Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline">
       <UniqueIdentifier>{e7bf65a2-ca95-41d1-9009-b581bcb00d2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\PostEffect">
+      <UniqueIdentifier>{ac6c224c-40e1-4638-81d1-ee6dd623625e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -317,6 +320,9 @@
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline\SpotLightGraphicsPipline.cpp">
       <Filter>Engine\GraphicsPipelines\SpotLightGraphicsPipline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostEffect\PostEffect.cpp">
+      <Filter>Engine\PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -502,6 +508,9 @@
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline\SpotLightGraphicsPipline.h">
       <Filter>Engine\GraphicsPipelines\SpotLightGraphicsPipline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostEffect\PostEffect.h">
+      <Filter>Engine\PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

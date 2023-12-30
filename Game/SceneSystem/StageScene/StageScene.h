@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "Particle.h"
 #include "Light/Light.h"
+//#include "PostEffect/PostEffect.h"
 
 class StageScene : public IScene
 {
@@ -38,4 +39,6 @@ private:
 
 	std::unique_ptr<Particle> particle;
 	std::unique_ptr<Particle> particle1;
+
+	//std::unique_ptr<PostEffect> postEffect_;
 };

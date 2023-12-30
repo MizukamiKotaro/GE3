@@ -31,6 +31,13 @@ void GraphicsPiplineManager::Init()
 	spritePSO_->PreDraw();
 }
 
+void GraphicsPiplineManager::PreDraw()
+{
+	currentPiplineType_ = PiplineType::SPRITE;
+
+	spritePSO_->PreDraw();
+}
+
 void GraphicsPiplineManager::PreDraw(PiplineType type)
 {
 	if (currentPiplineType_ != type) {

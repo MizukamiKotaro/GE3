@@ -43,6 +43,8 @@ public:
 
 	void Init();
 
+	void PreDraw();
+
 	void PreDraw(PiplineType type);
 
 	void SetBlendMode(PiplineType type, uint32_t blendMode);

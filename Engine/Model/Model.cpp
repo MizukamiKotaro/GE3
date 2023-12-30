@@ -55,7 +55,7 @@ void Model::Update()
 void Model::Draw(const Camera& camera, BlendMode blendMode)
 {
 
-	PreDrow();
+	PreDraw();
 
 	transformationData_->World = transform_.worldMat_;
 	transformationData_->WVP = transform_.worldMat_ * camera.GetViewProjection();

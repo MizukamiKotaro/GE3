@@ -12,15 +12,15 @@
 class Camera;
 
 // スプライト
-class Sprite
+class PostEffect
 {
 public:
 
-	Sprite(const std::string& filePath, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+	PostEffect(const std::string& filePath, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
 		const Vector4 & color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
-	Sprite(uint32_t texHundle, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+	PostEffect(uint32_t texHundle, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
 		const Vector4& color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
-	~Sprite();
+	~PostEffect();
 
 	struct VertexData
 	{
@@ -50,6 +50,10 @@ public:
 
 	static void PreDraw() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
+	void PreDrawScene();
+
+	void PostDrawScene();
+
 public:
 
 	void LoadTexture(const std::string& filePath);
@@ -69,7 +73,7 @@ public:
 	void SetTextureSize(const Vector2& texSize);
 
 private:
-	Sprite() = default;
+	PostEffect() = default;
 
 	void TransferSize();
 
@@ -83,6 +87,14 @@ private:
 
 	void CreateTranformRes();
 
+	void CreateTexRes();
+
+	void CreateRTV();
+
+	void CreateDSV();
+
+	void CreateResources();
+
 private:
 
 	ComPtr<ID3D12Resource> vertexResource_;
@@ -95,6 +107,18 @@ private:
 	ComPtr<ID3D12Resource> transformResource_;
 	TransformationMatrix* transformData_;
 
+	ComPtr<ID3D12Resource> texResource_;
+	D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
+
+	ComPtr<ID3D12Resource> rtvResource_;
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE rtvGPUDescriptorHandle_;
+
+	ComPtr<ID3D12Resource> dsvResource_;
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE dsvGPUDescriptorHandle_;
+
 public:
 
 	float rotate_;
@@ -104,6 +128,8 @@ public:
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::SPRITE;
+
+	static const float clearColor[4];
 
 	Matrix4x4 worldMat_;
 

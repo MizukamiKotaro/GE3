@@ -5,6 +5,8 @@
 #include "SceneSystem/TitleScene/TitleScene.h"
 #include "SceneSystem/StageScene/StageScene.h"
 #include "SceneSystem/ClearScene/ClearScene.h"
+#include "PostEffect/PostEffect.h"
+#include "Camera.h"
 
 class SceneManager
 {
@@ -21,5 +23,10 @@ public:
 	~SceneManager();
 
 	int Run(); //この関数でゲームループを呼び出す
+
+private:
+	std::unique_ptr<PostEffect> postEffect_;
+
+	std::unique_ptr<Camera> camera_;
 };
 

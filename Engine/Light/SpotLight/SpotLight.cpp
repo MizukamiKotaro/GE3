@@ -61,10 +61,14 @@ void SpotLight::Draw(const Camera& camera, BlendMode blendMode)
 	billboardMat.m[3][1] = 0.0f;
 	billboardMat.m[3][2] = 0.0f;
 
-	Vector3 cross = Calc::Cross(light_->direction, { 0.0f,1.0f,0.0f }).Normalize();
+	Vector3 project = Calc::Project(camera.transform_.worldPos_ - light_->position, light_->direction);
 
-	if (cross.z != -1.0f) {
-		billboardMat = billboardMat * Matrix4x4::DirectionToDirection({ 0.0f,0.0f,-1.0f }, cross);
+	Vector3 rotate = camera.transform_.worldPos_ - (light_->position + project);
+
+	rotate = rotate.Normalize();
+
+	if (rotate.z != -1.0f) {
+		billboardMat = billboardMat * Matrix4x4::DirectionToDirection({ 0.0f,0.0f,-1.0f }, rotate);
 	}
 
 	Matrix4x4 translateMat = Matrix4x4::MakeTranslateMatrix(light_->position + Vector3{ 0.0f,0.0f,0.1f } * billboardMat);

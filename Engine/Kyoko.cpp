@@ -27,8 +27,6 @@ void Kyoko::Init()
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize();
 
-	DescriptorHeapManager::GetInstance()->Initialize();
-
 	TextureManager::GetInstance()->Initialize();
 
 	GraphicsPiplineManager::GetInstance()->Init();
@@ -96,6 +94,8 @@ void Kyoko::PreDraw()
 
 	// 描画前処理
 	DirectXCommon::GetInstance()->PreDraw();
+
+	GraphicsPiplineManager::GetInstance()->PreDraw();
 }
 
 void Kyoko::PostDraw()

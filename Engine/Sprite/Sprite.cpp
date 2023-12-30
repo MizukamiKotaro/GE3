@@ -102,7 +102,7 @@ void Sprite::Draw(const Camera& camera, BlendMode blendMode)
 		return;
 	}
 
-	PreDrow();
+	PreDraw();
 
 	transformData_->WVP = worldMat_ * camera.GetOrthographicMat();
 	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });

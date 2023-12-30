@@ -75,11 +75,12 @@ private: // メンバ変数
 	ComPtr<ID3D12GraphicsCommandList> commandList_;
 	ComPtr<IDXGISwapChain4> swapChain_;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
-	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
-	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 	ComPtr<ID3D12Resource> depthStencilResource_;
 	ComPtr<ID3D12Fence> fence_;
 	uint64_t fenceValue_ = 0;
+
+	ID3D12DescriptorHeap* rtvHeap_ = nullptr;
+	ID3D12DescriptorHeap* dsvHeap_ = nullptr;
 
 	// 記録時間(FPS固定)
 	std::chrono::steady_clock::time_point reference_;
@@ -113,11 +114,6 @@ private: // メンバ関数
 	/// レンダーターゲット生成
 	/// </summary>
 	void CreateFinalRenderTargets();
-
-	/// <summary>
-	/// ディスクリプタヒープの作成関数
-	/// </summary>
-	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device_, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 
 	/// <summary>
 	/// 深度バッファ生成
