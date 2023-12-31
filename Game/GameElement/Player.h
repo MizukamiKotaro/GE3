@@ -30,7 +30,11 @@ public:
 
 	void SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList);
 
+	void Landing();
+
 private:
+
+	bool isLanding_ = false;
 
 	Vector3 scale_;
 	SoLib::Math::Euler rotate_;

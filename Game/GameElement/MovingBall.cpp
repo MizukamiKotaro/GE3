@@ -25,7 +25,7 @@ void MovingBall::Update([[maybe_unused]] const float deltaTime) {
 
 	for (uint8_t i = 0u; i < 3u; i++) {
 		if ((&beforePos_.x)[i] == (&sphere_.center_.x)[i]) {
-			(&velocity_.x)[i] *= -0.98f;
+			(&velocity_.x)[i] *= -0.9f;
 		}
 	}
 

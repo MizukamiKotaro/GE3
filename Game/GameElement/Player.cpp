@@ -38,6 +38,13 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
 
+	if (beforePos_.y == transform_.y && velocity_.y < 0.f) {
+		Landing();
+	}
+	if (beforePos_.y != transform_.y) {
+		isLanding_ = false;
+	}
+
 	for (uint8_t i = 0u; i < 3u; i++) {
 		if ((&beforePos_.x)[i] == (&transform_.x)[i]) {
 			(&velocity_.x)[i] = 0.f;
@@ -71,7 +78,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		Move(inputLeft.x * 200.f, deltaTime);
 	}
 
-	if (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A)) {
+	if (isLanding_ && (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A) || input->PressedGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
 		acceleration_.y += 10.f;
 	}
 
@@ -100,4 +107,8 @@ void Player::SetMapChip(MapChip *const mapChip) {
 
 void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
 	barrier_->SetBallList(ballList);
+}
+
+void Player::Landing() {
+	isLanding_ = true;
 }

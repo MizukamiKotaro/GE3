@@ -80,7 +80,7 @@ void StageScene::Update()
 	ImGui::SliderFloat3("cameraRot", &camera_->transform_.rotate_.x, -3.14f, 3.14f);
 	ImGui::End();
 
-	model->Update();
+	//model->Update();
 	//particle->Update();
 	camera_->Update();
 	mapChip_->Update(deltaTime);
