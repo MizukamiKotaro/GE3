@@ -71,7 +71,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		Move(inputLeft.x * 200.f, deltaTime);
 	}
 
-	if (input->PressedKey(DIK_SPACE)) {
+	if (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A)) {
 		acceleration_.y += 10.f;
 	}
 
