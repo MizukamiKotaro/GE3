@@ -97,3 +97,7 @@ void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 void Player::SetMapChip(MapChip *const mapChip) {
 	mapData_ = mapChip;
 }
+
+void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
+	barrier_->SetBallList(ballList);
+}

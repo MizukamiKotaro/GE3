@@ -2,6 +2,9 @@
 #include "../Collision/Collision.h"
 #include <Camera.h>
 #include "SoUtils/Graphics/Color.h"
+#include "Vector3.h"
+
+class MapChip;
 
 class MovingBall {
 public:
@@ -16,6 +19,10 @@ public:
 
 	const Vector3 &GetBeforePos() const { return beforePos_; }
 	const Vector3 &GetNowPos() const { return sphere_.center_; }
+
+	void AddAcceleration(const Vector3 &vec);
+
+	static void SetMapChip(MapChip *mapChip);
 
 private:
 
@@ -35,5 +42,7 @@ private:
 	Vector3 velocity_;
 
 	Vector3 acceleration_;
+
+	static MapChip *mapChip_;
 
 };

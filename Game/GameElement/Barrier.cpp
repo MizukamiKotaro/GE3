@@ -2,6 +2,8 @@
 #include "BlockManager.h"
 #include "Player.h"
 #include <ModelDataManager.h>
+#include "MovingBall.h"
+#include <calc.h>
 
 void BarrierItem::Init() {
 	attackTimer_.Start();
@@ -14,6 +16,8 @@ void BarrierItem::Init() {
 
 void BarrierItem::Update([[maybe_unused]] const float deltaTime) {
 	attackTimer_.Update(deltaTime);
+
+	color_.a = 1.f - attackTimer_.GetProgress();
 }
 
 void BarrierItem::Draw() {
@@ -29,7 +33,20 @@ void BarrierItem::Draw() {
 
 void BarrierItem::Attack(const Vector2 direction) {
 
-	attackTimer_.Start();
+	attackTimer_.Start(0.5f);
 	direction_ = direction;
 
+	for (auto &ball : *ballList_) {
+		const Vector3 diff = ball->GetNowPos() - *reinterpret_cast<Vector3 *>(transformMat_.m[3]);
+		const auto stickDirection = Vector3{ direction.x,direction.y,0.f };
+
+		if (Calc::MakeLength(diff) <= radius_ && Calc::Dot(stickDirection, diff) > barrierAngle_) {
+			ball->AddAcceleration(stickDirection * 15.f);
+		}
+	}
+
+}
+
+void BarrierItem::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
+	ballList_ = ballList;
 }

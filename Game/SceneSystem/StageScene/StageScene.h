@@ -35,11 +35,11 @@ private:
 
 	std::unique_ptr<Model> model;
 
-	std::unique_ptr<Particle> particle;
+	//std::unique_ptr<Particle> particle;
 
-	std::array<IBlock *, 4> blocks_;
+	//std::array<IBlock *, 4> blocks_;
 
-	std::unique_ptr<MovingBall> ball_;
+	std::list<std::unique_ptr<MovingBall>> ballList_;
 	std::unique_ptr<Player> player_;
 
 	BlockManager *pBlockManager_;

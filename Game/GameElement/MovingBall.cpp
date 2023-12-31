@@ -1,6 +1,9 @@
 #include "MovingBall.h"
 #include <ModelDataManager.h>
 #include "BlockManager.h"
+#include "MapChip.h"
+
+MapChip *MovingBall::mapChip_ = nullptr;
 
 void MovingBall::Init() {
 
@@ -14,9 +17,20 @@ void MovingBall::Init() {
 void MovingBall::Update([[maybe_unused]] const float deltaTime) {
 
 	// 物理的に動かす
-	//UpdateRigidbody(deltaTime);
+	UpdateRigidbody(deltaTime);
+
+	acceleration_.y -= 9.8f * deltaTime * 2.f;
+
+	sphere_.center_ = mapChip_->HitMap(beforePos_, sphere_.center_, 1.f);
+
+	for (uint8_t i = 0u; i < 3u; i++) {
+		if ((&beforePos_.x)[i] == (&sphere_.center_.x)[i]) {
+			(&velocity_.x)[i] *= -0.98f;
+		}
+	}
 
 	transformMat_ = Matrix4x4::MakeAffinMatrix(sphere_.scale_ * (sphere_.radius_ * modelScale_), sphere_.rotate_, sphere_.center_);
+
 
 
 }
@@ -28,11 +42,20 @@ void MovingBall::Draw() {
 
 }
 
+void MovingBall::AddAcceleration(const Vector3 &vec) {
+	velocity_ = vec;
+}
+
+void MovingBall::SetMapChip(MapChip *mapChip) {
+	mapChip_ = mapChip;
+}
+
 void MovingBall::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	beforePos_ = sphere_.center_;
 
 	velocity_ += acceleration_;
 	Vector3 fixVelocity = velocity_ * deltaTime;
+	acceleration_ = {};
 
 	sphere_.center_ += fixVelocity;
 }

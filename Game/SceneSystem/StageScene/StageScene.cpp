@@ -23,8 +23,8 @@ void StageScene::Init()
 	model = std::make_unique<Model>(mesh1);
 	model->Initialize();
 
-	particle = std::make_unique<Particle>("circle.png");
-	particle->Initialize();
+	/*particle = std::make_unique<Particle>("circle.png");
+	particle->Initialize();*/
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
@@ -41,12 +41,17 @@ void StageScene::Init()
 	mapChip_->Init();
 	mapChip_->Load(csv_);
 
-	ball_ = std::make_unique<MovingBall>();
-	ball_->Init();
+	ballList_.push_back(std::make_unique<MovingBall>());
+	ballList_.back()->Init();
+	MovingBall::SetMapChip(mapChip_.get());
 
 	player_ = std::make_unique<Player>();
 	player_->Init();
 	player_->SetMapChip(mapChip_.get());
+	player_->SetBallList(&ballList_);
+
+	model->transform_.translate_.y = -500.f;
+	model->Update();
 }
 
 void StageScene::Update()
@@ -54,7 +59,7 @@ void StageScene::Update()
 	// 時間差分
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 
-	if (input_->PressedKey(DIK_SPACE)) {
+	/*if (input_->PressedKey(DIK_SPACE)) {
 		if (isMesh1) {
 			isMesh1 = false;
 			model->SetMesh(mesh2);
@@ -63,11 +68,11 @@ void StageScene::Update()
 			isMesh1 = true;
 			model->SetMesh(mesh1);
 		}
-	}
+	}*/
 
-	if (input_->PressedKey(DIK_A)) {
+	/*if (input_->PressedKey(DIK_A)) {
 		model->SetTex(textureManager_->LoadTexture("Resources/uvChecker.png"));
-	}
+	}*/
 
 	ImGui::Begin("a");
 	ImGui::SliderFloat3("a", &model->transform_.translate_.x, -100.0f, 100.0f);
@@ -76,27 +81,31 @@ void StageScene::Update()
 	ImGui::End();
 
 	model->Update();
-	particle->Update();
+	//particle->Update();
 	camera_->Update();
 	mapChip_->Update(deltaTime);
 
-	ball_->Update(deltaTime);
+	for (auto &ball : ballList_) {
+		ball->Update(deltaTime);
+	}
 
 	player_->InputAction(input_, deltaTime);
 	player_->Update(deltaTime);
 }
 
 void StageScene::Draw() {
-	sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
-	sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
+	//sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
+	//sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
 
-	// model->Draw(*camera_.get());
+	model->Draw(*camera_.get());
 
-	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
+	//particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 
 	pBlockManager_->clear();
 	mapChip_->Draw();
-	ball_->Draw();
+	for (auto &ball : ballList_) {
+		ball->Draw();
+	}
 	player_->Draw();
 
 	pBlockManager_->Draw(*camera_.get());
