@@ -31,6 +31,26 @@ AABB AABB::AddPos(const Vector3 &vec) const {
 	return result;
 }
 
+AABB AABB::Extend(const Vector3 &vec) const {
+
+	AABB result = this->Swap();
+
+	for (uint32_t i = 0u; i < 3u; ++i) {
+		// もし正の数なら
+		if ((&vec.x)[i] > 0.f) {
+			// maxを加算
+			(&result.max.x)[i] += (&vec.x)[i];
+		}
+		// もし負数なら
+		else {
+			// minに加算
+			(&result.min.x)[i] += (&vec.x)[i];
+		}
+	}
+
+	return result;
+}
+
 AABB AABB::Swap() const {
 	AABB result = *this;
 

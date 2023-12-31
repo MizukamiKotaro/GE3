@@ -16,11 +16,19 @@ public:
 
 	void Load(const SoLib::IO::CSV &csv);
 
+	void Transfer();
+
 	void Update(const float deltaTime);
 
 	void Draw();
 
+	const std::list<AABB> &GetBoxList() const { return boxList_; }
+
+	Vector3 HitMap(const Vector3 &beforePos, const Vector3 &afterPos, float) const;
+
 private:
+
+	void TransferBox();
 
 	const float kChipScale_ = 1.f;
 	const float kBoxScale = 0.5f;

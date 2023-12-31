@@ -2,6 +2,7 @@
 #include "calc.h"
 #include <ModelDataManager.h>
 #include "BlockManager.h"
+#include "MapChip.h"
 
 void Player::Init() {
 	barrier_ = std::make_unique<BarrierItem>();
@@ -20,6 +21,9 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * 0.5f, rotate_, transform_);
 
 	UpdateRigidbody(deltaTime);
+
+	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
+
 }
 
 void Player::Draw() {
@@ -39,6 +43,8 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 	}
 
 	Vector2 inputLeft = input->GetGamePadLStick();
+	inputLeft.x -= input->PressingKey(DIK_A);
+	inputLeft.x += input->PressingKey(DIK_D);
 	if (inputLeft.x) {
 		Move(inputLeft.x, deltaTime);
 	}
@@ -59,4 +65,8 @@ void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	Vector3 fixVelocity = velocity_ * deltaTime;
 
 	transform_ += fixVelocity;
+}
+
+void Player::SetMapChip(MapChip *const mapChip) {
+	mapData_ = mapChip;
 }

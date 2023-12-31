@@ -25,6 +25,8 @@ public:
 
 	AABB AddPos(const Vector3 &vec) const;
 
+	AABB Extend(const Vector3 &vec)const;
+
 	AABB Swap() const;
 
 

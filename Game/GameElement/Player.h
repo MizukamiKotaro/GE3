@@ -5,6 +5,8 @@
 #include <SoUtils/Math/Euler.h>
 #include "Input/Input.h"
 
+class MapChip;
+
 class Player {
 public:
 	Player() = default;
@@ -18,11 +20,13 @@ public:
 
 	const Matrix4x4 &GetTransMat() const { return transformMat_; }
 
-	void InputAction( Input *const input, const float deltaTime);
+	void InputAction(Input *const input, const float deltaTime);
 
 	void Move(const float power, const float deltaTime);
 
 	void UpdateRigidbody(const float deltaTime);
+
+	void SetMapChip(MapChip *const mapChip);
 
 private:
 
@@ -42,5 +46,7 @@ private:
 	Vector3 velocity_;
 
 	Vector3 acceleration_;
+
+	MapChip *mapData_;
 
 };
