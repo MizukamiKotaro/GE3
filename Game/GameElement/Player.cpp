@@ -20,6 +20,8 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * 0.5f, rotate_, transform_);
 
+	acceleration_.y -= 9.8f * deltaTime;
+
 	UpdateRigidbody(deltaTime);
 
 	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
@@ -43,10 +45,16 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 	}
 
 	Vector2 inputLeft = input->GetGamePadLStick();
-	inputLeft.x -= input->PressingKey(DIK_A);
-	inputLeft.x += input->PressingKey(DIK_D);
+	if (inputLeft.x == 0.f) {
+		inputLeft.x -= input->PressingKey(DIK_A);
+		inputLeft.x += input->PressingKey(DIK_D);
+	}
 	if (inputLeft.x) {
 		Move(inputLeft.x, deltaTime);
+	}
+
+	if (input->PressedKey(DIK_SPACE)) {
+		acceleration_.y += 10.f;
 	}
 
 }
