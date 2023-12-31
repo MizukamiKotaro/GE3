@@ -26,6 +26,12 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
 
+	for (uint8_t i = 0u; i < 3u; i++) {
+		if ((&beforePos_.x)[i] == (&transform_.x)[i]) {
+			(&velocity_.x)[i] = 0.f;
+		}
+	}
+
 }
 
 void Player::Draw() {
