@@ -3,6 +3,7 @@
 #include <Camera.h>
 #include "SoUtils/Graphics/Color.h"
 #include "Vector3.h"
+#include <SoUtils/SoLib/SoLib_Timer.h>
 
 class MapChip;
 
@@ -24,7 +25,16 @@ public:
 
 	static void SetMapChip(MapChip *mapChip);
 
+	bool GetIsAlive() const { return isAlive_; }
+
+	void SetPos(const Vector3 &pos) { sphere_.center_ = pos; }
+	void SetVelocity(const Vector3 &vec) { velocity_ = vec; }
+
 private:
+
+	SoLib::Time::DeltaTimer aliveTime_{ 2.f };
+
+	bool isAlive_ = true;
 
 	void UpdateRigidbody(const float deltaTime);
 

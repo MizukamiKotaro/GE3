@@ -62,6 +62,11 @@ void StageScene::Update()
 	// 時間差分
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 
+	std::erase_if(ballList_, [](const std::unique_ptr<MovingBall> &ball) ->bool
+		{
+			return not ball->GetIsAlive();
+		});
+
 	/*if (input_->PressedKey(DIK_SPACE)) {
 		if (isMesh1) {
 			isMesh1 = false;

@@ -2,6 +2,7 @@
 #include <ModelDataManager.h>
 #include "BlockManager.h"
 #include "MapChip.h"
+#include <SoUtils/SoLib/SoLib_Easing.h>
 
 MapChip *MovingBall::mapChip_ = nullptr;
 
@@ -12,10 +13,15 @@ void MovingBall::Init() {
 	color_ = 0xFFFFFFFF;
 	modelScale_ = 0.5f;
 
+	aliveTime_.Start();
+
+	color_ = 0x55FF55FF;
+
 }
 
 void MovingBall::Update([[maybe_unused]] const float deltaTime) {
 
+	aliveTime_.Update(deltaTime);
 	// 物理的に動かす
 	UpdateRigidbody(deltaTime);
 
@@ -31,7 +37,11 @@ void MovingBall::Update([[maybe_unused]] const float deltaTime) {
 
 	transformMat_ = Matrix4x4::MakeAffinMatrix(sphere_.scale_ * (sphere_.radius_ * modelScale_), sphere_.rotate_, sphere_.center_);
 
+	color_.a = 1.f - SoLib::easeInCirc( aliveTime_.GetProgress());
 
+	if (aliveTime_.IsFinish()) {
+		isAlive_ = false;
+	}
 
 }
 

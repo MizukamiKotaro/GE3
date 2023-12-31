@@ -101,8 +101,7 @@ void Model::Initialize()
 	
 }
 
-void Model::Update()
-{
+void Model::Update() {
 
 	transform_.UpdateMatrix();
 

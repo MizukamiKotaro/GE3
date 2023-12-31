@@ -34,6 +34,7 @@ public:
 
 private:
 
+	std::list<std::unique_ptr<MovingBall>> *ballList_;
 	bool isLanding_ = false;
 
 	Vector3 scale_;

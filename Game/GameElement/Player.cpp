@@ -2,6 +2,7 @@
 #include "calc.h"
 #include <ModelDataManager.h>
 #include "BlockManager.h"
+#include "MovingBall.h"
 #include "MapChip.h"
 
 void Player::Init() {
@@ -38,7 +39,7 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
 
-	if (beforePos_.y == transform_.y && velocity_.y < 0.f) {
+	if (beforePos_.y == transform_.y && velocity_.y < 0.f && not isLanding_) {
 		Landing();
 	}
 	if (beforePos_.y != transform_.y) {
@@ -107,8 +108,17 @@ void Player::SetMapChip(MapChip *const mapChip) {
 
 void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
 	barrier_->SetBallList(ballList);
+	ballList_ = ballList;
 }
 
 void Player::Landing() {
 	isLanding_ = true;
+
+	for (uint8_t i = 0u; i < 2u; i++) {
+		ballList_->push_back(std::make_unique<MovingBall>());
+		auto ball = ballList_->back().get();
+		ball->Init();
+		ball->SetPos(transform_ + Vector3{ .x = -1.f + 2.f * i });
+		ball->SetVelocity(Vector3{ .y = 10.f });
+	}
 }

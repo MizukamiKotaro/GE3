@@ -37,10 +37,6 @@ private:
 
 	std::unique_ptr<Model> model;
 
-	//std::unique_ptr<Particle> particle;
-
-	//std::array<IBlock *, 4> blocks_;
-
 	std::list<std::unique_ptr<MovingBall>> ballList_;
 	std::unique_ptr<Player> player_;
 
