@@ -20,7 +20,7 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * 0.5f, rotate_, transform_);
 
-	acceleration_.y -= 9.8f * deltaTime;
+	acceleration_.y -= 9.8f * deltaTime * 2.f;
 
 	//static const float kMaxAcceleration = 2.f;
 
@@ -34,10 +34,9 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	UpdateRigidbody(deltaTime);
 
 	// 移動処理の更新
-	
-	// 押し戻すベクトル 
-	Vector3 diff = mapData_->HitMap(beforePos_, transform_, 1.f);
-	transform_ += diff;
+
+
+	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
 
 	for (uint8_t i = 0u; i < 3u; i++) {
 		if ((&beforePos_.x)[i] == (&transform_.x)[i]) {
@@ -69,7 +68,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		inputLeft.x += input->PressingKey(DIK_D);
 	}
 	if (inputLeft.x) {
-		Move(inputLeft.x, deltaTime);
+		Move(inputLeft.x * 200.f, deltaTime);
 	}
 
 	if (input->PressedKey(DIK_SPACE)) {
@@ -79,7 +78,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 }
 
 void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
-	acceleration_.x += power * deltaTime;
+	velocity_.x += power * deltaTime;
 }
 
 
@@ -90,6 +89,7 @@ void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	velocity_ += acceleration_;
 	acceleration_ = {};
 	Vector3 fixVelocity = velocity_ * deltaTime;
+	velocity_.x = 0.f;
 
 	transform_ += fixVelocity;
 }

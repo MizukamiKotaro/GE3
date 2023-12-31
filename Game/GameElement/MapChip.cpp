@@ -447,7 +447,7 @@ Vector3 MapChip::HitMap(const Vector3 &beforePos, const Vector3 &afterPos, float
 	///	↑ マップチップとの当たり判定
 	/// 
 
-	return (resultPos * kChipScale_) / kChipSize - offset - afterPos;
+	return (resultPos * kChipScale_) / kChipSize - offset /*- afterPos*/;
 
 }
 
