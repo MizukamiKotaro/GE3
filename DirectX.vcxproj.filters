@@ -157,6 +157,9 @@
     <Filter Include="Game\GameElement">
       <UniqueIdentifier>{bc44b07c-2fd3-44c6-b130-3caf29e96032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\StageUI">
+      <UniqueIdentifier>{5f09b059-ef17-498c-b13f-9934b412f5ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -347,6 +350,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\Barrier.cpp">
       <Filter>Game\GameElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\StageUI.cpp">
+      <Filter>Game\GameElement\StageUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +586,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\Barrier.h">
       <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\StageUI.h">
+      <Filter>Game\GameElement\StageUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
