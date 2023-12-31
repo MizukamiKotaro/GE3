@@ -6,8 +6,15 @@
 #include "../Engine/Utils/SoUtils/Containers/Array2D.h"
 #include <Model.h>
 
-class MapChip
-{
+class MapChip {
+public:
+
+	enum class ChipType : uint32_t {
+		kAir = 0b00,
+		kBlock = 0b01,
+		kPin = 0b10,
+	};
+
 public:
 	MapChip() = default;
 	~MapChip() = default;
