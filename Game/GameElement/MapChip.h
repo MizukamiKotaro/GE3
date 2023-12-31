@@ -36,6 +36,8 @@ private:
 	BlockManager *pBlockManager_;
 	uint32_t model_;
 
+	Vector3 offset_{};
+
 	SoLib::Containers::Array2D<uint32_t> mapData_;
 
 	std::list<AABB> boxList_;

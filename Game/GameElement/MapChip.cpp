@@ -17,9 +17,12 @@ void MapChip::Load(const SoLib::IO::CSV &csv) {
 			++mapItr;
 		}
 	}
+
+	Transfer();
 }
 
 void MapChip::Transfer() {
+	TransferBox();
 }
 
 void MapChip::Update([[maybe_unused]] const float deltaTime) {
@@ -28,7 +31,7 @@ void MapChip::Update([[maybe_unused]] const float deltaTime) {
 void MapChip::Draw() {
 	//const Vector3 beginPos = Vector3{ -static_cast<float>(mapData_.GetCols()) + 1.f,-static_cast<float>(mapData_.GetRows()) + 1.f, 0.f } *(0.5f * kChipScale_);
 
-	TransferBox();
+	//TransferBox();
 
 	for (auto &box : boxList_) {
 		IBlock block = IBlock{ .transformMat_ = box.TransMat(),.color_ = 0xFFFFFFFF };
