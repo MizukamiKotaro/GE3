@@ -13,6 +13,8 @@
 #include <GameElement/MovingBall.h>
 #include <GameElement/Player.h>
 
+#include "GameElement/StageUI.h"
+
 class StageScene : public IScene
 {
 public:
@@ -47,4 +49,6 @@ private:
 
 	SoLib::IO::File file_;
 	SoLib::IO::CSV csv_;
+
+	std::unique_ptr<StageUI> stageUI_;
 };

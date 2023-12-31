@@ -52,6 +52,9 @@ void StageScene::Init()
 
 	model->transform_.translate_.y = -500.f;
 	model->Update();
+
+	stageUI_ = std::make_unique<StageUI>();
+	stageUI_->Init();
 }
 
 void StageScene::Update()
@@ -91,6 +94,8 @@ void StageScene::Update()
 
 	player_->InputAction(input_, deltaTime);
 	player_->Update(deltaTime);
+
+	stageUI_->Update();
 }
 
 void StageScene::Draw() {
@@ -109,4 +114,6 @@ void StageScene::Draw() {
 	player_->Draw();
 
 	pBlockManager_->Draw(*camera_.get());
+
+	stageUI_->Draw(*camera_.get());
 }
