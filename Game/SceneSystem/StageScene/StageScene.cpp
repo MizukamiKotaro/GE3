@@ -41,8 +41,8 @@ void StageScene::Init()
 	mapChip_->Init();
 	mapChip_->Load(csv_);
 
-	ballList_.push_back(std::make_unique<MovingBall>());
-	ballList_.back()->Init();
+	/*ballList_.push_back(std::make_unique<MovingBall>());
+	ballList_.back()->Init();*/
 	MovingBall::SetMapChip(mapChip_.get());
 
 	player_ = std::make_unique<Player>();
