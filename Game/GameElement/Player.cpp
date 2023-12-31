@@ -22,9 +22,20 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	acceleration_.y -= 9.8f * deltaTime;
 
+	//static const float kMaxAcceleration = 2.f;
+
+	//for (uint8_t i = 0u; i < 3u; i++) {
+	//	if (std::abs((&acceleration_.x)[i]) >= kMaxAcceleration) {
+	//		(&acceleration_.x)[i] = std::clamp((&acceleration_.x)[i], -kMaxAcceleration, kMaxAcceleration);
+	//	}
+	//}
+
+	// 移動処理を行う
 	UpdateRigidbody(deltaTime);
 
-	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
+	// 移動処理の更新
+	Vector3 diff = mapData_->HitMap(beforePos_, transform_, 1.f);
+	transform_ += diff;
 
 	for (uint8_t i = 0u; i < 3u; i++) {
 		if ((&beforePos_.x)[i] == (&transform_.x)[i]) {
