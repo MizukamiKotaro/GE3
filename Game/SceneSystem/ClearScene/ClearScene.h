@@ -2,6 +2,7 @@
 
 #include "SceneSystem/IScene/IScene.h"
 
+
 class ClearScene : public IScene
 {
 public:
@@ -10,5 +11,4 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
-	void DrawPostEffect() override;
 };

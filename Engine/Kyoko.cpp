@@ -12,6 +12,7 @@
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 #include "Audio.h"
 #include "Light/Light.h"
+#include "FrameInfo/FrameInfo.h"
 
 void Kyoko::Init()
 {
@@ -38,6 +39,8 @@ void Kyoko::Init()
 	LightSingleton::GetInstance()->Init();
 
 	GlobalVariables::GetInstance()->LoadFiles();
+
+	FrameInfo::GetInstance()->Init();
 
 	ImGuiManager::Initialize();
 
@@ -84,6 +87,7 @@ void Kyoko::FirstUpdateInLoop()
 {
 	ImGuiManager::Begin();
 	Input::GetInstance()->Update();
+	Audio::GetInstance()->Update();
 
 	GlobalVariables::GetInstance()->Update();
 }

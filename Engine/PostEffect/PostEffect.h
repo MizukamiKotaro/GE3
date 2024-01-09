@@ -56,6 +56,8 @@ public:
 
 public:
 
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle() const { return srvGPUDescriptorHandle_; };
+
 	void LoadTexture(const std::string& filePath);
 
 	void SetTextureHandle(uint32_t textureHundle);

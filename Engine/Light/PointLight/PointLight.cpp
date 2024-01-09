@@ -2,6 +2,7 @@
 #include "DirectXCommon/DirectXCommon.h"
 #include "ModelDataManager.h"
 #include "Camera.h"
+#include <numbers>
 
 const Matrix4x4 PointLight::scaleMat_ = Matrix4x4::MakeScaleMatrix({ 1000.0f,1000.0f,1000.0f });
 
@@ -48,7 +49,7 @@ void PointLight::Draw(const Camera& camera, BlendMode blendMode)
 
 	Matrix4x4 billboardMat{};
 
-	billboardMat = Matrix4x4::MakeRotateYMatrix(0) * camera.transform_.worldMat_;
+	billboardMat = Matrix4x4::MakeRotateYMatrix(std::numbers::pi_v<float>) * camera.transform_.worldMat_;
 
 	billboardMat.m[3][0] = 0.0f;
 	billboardMat.m[3][1] = 0.0f;

@@ -67,7 +67,9 @@ public:
 
 public:
 
-	void SetTex(uint32_t hundle) { textureHundle_ = hundle; }
+	void SetTex(uint32_t hundle);
+
+	void SetSRVGPUDescriptorHandle_(D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle) { srvGPUDescriptorHandle_ = srvGPUDescriptorHandle; }
 
 	void SetMesh(uint32_t hundle);
 
@@ -76,6 +78,10 @@ public:
 	void SetPointLight(const PointLight* light) { light_.SetPointLight(light); }
 
 	void SetSpotLight(const SpotLight* light) { light_.SetSpotLight(light); }
+
+	void UnUsedLight() { materialData_->enableLighting = 0; }
+
+	void SetColor(const Vector4& color) { materialData_->color = color; }
 
 private:
 
@@ -115,4 +121,5 @@ private:
 
 	uint32_t textureHundle_;
 
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
 };

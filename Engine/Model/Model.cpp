@@ -16,6 +16,8 @@ Model::Model(const std::string& fileName)
 
 	textureHundle_ = modelManager->GetModelData(meshHundle_)->textureHundle_;
 
+	srvGPUDescriptorHandle_ = TextureManager::GetInstance()->GetSRVGPUDescriptorHandle(textureHundle_);
+
 	CreateResources();
 
 	InitVariables();
@@ -28,6 +30,8 @@ Model::Model(uint32_t meshHundle)
 	meshHundle_ = meshHundle;
 
 	textureHundle_ = modelManager->GetModelData(meshHundle_)->textureHundle_;
+
+	srvGPUDescriptorHandle_ = TextureManager::GetInstance()->GetSRVGPUDescriptorHandle(textureHundle_);
 
 	CreateResources();
 
@@ -87,10 +91,16 @@ void Model::Draw(const Camera& camera, BlendMode blendMode)
 	// spotLight の設定
 	commandList->SetGraphicsRootConstantBufferView(6, light_.GetSpotLightGPUVirtualAddress());
 
-	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+	commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(UINT(modelData->mesh.verteces.size()), 1, 0, 0);
 
+}
+
+void Model::SetTex(uint32_t hundle)
+{
+	textureHundle_ = hundle;
+	srvGPUDescriptorHandle_ = TextureManager::GetInstance()->GetSRVGPUDescriptorHandle(textureHundle_);
 }
 
 void Model::SetMesh(uint32_t hundle)
@@ -98,6 +108,8 @@ void Model::SetMesh(uint32_t hundle)
 	meshHundle_ = hundle;
 
 	textureHundle_ = ModelDataManager::GetInstance()->GetTextureHundle(hundle);
+
+	srvGPUDescriptorHandle_ = TextureManager::GetInstance()->GetSRVGPUDescriptorHandle(textureHundle_);
 }
 
 void Model::CreateResources()

@@ -1,25 +1,21 @@
 #include "SceneManager.h"
 #include "Kyoko.h"
 #include "Input.h"
+#include "FrameInfo/FrameInfo.h"
 
 SceneManager::SceneManager()
 {
 	sceneArr_[TITLE] = std::make_unique<TitleScene>();
+	sceneArr_[SELECT] = std::make_unique<SelectScene>();
 	sceneArr_[STAGE] = std::make_unique<StageScene>();
 	sceneArr_[CLEAR] = std::make_unique<ClearScene>();
 
-	//IScene::sceneNo_ = TITLE;
-	IScene::sceneNo_ = STAGE;
+	IScene::sceneNo_ = TITLE;
+	//IScene::sceneNo_ = STAGE;
 	currentSceneNo_ = IScene::sceneNo_;
-	IScene::stagrNo_ = 0;
+	IScene::stagrNo_ = SHINING_STAR;
 
 	sceneArr_[currentSceneNo_]->Init();
-
-	postEffect_ = std::make_unique<PostEffect>("Resources/uvChecker.png");
-	postEffect_->SetAnchorPoint({ 0.5f,0.5f });
-	postEffect_->size_ = { 800.0f,400.0f };
-	postEffect_->pos_ = { 640.0f,300.0f };
-	postEffect_->Update();
 
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
@@ -49,22 +45,17 @@ int SceneManager::Run()
 		}
 
 		sceneArr_[currentSceneNo_]->Update();
-		
-		postEffect_->PreDrawScene();
 
-		sceneArr_[currentSceneNo_]->DrawPostEffect();
-
-		postEffect_->PostDrawScene();
-
-		Kyoko::PreDraw();
+		//Kyoko::PreDraw();
 
 		// 描画処理ここから
-		postEffect_->Draw(*camera_.get());
-
+		
 		sceneArr_[currentSceneNo_]->Draw();
 
 		// フレームの終了
-		Kyoko::PostDraw();
+		//Kyoko::PostDraw();
+
+		FrameInfo::GetInstance()->End();
 	}
 
 	return 0;

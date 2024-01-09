@@ -83,18 +83,18 @@ void Particle::Draw(const Camera& camera, BlendMode blendMode)
 	if (billboardTypeOpt_) {
 		billbordType = billboardTypeOpt_.value();
 
-		//float pi = std::numbers::pi_v<float>;
+		float pi = std::numbers::pi_v<float>;
 
 		switch (billbordType)
 		{
 		case Particle::BillboardType::X:
-			billboardMat = Matrix4x4::MakeRotateXMatrix(0) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateXMatrix(pi) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::Y:
-			billboardMat = Matrix4x4::MakeRotateYMatrix(0) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateYMatrix(pi) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::Z:
-			billboardMat = Matrix4x4::MakeRotateZMatrix(0) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateZMatrix(pi) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::ALL:
 			billboardMat = Matrix4x4::MakeRotateXYZMatrix(Vector3{}) * camera.transform_.worldMat_;

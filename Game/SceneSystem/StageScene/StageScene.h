@@ -6,6 +6,12 @@
 #include "Particle.h"
 #include "Light/Light.h"
 #include <array>
+#include "PostEffect/PostEffect.h"
+#include "Skydome/Skydome.h"
+#include "Stage/Stage.h"
+#include "Screen/Screen.h"
+#include "StageLights/StageLights.h"
+#include "Score/Score.h"
 
 class StageScene : public IScene
 {
@@ -16,18 +22,63 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
-	void DrawPostEffect() override;
+
 private:
 
-	std::unique_ptr<Sprite> sprite;
-	std::unique_ptr<Sprite> sprite1;
+	void Play();
 
-	std::unique_ptr<Sprite> screen_;
+	void HitTest();
 
-	uint32_t mesh1;
-	uint32_t mesh2;
+	void UIDraw();
 
-	bool isMesh1;
+private:
+
+	float time_;
+
+	uint32_t musicHundle_;
+	uint32_t musicVoice_;
+
+	bool isStartMusic_;
+
+	const int kNumSize = 32;
+	int comCount_ = 0;
+	std::unique_ptr<Sprite> comboNum_[2];
+
+	std::unique_ptr<Sprite> hitSp_;
+	const int kHitSizeX_ = 220;
+	const int kHitSizeY_ = 64;
+	int hitCount_ = 0;
+	int hitNum_ = 0;
+
+	enum HitErrorFrame {
+		kPerfect,
+		kGreat,
+		kGood,
+		kMiss,
+	};
+	const float kHitErrorFrame_[3] = { 5.0f / 60, 0.6f, 14.0f / 60 };
+
+	bool isMusicFinish_;
+
+	std::unique_ptr<Sprite> sp_[3];
+
+	std::unique_ptr<Sprite> scoreNum_[4];
+
+	std::unique_ptr<Score> score_;
+
+	std::unique_ptr<Sprite> screenSprite_;
+
+	std::unique_ptr<PostEffect> postEffect_;
+
+	std::unique_ptr<Skydome> skydome_;
+	std::unique_ptr<Stage> stage_;
+	std::unique_ptr<Screen> screen_;
+
+	std::unique_ptr<Screen> postScreen_;
+
+	std::unique_ptr<StageLights> stageLights_;
+
+	uint32_t se[3];
 
 	std::unique_ptr<DirectionalLight> directionalLight_;
 
@@ -35,12 +86,7 @@ private:
 
 	std::unique_ptr<SpotLight> spotLight_;
 
-	std::array<std::array<std::unique_ptr<SpotLight>, 2>, 5> spotLights_;
-
 	std::unique_ptr<Model> model;
 
-	std::unique_ptr<Model> terrain;
-
 	std::unique_ptr<Particle> particle;
-	std::unique_ptr<Particle> particle1;
 };

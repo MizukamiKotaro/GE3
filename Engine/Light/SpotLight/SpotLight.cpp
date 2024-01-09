@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "ModelDataManager.h"
 #include "calc.h"
+#include <numbers>
 
 const Matrix4x4 SpotLight::scaleMat_ = Matrix4x4::MakeScaleMatrix({ 1000.0f,1000.0f,1000.0f });
 
@@ -55,7 +56,7 @@ void SpotLight::Draw(const Camera& camera, BlendMode blendMode)
 
 	Matrix4x4 billboardMat{};
 
-	billboardMat = Matrix4x4::MakeRotateYMatrix(0) * camera.transform_.worldMat_;
+	billboardMat = Matrix4x4::MakeRotateYMatrix(std::numbers::pi_v<float>) * camera.transform_.worldMat_;
 
 	billboardMat.m[3][0] = 0.0f;
 	billboardMat.m[3][1] = 0.0f;

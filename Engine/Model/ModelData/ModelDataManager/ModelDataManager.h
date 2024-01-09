@@ -3,6 +3,10 @@
 #include "Model/ModelData/ModelData.h"
 #include <vector>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 class ModelDataManager 
 {
 public:
@@ -27,6 +31,13 @@ public:
 	uint32_t LoadObj(const std::string& fileName);
 
 	/// <summary>
+	/// glTFファイルの読み込み
+	/// </summary>
+	/// <param name="fileName">.glTFが入っているフォルダの名前( "Cube" 等)</param>
+	/// <returns>モデルデータのハンドル</returns>
+	uint32_t LoadGLTF(const std::string& fileName);
+
+	/// <summary>
 	/// テクスチャーハンドルの取得
 	/// </summary>
 	/// <param name="hundle">モデルハンドル( 0 等)</param>
@@ -46,10 +57,13 @@ private:
 	ModelDataManager(const ModelDataManager&) = delete;
 	ModelDataManager& operator=(const ModelDataManager&) = delete;
 
-
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& fileName);
 
-	void LoadObjeFile(const std::string& directoryPath, const std::string& fileName);
+	void LoadObjFile(const std::string& directoryPath, const std::string& fileName);
+
+	NodeData ReadNode(aiNode* node);
+
+	void LoadGLTFFile(const std::string& directoryPath, const std::string& fileName);
 
 private:
 

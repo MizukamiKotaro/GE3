@@ -5,14 +5,14 @@
 #include "SceneSystem/TitleScene/TitleScene.h"
 #include "SceneSystem/StageScene/StageScene.h"
 #include "SceneSystem/ClearScene/ClearScene.h"
-#include "PostEffect/PostEffect.h"
+#include "SceneSystem/SelectScene/SelectScene.h"
 #include "Camera.h"
 
 class SceneManager
 {
 private:
 	// シーンを保持するメンバ変数
-	std::unique_ptr<IScene> sceneArr_[3];
+	std::unique_ptr<IScene> sceneArr_[4];
 
 	// どのステージを呼び出すかを管理する変数
 	int currentSceneNo_; // 現在のシーン
@@ -25,7 +25,6 @@ public:
 	int Run(); //この関数でゲームループを呼び出す
 
 private:
-	std::unique_ptr<PostEffect> postEffect_;
 
 	std::unique_ptr<Camera> camera_;
 };

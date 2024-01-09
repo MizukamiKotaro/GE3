@@ -29,7 +29,7 @@ void Camera::Initialize()
 {
 	transform_.scale_ = { 1.0f,1.0f,1.0f };
 	transform_.rotate_ = { 0.0f,0.0f,0.0f };
-	transform_.translate_ = { 0.0f,0.0f,-15.0f };
+	transform_.translate_ = { 0.0f,1.0f,-25.0f };
 	transform_.UpdateMatrix();
 
 	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transform_.worldMat_);
