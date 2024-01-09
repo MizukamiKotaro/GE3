@@ -56,6 +56,43 @@ StageScene::StageScene()
 	score_ = std::make_unique<Score>();
 
 	musicHundle_ = audio_->LoadWave("Resources/Sounds/maou_short_14_shining_star.wav");
+
+
+	for (int i = 0; i < 4; i++) {
+
+		if (i < 3) {
+			if (i < 2) {
+				comboNum_[i] = std::make_unique<Sprite>("Resources/scoreNum.png");
+				comboNum_[i]->pos_ = { float(i * 64.0f + 1000.0f), 200.0f };
+				comboNum_[i]->size_ = { 64.0f, 64.0f };
+				comboNum_[i]->Update();
+			}
+
+			sp_[i] = std::make_unique<Sprite>("Resources/gameScene.png");
+			sp_[i]->pos_ = { 400.0f,80.0f * i };
+			sp_[i]->size_ = { 400.0f, 128.0f };
+			sp_[i]->SetTextureTopLeft({ i * 200.0f, 0.0f });
+			sp_[i]->SetTextureSize({ 200.0f, 64.0f });
+		}
+
+		scoreNum_[i] = std::make_unique<Sprite>("Resources/scoreNum.png");
+		scoreNum_[i]->pos_ = { float(i * 64.0f + 64.0f), 120.0f };
+		scoreNum_[i]->size_ = { 64.0f, 64.0f };
+		scoreNum_[i]->Update();
+	}
+
+	sp_[0]->pos_ = { 160.0f,50.0f };
+	sp_[1]->pos_ = { 1110.0f,100.0f };
+	sp_[2]->pos_ = { 640.0f,300.0f };
+	sp_[0]->Update();
+	sp_[1]->Update();
+	sp_[2]->Update();
+
+	hitSp_ = std::make_unique<Sprite>("Resources/hit.png");
+	hitSp_->pos_ = { 110.0f, 300.0f };
+
+	hitSp_->size_ = { 220.0f,64.0f };
+	hitSp_->Update();
 }
 
 void StageScene::Init()
@@ -63,10 +100,11 @@ void StageScene::Init()
 	time_ = 0.0f;
 	stageLights_->Initialize();
 
-	//NotesList::GetInstance()->PopCommands();
+	NotesList::GetInstance()->PopCommands();
 
 	score_->Reset();
 	hitCount_ = 0;
+	finishCount_ = 0.0f;
 	isMusicFinish_ = false;
 	isStartMusic_ = false;
 
@@ -104,7 +142,7 @@ void StageScene::Update()
 		Play();
 		break;
 	case Transition::kToBlack:
-		ToBlackUpdate(STAGE);
+		ToBlackUpdate(CLEAR);
 		break;
 	default:
 		break;
@@ -128,7 +166,7 @@ void StageScene::Play()
 
 	time_ += FrameInfo::GetInstance()->GetDeltaTime();
 
-	std::list<std::unique_ptr<Notes>> notesList = NotesList::GetInstance()->GetNotesList();
+	std::list<std::unique_ptr<Notes>>& notesList = NotesList::GetInstance()->GetNotesList();
 
 	for (std::unique_ptr<Notes>& notes : notesList) {
 		notes->Update(time_);
@@ -147,15 +185,16 @@ void StageScene::Play()
 	for (std::list<std::unique_ptr<Notes>>::iterator i = notesList.begin(); i != notesList.end(); i++) {
 		if (i->get()->IsDead()) {
 			notesList.erase(i);
+			break;
 		}
 	}
 
-	/*if (countFrame_ == musicEndFrame_) {
-		playRequest_ = Play::kFinish;
-	}*/
-
 	if (isMusicFinish_) {
+		finishCount_ += FrameInfo::GetInstance()->GetDeltaTime();
 
+		if (finishCount_ >= 0.75f) {
+			transitionRequest_ = Transition::kToBlack;
+		}
 	}
 
 //#ifdef _DEBUG
@@ -207,7 +246,7 @@ void StageScene::Play()
 
 void StageScene::HitTest()
 {
-	std::list<std::unique_ptr<Notes>> notesList = NotesList::GetInstance()->GetNotesList();
+	std::list<std::unique_ptr<Notes>>& notesList = NotesList::GetInstance()->GetNotesList();
 
 	for (std::unique_ptr<Notes>& notes : notesList) {
 		if ((input_->PressedKey(DIK_LEFT) && LEFT_ARROW == notes->GetType()) ||
@@ -261,10 +300,10 @@ void StageScene::UIDraw()
 		}
 		scoreNum_[i]->SetTextureTopLeft({ float(num * kNumSize), 0.0f });
 		scoreNum_[i]->SetTextureSize({ float(kNumSize), float(kNumSize) });
-
+		scoreNum_[i]->Update();
 		scoreNum_[i]->Draw(*camera_.get());
 	}
-
+	sp_[0]->Update();
 	sp_[0]->Draw(*camera_.get());
 
 	score = score_->GetCom();
@@ -272,7 +311,7 @@ void StageScene::UIDraw()
 
 	for (int i = 0; i < 2; i++) {
 		int num = score * int(pow(10, i)) / 10;
-		score = score % (100 / int(pow(10, i)));
+		score = score % (10 / int(pow(10, i)));
 
 		if (num > 9) {
 			num = 0;
@@ -285,24 +324,25 @@ void StageScene::UIDraw()
 		if (k != 0) {
 			comboNum_[i]->SetTextureTopLeft({ float(num * kNumSize), 0.0f });
 			comboNum_[i]->SetTextureSize({ float(kNumSize), float(kNumSize) });
-
+			comboNum_[i]->Update();
 			comboNum_[i]->Draw(*camera_.get());
 		}
 	}
-
+	sp_[1]->Update();
 	sp_[1]->Draw(*camera_.get());
 
 	if (hitCount_ != 0) {
 
 		hitSp_->SetTextureTopLeft({ float(hitNum_ * kHitSizeX_), 0.0f });
 		hitSp_->SetTextureSize({ float(kHitSizeX_), float(kHitSizeY_) });
-
+		hitSp_->Update();
 		hitSp_->Draw(*camera_.get());
 
 		hitCount_++;
 	}
 
 	if (isMusicFinish_) {
+		sp_[2]->Update();
 		sp_[2]->Draw(*camera_.get());
 	}
 }
@@ -323,6 +363,8 @@ void StageScene::Draw()
 	/*particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 	particle1->Draw(*camera_.get(), BlendMode::kBlendModeScreen);*/
 
+	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
+
 	screenSprite_->Draw(*camera_.get(), BlendMode::kBlendModeMultiply);
 
 	postEffect_->PostDrawScene();
@@ -341,10 +383,11 @@ void StageScene::Draw()
 	/*pointLight_->Draw(*camera_.get());
 	spotLight_->Draw(*camera_.get());*/
 
-	particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
-
 	stageLights_->Draw(camera_.get());
 
+	NotesList::GetInstance()->Draw(camera_.get());
+
+	UIDraw();
 	BlackDraw();
 
 	// フレームの終了

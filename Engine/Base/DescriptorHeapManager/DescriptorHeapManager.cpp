@@ -84,7 +84,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE DescriptorHeapManager::GetNewDSVCPUDescriptorHandle(
 {
 	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = dsvHeap_->GetCPUDescriptorHandleForHeapStart();
 	handleCPU.ptr += (device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV) * dsvCPUDescriptorHandleCount_);
-	srvCPUDescriptorHandleCount_++;
+	dsvCPUDescriptorHandleCount_++;
 	return handleCPU;
 }
 

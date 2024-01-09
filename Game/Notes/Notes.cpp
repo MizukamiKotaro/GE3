@@ -67,13 +67,13 @@ NotesList* NotesList::GetInstance()
 void NotesList::Init()
 {
 	lane_ = std::make_unique<Sprite>("Resources/white.png");
-	lane_->size_ = { 100.0f,720.0f };
+	lane_->size_ = { 128.0f,720.0f };
 	lane_->pos_ = { 1000.0f,360.0f };
 	lane_->SetColor({ 0.1f,0.1f,0.1f,0.5f });
 	lane_->Update();
 
 	indication_= std::make_unique<Sprite>("Resources/white.png");
-	indication_->size_ = { 100.0f,8.0f };
+	indication_->size_ = { 128.0f,8.0f };
 	indication_->pos_ = { 1000.0f,500.0f };
 	indication_->SetColor({ 0.9f,0.9f,0.9f,0.9f });
 	indication_->Update();
@@ -145,10 +145,10 @@ void NotesList::LoadPopData()
 	switch (IScene::stagrNo_)
 	{
 	case SHINING_STAR:
-		file.open("./Resources/sakurasakura.csv");
+		file.open("./Resources/shiningStar.csv");
 		break;
 	default:
-		file.open("./Resources/sakurasakura.csv");
+		file.open("./Resources/shiningStar.csv");
 		break;
 	}
 

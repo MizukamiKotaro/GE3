@@ -48,6 +48,8 @@ private:
 public:
 	SpotLightData* light_ = nullptr;
 
+	bool isDraw_;
+
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::SPOT_LIGHT;

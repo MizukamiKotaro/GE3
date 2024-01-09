@@ -40,9 +40,11 @@ private:
 
 	bool isStartMusic_;
 
+	float finishCount_;
+
 	const int kNumSize = 32;
 	int comCount_ = 0;
-	std::unique_ptr<Sprite> comboNum_[2];
+	std::array<std::unique_ptr<Sprite>, 2> comboNum_;
 
 	std::unique_ptr<Sprite> hitSp_;
 	const int kHitSizeX_ = 220;
@@ -60,9 +62,9 @@ private:
 
 	bool isMusicFinish_;
 
-	std::unique_ptr<Sprite> sp_[3];
+	std::array<std::unique_ptr<Sprite>,3> sp_;
 
-	std::unique_ptr<Sprite> scoreNum_[4];
+	std::array<std::unique_ptr<Sprite>, 4> scoreNum_;
 
 	std::unique_ptr<Score> score_;
 

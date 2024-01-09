@@ -240,8 +240,8 @@ void Particle::InitVariables()
 
 	emitter.generateCoolTime_ = 120.0f;
 
-	emitter.min = { -0.5f,-0.5f,-0.5f };
-	emitter.max = { 0.5f,0.5f,0.5f };
+	emitter.min = { -2.5f,0.5f,-0.5f };
+	emitter.max = { 2.5f,2.5f,0.5f };
 }
 
 Particle::Active Particle::CreateActive()
@@ -250,7 +250,7 @@ Particle::Active Particle::CreateActive()
 
 	Active active{};
 	active.transform.translate_ = rand->RandVector3(emitter.min, emitter.max) + emitter.pos;
-	active.velocity = rand->RandVector3(-1.0f / 60.0f, 1.0f / 60.0f);
+	active.velocity = rand->RandVector3(-2.0f / 60.0f, 2.0f / 60.0f);
 	active.color = { rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),1.0f };
 	active.transform.UpdateMatrix();
 	active.lifeTime = rand->RandFloat(120.0f, 240.0f);

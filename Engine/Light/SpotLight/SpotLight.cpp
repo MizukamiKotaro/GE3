@@ -30,6 +30,8 @@ SpotLight::SpotLight()
 	meshHundle_ = ModelDataManager::GetInstance()->LoadObj("Plane");
 
 	CreateTransformationResource();
+
+	isDraw_ = true;
 }
 
 SpotLight::~SpotLight()
@@ -52,6 +54,10 @@ void SpotLight::Update()
 
 void SpotLight::Draw(const Camera& camera, BlendMode blendMode)
 {
+	if (!isDraw_) {
+		return;
+	}
+
 	GraphicsPiplineManager::GetInstance()->PreDraw(piplineType);
 
 	Matrix4x4 billboardMat{};
