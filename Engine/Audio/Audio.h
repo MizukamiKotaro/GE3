@@ -6,10 +6,14 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <array>
 
 class Audio
 {
 public:
+
+	static const int kSoundVoiceMaxNum = 256;
+
 	struct ChunkHeader {
 		char id[4];
 		int32_t size;
@@ -30,7 +34,7 @@ public:
 		// 波形フォーマット
 		WAVEFORMATEX wfex;
 		// バッファ
-		BYTE* pBuffer;
+		std::vector<BYTE> pBuffer;
 
 		std::string name;
 
@@ -39,7 +43,7 @@ public:
 
 	struct Voice {
 		uint32_t handle = 0u;
-		IXAudio2SourceVoice* sourceVoice;
+		IXAudio2SourceVoice* sourceVoice = nullptr;
 	};
 
 	static Audio* GetInstance();
@@ -48,6 +52,8 @@ public:
 	/// 初期化
 	/// </summary>
 	void Initialize();
+
+	void Update();
 
 	/// <summary>
 	/// 終了処理
@@ -66,34 +72,34 @@ public:
 	/// </summary>
 	/// <param name="soundDataHandle">サウンドデータハンドル</param>
 	/// <param name="loopFlag">ループ再生フラグ</param>
-	/// <param name="volume">ボリューム
+	/// <param name="volume">ボリューム</param>
 	/// <returns>再生ハンドル</returns>
-	uint32_t PlayWave(uint32_t soundDataHandle, bool loopFlag = false, float volume = 1.0f);
+	uint32_t Play(uint32_t soundDataHandle, bool loopFlag = false, float volume = 1.0f);
 
 	/// <summary>
 	/// 音声停止
 	/// </summary>
 	/// <param name="voiceHandle">再生ハンドル</param>
-	void StopWave(uint32_t voiceHandle);
+	void Stop(uint32_t voiceHandle);
 
 	/// <summary>
 	/// 音声再生中かどうか
 	/// </summary>
 	/// <param name="voiceHandle">再生ハンドル</param>
 	/// <returns>音声再生中かどうか</returns>
-	//bool IsPlaying(uint32_t voiceHandle);
+	bool IsPlaying(uint32_t voiceHandle);
 
 	/// <summary>
 	/// 音声一時停止
 	/// </summary>
 	/// <param name="voiceHandle">再生ハンドル</param>
-	//void PauseWave(uint32_t voiceHandle);
+	void Pause(uint32_t voiceHandle);
 
 	/// <summary>
 	/// 音声一時停止からの再開
 	/// </summary>
 	/// <param name="voiceHandle">再生ハンドル</param>
-	//void ResumeWave(uint32_t voiceHandle);
+	void ReStart(uint32_t voiceHandle);
 
 	/// <summary>
 	/// 音量設定
@@ -109,6 +115,10 @@ private:
 	/// <param name="soundData">サウンドデータ</param>
 	void Unload(SoundData* soundData);
 
+	void DestroyVoice(uint32_t handle);
+
+	Voice* FindUnusedVoice();
+
 private:
 
 	Audio() = default;
@@ -120,6 +130,8 @@ private:
 	IXAudio2MasteringVoice* masterVoice_ = nullptr;
 
 	std::vector<SoundData> soundDatas_;
-	std::vector<std::unique_ptr<Voice>> voices_;
+	//std::vector<std::unique_ptr<Voice>> voices_;
+	std::array<std::unique_ptr<Voice>, kSoundVoiceMaxNum> voices_;
 };
+
 
