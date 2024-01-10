@@ -10,15 +10,12 @@ SceneManager::SceneManager()
 	sceneArr_[STAGE] = std::make_unique<StageScene>();
 	sceneArr_[CLEAR] = std::make_unique<ClearScene>();
 
-	IScene::sceneNo_ = TITLE;
-	//IScene::sceneNo_ = STAGE;
+	//IScene::sceneNo_ = TITLE;
+	IScene::sceneNo_ = STAGE;
 	currentSceneNo_ = IScene::sceneNo_;
-	IScene::stagrNo_ = SHINING_STAR;
+	IScene::stagrNo_ = 0;
 
 	sceneArr_[currentSceneNo_]->Init();
-
-	camera_ = std::make_unique<Camera>();
-	camera_->Initialize();
 }
 
 SceneManager::~SceneManager()

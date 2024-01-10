@@ -166,27 +166,6 @@
     <Filter Include="Engine\FrameInfo">
       <UniqueIdentifier>{802755d4-f355-47c7-a3df-6987f2f2d797}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Skydome">
-      <UniqueIdentifier>{1d2d551c-a037-4041-b196-90b6970fc502}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Stage">
-      <UniqueIdentifier>{7cbf619f-bd95-4bac-96a1-d5cf50ca2f3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Screen">
-      <UniqueIdentifier>{17c86075-25da-4403-934b-1e8646a191cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Score">
-      <UniqueIdentifier>{30564d50-679d-4686-bfa7-390cda46735d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Notes">
-      <UniqueIdentifier>{043a3d1a-21f8-4063-999e-42653c6a4396}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\StageLights">
-      <UniqueIdentifier>{a36b3627-249f-4271-82ff-6e6ed1ef9f8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Pause">
-      <UniqueIdentifier>{dbc59cdf-1a78-4c05-a6b0-f1f6fe9b9dd9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -356,27 +335,6 @@
     </ClCompile>
     <ClCompile Include="Engine\FrameInfo\FrameInfo.cpp">
       <Filter>Engine\FrameInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Skydome\Skydome.cpp">
-      <Filter>Game\Skydome</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Stage\Stage.cpp">
-      <Filter>Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Screen\Screen.cpp">
-      <Filter>Game\Screen</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Notes\Notes.cpp">
-      <Filter>Game\Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Score\Score.cpp">
-      <Filter>Game\Score</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\StageLights\StageLights.cpp">
-      <Filter>Game\StageLights</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Pause\Pause.cpp">
-      <Filter>Game\Pause</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,27 +538,6 @@
     </ClInclude>
     <ClInclude Include="Engine\FrameInfo\FrameInfo.h">
       <Filter>Engine\FrameInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Skydome\Skydome.h">
-      <Filter>Game\Skydome</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Stage\Stage.h">
-      <Filter>Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Screen\Screen.h">
-      <Filter>Game\Screen</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Notes\Notes.h">
-      <Filter>Game\Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Score\Score.h">
-      <Filter>Game\Score</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\StageLights\StageLights.h">
-      <Filter>Game\StageLights</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Pause\Pause.h">
-      <Filter>Game\Pause</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

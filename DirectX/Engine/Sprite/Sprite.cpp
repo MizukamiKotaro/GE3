@@ -180,14 +180,32 @@ void Sprite::SetIsFlipY(bool isFlipY)
 
 void Sprite::SetTextureTopLeft(const Vector2& texTopLeft)
 {
-	textureLeftTop_ = textureLeftTop_;
+	if (texTopLeft.x < 1.0f && texTopLeft.y < 1.0f) {
+		textureLeftTop_ = textureLeftTop_;
+	}
+	else {
+		D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetTextureDesc(textureHundle_);
+
+		Vector2 size = { static_cast<float>(resDesc.Width),static_cast<float>(resDesc.Height) };
+
+		textureLeftTop_ = { texTopLeft.x / size.x,texTopLeft.y / size.y };
+	}
 
 	TransferUV();
 }
 
 void Sprite::SetTextureSize(const Vector2& texSize)
 {
-	textureSize_ = texSize;
+	if (texSize.x <= 1.0f && texSize.y <= 1.0f) {
+		textureSize_ = texSize;
+	}
+	else {
+		D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetTextureDesc(textureHundle_);
+
+		Vector2 size = { static_cast<float>(resDesc.Width),static_cast<float>(resDesc.Height) };
+
+		textureSize_ = { texSize.x / size.x,texSize.y / size.y };
+	}
 
 	TransferUV();
 }

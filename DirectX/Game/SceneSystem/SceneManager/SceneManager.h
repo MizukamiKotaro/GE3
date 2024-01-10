@@ -24,8 +24,5 @@ public:
 
 	int Run(); //この関数でゲームループを呼び出す
 
-private:
-
-	std::unique_ptr<Camera> camera_;
 };
 
