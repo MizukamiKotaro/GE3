@@ -12,6 +12,7 @@
 #include <optional>
 #include <list>
 #include "Utils/Shape/AABB.h"
+#include "Light/Light.h"
 
 class Camera;
 
@@ -39,13 +40,6 @@ public:
 		Vector4 color;
 	};
 
-	struct DirectionalLight
-	{
-		Vector4 color; // ライトの色
-		Vector3 direction; // ライトの向き
-		float intensity; // 輝度
-	};
-
 	struct Active {
 		Transform transform;
 		Vector3 velocity;
@@ -57,6 +51,8 @@ public:
 	struct Emitter
 	{
 		Vector3 pos;
+		Vector3 min;
+		Vector3 max;
 		uint32_t generateParticleNum_; // 一回に生成する数
 		float generateCoolTime_; // 生成の間隔
 		float countTime_; // 生成をするための時間のカウント
@@ -77,7 +73,7 @@ public:
 
 	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
-	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
+	static void PreDraw() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
 public:
 
@@ -95,9 +91,23 @@ public:
 
 	void GenerateParticle();
 
+	void SetDirectionalLight(const DirectionalLight* light) { light_.SetDirectionalLight(light); }
+
+	void SetPointLight(const PointLight* light) { light_.SetPointLight(light); }
+
+	void SetSpotLight(const SpotLight* light) { light_.SetSpotLight(light); }
+
 private:
 
 	void CreateSRV();
+
+	void CreateResources();
+
+	void CreateMaterialResource();
+
+	void CreateInstancingResource();
+
+	void InitVariables();
 
 	Active CreateActive();
 
@@ -108,9 +118,6 @@ private:
 	ComPtr<ID3D12Resource> instancingResource_;
 	ParticleForGPU* instancingData_;
 
-	ComPtr<ID3D12Resource> directionalLightResource_;
-	DirectionalLight* directionalLightData_;
-
 public:
 
 	std::list<Active> actives_;
@@ -120,6 +127,8 @@ public:
 private:
 
 	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::PARTICLE;
+
+	Light light_;
 
 	std::optional<BillboardType> billboardTypeOpt_ = BillboardType::Y;
 	BillboardType billbordType = BillboardType::Y;

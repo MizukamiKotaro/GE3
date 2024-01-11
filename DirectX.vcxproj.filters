@@ -160,6 +160,15 @@
     <Filter Include="Game\GameElement\StageUI">
       <UniqueIdentifier>{5f09b059-ef17-498c-b13f-9934b412f5ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline">
+      <UniqueIdentifier>{f4fdfeae-6516-4afb-8fbf-f758afbe534f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\PointLightGraphicsPipline">
+      <UniqueIdentifier>{0d51438a-ffb9-4b60-a801-6f0f6036d96b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FrameInfo">
+      <UniqueIdentifier>{794b742c-c71e-4e6f-b90f-4642405b120d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -251,9 +260,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Light\Light.cpp">
-      <Filter>Engine\Light</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Particle\Particle.cpp">
       <Filter>Engine\Particle</Filter>
@@ -353,6 +359,27 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\StageUI.cpp">
       <Filter>Game\GameElement\StageUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\DirectionalLight\DirectionalLight.cpp">
+      <Filter>Engine\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\Light.cpp">
+      <Filter>Engine\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\PointLight\PointLight.cpp">
+      <Filter>Engine\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Light\SpotLight\SpotLight.cpp">
+      <Filter>Engine\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline\SpotLightGraphicsPipline.cpp">
+      <Filter>Engine\GraphicsPipelines\SpotLightGraphicsPipline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\PointLightGraphicsPipline\PointLightGraphicsPipline.cpp">
+      <Filter>Engine\GraphicsPipelines\PointLightGraphicsPipline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FrameInfo\FrameInfo.cpp">
+      <Filter>Engine\FrameInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,9 +482,6 @@
     <ClInclude Include="Engine\Input\Input.h">
       <Filter>Engine\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Light\Light.h">
-      <Filter>Engine\Light</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Particle\Particle.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
@@ -467,16 +491,7 @@
     <ClInclude Include="Engine\Model\Model.h">
       <Filter>Engine\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Model\ModelData\MaterialData3D\MaterialData3D.h">
-      <Filter>Engine\Model\ModelData</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Model\ModelData\MeshData3D\MeshData3D.h">
-      <Filter>Engine\Model\ModelData</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Model\ModelData\ModelData.h">
-      <Filter>Engine\Model\ModelData</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Model\ModelData\VertexData3D\VertexData3D.h">
       <Filter>Engine\Model\ModelData</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.h">
@@ -590,6 +605,45 @@
     <ClInclude Include="Game\GameElement\StageUI.h">
       <Filter>Game\GameElement\StageUI</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Light\DirectionalLight\DirectionalLight.h">
+      <Filter>Engine\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Light\Light.h">
+      <Filter>Engine\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Light\PointLight\PointLight.h">
+      <Filter>Engine\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Light\SpotLight\SpotLight.h">
+      <Filter>Engine\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\ModelData\AnimationData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\ModelData\BoneData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\ModelData\NodeData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Model\ModelData\MaterialData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Model\ModelData\MeshData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Model\ModelData\VertexData3D.h">
+      <Filter>Engine\Model\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\SpotLightGraphicsPipline\SpotLightGraphicsPipline.h">
+      <Filter>Engine\GraphicsPipelines\SpotLightGraphicsPipline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\PointLightGraphicsPipline\PointLightGraphicsPipline.h">
+      <Filter>Engine\GraphicsPipelines\PointLightGraphicsPipline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FrameInfo\FrameInfo.h">
+      <Filter>Engine\FrameInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
@@ -621,6 +675,18 @@
     <FxCompile Include="Resources\Shaders\Blocks.VS.hlsl">
       <Filter>Engine\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\SpotLight.VS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\PointLight.PS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\PointLight.VS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\SpotLight.PS.hlsl">
+      <Filter>Engine\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3d.hlsli">
@@ -633,6 +699,12 @@
       <Filter>Engine\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Blocks.hlsli">
+      <Filter>Engine\Shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\PointLight.hlsli">
+      <Filter>Engine\Shaders</Filter>
+    </None>
+    <None Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\SpotLight.hlsli">
       <Filter>Engine\Shaders</Filter>
     </None>
   </ItemGroup>

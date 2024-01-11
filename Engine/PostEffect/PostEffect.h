@@ -1,0 +1,159 @@
+#pragma once
+
+#include <wrl.h>
+#include <d3d12.h>
+#include <stdint.h>
+#include <string>
+#include "Utils/Math/Vector2.h"
+#include "Utils/Math/Vector4.h"
+#include "Utils/Math/Matrix4x4.h"
+#include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+
+class Camera;
+
+// スプライト
+class PostEffect
+{
+public:
+
+	PostEffect(const std::string& filePath, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+		const Vector4 & color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	PostEffect(uint32_t texHundle, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+		const Vector4& color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	~PostEffect();
+
+	struct VertexData
+	{
+		Vector4 vertexPos;
+		Vector2 texcoord;
+	};
+
+	struct Material
+	{
+		Vector4 color;
+		Matrix4x4 uvTransform;
+	};
+
+	struct TransformationMatrix {
+		Matrix4x4 WVP;
+		//Matrix4x4 World;
+	};
+
+	// namespace省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+	void Initialize();
+
+	void Update();
+
+	void Draw(const Camera& camera,  BlendMode blendMode = BlendMode::kBlendModeNormal);
+
+	static void PreDraw() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
+
+	void PreDrawScene();
+
+	void PostDrawScene();
+
+public:
+
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle() const { return srvGPUDescriptorHandle_; };
+
+	void LoadTexture(const std::string& filePath);
+
+	void SetTextureHandle(uint32_t textureHundle);
+
+	void SetAnchorPoint(const Vector2& anchorpoint);
+
+	void SetColor(const Vector4& color);
+
+	void SetIsFlipX(bool isFlipX);
+
+	void SetIsFlipY(bool isFlipY);
+
+	void SetTextureTopLeft(const Vector2& texTopLeft);
+
+	void SetTextureSize(const Vector2& texSize);
+
+private:
+	PostEffect() = default;
+
+	void TransferSize();
+
+	void TransferUV();
+
+	void AdjustTextureSize();
+
+	void CreateVertexRes();
+
+	void CreateMaterialRes();
+
+	void CreateTranformRes();
+
+	void CreateTexRes();
+
+	void CreateRTV();
+
+	void CreateDSV();
+
+	void CreateResources();
+
+private:
+
+	ComPtr<ID3D12Resource> vertexResource_;
+	VertexData* vertexData_;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
+
+	ComPtr<ID3D12Resource> materialResource_;
+	Material* materialData_;
+
+	ComPtr<ID3D12Resource> transformResource_;
+	TransformationMatrix* transformData_;
+
+	ComPtr<ID3D12Resource> texResource_;
+	D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
+
+	ComPtr<ID3D12Resource> rtvResource_;
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE rtvGPUDescriptorHandle_;
+
+	ComPtr<ID3D12Resource> dsvResource_;
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvCPUDescriptorHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE dsvGPUDescriptorHandle_;
+
+public:
+
+	float rotate_;
+	Vector2 pos_;
+	Vector2 size_;
+
+private:
+
+	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::SPRITE;
+
+	static const float clearColor[4];
+
+	Matrix4x4 worldMat_;
+
+	Vector2 uvTranslate_;
+	Vector2 uvScale_;
+	float uvRotate_;
+
+	Vector4 color_;
+
+	Vector2 anchorPoint_;
+
+	Vector2 textureLeftTop_;
+
+	Vector2 textureSize_;
+
+	bool isFlipX_ = false;
+	bool isFlipY_ = false;
+
+	bool isInvisible_ = false;
+
+	bool isLoad_;
+	uint32_t textureHundle_;
+
+};
+

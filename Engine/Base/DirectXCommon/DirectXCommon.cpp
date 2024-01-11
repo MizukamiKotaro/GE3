@@ -7,6 +7,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
+#include "DescriptorHeapManager/DescriptorHeapManager.h"
 #include <thread>
 
 using namespace Microsoft::WRL;
@@ -35,6 +36,9 @@ void DirectXCommon::Initialize() {
 	// スワップチェーンの生成
 	CreateSwapChain();
 
+	// ディスクリプタヒープの初期化
+	DescriptorHeapManager::GetInstance()->Initialize();;
+
 	// レンダーターゲット生成
 	CreateFinalRenderTargets();
 
@@ -47,8 +51,6 @@ void DirectXCommon::Initialize() {
 
 void DirectXCommon::Finalize()
 {
-	rtvHeap_->Release();
-	dsvHeap_->Release();
 	depthStencilResource_->Release();
 }
 
@@ -221,19 +223,6 @@ void DirectXCommon::UpdateFixFPS() {
 
 }
 
-ID3D12DescriptorHeap* DirectXCommon::CreateDescriptorHeap(ID3D12Device* device_, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
-	//ディスクリプタヒープの生成
-	ID3D12DescriptorHeap* descriptorHeap = nullptr;
-	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
-	descriptorHeapDesc.Type = heapType;
-	descriptorHeapDesc.NumDescriptors = numDescriptors;
-	descriptorHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	HRESULT hr = device_->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&descriptorHeap));
-	//ディスクリプタヒープが作られなかったので起動しない
-	assert(SUCCEEDED(hr));
-	return descriptorHeap;
-}
-
 void DirectXCommon::InitializeDebugController()
 {
 #ifdef _DEBUG
@@ -338,8 +327,7 @@ void DirectXCommon::InitializeCommand() {
 
 void DirectXCommon::CreateFinalRenderTargets() {
 
-	//RTV用のヒープでディスクリプタの数は2。RTVはShader内で触るものではないので、ShaderVisibleはfalse
-	rtvHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
+	rtvHeap_ = DescriptorHeapManager::GetInstance()->GetRTVHeap();
 
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; //出力結果をSRGBに変換して書き込む
@@ -355,8 +343,7 @@ void DirectXCommon::CreateFinalRenderTargets() {
 
 void DirectXCommon::CreateDepthBuffer() {
 
-	//DSV用のヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
-	dsvHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
+	dsvHeap_ = DescriptorHeapManager::GetInstance()->GetDSVHeap();
 
 	//DepthStencilTextureをウィンドウのサイズで作成
 	depthStencilResource_ =  CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);

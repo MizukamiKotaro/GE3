@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <wrl.h>
-#include "ModelData/VertexData3D/VertexData3D.h"
+#include "VertexData3D.h"
 #include <d3d12.h>
 
 struct MeshData

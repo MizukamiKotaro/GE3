@@ -9,6 +9,8 @@
 #include "GraphicsPipelines/ModelGraphicsPipline/ModelGraphicsPipline.h"
 #include "GraphicsPipelines/ParticleGraphicsPipeline/ParticleGraphicsPipeline.h"
 #include "GraphicsPipelines/SpirteGraphicsPipeline/SpriteGraphicsPipeline.h"
+#include "GraphicsPipelines/PointLightGraphicsPipline/PointLightGraphicsPipline.h"
+#include "GraphicsPipelines/SpotLightGraphicsPipline/SpotLightGraphicsPipline.h"
 #include "GraphicsPipelines/BlockGraphicsPipeline/BlockGraphicsPipeline.h"
 
 enum class BlendMode
@@ -30,6 +32,8 @@ public:
 		SPRITE,
 		MODEL,
 		PARTICLE,
+		POINT_LIGHT,
+		SPOT_LIGHT,
 		BLOCKS,
 		COUNT_PIPLINE_TYPE,
 	};
@@ -58,6 +62,8 @@ private:
 	SpriteGraphicsPipeline* spriteGPS_ = nullptr;
 	ModelGraphicsPipline* modelGPS_ = nullptr;
 	ParticleGraphicsPipeline* particleGPS_ = nullptr;
+	PointLightGraphicsPipline* pointLightPSO_ = nullptr;
+	SpotLightGraphicsPipline* spotLightPSO_ = nullptr;
 	BlockGraphicsPipeline* blocksGPS_ = nullptr;
 
 	PiplineType currentPiplineType_ = PiplineType::SPRITE;

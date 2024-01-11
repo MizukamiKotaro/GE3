@@ -11,6 +11,8 @@
 #include "Utils/RandomGenerator/RandomGenerator.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 #include "Audio.h"
+#include "Light/Light.h"
+#include "FrameInfo/FrameInfo.h"
 
 void Kyoko::Init()
 {
@@ -26,8 +28,6 @@ void Kyoko::Init()
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize();
 
-	DescriptorHeapManager::GetInstance()->Initialize();
-
 	TextureManager::GetInstance()->Initialize();
 
 	GraphicsPiplineManager::GetInstance()->Init();
@@ -36,7 +36,11 @@ void Kyoko::Init()
 
 	Input::GetInstance()->Initialize();
 
+	LightSingleton::GetInstance()->Init();
+
 	GlobalVariables::GetInstance()->LoadFiles();
+
+	FrameInfo::GetInstance()->Init();
 
 	ImGuiManager::Initialize();
 
@@ -83,6 +87,7 @@ void Kyoko::FirstUpdateInLoop()
 {
 	ImGuiManager::Begin();
 	Input::GetInstance()->Update();
+	Audio::GetInstance()->Update();
 
 	GlobalVariables::GetInstance()->Update();
 }
@@ -93,6 +98,8 @@ void Kyoko::PreDraw()
 
 	// 描画前処理
 	DirectXCommon::GetInstance()->PreDraw();
+
+	GraphicsPiplineManager::GetInstance()->PreDraw(GraphicsPiplineManager::PiplineType::SPRITE);
 }
 
 void Kyoko::PostDraw()

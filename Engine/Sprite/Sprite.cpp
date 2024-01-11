@@ -5,7 +5,6 @@
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "Camera.h"
-#include <algorithm>
 
 Sprite::Sprite(const std::string& filePath, const Vector2& pos, const Vector2& texLeftTop, const Vector2& texSize, const Vector4& color, const Vector2& anchorPoint, bool isFlipX, bool isFlipY)
 {
@@ -103,7 +102,7 @@ void Sprite::Draw(const Camera& camera, BlendMode blendMode)
 		return;
 	}
 
-	PreDrow();
+	PreDraw();
 
 	transformData_->WVP = worldMat_ * camera.GetOrthographicMat();
 	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
@@ -181,14 +180,32 @@ void Sprite::SetIsFlipY(bool isFlipY)
 
 void Sprite::SetTextureTopLeft(const Vector2& texTopLeft)
 {
-	textureLeftTop_ = textureLeftTop_;
+	if (texTopLeft.x < 1.0f && texTopLeft.y < 1.0f) {
+		textureLeftTop_ = textureLeftTop_;
+	}
+	else {
+		D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetTextureDesc(textureHundle_);
+
+		Vector2 size = { static_cast<float>(resDesc.Width),static_cast<float>(resDesc.Height) };
+
+		textureLeftTop_ = { texTopLeft.x / size.x,texTopLeft.y / size.y };
+	}
 
 	TransferUV();
 }
 
 void Sprite::SetTextureSize(const Vector2& texSize)
 {
-	textureSize_ = texSize;
+	if (texSize.x <= 1.0f && texSize.y <= 1.0f) {
+		textureSize_ = texSize;
+	}
+	else {
+		D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetTextureDesc(textureHundle_);
+
+		Vector2 size = { static_cast<float>(resDesc.Width),static_cast<float>(resDesc.Height) };
+
+		textureSize_ = { texSize.x / size.x,texSize.y / size.y };
+	}
 
 	TransferUV();
 }

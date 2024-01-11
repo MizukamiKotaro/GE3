@@ -20,41 +20,11 @@ Particle::Particle(const std::string& fileName)
 
 	textureHundle_ = TextureManager::GetInstance()->LoadTexture("Resources/"+ fileName);
 
-	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
-
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
-	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
-
-	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(ParticleForGPU) * kNumInstance);
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-
-	for (uint32_t index = 0; index < kNumInstance; index++) {
-		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
-		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
-		instancingData_[index].color = { 1.0f,1.0f,1.0f,0.0f };
-	}
+	CreateResources();
 
 	CreateSRV();
 
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
-
-	uvScale_ = { 1.0f,1.0f,1.0f };
-	uvRotate_ = { 0.0f,0.0f,0.0f };
-	uvPos_ = { 0.0f,0.0f,0.0f };
-
-	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+	InitVariables();
 }
 
 Particle::Particle(uint32_t textureHundle)
@@ -65,57 +35,22 @@ Particle::Particle(uint32_t textureHundle)
 
 	textureHundle_ = textureHundle;
 
-	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
-
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
-	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
-
-	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
-	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(ParticleForGPU) * kNumInstance);
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-
-	for (uint32_t index = 0; index < kNumInstance; index++) {
-		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
-		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
-		instancingData_[index].color = { 1.0f,1.0f,1.0f,0.0f };
-	}
+	CreateResources();
 
 	CreateSRV();
 
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
-
-	uvScale_ = { 1.0f,1.0f,1.0f };
-	uvRotate_ = { 0.0f,0.0f,0.0f };
-	uvPos_ = { 0.0f,0.0f,0.0f };
-
-	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+	InitVariables();
 }
 
 Particle::~Particle()
 {
 	instancingResource_->Release();
 	materialResource_->Release();
-	directionalLightResource_->Release();
 }
 
 void Particle::Initialize()
 {
-	RandomGenerator* rand = RandomGenerator::GetInstance();
-
-	emitter.generateParticleNum_ = rand->RandInt(3, 6);
-
-	emitter.generateCoolTime_ = 120.0f;
+	
 }
 
 void Particle::Update()
@@ -141,7 +76,7 @@ void Particle::Update()
 
 void Particle::Draw(const Camera& camera, BlendMode blendMode)
 {
-	PreDrow();
+	PreDraw();
 
 	Matrix4x4 billboardMat{};
 
@@ -162,7 +97,7 @@ void Particle::Draw(const Camera& camera, BlendMode blendMode)
 			billboardMat = Matrix4x4::MakeRotateZMatrix(pi) * camera.transform_.worldMat_;
 			break;
 		case Particle::BillboardType::ALL:
-			billboardMat = Matrix4x4::MakeRotateXYZMatrix(Vector3{ pi,pi,pi }) * camera.transform_.worldMat_;
+			billboardMat = Matrix4x4::MakeRotateXYZMatrix(Vector3{}) * camera.transform_.worldMat_;
 			break;
 		default:
 			break;
@@ -213,7 +148,7 @@ void Particle::Draw(const Camera& camera, BlendMode blendMode)
 	//commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootDescriptorTable(1, srvGPUDescriptorHandle_);
 	//平行光源CBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, light_.GetDirectionalLightGPUVirtualAddress());
 
 	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
@@ -258,18 +193,67 @@ void Particle::CreateSRV()
 
 }
 
+void Particle::CreateResources()
+{
+	CreateMaterialResource();
+
+	CreateInstancingResource();
+}
+
+void Particle::CreateMaterialResource()
+{
+	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
+
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
+	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
+}
+
+void Particle::CreateInstancingResource()
+{
+	
+	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
+	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(ParticleForGPU) * kNumInstance);
+	instancingData_ = nullptr;
+	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
+
+	for (uint32_t index = 0; index < kNumInstance; index++) {
+		instancingData_[index].WVP = Matrix4x4::MakeIdentity4x4();
+		instancingData_[index].World = Matrix4x4::MakeIdentity4x4();
+		instancingData_[index].color = { 1.0f,1.0f,1.0f,0.0f };
+	}
+}
+
+void Particle::InitVariables()
+{
+	light_.Init();
+
+	uvScale_ = { 1.0f,1.0f,1.0f };
+	uvRotate_ = { 0.0f,0.0f,0.0f };
+	uvPos_ = { 0.0f,0.0f,0.0f };
+
+	uvMatrix_ = Matrix4x4::MakeAffinMatrix(uvScale_, uvRotate_, uvPos_);
+
+	RandomGenerator* rand = RandomGenerator::GetInstance();
+
+	emitter.generateParticleNum_ = rand->RandInt(3, 6);
+
+	emitter.generateCoolTime_ = 120.0f;
+
+	emitter.min = { -2.5f,0.5f,-0.5f };
+	emitter.max = { 2.5f,2.5f,0.5f };
+}
+
 Particle::Active Particle::CreateActive()
 {
 	RandomGenerator* rand = RandomGenerator::GetInstance();
 
 	Active active{};
-	active.transform.translate_ = rand->RandVector3(-1.0f, 1.0f);
-	active.velocity = rand->RandVector3(-1.0f / 60.0f, 1.0f / 60.0f);
+	active.transform.translate_ = rand->RandVector3(emitter.min, emitter.max) + emitter.pos;
+	active.velocity = rand->RandVector3(-2.0f / 60.0f, 2.0f / 60.0f);
 	active.color = { rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),rand->RandFloat(0.0f,1.0f),1.0f };
 	active.transform.UpdateMatrix();
 	active.lifeTime = rand->RandFloat(120.0f, 240.0f);
 	return active;
 }
-
-
 

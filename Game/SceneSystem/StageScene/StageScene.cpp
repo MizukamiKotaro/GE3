@@ -1,5 +1,6 @@
 #include "StageScene.h"
 #include "Externals/imgui/imgui.h"
+#include "FrameInfo/FrameInfo.h"
 
 StageScene::StageScene() {
 	FirstInit();

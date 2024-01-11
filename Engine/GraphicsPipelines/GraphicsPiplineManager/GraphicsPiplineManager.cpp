@@ -22,8 +22,15 @@ void GraphicsPiplineManager::Init()
 	particleGPS_ = ParticleGraphicsPipeline::GetInstance();
 	particleGPS_->Initialize();
 
+	pointLightPSO_ = PointLightGraphicsPipline::GetInstance();
+	pointLightPSO_->Initialize();
+
+	spotLightPSO_ = SpotLightGraphicsPipline::GetInstance();
+	spotLightPSO_->Initialize();
+
 	blocksGPS_ = BlockGraphicsPipeline::GetInstance();
 	blocksGPS_->Initialize();
+
 	spriteGPS_->PreDraw();
 }
 
@@ -42,6 +49,12 @@ void GraphicsPiplineManager::PreDraw(PiplineType type)
 			break;
 		case GraphicsPiplineManager::PiplineType::PARTICLE:
 			particleGPS_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::POINT_LIGHT:
+			pointLightPSO_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::SPOT_LIGHT:
+			spotLightPSO_->PreDraw();
 			break;
 		case GraphicsPiplineManager::PiplineType::BLOCKS:
 			blocksGPS_->PreDraw();
@@ -66,6 +79,12 @@ void GraphicsPiplineManager::SetBlendMode(PiplineType type, uint32_t blendMode)
 		break;
 	case GraphicsPiplineManager::PiplineType::PARTICLE:
 		particleGPS_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::POINT_LIGHT:
+		pointLightPSO_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::SPOT_LIGHT:
+		spotLightPSO_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::BLOCKS:
 		blocksGPS_->SetBlendMode(blendMode);
