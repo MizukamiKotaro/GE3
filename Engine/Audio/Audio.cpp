@@ -2,7 +2,7 @@
 #include <cassert>
 #include <fstream>
 
-Audio* Audio::GetInstance() {
+Audio *Audio::GetInstance() {
 	static Audio instance;
 	return &instance;
 }
@@ -37,7 +37,7 @@ void Audio::Finalize() {
 	}
 }
 
-uint32_t Audio::LoadWave(const std::string& filename) {
+uint32_t Audio::LoadWave(const std::string &filename) {
 
 	for (uint32_t soundDataNum = 0; soundDataNum < static_cast<uint32_t>(soundDatas_.size()); soundDataNum++) {
 
@@ -54,7 +54,7 @@ uint32_t Audio::LoadWave(const std::string& filename) {
 	assert(file.is_open());
 
 	RiffHeader riff;
-	file.read((char*)&riff, sizeof(riff));
+	file.read((char *)&riff, sizeof(riff));
 
 	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
 		assert(0);
@@ -66,12 +66,12 @@ uint32_t Audio::LoadWave(const std::string& filename) {
 
 	FormatChunk fmt = {};
 
-	file.read((char*)&fmt.chunk, sizeof(ChunkHeader));
+	file.read((char *)&fmt.chunk, sizeof(ChunkHeader));
 	while (strncmp(fmt.chunk.id, "fmt ", 4) != 0) {
 		// 読み取りチャンクを検出した場合
 		file.seekg(fmt.chunk.size, std::ios_base::cur);
 		// 再読み込み
-		file.read((char*)&fmt.chunk, sizeof(ChunkHeader));
+		file.read((char *)&fmt.chunk, sizeof(ChunkHeader));
 	}
 	/*if (strncmp(fmt.chunk.id, "fmt", 4) != 0) {
 		assert(0);
@@ -82,17 +82,17 @@ uint32_t Audio::LoadWave(const std::string& filename) {
 	memcpy(&fmt.fmt, fmtData.data(), sizeof(fmt.fmt));
 
 	ChunkHeader data;
-	file.read((char*)&data, sizeof(data));
+	file.read((char *)&data, sizeof(data));
 
 	while (strncmp(data.id, "data", 4) != 0) {
 		// 読み取りチャンクを検出した場合
 		file.seekg(data.size, std::ios_base::cur);
 		// 再読み込み
-		file.read((char*)&data, sizeof(data));
+		file.read((char *)&data, sizeof(data));
 	}
 
 	std::vector<BYTE> pBuffer(data.size);
-	file.read(reinterpret_cast<char*>(pBuffer.data()), data.size);
+	file.read(reinterpret_cast<char *>(pBuffer.data()), data.size);
 
 	file.close();
 
@@ -109,7 +109,7 @@ uint32_t Audio::LoadWave(const std::string& filename) {
 
 }
 
-void Audio::Unload(SoundData* soundData) {
+void Audio::Unload(SoundData *soundData) {
 
 	soundData->pBuffer.clear();
 	soundData->bufferSize = 0;
@@ -124,7 +124,7 @@ void Audio::DestroyVoice(uint32_t handle)
 	}
 }
 
-Audio::Voice* Audio::FindUnusedVoice()
+Audio::Voice *Audio::FindUnusedVoice()
 {
 	for (int i = 0; i < kSoundVoiceMaxNum; i++) {
 		if (voices_[i]->sourceVoice == nullptr) {
@@ -140,7 +140,7 @@ uint32_t Audio::Play(uint32_t soundDataHandle, bool loopFlag, float volume) {
 	HRESULT hr;
 
 	//voices_.push_back(std::make_unique<Voice>());
-	Voice* voice = FindUnusedVoice();
+	Voice *voice = FindUnusedVoice();
 
 	hr = xAudio2_->CreateSourceVoice(&voice->sourceVoice, &soundDatas_[soundDataHandle].wfex);
 	assert(SUCCEEDED(hr));
@@ -198,10 +198,12 @@ void Audio::ReStart(uint32_t voiceHandle)
 }
 
 void Audio::SetVolume(uint32_t voiceHandle, float volume) {
-	for (const std::unique_ptr<Voice>& voice : voices_) {
+	for (const std::unique_ptr<Voice> &voice : voices_) {
 		if (voice->handle == voiceHandle) {
 			voice->sourceVoice->SetVolume(volume);
 			break;
 		}
 	}
 }
+
+Audio *const AudioItem::audio_ = Audio::GetInstance();

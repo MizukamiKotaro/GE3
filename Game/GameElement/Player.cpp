@@ -19,8 +19,6 @@ void Player::Init() {
 	audio_ = Audio::GetInstance();
 
 	jumpSE_ = audio_->LoadWave("Resources/playerSE/jump.wav");
-
-	attackSE_ = audio_->LoadWave("Resources/playerSE/Attack.wav");
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {
@@ -71,19 +69,12 @@ void Player::Draw() {
 
 void Player::InputAction(Input* const input, const float deltaTime) {
 	Vector2 inputRight = input->GetGamePadRStick();
-	static bool isFirst = false;
-
 
 	if (Calc::MakeLength(inputRight)) {
 		barrier_->Attack(Calc::Normalize(inputRight));
-		if (not isFirst) {
-			audio_->Play(attackSE_, false, 0.6f);
-			isFirst = true;
-		}
+	
 	}
-	else {
-		isFirst = false;
-	}
+	
 
 	Vector2 inputLeft = input->GetGamePadLStick();
 	if (inputLeft.x == 0.f) {

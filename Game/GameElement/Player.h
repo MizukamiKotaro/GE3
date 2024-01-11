@@ -60,6 +60,4 @@ private:
 	Audio* audio_ = nullptr;
 
 	uint32_t jumpSE_;
-
-	uint32_t attackSE_;
 };
