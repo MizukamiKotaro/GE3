@@ -38,17 +38,17 @@ void StageScene::Init()
 	file_.Load("Resources/LevelData/Level1.csv");
 	csv_ = file_;
 
-	mapChip_ = std::make_unique<MapChip>();
-	mapChip_->Init();
-	mapChip_->Load(csv_);
+	stage_ = std::make_unique<Stage>();
+	stage_->Init();
+	stage_->SetCSV(csv_);
 
 	/*ballList_.push_back(std::make_unique<MovingBall>());
 	ballList_.back()->Init();*/
-	MovingBall::SetMapChip(mapChip_.get());
+	MovingBall::SetMapChip(stage_->GetMapChip());
 
 	player_ = std::make_unique<Player>();
 	player_->Init();
-	player_->SetMapChip(mapChip_.get());
+	player_->SetMapChip(stage_->GetMapChip());
 	player_->SetBallList(&ballList_);
 
 	model->transform_.translate_.y = -500.f;
@@ -96,7 +96,7 @@ void StageScene::Update()
 	//model->Update();
 	//particle->Update();
 	camera_->Update();
-	mapChip_->Update(deltaTime);
+	stage_->Update(deltaTime);
 
 	for (auto &ball : ballList_) {
 		ball->Update(deltaTime);
@@ -117,7 +117,7 @@ void StageScene::Draw() {
 	//particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 
 	pBlockManager_->clear();
-	mapChip_->Draw();
+	stage_->Draw();
 	for (auto &ball : ballList_) {
 		ball->Draw();
 	}

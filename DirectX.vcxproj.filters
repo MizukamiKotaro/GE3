@@ -360,6 +360,12 @@
     <ClCompile Include="Game\GameElement\StageUI.cpp">
       <Filter>Game\GameElement\StageUI</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Boss.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\Stage.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Light\DirectionalLight\DirectionalLight.cpp">
       <Filter>Engine\Light</Filter>
     </ClCompile>
@@ -604,6 +610,12 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\StageUI.h">
       <Filter>Game\GameElement\StageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Boss.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Stage.h">
+      <Filter>Game\GameElement</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Light\DirectionalLight\DirectionalLight.h">
       <Filter>Engine\Light</Filter>

@@ -4,6 +4,7 @@
 #include "SoUtils/Math/Euler.h"
 #include "SoUtils/SoLib/SoLib_Timer.h"
 #include "Vector2.h"
+#include "Audio.h"
 
 class Player;
 class MovingBall;
@@ -31,6 +32,8 @@ private:
 
 	uint32_t model_;
 
+	AudioItem attackSE_;
+
 	std::list<std::unique_ptr<MovingBall>> *ballList_;
 
 	Vector2 direction_;
@@ -43,5 +46,6 @@ private:
 	SoLib::Color::RGB4 color_;
 
 	SoLib::Time::DeltaTimer attackTimer_;
+	SoLib::Time::DeltaTimer coolTimer_;
 
 };

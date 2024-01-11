@@ -14,9 +14,9 @@
 #include <GameElement/Player.h>
 
 #include "GameElement/StageUI.h"
+#include <GameElement/Stage.h>
 
-class StageScene : public IScene
-{
+class StageScene : public IScene {
 public:
 
 	StageScene();
@@ -41,7 +41,7 @@ private:
 	std::unique_ptr<Player> player_;
 
 	BlockManager *pBlockManager_;
-	std::unique_ptr<MapChip> mapChip_;
+	std::unique_ptr<Stage> stage_;
 
 	SoLib::IO::File file_;
 	SoLib::IO::CSV csv_;

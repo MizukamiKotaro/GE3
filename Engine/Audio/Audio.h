@@ -43,10 +43,10 @@ public:
 
 	struct Voice {
 		uint32_t handle = 0u;
-		IXAudio2SourceVoice* sourceVoice = nullptr;
+		IXAudio2SourceVoice *sourceVoice = nullptr;
 	};
 
-	static Audio* GetInstance();
+	static Audio *GetInstance();
 
 	/// <summary>
 	/// 初期化
@@ -65,7 +65,7 @@ public:
 	/// </summary>
 	/// <param name="filename">WAVファイル名</param>
 	/// <returns>サウンドデータハンドル</returns>
-	uint32_t LoadWave(const std::string& filename);
+	uint32_t LoadWave(const std::string &filename);
 
 	/// <summary>
 	/// 音声再生
@@ -113,25 +113,55 @@ private:
 	/// サウンドデータの解放
 	/// </summary>
 	/// <param name="soundData">サウンドデータ</param>
-	void Unload(SoundData* soundData);
+	void Unload(SoundData *soundData);
 
 	void DestroyVoice(uint32_t handle);
 
-	Voice* FindUnusedVoice();
+	Voice *FindUnusedVoice();
 
 private:
 
 	Audio() = default;
 	~Audio() = default;
-	Audio(const Audio&) = delete;
-	const Audio& operator=(const Audio&) = delete;
+	Audio(const Audio &) = delete;
+	const Audio &operator=(const Audio &) = delete;
 
 	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
-	IXAudio2MasteringVoice* masterVoice_ = nullptr;
+	IXAudio2MasteringVoice *masterVoice_ = nullptr;
 
 	std::vector<SoundData> soundDatas_;
 	//std::vector<std::unique_ptr<Voice>> voices_;
 	std::array<std::unique_ptr<Voice>, kSoundVoiceMaxNum> voices_;
+};
+
+class AudioItem final {
+public:
+	AudioItem() = default;
+	AudioItem(uint32_t handle) :audioHandle_(handle) {}
+	AudioItem(const AudioItem &) = default;
+
+	~AudioItem() = default;
+
+	AudioItem &operator=(uint32_t handle) { audioHandle_ = handle; return *this; }
+
+	void Play(bool loopFlag = false, float volume = 1.0f) { voiceHandle_ = audio_->Play(audioHandle_, loopFlag, volume); }
+
+	void Stop() { audio_->Stop(voiceHandle_); }
+
+	void Pause() { audio_->Pause(voiceHandle_); }
+
+	bool IsPlaying() { audio_->IsPlaying(voiceHandle_); }
+
+	void ReStart() { audio_->ReStart(voiceHandle_); }
+
+	void SetVolume(float volume) { audio_->SetVolume(voiceHandle_, volume); }
+
+private:
+	static Audio *const audio_;
+
+	uint32_t audioHandle_;
+	uint32_t voiceHandle_;
+
 };
 
 
