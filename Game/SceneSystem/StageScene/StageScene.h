@@ -37,7 +37,7 @@ private:
 
 	std::unique_ptr<Model> model;
 
-	std::list<std::unique_ptr<MovingBall>> ballList_;
+	//std::list<std::unique_ptr<MovingBall>> ballList_;
 	std::unique_ptr<Player> player_;
 
 	BlockManager *pBlockManager_;

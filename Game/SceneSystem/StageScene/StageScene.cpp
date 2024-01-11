@@ -49,7 +49,7 @@ void StageScene::Init()
 	player_ = std::make_unique<Player>();
 	player_->Init();
 	player_->SetMapChip(stage_->GetMapChip());
-	player_->SetBallList(&ballList_);
+	player_->SetBallList(stage_->GetBallList());
 
 	model->transform_.translate_.y = -500.f;
 	model->Update();
@@ -63,10 +63,6 @@ void StageScene::Update()
 	// 時間差分
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 
-	std::erase_if(ballList_, [](const std::unique_ptr<MovingBall> &ball) ->bool
-		{
-			return not ball->GetIsAlive();
-		});
 
 	/*if (input_->PressedKey(DIK_SPACE)) {
 		if (isMesh1) {
@@ -98,9 +94,6 @@ void StageScene::Update()
 	camera_->Update();
 	stage_->Update(deltaTime);
 
-	for (auto &ball : ballList_) {
-		ball->Update(deltaTime);
-	}
 
 	player_->InputAction(input_, deltaTime);
 	player_->Update(deltaTime);
@@ -118,9 +111,7 @@ void StageScene::Draw() {
 
 	pBlockManager_->clear();
 	stage_->Draw();
-	for (auto &ball : ballList_) {
-		ball->Draw();
-	}
+
 	player_->Draw();
 
 	pBlockManager_->Draw(*camera_.get());

@@ -387,6 +387,9 @@
     <ClCompile Include="Engine\FrameInfo\FrameInfo.cpp">
       <Filter>Engine\FrameInfo</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BallSpawner.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -655,6 +658,9 @@
     </ClInclude>
     <ClInclude Include="Engine\FrameInfo\FrameInfo.h">
       <Filter>Engine\FrameInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BallSpawner.h">
+      <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
