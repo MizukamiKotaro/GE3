@@ -1,6 +1,7 @@
 #include "AABB.h"
 #include <SoUtils/SoLib/SoLib_Lerp.h>
 #include <type_traits>
+#include <algorithm>
 
 Vector3 AABB::GetCentor() const {
 	return SoLib::Lerp(min, max, 0.5f);
