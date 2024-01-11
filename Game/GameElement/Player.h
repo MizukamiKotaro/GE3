@@ -4,6 +4,7 @@
 #include "Barrier.h"
 #include <SoUtils/Math/Euler.h>
 #include "Input/Input.h"
+#include "Audio.h"
 
 class MapChip;
 
@@ -56,4 +57,9 @@ private:
 
 	MapChip *mapData_;
 
+	Audio* audio_ = nullptr;
+
+	uint32_t jumpSE_;
+
+	uint32_t attackSE_;
 };

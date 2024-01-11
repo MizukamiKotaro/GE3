@@ -4,6 +4,7 @@
 #include "BlockManager.h"
 #include "MovingBall.h"
 #include "MapChip.h"
+#include "Audio.h"
 
 void Player::Init() {
 	barrier_ = std::make_unique<BarrierItem>();
@@ -14,6 +15,12 @@ void Player::Init() {
 	color_ = 0xFFFFFFFF;
 
 	scale_ = Vector3::one;
+
+	audio_ = Audio::GetInstance();
+
+	jumpSE_ = audio_->LoadWave("Resources/playerSE/jump.wav");
+
+	attackSE_ = audio_->LoadWave("Resources/playerSE/Attack.wav");
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {
@@ -55,19 +62,27 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 }
 
 void Player::Draw() {
-	static auto *const blockManager = BlockManager::GetInstance();
+	static auto* const blockManager = BlockManager::GetInstance();
 
 	barrier_->Draw();
 
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }
 
-void Player::InputAction(Input *const input, const float deltaTime) {
+void Player::InputAction(Input* const input, const float deltaTime) {
 	Vector2 inputRight = input->GetGamePadRStick();
+	static bool isFirst = false;
 
 
 	if (Calc::MakeLength(inputRight)) {
 		barrier_->Attack(Calc::Normalize(inputRight));
+		if (not isFirst) {
+			audio_->Play(attackSE_, false, 0.6f);
+			isFirst = true;
+		}
+	}
+	else {
+		isFirst = false;
 	}
 
 	Vector2 inputLeft = input->GetGamePadLStick();
@@ -81,6 +96,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 
 	if (isLanding_ && (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A) || input->PressedGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
 		acceleration_.y += 10.f;
+		audio_->Play(jumpSE_, false, 0.6f);
 	}
 
 }
@@ -102,11 +118,11 @@ void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	transform_ += fixVelocity;
 }
 
-void Player::SetMapChip(MapChip *const mapChip) {
+void Player::SetMapChip(MapChip* const mapChip) {
 	mapData_ = mapChip;
 }
 
-void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
+void Player::SetBallList(std::list<std::unique_ptr<MovingBall>>* ballList) {
 	barrier_->SetBallList(ballList);
 	ballList_ = ballList;
 }
