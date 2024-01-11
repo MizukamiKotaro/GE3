@@ -134,8 +134,7 @@ private:
 	std::array<std::unique_ptr<Voice>, kSoundVoiceMaxNum> voices_;
 };
 
-class AudioItem
-{
+class AudioItem final {
 public:
 	AudioItem() = default;
 	AudioItem(uint32_t handle) :audioHandle_(handle) {}
