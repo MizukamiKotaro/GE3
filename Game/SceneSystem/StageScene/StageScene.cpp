@@ -105,7 +105,7 @@ void StageScene::Draw() {
 	//sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
 	//sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
 
-	model->Draw(*camera_.get());
+	//model->Draw(*camera_.get());
 
 	//particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
 
