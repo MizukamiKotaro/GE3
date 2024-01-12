@@ -14,6 +14,7 @@
 #include "Utils/Transform/Transform.h"
 #include "Utils/SoUtils/Graphics/Color.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+#include "Light/DirectionalLight/DirectionalLight.h"
 
 class Camera;
 
@@ -54,13 +55,6 @@ public:
 		Vector4 color;
 	};
 
-	struct DirectionalLight
-	{
-		Vector4 color; // ライトの色
-		Vector3 direction; // ライトの向き
-		float intensity; // 輝度
-	};
-
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -69,6 +63,8 @@ public:
 	static void PreDrow() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
 	void SetMesh(uint32_t mesh);
+
+	void SetDirectionalLight(const DirectionalLight* light) { directionalLight_ = light; }
 
 private:
 
@@ -81,8 +77,7 @@ private:
 	ComPtr<ID3D12Resource> instancingResource_;
 	ParticleForGPU* instancingData_;
 
-	ComPtr<ID3D12Resource> directionalLightResource_;
-	DirectionalLight* directionalLightData_;
+	const DirectionalLight* directionalLight_ = nullptr;
 
 private:
 
@@ -168,6 +163,8 @@ public: // アクセッサ等
 	/// <returns>描画インデックス位置</returns>
 	const auto& GetLoaction() const { return indexLocation_; }*/
 
+	void SetDirectionalLight(const DirectionalLight* light) { blocksResource_->SetDirectionalLight(light); }
+
 private: // メンバ変数
 
 	/*==================================
@@ -235,6 +232,11 @@ public: // メンバ関数
 		for (auto& blockList : blockMap_) {
 			blockList.second->clear();
 		}
+	}
+
+	void SetDirectionalLight(uint32_t modelhundole, const DirectionalLight* light) { 
+		decltype(blockMap_)::iterator blockListItr = blockMap_.find(modelhundole);
+		blockMap_[modelhundole]->SetDirectionalLight(light);
 	}
 
 private: // メンバ変数

@@ -9,6 +9,7 @@
 #include <numbers>
 #include <algorithm>
 #include "TextureManager.h"
+#include "Light/Light.h"
 
 Blocks::Blocks(const std::string& fileName)
 {
@@ -22,7 +23,7 @@ Blocks::Blocks(const std::string& fileName)
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
+	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 2 };
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 
 	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
@@ -38,16 +39,7 @@ Blocks::Blocks(const std::string& fileName)
 
 	CreateSRV();
 
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
+	directionalLight_ = LightSingleton::GetInstance()->GetDirectionaLight();
 }
 
 Blocks::Blocks(uint32_t modelHundle)
@@ -61,7 +53,7 @@ Blocks::Blocks(uint32_t modelHundle)
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 0 };
+	*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , 2 };
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 
 	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
@@ -77,23 +69,13 @@ Blocks::Blocks(uint32_t modelHundle)
 
 	CreateSRV();
 
-	//平行光源用のリソースを作る。
-	directionalLightResource_ = DirectXCommon::CreateBufferResource(sizeof(DirectionalLight));
-	//データを書き込む
-	directionalLightData_ = nullptr;
-	//書き込むためのアドレスを取得
-	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	//書き込んでいく
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData_->intensity = 1.0f;
+	directionalLight_ = LightSingleton::GetInstance()->GetDirectionaLight();
 }
 
 Blocks::~Blocks()
 {
 	instancingResource_->Release();
 	materialResource_->Release();
-	directionalLightResource_->Release();
 }
 
 void Blocks::Draw(const Camera& camera, std::list<IBlock>& blocks, BlendMode blendMode)
@@ -132,7 +114,7 @@ void Blocks::Draw(const Camera& camera, std::list<IBlock>& blocks, BlendMode ble
 	//commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootDescriptorTable(1, srvGPUDescriptorHandle_);
 	//平行光源CBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, directionalLight_->GetGPUVirtualAddress());
 
 	commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
 	//描画!!!!（DrawCall/ドローコール）
