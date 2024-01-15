@@ -17,6 +17,10 @@ void MovingBall::Init() {
 
 	color_ = 0x55FF55FF;
 
+	velocity_ = {};
+	acceleration_ = {};
+
+	beforePos_ = sphere_.center_;
 }
 
 void MovingBall::Update([[maybe_unused]] const float deltaTime) {
@@ -37,7 +41,7 @@ void MovingBall::Update([[maybe_unused]] const float deltaTime) {
 
 	transformMat_ = Matrix4x4::MakeAffinMatrix(sphere_.scale_ * (sphere_.radius_ * modelScale_), sphere_.rotate_, sphere_.center_);
 
-	color_.a = 1.f - SoLib::easeInCirc( aliveTime_.GetProgress());
+	color_.a = 1.f - SoLib::easeInCirc(aliveTime_.GetProgress());
 
 	if (aliveTime_.IsFinish()) {
 		isAlive_ = false;

@@ -42,6 +42,11 @@ void StageScene::Init()
 	stage_->Init();
 	stage_->SetCSV(csv_);
 
+	stage_->GetSpawnerList()->push_back(std::make_unique<BallSpawner>());
+	auto spawner = stage_->GetSpawnerList()->back().get();
+	spawner->Init();
+	BallSpawner::SetStage(stage_.get());
+
 	/*ballList_.push_back(std::make_unique<MovingBall>());
 	ballList_.back()->Init();*/
 	MovingBall::SetMapChip(stage_->GetMapChip());

@@ -2,6 +2,7 @@
 #include "MapChip.h"
 #include "MovingBall.h"
 #include <memory>
+#include "BallSpawner.h"
 
 class Stage {
 public:
@@ -18,9 +19,12 @@ public:
 
 	MapChip *GetMapChip() const { return mapChip_.get(); }
 
-	auto *const GetBallList()  { return &ballList_; }
+	auto *const GetBallList() { return &ballList_; }
+	auto *const GetSpawnerList() { return &spawnerList_; }
 
 private:
+
+	std::list<std::unique_ptr<BallSpawner>> spawnerList_;
 
 	std::list<std::unique_ptr<MovingBall>> ballList_;
 

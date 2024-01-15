@@ -4,6 +4,8 @@
 #include "SoUtils/Math/Angle.h"
 #include "SoUtils/SoLib/SoLib.h"
 
+class Stage;
+
 class BallSpawner
 {
 public:
@@ -19,6 +21,11 @@ public:
 	/// @brief 弾の発射
 	void Fire();
 
+	bool GetIsAlive() const { return isAlive_; }
+
+	static void SetStage(Stage *stage) { pStage_ = stage; }
+
+
 private:
 
 	Vector3 position_;
@@ -30,5 +37,9 @@ private:
 	SoLib::Time::DeltaTimer fireSpanTimer_;
 
 	float fireSpan_ = 1.f;
+
+	bool isAlive_ = true;
+
+	static Stage *pStage_;
 
 };
