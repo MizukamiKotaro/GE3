@@ -38,6 +38,6 @@ void BallSpawner::Fire() {
 
 	ball->SetPos(this->position_);
 	const float cFireAngle = RandomGenerator::GetInstance()->RandFloat(-fireAngle_, fireAngle_);
-	ball->SetVelocity(-Vector3::up * Matrix4x4::MakeRotateAxisAngle(Vector3::front, cFireAngle));
+	ball->SetVelocity((-Vector3::up * Matrix4x4::MakeRotateAxisAngle(Vector3::front, cFireAngle)) * firePower_);
 
 }

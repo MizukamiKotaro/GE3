@@ -50,6 +50,7 @@ void BarrierItem::Attack(const Vector2 direction) {
 
 			if (Calc::MakeLength(diff) <= radius_ && Calc::Dot(stickDirection, diff) > barrierAngle_) {
 				ball->AddAcceleration(stickDirection * 15.f);
+				ball->SetTeam(MovingBall::Team::kPlayer);
 			}
 		}
 	}
