@@ -93,6 +93,10 @@ void StageScene::Update()
 	ImGui::SliderFloat3("cameraTra", &camera_->transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("cameraRot", &camera_->transform_.rotate_.x, -3.14f, 3.14f);
 	ImGui::End();
+
+	ImGui::Begin("StageEditor");
+	stage_->ImGuiWidget();
+	ImGui::End();
 #endif // _DEBUG
 
 	//model->Update();

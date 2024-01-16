@@ -677,6 +677,9 @@
     <ClInclude Include="Game\GameElement\Hole.h">
       <Filter>Game\GameElement</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\IO\VariantItem.h">
+      <Filter>Engine\Utils\SoUtils\IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

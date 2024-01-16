@@ -9,6 +9,7 @@
 #include "../../Math/Vector4.h"
 
 #include "../Math/Angle.h"
+#include "SoUtils/IO/VariantItem.h"
 
 #include <string>
 
@@ -46,6 +47,8 @@ namespace SoLib {
 	template <>
 	bool ImGuiWidget<std::string>(const char *const label, std::string *const value);
 
+	template<SoLib::IsNotPointer T>
+	bool ImGuiWidget(VariantItem<T> *const item);
 	template <>
 	bool ImGuiWidget<SoLib::Math::Angle::Radian>(const char *const label, SoLib::Math::Angle::Radian *const value);
 
@@ -59,8 +62,8 @@ namespace SoLib {
 }
 
 #pragma region inline関数の記述
-//
-//template<typename T>
-//bool SoLib::ImGuiWidget(VariantItem<T> *const value) { return SoLib::ImGuiWidget(value->GetKey().c_str(), &value->GetItem()); }
+
+template<SoLib::IsNotPointer T>
+bool SoLib::ImGuiWidget(VariantItem<T> *const value) { return SoLib::ImGuiWidget(value->GetKey().c_str(), &value->GetItem()); }
 
 #pragma endregion

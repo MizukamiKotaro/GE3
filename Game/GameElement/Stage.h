@@ -4,10 +4,12 @@
 #include <memory>
 #include "BallSpawner.h"
 #include "BoundPin.h"
+#include "SoUtils/IO/VariantItem.h"
+#include <SoUtils/Math/Euler.h>
 
 class Stage {
 public:
-	Stage() = default;
+	Stage() {}
 	~Stage() = default;
 
 	void Init();
@@ -25,7 +27,16 @@ public:
 
 	auto *const GetPinList() { return &pinList_; }
 
+	void LoadValue(const char *const groupName);
+	void SaveValue(const char *const groupName) const;
+
+	void ImGuiWidget();
+
 private:
+
+	uint32_t stageModel_;
+
+	Matrix4x4 transMat_;
 
 	std::list<std::unique_ptr<BoundPin>> pinList_;
 
@@ -34,5 +45,12 @@ private:
 	std::list<std::unique_ptr<MovingBall>> ballList_;
 
 	std::unique_ptr<MapChip> mapChip_ = nullptr;
+
+
+	VariantItem<Vector3> scale_{ "Scale",Vector3::one };
+	VariantItem<SoLib::Math::Euler> rotate_{ "Rotate" };
+	VariantItem<Vector3> position_{ "Position" };
+
+	std::string groupName_{ "Stage" };
 
 };

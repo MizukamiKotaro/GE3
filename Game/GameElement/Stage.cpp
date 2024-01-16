@@ -1,11 +1,21 @@
 #include "Stage.h"
+#include <ModelDataManager.h>
+#include <GlobalVariables/GlobalVariables.h>
 
 void Stage::Init() {
+
+	LoadValue(groupName_.c_str());
 
 	mapChip_ = std::make_unique<MapChip>();
 	mapChip_->Init();
 
 	ballList_.clear();
+
+	transMat_ = Matrix4x4::MakeIdentity4x4();
+
+	stageModel_ = ModelDataManager::GetInstance()->LoadObj("stage");
+
+	SaveValue(groupName_.c_str());
 
 }
 
@@ -52,6 +62,7 @@ void Stage::Update(const float deltaTime) {
 		ball->Update(deltaTime);
 	}
 
+	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_.GetItem(), position_);
 }
 
 void Stage::Draw() {
@@ -68,5 +79,49 @@ void Stage::Draw() {
 
 	for (auto &ball : ballList_) {
 		ball->Draw();
+	}
+
+	static auto *const blockManager = BlockManager::GetInstance();
+
+	blockManager->AddBox(stageModel_, IBlock{ .transformMat_ = transMat_,.color_ = 0xFFFFFFFF });
+
+}
+
+void Stage::LoadValue(const char *const groupName) {
+	static GlobalVariables *const gVariables = GlobalVariables::GetInstance();
+
+	scale_ = gVariables->Get<Vector3>(groupName, scale_.GetKey());
+
+	rotate_ = gVariables->Get<Vector3>(groupName, rotate_.GetKey());
+
+	position_ = gVariables->Get<Vector3>(groupName, position_.GetKey());
+
+}
+
+void Stage::SaveValue(const char *const groupName) const {
+	static GlobalVariables *const gVariables = GlobalVariables::GetInstance();
+
+	gVariables->SetValue(groupName, scale_.GetKey(), scale_);
+	gVariables->SetValue(groupName, rotate_.GetKey(), rotate_.GetItem());
+	gVariables->SetValue(groupName, position_.GetKey(), position_);
+
+}
+
+void Stage::ImGuiWidget() {
+	static GlobalVariables *const gVariables = GlobalVariables::GetInstance();
+
+	if (ImGui::TreeNode("StageEditor")) {
+
+		SoLib::ImGuiWidget(&scale_);
+		SoLib::ImGuiWidget(&rotate_);
+		SoLib::ImGuiWidget(&position_);
+
+		if (ImGui::Button("Save")) {
+
+			SaveValue(groupName_.c_str());
+			gVariables->SaveFile(groupName_.c_str());
+		}
+
+		ImGui::TreePop();
 	}
 }

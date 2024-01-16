@@ -280,6 +280,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\SoUtils\Graphics\Color.h" />
     <ClInclude Include="Engine\Utils\SoUtils\IO\CSV.h" />
     <ClInclude Include="Engine\Utils\SoUtils\IO\File.h" />
+    <ClInclude Include="Engine\Utils\SoUtils\IO\VariantItem.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Math\Angle.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Math\Euler.h" />
     <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib.h" />
