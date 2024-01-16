@@ -12,9 +12,9 @@ MapChip *MovingBall::mapChip_ = nullptr;
 void MovingBall::Init()
 {
 
-    model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
-    sphere_.Initialize(Vector3::zero, 0.5f);
-    modelScale_ = 1.f;
+	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
+	sphere_.Initialize(Vector3::zero, 0.3f);
+	modelScale_ = 1.f;
 
     aliveTime_.Start();
 

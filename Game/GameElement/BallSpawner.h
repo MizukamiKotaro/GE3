@@ -33,12 +33,12 @@ private:
 
 	// Matrix4x4 transMat_ = Matrix4x4::MakeIdentity4x4();
 
-	float fireAngle_ = 60._deg;
+	float fireAngle_ = 90._deg;
 
 	SoLib::Time::DeltaTimer fireSpanTimer_;
 	float firePower_ = 5.f;
 
-	float fireSpan_ = 1.f;
+	float fireSpan_ = 0.5f;
 
 	bool isAlive_ = true;
 
