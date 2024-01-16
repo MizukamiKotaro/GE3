@@ -31,6 +31,8 @@ public:
 
 	const std::list<AABB> &GetBoxList() const { return boxList_; }
 
+	std::list<Vector3> GetChipPos(const ChipType chipType) const;
+
 	Vector3 HitMap(const Vector3 &beforePos, const Vector3 &afterPos, float) const;
 
 private:

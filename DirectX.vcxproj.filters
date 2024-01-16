@@ -390,6 +390,9 @@
     <ClCompile Include="Game\GameElement\BallSpawner.cpp">
       <Filter>Game\GameElement</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BoundPin.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -663,6 +666,9 @@
       <Filter>Game\GameElement</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\IEntity.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BoundPin.h">
       <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>

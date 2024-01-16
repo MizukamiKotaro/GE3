@@ -41,7 +41,7 @@ void StageScene::Init()
 
 	stage_ = std::make_unique<Stage>();
 	stage_->Init();
-	stage_->SetCSV(csv_);
+	stage_->LoadCSV(csv_);
 
 	stage_->GetSpawnerList()->push_back(std::make_unique<BallSpawner>());
 	auto spawner = stage_->GetSpawnerList()->back().get();

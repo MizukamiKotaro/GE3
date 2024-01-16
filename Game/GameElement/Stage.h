@@ -3,6 +3,7 @@
 #include "MovingBall.h"
 #include <memory>
 #include "BallSpawner.h"
+#include "BoundPin.h"
 
 class Stage {
 public:
@@ -11,7 +12,7 @@ public:
 
 	void Init();
 
-	void SetCSV(const SoLib::IO::CSV &csv);
+	void LoadCSV(const SoLib::IO::CSV &csv);
 
 	void Update(const float deltaTime);
 
@@ -22,7 +23,11 @@ public:
 	auto *const GetBallList() { return &ballList_; }
 	auto *const GetSpawnerList() { return &spawnerList_; }
 
+	auto *const GetPinList() { return &pinList_; }
+
 private:
+
+	std::list<std::unique_ptr<BoundPin>> pinList_;
 
 	std::list<std::unique_ptr<BallSpawner>> spawnerList_;
 

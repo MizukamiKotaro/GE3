@@ -40,12 +40,18 @@ void MapChip::Draw() {
 }
 
 void MapChip::TransferBox() {
-	const Vector3 beginPos = Vector3{ -static_cast<float>(mapData_.GetCols()) + 1.f,-static_cast<float>(mapData_.GetRows()) + 1.f, 0.f } *(0.5f * kChipScale_);
-	Vector3 offset{};
+	// const Vector3 beginPos = Vector3{ -static_cast<float>(mapData_.GetCols()) + 1.f,-static_cast<float>(mapData_.GetRows()) + 1.f, 0.f } *(0.5f * kChipScale_);
+	// Vector3 offset{};
 	boxList_.clear();
 	const Vector3 boxRadius = Vector3::one * kChipScale_ * kBoxScale;
 
-	for (auto &line : mapData_.get()) {
+	for (const auto &pos : GetChipPos(ChipType::kBlock)) {
+
+		boxList_.push_back(AABB::Create(pos, boxRadius));
+
+	}
+
+	/*for (auto &line : mapData_.get()) {
 		offset.x = 0.f;
 		for (auto item : line) {
 			if (item) {
@@ -54,9 +60,29 @@ void MapChip::TransferBox() {
 			offset.x += kChipScale_;
 		}
 		offset.y += kChipScale_;
-	}
+	}*/
 }
 
+
+std::list<Vector3> MapChip::GetChipPos(const ChipType chipType) const {
+	const Vector3 beginPos = Vector3{ -static_cast<float>(mapData_.GetCols()) + 1.f,-static_cast<float>(mapData_.GetRows()) + 1.f, 0.f } *(0.5f * kChipScale_);
+	Vector3 offset{};
+	std::list<Vector3> result{};
+	const Vector3 boxRadius = Vector3::one * kChipScale_ * kBoxScale;
+
+	for (auto &line : mapData_.get()) {
+		offset.x = 0.f;
+		for (auto item : line) {
+			if (item == static_cast<uint32_t>(chipType)) {
+				result.push_back(beginPos + offset);
+			}
+			offset.x += kChipScale_;
+		}
+		offset.y += kChipScale_;
+	}
+
+	return result;
+}
 
 Vector3 MapChip::HitMap(const Vector3 &beforePos, const Vector3 &afterPos, float) const {
 	//const Vector3 beginPos = Vector3{ -static_cast<float>(mapData_.GetCols()) + 1.f,-static_cast<float>(mapData_.GetRows()) + 1.f, 0.f } *(0.5f * kChipScale_);

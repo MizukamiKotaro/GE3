@@ -9,7 +9,7 @@ void Stage::Init() {
 
 }
 
-void Stage::SetCSV(const SoLib::IO::CSV &csv) {
+void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
 	mapChip_->Load(csv);
 }
 
