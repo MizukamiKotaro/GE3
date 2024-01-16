@@ -114,6 +114,17 @@ void StageScene::Update()
 
 		}
 
+		for (const auto &pin : *stage_->GetPinList()) {
+
+			if (pin->GetRadius() + ball->GetSphere().radius_ >= Calc::MakeLength(pin->GetPos() - ball->GetNowPos())) {
+
+				pin->OnCollision(ball.get());
+
+				ball->OnCollision(pin.get());
+
+			}
+		}
+
 	}
 
 	stageUI_->Update();

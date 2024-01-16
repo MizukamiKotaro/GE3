@@ -96,12 +96,18 @@ void MovingBall::OnCollision(IEntity *other) {
 		}
 
 	}
+	// 接触対象がピンなら実行
+	BoundPin *pin = dynamic_cast<BoundPin *>(other);
+	if (pin) {
+		ReflectPin(*pin);
+	}
 
 }
 
 void MovingBall::ReflectPin(const BoundPin &pin) {
 
-	pin.GetPos();
+	const Vector3 diffVec = (this->sphere_.center_ - pin.GetPos());
+	velocity_ = velocity_.Reflect(diffVec.Normalize());
 
 }
 

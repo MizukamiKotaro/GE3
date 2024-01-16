@@ -1,6 +1,7 @@
 #include "Vector3.h"
 
 #include <cmath>
+#include <calc.h>
 
 const Vector3 Vector3::zero = {};
 const Vector3 Vector3::one = { 1.f,1.f,1.f };
@@ -29,6 +30,8 @@ Vector3 Vector3::Normalize() const {
 
 	return result;
 }
+
+ Vector3 Vector3::Reflect(const Vector3 &normal) const { return (*this) - normal * (2.f * Calc::Dot((*this), normal)); }
 
 
 Vector3 operator+(const Vector3 &obj1, const Vector3 &obj2) {

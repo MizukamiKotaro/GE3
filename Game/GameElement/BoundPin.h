@@ -20,6 +20,8 @@ public:
 	void SetPos(const Vector3 &pos) { position_ = pos; }
 	const Vector3 &GetPos() const { return position_; }
 
+	float GetRadius() const { return radius_; }
+
 	const auto &GetTransMat() const { return transMat_; }
 
 

@@ -60,6 +60,8 @@ public:
 	static const Vector3 up;
 	static const Vector3 front;
 
+	Vector3 Reflect(const Vector3 &normal) const;
+
 public:
 	float x;
 	float y;
