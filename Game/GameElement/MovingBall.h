@@ -9,6 +9,12 @@ class MapChip;
 
 class MovingBall {
 public:
+	enum class Team : uint32_t {
+		kPlayer = 0b01,
+		kEnemy = 0b10
+	};
+
+
 	MovingBall() = default;
 	~MovingBall() = default;
 
@@ -30,7 +36,11 @@ public:
 	void SetPos(const Vector3 &pos) { sphere_.center_ = pos; }
 	void SetVelocity(const Vector3 &vec) { velocity_ = vec; }
 
+	void SetTeam(const Team team);
+
 private:
+
+	Team team_ = Team::kPlayer;
 
 	SoLib::Time::DeltaTimer aliveTime_{ 2.f };
 

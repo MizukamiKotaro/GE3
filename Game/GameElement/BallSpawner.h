@@ -6,8 +6,7 @@
 
 class Stage;
 
-class BallSpawner
-{
+class BallSpawner {
 public:
 	BallSpawner();
 	~BallSpawner() = default;
@@ -25,12 +24,11 @@ public:
 
 	static void SetStage(Stage *stage) { pStage_ = stage; }
 
-
 private:
 
 	Vector3 position_;
 
-	Matrix4x4 transMat_ = Matrix4x4::MakeIdentity4x4();
+	// Matrix4x4 transMat_ = Matrix4x4::MakeIdentity4x4();
 
 	float fireAngle_ = 30._deg;
 

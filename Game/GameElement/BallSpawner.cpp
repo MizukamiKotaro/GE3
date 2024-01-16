@@ -4,7 +4,7 @@
 
 Stage *BallSpawner::pStage_ = nullptr;
 
-BallSpawner::BallSpawner() {
+BallSpawner::BallSpawner() : position_(Vector3::zero) {
 }
 
 void BallSpawner::Init() {
@@ -33,6 +33,8 @@ void BallSpawner::Fire() {
 	auto ball = pStage_->GetBallList()->back().get();
 
 	ball->Init();
+
+	ball->SetTeam(MovingBall::Team::kEnemy);
 
 	ball->SetPos(this->position_);
 	const float cFireAngle = RandomGenerator::GetInstance()->RandFloat(-fireAngle_, fireAngle_);

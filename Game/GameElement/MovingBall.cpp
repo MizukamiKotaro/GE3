@@ -10,12 +10,12 @@ void MovingBall::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
 	sphere_.Initialize(Vector3::zero, 1.f);
-	color_ = 0xFFFFFFFF;
 	modelScale_ = 0.5f;
 
 	aliveTime_.Start();
 
 	color_ = 0x55FF55FF;
+	SetTeam(Team::kPlayer);
 
 	velocity_ = {};
 	acceleration_ = {};
@@ -62,6 +62,24 @@ void MovingBall::AddAcceleration(const Vector3 &vec) {
 
 void MovingBall::SetMapChip(MapChip *mapChip) {
 	mapChip_ = mapChip;
+}
+
+void MovingBall::SetTeam(const Team team) {
+	team_ = team;
+
+	switch (team) {
+	case Team::kPlayer:
+		color_ = 0x55FF55FF;
+		break;
+
+	case Team::kEnemy:
+		color_ = 0xFF55FFFF;
+
+		break;
+
+	default:
+		break;
+	}
 }
 
 void MovingBall::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
