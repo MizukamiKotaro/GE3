@@ -3,14 +3,15 @@
 #include "BlockManager.h"
 #include "MapChip.h"
 #include <SoUtils/SoLib/SoLib_Easing.h>
+#include "Player.h"
 
 MapChip *MovingBall::mapChip_ = nullptr;
 
 void MovingBall::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
-	sphere_.Initialize(Vector3::zero, 1.f);
-	modelScale_ = 0.5f;
+	sphere_.Initialize(Vector3::zero, 0.5f);
+	modelScale_ = 1.f;
 
 	aliveTime_.Start();
 
@@ -80,6 +81,21 @@ void MovingBall::SetTeam(const Team team) {
 	default:
 		break;
 	}
+}
+
+void MovingBall::OnCollision(IEntity *other) {
+
+	// 接触対象がプレイヤなら実行
+	Player *player = dynamic_cast<Player *>(other);
+	if (player) {
+
+		// 自分がプレイヤ属性を持っていない場合
+		if (this->team_ != Team::kPlayer) {
+			this->isAlive_ = false;
+		}
+
+	}
+
 }
 
 void MovingBall::UpdateRigidbody([[maybe_unused]] const float deltaTime) {

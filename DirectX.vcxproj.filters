@@ -662,6 +662,9 @@
     <ClInclude Include="Game\GameElement\BallSpawner.h">
       <Filter>Game\GameElement</Filter>
     </ClInclude>
+    <ClInclude Include="Game\GameElement\IEntity.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

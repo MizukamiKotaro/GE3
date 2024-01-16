@@ -5,10 +5,11 @@
 #include <SoUtils/Math/Euler.h>
 #include "Input/Input.h"
 #include "Audio.h"
+#include "IEntity.h"
 
 class MapChip;
 
-class Player {
+class Player : public IEntity {
 public:
 	Player() = default;
 	~Player() = default;
@@ -20,6 +21,9 @@ public:
 	void Draw();
 
 	const Matrix4x4 &GetTransMat() const { return transformMat_; }
+	const Vector3 &GetGrobalPos() const { return *reinterpret_cast<const Vector3 *>(transformMat_.m[3]); }
+
+	float GetRadius() const { return radius_; }
 
 	void InputAction(Input *const input, const float deltaTime);
 
@@ -42,6 +46,8 @@ private:
 	SoLib::Math::Euler rotate_;
 	Vector3 transform_;
 
+	float radius_ = 1.f;
+
 	Matrix4x4 transformMat_;
 
 	Vector3 beforePos_;
@@ -57,7 +63,7 @@ private:
 
 	MapChip *mapData_;
 
-	Audio* audio_ = nullptr;
+	Audio *audio_ = nullptr;
 
 	uint32_t jumpSE_;
 };

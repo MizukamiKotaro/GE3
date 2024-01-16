@@ -1,6 +1,7 @@
 #include "StageScene.h"
 #include "Externals/imgui/imgui.h"
 #include "FrameInfo/FrameInfo.h"
+#include <calc.h>
 
 StageScene::StageScene() {
 	FirstInit();
@@ -102,6 +103,18 @@ void StageScene::Update()
 
 	player_->InputAction(input_, deltaTime);
 	player_->Update(deltaTime);
+
+	for (auto &ball : *stage_->GetBallList()) {
+
+		if (player_->GetRadius() + ball->GetSphere().radius_ >= Calc::MakeLength(player_->GetGrobalPos() - ball->GetNowPos())) {
+
+			player_->OnCollision(ball.get());
+
+			ball->OnCollision(player_.get());
+
+		}
+
+	}
 
 	stageUI_->Update();
 }

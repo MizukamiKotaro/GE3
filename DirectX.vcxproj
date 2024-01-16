@@ -318,6 +318,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\BallSpawner.h" />
     <ClInclude Include="Game\GameElement\Barrier.h" />
     <ClInclude Include="Game\GameElement\Boss.h" />
+    <ClInclude Include="Game\GameElement\IEntity.h" />
     <ClInclude Include="Game\GameElement\MapChip.h" />
     <ClInclude Include="Game\GameElement\MovingBall.h" />
     <ClInclude Include="Game\GameElement\Player.h" />

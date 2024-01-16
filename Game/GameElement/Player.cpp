@@ -13,8 +13,9 @@ void Player::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
+	radius_ = 0.5f;
 
-	scale_ = Vector3::one;
+	scale_ = Vector3::one * radius_ * 2.f;
 
 	audio_ = Audio::GetInstance();
 
@@ -60,21 +61,21 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 }
 
 void Player::Draw() {
-	static auto* const blockManager = BlockManager::GetInstance();
+	static auto *const blockManager = BlockManager::GetInstance();
 
 	barrier_->Draw();
 
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }
 
-void Player::InputAction(Input* const input, const float deltaTime) {
+void Player::InputAction(Input *const input, const float deltaTime) {
 	Vector2 inputRight = input->GetGamePadRStick();
 
 	if (Calc::MakeLength(inputRight)) {
 		barrier_->Attack(Calc::Normalize(inputRight));
-	
+
 	}
-	
+
 
 	Vector2 inputLeft = input->GetGamePadLStick();
 	if (inputLeft.x == 0.f) {
@@ -109,11 +110,11 @@ void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	transform_ += fixVelocity;
 }
 
-void Player::SetMapChip(MapChip* const mapChip) {
+void Player::SetMapChip(MapChip *const mapChip) {
 	mapData_ = mapChip;
 }
 
-void Player::SetBallList(std::list<std::unique_ptr<MovingBall>>* ballList) {
+void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
 	barrier_->SetBallList(ballList);
 	ballList_ = ballList;
 }

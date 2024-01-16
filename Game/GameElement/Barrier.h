@@ -5,12 +5,12 @@
 #include "SoUtils/SoLib/SoLib_Timer.h"
 #include "Vector2.h"
 #include "Audio.h"
+#include "IEntity.h"
 
 class Player;
 class MovingBall;
 
-class BarrierItem
-{
+class BarrierItem :public IEntity {
 public:
 	BarrierItem() = default;
 	~BarrierItem() = default;

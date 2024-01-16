@@ -4,10 +4,11 @@
 #include "SoUtils/Graphics/Color.h"
 #include "Vector3.h"
 #include <SoUtils/SoLib/SoLib_Timer.h>
+#include "IEntity.h"
 
 class MapChip;
 
-class MovingBall {
+class MovingBall : public IEntity {
 public:
 	enum class Team : uint32_t {
 		kPlayer = 0b01,
@@ -33,10 +34,14 @@ public:
 
 	bool GetIsAlive() const { return isAlive_; }
 
+	const auto &GetSphere() const { return sphere_; }
+
 	void SetPos(const Vector3 &pos) { sphere_.center_ = pos; }
 	void SetVelocity(const Vector3 &vec) { velocity_ = vec; }
 
 	void SetTeam(const Team team);
+
+	void OnCollision(IEntity *other) override;
 
 private:
 

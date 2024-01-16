@@ -3,10 +3,11 @@
 #include "Matrix4x4.h"
 #include "SoUtils/Math/Angle.h"
 #include "SoUtils/SoLib/SoLib.h"
+#include "IEntity.h"
 
 class Stage;
 
-class BallSpawner {
+class BallSpawner : public IEntity {
 public:
 	BallSpawner();
 	~BallSpawner() = default;
@@ -23,6 +24,8 @@ public:
 	bool GetIsAlive() const { return isAlive_; }
 
 	static void SetStage(Stage *stage) { pStage_ = stage; }
+
+	//void OnCollision(IEntity *other) override;
 
 private:
 
