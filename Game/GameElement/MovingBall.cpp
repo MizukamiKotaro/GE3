@@ -113,7 +113,7 @@ void MovingBall::ReflectPin(const BoundPin &pin)
 
     const Vector3 normalVec = (this->sphere_.center_ - pin.GetPos());
 
-    // 法線の向きがvelocityと一致した場合は反射しない
+    // 法線の向きがvelocityと逆を向いていた場合は反射しない
     if (Calc::Dot(velocity_, normalVec) < 0.f) {
         velocity_ = velocity_.Reflect(normalVec.Normalize());
     }

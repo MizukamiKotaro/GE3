@@ -393,6 +393,9 @@
     <ClCompile Include="Game\GameElement\BoundPin.cpp">
       <Filter>Game\GameElement</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Hole.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -669,6 +672,9 @@
       <Filter>Game\GameElement</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\BoundPin.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Hole.h">
       <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>
