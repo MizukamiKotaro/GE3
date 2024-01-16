@@ -50,7 +50,7 @@ private:
 
 	Team team_ = Team::kPlayer;
 
-	SoLib::Time::DeltaTimer aliveTime_{ 2.f };
+	SoLib::Time::DeltaTimer aliveTime_{ 4.f };
 
 	bool isAlive_ = true;
 

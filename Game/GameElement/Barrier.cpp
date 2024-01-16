@@ -62,7 +62,7 @@ void BarrierItem::ReflectUpdate() const {
 			const auto stickDirection = Vector3{ direction_.x,direction_.y,0.f };
 
 			if (Calc::MakeLength(diff) <= radius_ && Calc::Dot(stickDirection, diff) > barrierAngle_) {
-				ball->AddAcceleration(stickDirection * 15.f);
+				ball->AddAcceleration(stickDirection * 20.f);
 				ball->SetTeam(MovingBall::Team::kPlayer);
 			}
 		}
