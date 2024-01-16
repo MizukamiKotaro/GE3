@@ -46,7 +46,7 @@ Model::~Model()
 
 void Model::Initialize()
 {
-	
+
 }
 
 void Model::Update()

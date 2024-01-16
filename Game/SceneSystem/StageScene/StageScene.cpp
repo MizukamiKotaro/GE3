@@ -6,27 +6,11 @@
 StageScene::StageScene() {
 	FirstInit();
 	pBlockManager_ = BlockManager::GetInstance();
+
 }
 
 void StageScene::Init()
 {
-	sprite = std::make_unique<Sprite>("Resources/uvChecker.png");
-	sprite->pos_.x += 100.0f;
-	sprite->Update();
-
-	sprite1 = std::make_unique<Sprite>("Resources/uvChecker.png");
-	sprite1->Update();
-
-	mesh1 = modelDataManager_->LoadObj("Cube");
-	mesh2 = modelDataManager_->LoadObj("weapon");
-
-	isMesh1 = true;
-
-	model = std::make_unique<Model>(mesh1);
-	model->Initialize();
-
-	/*particle = std::make_unique<Particle>("circle.png");
-	particle->Initialize();*/
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 
@@ -57,11 +41,11 @@ void StageScene::Init()
 	player_->SetMapChip(stage_->GetMapChip());
 	player_->SetBallList(stage_->GetBallList());
 
-	model->transform_.translate_.y = -500.f;
-	model->Update();
-
 	stageUI_ = std::make_unique<StageUI>();
 	stageUI_->Init();
+
+	slot_ = std::make_unique<Slot>();
+	slot_->Initialize();
 }
 
 void StageScene::Update()
@@ -69,27 +53,10 @@ void StageScene::Update()
 	// 時間差分
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 
-
-	/*if (input_->PressedKey(DIK_SPACE)) {
-		if (isMesh1) {
-			isMesh1 = false;
-			model->SetMesh(mesh2);
-		}
-		else {
-			isMesh1 = true;
-			model->SetMesh(mesh1);
-		}
-	}*/
-
-	/*if (input_->PressedKey(DIK_A)) {
-		model->SetTex(textureManager_->LoadTexture("Resources/uvChecker.png"));
-	}*/
-
 #ifdef _DEBUG
 
 
 	ImGui::Begin("a");
-	ImGui::SliderFloat3("a", &model->transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("cameraTra", &camera_->transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("cameraRot", &camera_->transform_.rotate_.x, -3.14f, 3.14f);
 	ImGui::End();
@@ -99,8 +66,6 @@ void StageScene::Update()
 	ImGui::End();
 #endif // _DEBUG
 
-	//model->Update();
-	//particle->Update();
 	camera_->Update();
 	stage_->Update(deltaTime);
 
@@ -132,20 +97,19 @@ void StageScene::Update()
 	}
 
 	stageUI_->Update();
+
+	slot_->Update(camera_.get());
 }
 
 void StageScene::Draw() {
-	//sprite->Draw(*camera_.get(), BlendMode::kBlendModeNormal);
-	//sprite1->Draw(*camera_.get(), BlendMode::kBlendModeAdd);
-
-	//model->Draw(*camera_.get());
-
-	//particle->Draw(*camera_.get(), BlendMode::kBlendModeScreen);
+	
 
 	pBlockManager_->clear();
 	stage_->Draw();
 
 	player_->Draw();
+
+	slot_->Draw(camera_.get());
 
 	pBlockManager_->Draw(*camera_.get());
 

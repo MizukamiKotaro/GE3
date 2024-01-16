@@ -12,6 +12,7 @@
 #include "GraphicsPipelines/PointLightGraphicsPipline/PointLightGraphicsPipline.h"
 #include "GraphicsPipelines/SpotLightGraphicsPipline/SpotLightGraphicsPipline.h"
 #include "GraphicsPipelines/BlockGraphicsPipeline/BlockGraphicsPipeline.h"
+#include "GraphicsPipelines/ContrastGraphicsPipeline/ContrastGraphicsPipeline.h"
 
 enum class BlendMode
 {
@@ -35,6 +36,7 @@ public:
 		POINT_LIGHT,
 		SPOT_LIGHT,
 		BLOCKS,
+		CONTRAST,
 		COUNT_PIPLINE_TYPE,
 	};
 
@@ -44,6 +46,8 @@ public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	void Init();
+
+	void PreDraw();
 
 	void PreDraw(PiplineType type);
 
@@ -59,12 +63,13 @@ private:
 
 private:
 
-	SpriteGraphicsPipeline* spriteGPS_ = nullptr;
-	ModelGraphicsPipline* modelGPS_ = nullptr;
-	ParticleGraphicsPipeline* particleGPS_ = nullptr;
+	SpriteGraphicsPipeline* spritePSO_ = nullptr;
+	ModelGraphicsPipline* modelPSO_ = nullptr;
+	ParticleGraphicsPipeline* particlePSO_ = nullptr;
 	PointLightGraphicsPipline* pointLightPSO_ = nullptr;
 	SpotLightGraphicsPipline* spotLightPSO_ = nullptr;
-	BlockGraphicsPipeline* blocksGPS_ = nullptr;
+	BlockGraphicsPipeline* blocksPSO_ = nullptr;
+	ContrastGraphicsPipeline* contrastPSO_ = nullptr;
 
 	PiplineType currentPiplineType_ = PiplineType::SPRITE;
 
