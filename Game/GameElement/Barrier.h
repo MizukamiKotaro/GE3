@@ -28,6 +28,11 @@ public:
 	void SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList);
 
 private:
+
+	void ReflectUpdate() const;
+
+private:
+
 	Player *parent_;
 
 	uint32_t model_;

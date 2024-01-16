@@ -23,17 +23,7 @@ void BarrierItem::Update([[maybe_unused]] const float deltaTime) {
 
 	color_.a = 1.f - attackTimer_.GetProgress();
 
-	if (attackTimer_.IsActive()) {
-		for (auto &ball : *ballList_) {
-			const Vector3 diff = ball->GetNowPos() - *reinterpret_cast<Vector3 *>(transformMat_.m[3]);
-			const auto stickDirection = Vector3{ direction_.x,direction_.y,0.f };
-
-			if (Calc::MakeLength(diff) <= radius_ && Calc::Dot(stickDirection, diff) > barrierAngle_) {
-				ball->AddAcceleration(stickDirection * 15.f);
-				ball->SetTeam(MovingBall::Team::kPlayer);
-			}
-		}
-	}
+	ReflectUpdate();
 }
 
 void BarrierItem::Draw() {
@@ -63,4 +53,18 @@ void BarrierItem::Attack(const Vector2 direction) {
 
 void BarrierItem::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
 	ballList_ = ballList;
+}
+
+void BarrierItem::ReflectUpdate() const {
+	if (attackTimer_.IsActive()) {
+		for (auto &ball : *ballList_) {
+			const Vector3 diff = ball->GetNowPos() - *reinterpret_cast<const Vector3 *>(transformMat_.m[3]);
+			const auto stickDirection = Vector3{ direction_.x,direction_.y,0.f };
+
+			if (Calc::MakeLength(diff) <= radius_ && Calc::Dot(stickDirection, diff) > barrierAngle_) {
+				ball->AddAcceleration(stickDirection * 15.f);
+				ball->SetTeam(MovingBall::Team::kPlayer);
+			}
+		}
+	}
 }
