@@ -4,6 +4,7 @@
 #include <variant>
 #include <map>
 #include <string>
+#include <assert.h>
 
 class GlobalVariables {
 public:
@@ -29,6 +30,9 @@ public:
 	Vector2 GetVector2Value(const std::string& groupName, const std::string& key) const;
 	Vector3 GetVector3Value(const std::string& groupName, const std::string& key) const;
 
+	template<typename T>
+	const T& Get(const std::string& groupName, const std::string& key) const;
+
 	void SaveFile(const std::string& groupName);
 
 	void LoadFiles();
@@ -53,3 +57,14 @@ private:
 	const std::string kDirectoryPath = "Resources/GlobalVariables/";
 };
 
+template<typename T>
+inline const T& GlobalVariables::Get(const std::string &groupName, const std::string &key) const {
+
+	assert(datas_.find(groupName) != datas_.end());
+
+	const Group &group = datas_.at(groupName);
+
+	assert(group.find(key) != group.end());
+
+	return std::get<T>(group.find(key)->second);
+}
