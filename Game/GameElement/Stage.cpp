@@ -11,6 +11,17 @@ void Stage::Init() {
 
 void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
 	mapChip_->Load(csv);
+	const auto posList = mapChip_->GetChipPos(MapChip::ChipType::kPin);
+
+	for (const auto &pos : posList) {
+
+		auto pinItem = pinList_.emplace_back(std::make_unique<BoundPin>()).get();
+
+		pinItem->Init();
+		pinItem->SetPos(pos);
+
+	}
+
 }
 
 void Stage::Update(const float deltaTime) {
@@ -29,6 +40,9 @@ void Stage::Update(const float deltaTime) {
 		}
 	);
 
+	for (auto &pin : pinList_) {
+		pin->Update(deltaTime);
+	}
 
 	for (auto &spawner : spawnerList_) {
 		spawner->Update(deltaTime);
@@ -43,6 +57,10 @@ void Stage::Update(const float deltaTime) {
 void Stage::Draw() {
 
 	mapChip_->Draw();
+
+	for (auto &pin : pinList_) {
+		pin->Draw();
+	}
 
 	for (auto &spawner : spawnerList_) {
 		spawner->Draw();

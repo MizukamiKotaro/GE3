@@ -4,6 +4,7 @@
 #include "MapChip.h"
 #include <SoUtils/SoLib/SoLib_Easing.h>
 #include "Player.h"
+#include "BoundPin.h"
 
 MapChip *MovingBall::mapChip_ = nullptr;
 
@@ -95,6 +96,12 @@ void MovingBall::OnCollision(IEntity *other) {
 		}
 
 	}
+
+}
+
+void MovingBall::ReflectPin(const BoundPin &pin) {
+
+	pin.GetPos();
 
 }
 

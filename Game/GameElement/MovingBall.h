@@ -7,6 +7,7 @@
 #include "IEntity.h"
 
 class MapChip;
+class BoundPin;
 
 class MovingBall : public IEntity {
 public:
@@ -42,6 +43,8 @@ public:
 	void SetTeam(const Team team);
 
 	void OnCollision(IEntity *other) override;
+
+	void ReflectPin(const BoundPin &pin);
 
 private:
 
