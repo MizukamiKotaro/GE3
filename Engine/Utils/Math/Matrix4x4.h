@@ -87,5 +87,3 @@ Matrix4x4 operator*(float s, const Matrix4x4& m);
 Matrix4x4 operator*(const Matrix4x4& m, float s);
 
 Vector3 operator*(const Vector3& v, const Matrix4x4& m);
-
-Vector3 operator*(const Matrix4x4& m, const Vector3& v);

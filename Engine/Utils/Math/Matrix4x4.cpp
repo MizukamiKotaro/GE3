@@ -453,7 +453,3 @@ Matrix4x4 operator*(const Matrix4x4& m, float s) {
 Vector3 operator*(const Vector3& v, const Matrix4x4& m) {
 	return Matrix4x4::Multiply(v, m);
 }
-
-Vector3 operator*(const Matrix4x4& m, const Vector3& v) {
-	return Matrix4x4::Multiply(v, m);
-}
