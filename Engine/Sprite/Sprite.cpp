@@ -5,7 +5,6 @@
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "Camera.h"
-#include <algorithm>
 
 Sprite::Sprite(const std::string& filePath, const Vector2& pos, const Vector2& texLeftTop, const Vector2& texSize, const Vector4& color, const Vector2& anchorPoint, bool isFlipX, bool isFlipY)
 {
@@ -16,7 +15,7 @@ Sprite::Sprite(const std::string& filePath, const Vector2& pos, const Vector2& t
 	AdjustTextureSize();
 
 	CreateMaterialRes();
-	
+
 	CreateTranformRes();
 
 	rotate_ = 0.0f;
@@ -87,7 +86,7 @@ Sprite::~Sprite()
 
 void Sprite::Initialize()
 {
-	
+
 }
 
 void Sprite::Update()
@@ -146,6 +145,7 @@ void Sprite::SetTextureHandle(uint32_t textureHundle)
 {
 	textureHundle_ = textureHundle;
 
+	AdjustTextureSize();
 }
 
 void Sprite::SetAnchorPoint(const Vector2& anchorpoint)

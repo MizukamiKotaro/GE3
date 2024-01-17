@@ -172,6 +172,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\FrameInfo\FrameInfo.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BlockGraphicsPipeline\BlockGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\ContrastGraphicsPipeline\ContrastGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\ModelGraphicsPipline\ModelGraphicsPipline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.cpp" />
@@ -188,6 +189,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.cpp" />
     <ClCompile Include="Engine\Model\Model.cpp" />
     <ClCompile Include="Engine\Particle\Particle.cpp" />
+    <ClCompile Include="Engine\PostEffect\Contrast\Contrast.cpp" />
+    <ClCompile Include="Engine\PostEffect\PostEffect.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\Graphics\Color.cpp" />
@@ -214,11 +217,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\MapChip.cpp" />
     <ClCompile Include="Game\GameElement\MovingBall.cpp" />
     <ClCompile Include="Game\GameElement\Player.cpp" />
+    <ClCompile Include="Game\GameElement\Slot\Slot.cpp" />
     <ClCompile Include="Game\GameElement\Stage.cpp" />
     <ClCompile Include="Game\GameElement\StageUI.cpp" />
     <ClCompile Include="Game\SceneSystem\ClearScene\ClearScene.cpp" />
     <ClCompile Include="Game\SceneSystem\IScene\IScene.cpp" />
     <ClCompile Include="Game\SceneSystem\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Game\SceneSystem\SelectScene\SelectScene.cpp" />
     <ClCompile Include="Game\SceneSystem\StageScene\StageScene.cpp" />
     <ClCompile Include="Game\SceneSystem\TitleScene\TitleScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -253,6 +258,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\FrameInfo\FrameInfo.h" />
     <ClInclude Include="Engine\GraphicsPipelines\BlockGraphicsPipeline\BlockGraphicsPipeline.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\ContrastGraphicsPipeline\ContrastGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\GraphicsPiplineManager\GraphicsPiplineManager.h" />
     <ClInclude Include="Engine\GraphicsPipelines\ModelGraphicsPipline\ModelGraphicsPipline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\ParticleGraphicsPipeline\ParticleGraphicsPipeline.h" />
@@ -273,6 +279,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Model\ModelData\NodeData3D.h" />
     <ClInclude Include="Engine\Model\Model.h" />
     <ClInclude Include="Engine\Particle\Particle.h" />
+    <ClInclude Include="Engine\PostEffect\Contrast\Contrast.h" />
+    <ClInclude Include="Engine\PostEffect\PostEffect.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\TextureManager\TextureManager.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h" />
@@ -327,11 +335,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\MapChip.h" />
     <ClInclude Include="Game\GameElement\MovingBall.h" />
     <ClInclude Include="Game\GameElement\Player.h" />
+    <ClInclude Include="Game\GameElement\Slot\Slot.h" />
     <ClInclude Include="Game\GameElement\Stage.h" />
     <ClInclude Include="Game\GameElement\StageUI.h" />
     <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h" />
     <ClInclude Include="Game\SceneSystem\IScene\IScene.h" />
     <ClInclude Include="Game\SceneSystem\SceneManager\SceneManager.h" />
+    <ClInclude Include="Game\SceneSystem\SelectScene\SelectScene.h" />
     <ClInclude Include="Game\SceneSystem\StageScene\StageScene.h" />
     <ClInclude Include="Game\SceneSystem\TitleScene\TitleScene.h" />
   </ItemGroup>
@@ -347,6 +357,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <None Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\PointLight.hlsli" />
     <None Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\SpotLight.hlsli" />
     <None Include="Resources\Shaders\Blocks.hlsli" />
+    <None Include="Resources\Shaders\Contrast.hlsli" />
     <None Include="Resources\Shaders\Object3d.hlsli" />
     <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli">
@@ -402,6 +413,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Contrast.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Contrast.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

@@ -1,17 +1,19 @@
 #include "SceneManager.h"
 #include "Kyoko.h"
 #include "Input.h"
+#include "FrameInfo/FrameInfo.h"
 
 SceneManager::SceneManager()
 {
 	sceneArr_[TITLE] = std::make_unique<TitleScene>();
+	sceneArr_[SELECT] = std::make_unique<SelectScene>();
 	sceneArr_[STAGE] = std::make_unique<StageScene>();
 	sceneArr_[CLEAR] = std::make_unique<ClearScene>();
 
 	//IScene::sceneNo_ = TITLE;
 	IScene::sceneNo_ = STAGE;
 	currentSceneNo_ = IScene::sceneNo_;
-	IScene::stagrNo_ = 0;
+	IScene::stageNo_ = 0;
 
 	sceneArr_[currentSceneNo_]->Init();
 }
@@ -39,15 +41,42 @@ int SceneManager::Run()
 			sceneArr_[currentSceneNo_]->Init();
 		}
 
-		sceneArr_[currentSceneNo_]->Update();
+		sceneArr_[currentSceneNo_]->Play();
 
-		Kyoko::PreDraw();
+#ifdef _DEBUG
+		ImGui::Begin("SCENE");
+		switch (currentSceneNo_)
+		{
+		case SCENE::SELECT:
+			ImGui::Text("SELECT");
+			break;
+		case SCENE::TITLE:
+			ImGui::Text("TITLE");
+			break;
+		case SCENE::STAGE:
+			ImGui::Text("STAGE");
+			break;
+		case SCENE::CLEAR:
+			ImGui::Text("CLEAR");
+			break;
+		default:
+			break;
+		}
+
+		ImGui::End();
+#endif // _DEBUG
+
+
+		//Kyoko::PreDraw();
 
 		// 描画処理ここから
+
 		sceneArr_[currentSceneNo_]->Draw();
 
 		// フレームの終了
-		Kyoko::PostDraw();
+		//Kyoko::PostDraw();
+
+		FrameInfo::GetInstance()->End();
 	}
 
 	return 0;

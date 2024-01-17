@@ -10,4 +10,8 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
+
+private:
+
+
 };

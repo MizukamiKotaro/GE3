@@ -16,9 +16,9 @@ class Sprite
 {
 public:
 
-	Sprite(const std::string& filePath, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
-		const Vector4 & color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
-	Sprite(uint32_t texHundle, const Vector2& pos = { 0.0f,0.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = {1.0f,1.0f},
+	Sprite(const std::string& filePath, const Vector2& pos = { 640.0f,360.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = { 1.0f,1.0f },
+		const Vector4& color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	Sprite(uint32_t texHundle, const Vector2& pos = { 640.0f,360.0f }, const Vector2& texLeftTop = {}, const Vector2& texSize = { 1.0f,1.0f },
 		const Vector4& color = { 1.0f,1.0f,1.0f,1.0f }, const Vector2& anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 	~Sprite();
 
@@ -46,7 +46,7 @@ public:
 
 	void Update();
 
-	void Draw(const Camera& camera,  BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	static void PreDraw() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 

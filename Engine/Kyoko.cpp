@@ -99,7 +99,7 @@ void Kyoko::PreDraw()
 	// 描画前処理
 	DirectXCommon::GetInstance()->PreDraw();
 
-	GraphicsPiplineManager::GetInstance()->PreDraw(GraphicsPiplineManager::PiplineType::SPRITE);
+	GraphicsPiplineManager::GetInstance()->PreDraw();
 }
 
 void Kyoko::PostDraw()

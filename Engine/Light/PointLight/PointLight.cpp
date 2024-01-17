@@ -55,7 +55,7 @@ void PointLight::Draw(const Camera& camera, BlendMode blendMode)
 	billboardMat.m[3][1] = 0.0f;
 	billboardMat.m[3][2] = 0.0f;
 
-	Matrix4x4 translateMat = Matrix4x4::MakeTranslateMatrix(light_->position + Vector3{ 0.0f,0.0f,0.1f } *billboardMat);
+	Matrix4x4 translateMat = Matrix4x4::MakeTranslateMatrix(light_->position + Vector3{ 0.0f,0.0f,-0.1f } *billboardMat);
 
 	transformationData_->World = scaleMat_ * billboardMat * translateMat;
 

@@ -1,37 +1,40 @@
-#include "ClearScene.h"
+#include "SelectScene.h"
 #include "Kyoko.h"
 
-ClearScene::ClearScene()
+SelectScene::SelectScene()
 {
 	FirstInit();
 
 
 }
 
-void ClearScene::Init()
+void SelectScene::Init()
 {
 
 }
 
-void ClearScene::Update()
+void SelectScene::Update()
 {
 #ifdef _DEBUG
+
 	if (input_->PressedKey(DIK_SPACE)) {
 		// シーン切り替え
-		ChangeScene(SELECT);
+		stageNo_ = 0;
+		ChangeScene(STAGE);
 	}
+
 #endif // _DEBUG
+
 }
 
-void ClearScene::Draw()
+void SelectScene::Draw()
 {
 	Kyoko::PreDraw();
 
-
+	
 
 	BlackDraw();
 
 	Kyoko::PostDraw();
 }
-
 

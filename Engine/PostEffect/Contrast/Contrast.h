@@ -12,13 +12,13 @@
 class Camera;
 
 // スプライト
-class PostEffect
+class Contrast
 {
 public:
 
-	PostEffect();
-	
-	~PostEffect();
+	Contrast();
+
+	~Contrast();
 
 	struct VertexData
 	{
@@ -37,6 +37,11 @@ public:
 		//Matrix4x4 World;
 	};
 
+	struct ContrastData {
+		float brightness_;
+		float contrast_;
+	};
+
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -44,7 +49,7 @@ public:
 
 	void Update();
 
-	void Draw(const Camera& camera,  BlendMode blendMode = BlendMode::kBlendModeNormal);
+	void Draw(const Camera& camera, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	static void PreDraw() { GraphicsPiplineManager::GetInstance()->PreDraw(piplineType); }
 
@@ -76,6 +81,8 @@ private:
 
 	void CreateTranformRes();
 
+	void CreateContrastRes();
+
 	void CreateTexRes();
 
 	void CreateRTV();
@@ -92,6 +99,9 @@ private:
 
 	ComPtr<ID3D12Resource> materialResource_;
 	Material* materialData_;
+
+	ComPtr<ID3D12Resource> contrastResource_;
+	ContrastData* contrastData_;
 
 	ComPtr<ID3D12Resource> transformResource_;
 	TransformationMatrix* transformData_;
@@ -110,7 +120,7 @@ private:
 
 private:
 
-	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::SPRITE;
+	static const GraphicsPiplineManager::PiplineType piplineType = GraphicsPiplineManager::PiplineType::CONTRAST;
 
 	static const float clearColor[4];
 
@@ -133,5 +143,6 @@ private:
 	Vector2 textureSize_;
 
 	bool isInvisible_ = false;
+
 };
 

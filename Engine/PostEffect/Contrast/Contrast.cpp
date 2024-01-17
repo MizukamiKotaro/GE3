@@ -1,16 +1,16 @@
-#include "PostEffect.h"
+#include "Contrast.h"
 
 #include <cassert>
 #include "TextureManager/TextureManager.h"
-#include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "Camera.h"
 #include "WinApp/WinApp.h"
 #include "Externals/DirectXTex/d3dx12.h"
 
-const float PostEffect::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f };
+const float Contrast::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f };
 
-PostEffect::PostEffect()
+Contrast::Contrast()
 {
 	CreateVertexRes();
 
@@ -39,25 +39,26 @@ PostEffect::PostEffect()
 	Update();
 }
 
-PostEffect::~PostEffect()
+Contrast::~Contrast()
 {
 	vertexResource_->Release();
 	transformResource_->Release();
 	materialResource_->Release();
+	contrastResource_->Release();
 }
 
-void PostEffect::Initialize()
+void Contrast::Initialize()
 {
-	
+
 }
 
-void PostEffect::Update()
+void Contrast::Update()
 {
 	worldMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,0.0f }, { 0.0f,0.0f,rotate_ }, { pos_.x,pos_.y,0.0f });
 	TransferSize();
 }
 
-void PostEffect::Draw(const Camera& camera, BlendMode blendMode)
+void Contrast::Draw(const Camera& camera, BlendMode blendMode)
 {
 
 	if (isInvisible_) {
@@ -82,27 +83,27 @@ void PostEffect::Draw(const Camera& camera, BlendMode blendMode)
 
 	commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 
+	commandList->SetGraphicsRootConstantBufferView(3, contrastResource_->GetGPUVirtualAddress());
+
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(6, 1, 0, 0);
 
 }
 
-void PostEffect::PreDrawScene()
+void Contrast::PreDrawScene()
 {
-
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	// バリアの変更
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(texResource_.Get(),
-		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,D3D12_RESOURCE_STATE_RENDER_TARGET);
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	commandList->ResourceBarrier(1, &barrier);
 
 	// レンダーターゲットのセット
 	commandList->OMSetRenderTargets(1, &rtvCPUDescriptorHandle_, false, &dsvCPUDescriptorHandle_);
 
 	// ビューポートの設定
-	CD3DX12_VIEWPORT viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, 
-		WinApp::kWindowWidth, WinApp::kWindowHeight);
+	CD3DX12_VIEWPORT viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::kWindowWidth, WinApp::kWindowHeight);
 	commandList->RSSetViewports(1, &viewport);
 
 	// シザリング矩形の設定
@@ -122,7 +123,7 @@ void PostEffect::PreDrawScene()
 	GraphicsPiplineManager::GetInstance()->PreDraw();
 }
 
-void PostEffect::PostDrawScene()
+void Contrast::PostDrawScene()
 {
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
@@ -133,14 +134,14 @@ void PostEffect::PostDrawScene()
 
 }
 
-void PostEffect::SetAnchorPoint(const Vector2& anchorpoint)
+void Contrast::SetAnchorPoint(const Vector2& anchorpoint)
 {
 	anchorPoint_ = anchorpoint;
 
 	TransferSize();
 }
 
-void PostEffect::SetColor(const Vector4& color)
+void Contrast::SetColor(const Vector4& color)
 {
 	color_.x = std::clamp<float>(color.x, 0.0f, 1.0f);
 	color_.y = std::clamp<float>(color.y, 0.0f, 1.0f);
@@ -150,21 +151,21 @@ void PostEffect::SetColor(const Vector4& color)
 	materialData_->color = color;
 }
 
-void PostEffect::SetTextureTopLeft(const Vector2& texTopLeft)
+void Contrast::SetTextureTopLeft(const Vector2& texTopLeft)
 {
 	textureLeftTop_ = textureLeftTop_;
 
 	TransferUV();
 }
 
-void PostEffect::SetTextureSize(const Vector2& texSize)
+void Contrast::SetTextureSize(const Vector2& texSize)
 {
 	textureSize_ = texSize;
 
 	TransferUV();
 }
 
-void PostEffect::TransferSize()
+void Contrast::TransferSize()
 {
 	float left = (0.0f - anchorPoint_.x) * size_.x;
 	float right = (1.0f - anchorPoint_.x) * size_.x;
@@ -180,7 +181,7 @@ void PostEffect::TransferSize()
 	vertexData_[5].vertexPos = { right,bottom,0.0f,1.0f }; // 右下
 }
 
-void PostEffect::TransferUV()
+void Contrast::TransferUV()
 {
 	vertexData_[0].texcoord = { textureLeftTop_.x,textureLeftTop_.y + textureSize_.y }; // 左下
 	vertexData_[1].texcoord = textureLeftTop_; // 左上
@@ -191,7 +192,7 @@ void PostEffect::TransferUV()
 	vertexData_[5].texcoord = textureLeftTop_ + textureSize_; // 右下
 }
 
-void PostEffect::CreateVertexRes()
+void Contrast::CreateVertexRes()
 {
 	//Sprite用の頂点リソースを作る
 	vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * 6);
@@ -206,7 +207,7 @@ void PostEffect::CreateVertexRes()
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 }
 
-void PostEffect::CreateMaterialRes()
+void Contrast::CreateMaterialRes()
 {
 	//マテリアル用のリソースを作る。今回はcolor1つ分を用意する
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
@@ -219,7 +220,7 @@ void PostEffect::CreateMaterialRes()
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 }
 
-void PostEffect::CreateTranformRes()
+void Contrast::CreateTranformRes()
 {
 	//Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
 	transformResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
@@ -231,7 +232,18 @@ void PostEffect::CreateTranformRes()
 	//*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
 }
 
-void PostEffect::CreateTexRes()
+void Contrast::CreateContrastRes()
+{
+	contrastResource_ = DirectXCommon::CreateBufferResource(sizeof(ContrastData));
+
+	contrastResource_->Map(0, nullptr, reinterpret_cast<void**>(&contrastData_));
+
+	contrastData_->brightness_ = 0.2f;
+
+	contrastData_->contrast_ = 3.0f;
+}
+
+void Contrast::CreateTexRes()
 {
 
 	CD3DX12_RESOURCE_DESC texDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -285,7 +297,7 @@ void PostEffect::CreateTexRes()
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(texResource_.Get(), &srvDesc, srvCPUDescriptorHandle_);
 }
 
-void PostEffect::CreateRTV()
+void Contrast::CreateRTV()
 {
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; //出力結果をSRGBに変換して書き込む
@@ -297,7 +309,7 @@ void PostEffect::CreateRTV()
 	DirectXCommon::GetInstance()->GetDevice()->CreateRenderTargetView(texResource_.Get(), &rtvDesc, rtvCPUDescriptorHandle_);
 }
 
-void PostEffect::CreateDSV()
+void Contrast::CreateDSV()
 {
 	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
@@ -331,11 +343,13 @@ void PostEffect::CreateDSV()
 	DirectXCommon::GetInstance()->GetDevice()->CreateDepthStencilView(dsvResource_.Get(), &dsvDesc, dsvCPUDescriptorHandle_);
 }
 
-void PostEffect::CreateResources()
+void Contrast::CreateResources()
 {
 	CreateMaterialRes();
 
 	CreateTranformRes();
+
+	CreateContrastRes();
 
 	CreateTexRes();
 

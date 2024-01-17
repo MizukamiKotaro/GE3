@@ -2,16 +2,19 @@
 
 #include "SceneSystem/IScene/IScene.h"
 
-class TitleScene : public IScene
+class SelectScene : public IScene
 {
 public:
-	TitleScene();
+	SelectScene();
 
 	void Init() override;
 	void Update() override;
 	void Draw() override;
 
 private:
+
+	std::vector<uint32_t> soundHandles_;
+	std::vector<uint32_t> voiceHandles_;
 
 };
 

@@ -16,6 +16,8 @@
 #include "GameElement/StageUI.h"
 #include <GameElement/Stage.h>
 
+#include "GameElement/Slot/Slot.h"
+
 class StageScene : public IScene {
 public:
 
@@ -27,16 +29,6 @@ public:
 
 private:
 
-	std::unique_ptr<Sprite> sprite;
-	std::unique_ptr<Sprite> sprite1;
-
-	uint32_t mesh1;
-	uint32_t mesh2;
-
-	bool isMesh1;
-
-	std::unique_ptr<Model> model;
-
 	//std::list<std::unique_ptr<MovingBall>> ballList_;
 	std::unique_ptr<Player> player_;
 
@@ -47,4 +39,6 @@ private:
 	SoLib::IO::CSV csv_;
 
 	std::unique_ptr<StageUI> stageUI_;
+
+	std::unique_ptr<Slot> slot_;
 };
