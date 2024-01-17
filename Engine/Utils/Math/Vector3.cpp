@@ -31,7 +31,7 @@ Vector3 Vector3::Normalize() const {
 	return result;
 }
 
- Vector3 Vector3::Reflect(const Vector3 &normal) const { return (*this) - normal * (2.f * Calc::Dot((*this), normal)); }
+Vector3 Vector3::Reflect(const Vector3 &normal, const float coefficient) const { return (*this) - normal * ((1.f + coefficient) * Calc::Dot((*this), normal)); }
 
 
 Vector3 operator+(const Vector3 &obj1, const Vector3 &obj2) {
