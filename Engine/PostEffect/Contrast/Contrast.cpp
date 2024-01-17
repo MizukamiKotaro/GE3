@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "WinApp/WinApp.h"
 #include "Externals/DirectXTex/d3dx12.h"
+#include <algorithm>
 
 const float Contrast::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f };
 
