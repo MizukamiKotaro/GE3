@@ -2,6 +2,7 @@
 #include "Externals/imgui/imgui.h"
 #include "FrameInfo/FrameInfo.h"
 #include <calc.h>
+#include "Kyoko.h"
 
 StageScene::StageScene() {
 	FirstInit();
@@ -54,7 +55,10 @@ void StageScene::Update()
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 
 #ifdef _DEBUG
-
+	if (input_->PressedKey(DIK_SPACE)) {
+		// シーン切り替え
+		ChangeScene(CLEAR);
+	}
 
 	ImGui::Begin("a");
 	ImGui::SliderFloat3("cameraTra", &camera_->transform_.translate_.x, -100.0f, 100.0f);
@@ -104,6 +108,9 @@ void StageScene::Update()
 void StageScene::Draw() {
 	
 
+	// 描画開始
+	Kyoko::PreDraw();
+
 	pBlockManager_->clear();
 	stage_->Draw();
 
@@ -114,4 +121,9 @@ void StageScene::Draw() {
 	pBlockManager_->Draw(*camera_.get());
 
 	stageUI_->Draw(*camera_.get());
+
+
+	// フレームの終了
+	BlackDraw();
+	Kyoko::PostDraw();
 }

@@ -181,6 +181,9 @@
     <Filter Include="Game\GameElement\Slot">
       <UniqueIdentifier>{956716e6-ec80-4115-a285-f30786240bf3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\SceneSystem\SelectScene">
+      <UniqueIdentifier>{a402b3b9-3cfa-417e-a7b2-1a29bf73bad5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -419,6 +422,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\Slot\Slot.cpp">
       <Filter>Game\GameElement\Slot</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\SelectScene\SelectScene.cpp">
+      <Filter>Game\SceneSystem\SelectScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -715,6 +721,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\Slot\Slot.h">
       <Filter>Game\GameElement\Slot</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\SelectScene\SelectScene.h">
+      <Filter>Game\SceneSystem\SelectScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
