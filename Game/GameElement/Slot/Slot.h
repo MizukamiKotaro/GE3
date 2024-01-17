@@ -14,6 +14,7 @@ public:
 	Slot();
 
 	void Initialize();
+	void PostEffectWright(Camera* camera);
 
 	void Update(Camera* camera);
 
@@ -32,7 +33,6 @@ private:
 
 	void Rotation();
 
-	void PostEffectWright(Camera* camera);
 
 	void DownToTop();
 

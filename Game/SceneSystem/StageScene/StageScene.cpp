@@ -14,6 +14,7 @@ void StageScene::Init()
 {
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
+	camera_->Update();
 
 	//for (uint32_t i = 0; i < 4; i++) {
 	//	blocks_[i] = BlockManager::GetInstance()->AddBox(mesh1, IBlock{});
@@ -47,6 +48,7 @@ void StageScene::Init()
 
 	slot_ = std::make_unique<Slot>();
 	slot_->Initialize();
+	slot_->PostEffectWright(camera_.get());
 }
 
 void StageScene::Update()

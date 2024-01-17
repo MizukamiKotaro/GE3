@@ -67,6 +67,7 @@ void Slot::Initialize() {
 		isRotStop_[i] = true;
 	}
 	DownToTop();
+	plane_->Update();
 }
 
 void Slot::Update(Camera* camera) {
