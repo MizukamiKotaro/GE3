@@ -37,6 +37,8 @@ public:
 
 	void Landing();
 
+	void CalcTransMat();
+
 private:
 
 	std::list<std::unique_ptr<MovingBall>> *ballList_;

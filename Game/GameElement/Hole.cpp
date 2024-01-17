@@ -17,6 +17,8 @@ void Hole::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
 
+	CalcTransMat();
+
 }
 
 void Hole::Update([[maybe_unused]] const float deltaTime) {
@@ -33,7 +35,12 @@ void Hole::Draw() {
 
 void Hole::OnCollision(IEntity *other) {
 
+	MovingBall *ball = dynamic_cast<MovingBall *>(other);
+	if (ball) {
 
+
+
+	}
 
 }
 

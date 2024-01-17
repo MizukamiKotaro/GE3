@@ -110,7 +110,9 @@ void StageScene::Update()
 
 	for (auto &ball : *stage_->GetBallList()) {
 
-		if (player_->GetRadius() + ball->GetSphere().radius_ >= Calc::MakeLength(player_->GetGrobalPos() - ball->GetNowPos())) {
+		const auto &sphere = ball->GetSphere();
+
+		if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
 
 			player_->OnCollision(ball.get());
 
@@ -120,7 +122,7 @@ void StageScene::Update()
 
 		for (const auto &pin : *stage_->GetPinList()) {
 
-			if (pin->GetRadius() + ball->GetSphere().radius_ >= Calc::MakeLength(pin->GetPos() - ball->GetNowPos())) {
+			if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
 
 				pin->OnCollision(ball.get());
 

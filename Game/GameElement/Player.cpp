@@ -20,12 +20,13 @@ void Player::Init() {
 	audio_ = Audio::GetInstance();
 
 	jumpSE_ = audio_->LoadWave("Resources/playerSE/jump.wav");
+	CalcTransMat();
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {
 	barrier_->Update(deltaTime);
 
-	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * 0.5f, rotate_, transform_);
+	CalcTransMat();
 
 	acceleration_.y -= 9.8f * deltaTime * 2.f;
 
@@ -129,4 +130,8 @@ void Player::Landing() {
 		ball->SetPos(transform_ + Vector3{ .x = -1.f + 2.f * i });
 		ball->SetVelocity(Vector3{ .y = 10.f });
 	}
+}
+
+void Player::CalcTransMat() {
+	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * 0.5f, rotate_, transform_);
 }
