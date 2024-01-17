@@ -10,9 +10,10 @@ class MapChip {
 public:
 
 	enum class ChipType : uint32_t {
-		kAir = 0b00,
-		kBlock = 0b01,
-		kPin = 0b10,
+		kAir,
+		kBlock,
+		kPin,
+		kHole,
 	};
 
 public:

@@ -6,6 +6,7 @@
 #include "BoundPin.h"
 #include "SoUtils/IO/VariantItem.h"
 #include <SoUtils/Math/Euler.h>
+#include "Hole.h"
 
 class Stage {
 public:
@@ -39,6 +40,8 @@ private:
 	Matrix4x4 transMat_;
 
 	std::list<std::unique_ptr<BoundPin>> pinList_;
+
+	std::list<std::unique_ptr<Hole>> holeList_;
 
 	std::list<std::unique_ptr<BallSpawner>> spawnerList_;
 

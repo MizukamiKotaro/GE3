@@ -21,6 +21,8 @@ public:
 	const Vector3 &GetPosition() const { return position_; }
 	float GetRadius() const { return radius_; }
 
+	void SetPos(const Vector3 &pos) { position_ = pos; }
+
 
 private:
 
