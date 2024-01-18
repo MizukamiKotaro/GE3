@@ -211,7 +211,7 @@ void Slot::PostEffectWright(Camera* camera)
 	if (isRot_) {
 		for (int i = 0; i < 3; i++) {
 
-			if (blurs_[i]->blurData_->pickRange > 0.01f) {
+			if (blurs_[i]->blurData_->pickRange > 0.01f && !isRotStop_[i]) {
 				blurs_[i]->PreDrawScene();
 
 				backs_[i]->Draw();
@@ -230,7 +230,7 @@ void Slot::PostEffectWright(Camera* camera)
 
 	for (int i = 0; i < 3; i++) {
 
-		if (isRot_ && blurs_[i]->blurData_->pickRange > 0.01f) {
+		if (isRot_ && blurs_[i]->blurData_->pickRange > 0.01f && !isRotStop_[i]) {
 			blurs_[i]->Draw();
 		}
 		for (int j = 0; j < 3; j++) {
