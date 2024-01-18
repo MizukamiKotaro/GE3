@@ -130,6 +130,15 @@ void StageScene::Update()
 			}
 		}
 	}
+	for (const auto &punch : *stage_->GetPunchList()) {
+		auto *collision = punch->GetCollision();
+		if (collision) {
+			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+				player_->OnCollision(punch.get());
+				punch->OnCollision(player_.get());
+			}
+		}
+	}
 
 	stageUI_->Update();
 

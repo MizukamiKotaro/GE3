@@ -31,6 +31,9 @@ public:
 	bool IsAttacked() const override;
 
 	float GetDamage() const override;
+
+	const Sphere *GetCollision() const;
+
 private:
 
 	/// @brief アフィン行列の計算

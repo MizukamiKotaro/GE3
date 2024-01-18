@@ -84,6 +84,13 @@ float Punch::GetDamage() const
 	return 0.0f;
 }
 
+const Sphere *Punch::GetCollision() const {
+	// タイマーが止まってたら攻撃判定は無い
+	if (not attackTimer_.IsActive()) { return nullptr; }
+
+	return &sphere_;
+}
+
 void Punch::CalcTransMat() {
 
 	transMat_ = Matrix4x4::MakeAffinMatrix(sphere_.radius_ * kModelScale_ * scale_, rotate_, sphere_.center_);
