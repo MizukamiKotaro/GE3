@@ -8,10 +8,10 @@ Punch::Punch() {
 
 void Punch::Init() {
 	scale_ = Vector3::one;
-	rotate_ = Vector3::zero;
-	sphere_ = Sphere{ .center_ = Vector3::zero, .radius_ = 1.f };
+	rotate_ = Vector3{ 0._deg, -90._deg, 0._deg };
+	sphere_ = Sphere{ .center_ = Vector3::right * 5.f, .radius_ = 2.f };
 
-	origin_ = Vector3::right;
+	origin_ = Vector3::right * 5.f;
 	target_ = Vector3::zero;
 
 	SetHandType(HandType::kRight);
@@ -58,15 +58,18 @@ void Punch::AttackUpdate(const float deltaTime) {
 		sphere_.center_ = SoLib::Lerp(origin_, target_, attackTimer_.GetProgress());
 
 		if (attackTimer_.IsFinish()) {
-			followTimer_.Start();
+			followTimer_.Start(1.f);
 		}
+	}
+	if (followTimer_.IsActive()) {
+		sphere_.center_ = SoLib::Lerp(target_, origin_, followTimer_.GetProgress());
 	}
 }
 
 void Punch::Attack()
 {
 	if (attackTimer_.IsFinish() && followTimer_.IsFinish()) {
-		attackTimer_.Start();
+		attackTimer_.Start(1.f);
 	}
 
 }

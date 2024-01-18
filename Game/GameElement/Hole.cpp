@@ -59,6 +59,9 @@ void Hole::UpdateBallChacher(const float deltaTime)
 				for (auto &sword : *pStage_->GetSwordList()) {
 					sword->Attack();
 				}
+				for (auto &punch : *pStage_->GetPunchList()) {
+					punch->Attack();
+				}
 				return true;
 			}
 			return false;
