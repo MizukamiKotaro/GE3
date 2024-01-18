@@ -31,6 +31,8 @@ public:
 
 	const Vector3 &GetPos() const { return position_; }
 
+	const float& GetRotateZ() const { return rotate_.z; }
+
 	void CalcTransMat();
 
 private:

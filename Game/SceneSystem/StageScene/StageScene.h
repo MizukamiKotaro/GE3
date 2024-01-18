@@ -18,6 +18,8 @@
 
 #include "GameElement/Slot/Slot.h"
 
+#include "PostEffect/Blur/Blur.h"
+
 class StageScene : public IScene {
 public:
 
@@ -26,6 +28,10 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
+
+private:
+
+	void CreatePostEffects();
 
 private:
 
@@ -41,4 +47,7 @@ private:
 	std::unique_ptr<StageUI> stageUI_;
 
 	std::unique_ptr<Slot> slot_;
+
+	std::unique_ptr<Blur> swordBlur_;
+	bool isDrawSwordBlur_;
 };

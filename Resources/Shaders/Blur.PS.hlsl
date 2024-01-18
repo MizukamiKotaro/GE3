@@ -30,7 +30,7 @@ PixelShaderOutput main(VertexShaderOutput input) {
 
 	float32_t4 color = { 0.0f,0.0f,0.0f,0.0f };
 
-	float angle = gBlur.angle * 3.14159f / 180;
+	float angle = gBlur.angle;
 	float32_t2 uv;
 	float totalWeight = 0.0f;
 
