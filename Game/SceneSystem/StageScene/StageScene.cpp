@@ -49,6 +49,9 @@ void StageScene::Init()
 	slot_ = std::make_unique<Slot>();
 	slot_->Initialize();
 	slot_->PostEffectWright(camera_.get());
+
+	swordBlur_ = std::make_unique<Blur>();
+	isDrawSwordBlur_ = false;
 }
 
 void StageScene::Update()
@@ -135,6 +138,7 @@ void StageScene::Update()
 
 void StageScene::Draw() {
 
+	CreatePostEffects();
 
 	// 描画開始
 	Kyoko::PreDraw();
@@ -148,10 +152,44 @@ void StageScene::Draw() {
 
 	pBlockManager_->Draw(*camera_.get());
 
+	if (isDrawSwordBlur_) {
+		swordBlur_->Draw(BlendMode::kBlendModeAdd);
+	}
+
 	stageUI_->Draw(*camera_.get());
 
 
 	// フレームの終了
 	BlackDraw();
 	Kyoko::PostDraw();
+}
+
+void StageScene::CreatePostEffects()
+{
+
+	auto swordList = stage_->GetSwordList();
+	isDrawSwordBlur_ = false;
+	
+	pBlockManager_->clear();
+
+	for (const auto& sword : *swordList) {
+		if (sword->IsAttacked()) {
+			sword->Draw();
+			isDrawSwordBlur_ = true;
+			swordBlur_->blurData_->isCenterBlur = 0;
+			swordBlur_->blurData_->pickRange = 0.02f;
+			swordBlur_->blurData_->stepWidth = 0.001f;
+			swordBlur_->blurData_->angle = sword->GetRotateZ();
+			break;
+		}
+	}
+
+	if (isDrawSwordBlur_) {
+		swordBlur_->PreDrawScene();
+
+		pBlockManager_->Draw(*camera_.get());
+
+		swordBlur_->PostDrawScene();
+	}
+
 }
