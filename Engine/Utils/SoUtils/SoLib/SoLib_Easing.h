@@ -1,11 +1,13 @@
 #pragma once
 #include <stdint.h>
+#include "SoLib_ImGui.h"
 
 /// 参考サイト
 /// https://easings.net/ja
 ///
 
 namespace SoLib {
+
 	inline float easeLinear(float number) { return number; }
 
 	float easeInSine(float x);
@@ -33,6 +35,31 @@ namespace SoLib {
 
 	float easeOutElastic(float x);
 
+	struct EaseFunc {
+		float operator()(float value) const {
+			return easeFunc_(value);
+		}
+
+		//void ImGuiWidget(const char *const label);
+
+		float (*easeFunc_)(float) = easeLinear;
+	};
+
+	template<>
+	bool ImGuiWidget(const char *label, EaseFunc *value);
+
+
+	class IEase {
+	public:
+		virtual float operator()(float value) const = 0;
+
+	private:
+		//float (*easeFunc)(float) ;
+	};
+
+	class EaseInSine : public IEase { public: float operator()(float value) const override { return easeInSine(value); } };
+	class EaseOutSine : public IEase { public: float operator()(float value) const override { return easeOutSine(value); } };
+	class EaseInOutSine : public IEase { public: float operator()(float value) const override { return easeInOutSine(value); } };
 
 	/// @brief 色用の線形補間
 	/// @param statColor 始点RGBA色
@@ -40,4 +67,5 @@ namespace SoLib {
 	/// @param easingVolume 係数
 	/// @return 計算結果
 	uint32_t ColorLerp(uint32_t statColor, uint32_t endColor, float easingVolume);
+
 }

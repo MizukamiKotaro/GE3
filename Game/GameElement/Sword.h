@@ -3,8 +3,10 @@
 #include <Matrix4x4.h>
 #include <SoUtils/Math/Euler.h>
 #include <SoUtils/Graphics/Color.h>
+#include <SoUtils/SoLib/SoLib_Timer.h>
 #include "IEntity.h"
 #include "IWeapon.h"
+#include "SoUtils/SoLib/SoLib.h"
 
 class Stage;
 
@@ -17,13 +19,15 @@ public:
 
 	void Update(const float deltaTime);
 
+	void AttackUpdate(const float deltaTime);
+
 	void Draw();
 
 	void SetPos(const Vector3 &pos) { position_ = pos; }
 
-	void Attack() override {}
+	void Attack() override;
 
-	bool IsAttacked() const override { return false; }
+	bool IsAttacked() const override { return attackTimer_.IsActive(); }
 
 	const Vector3 &GetPos() const { return position_; }
 
@@ -41,6 +45,10 @@ private:
 
 	Matrix4x4 transMat_;
 
+	SoLib::Time::DeltaTimer attackTimer_;
 
+	//SoLib::EaseFunc attackEasing_{ SoLib::easeInOutQuad };
+
+	float targetAngle_ = 360._deg;
 
 };

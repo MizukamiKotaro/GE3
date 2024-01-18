@@ -23,6 +23,16 @@ void Sword::Init()
 }
 
 void Sword::Update([[maybe_unused]] const float deltaTime) {
+
+	AttackUpdate(deltaTime);
+}
+
+void Sword::AttackUpdate(const float deltaTime) {
+
+	attackTimer_.Update(deltaTime);
+
+	rotate_.z = targetAngle_ * pStage_->GetSwordEase()(attackTimer_.GetProgress());
+
 }
 
 void Sword::Draw()
@@ -33,6 +43,12 @@ void Sword::Draw()
 
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transMat_, .color_ = color_ });
 
+}
+
+void Sword::Attack() {
+	if (attackTimer_.IsFinish()) {
+		attackTimer_.Start(pStage_->GetHoleChathTime());
+	}
 }
 
 void Sword::CalcTransMat() {

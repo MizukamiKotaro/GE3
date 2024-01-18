@@ -1,8 +1,12 @@
 #include "SoLib_Easing.h"
 #include <cmath>
 #include <algorithm>
+#include <array>
+#include <typeinfo>
 
 #include "../Math/Angle.h"
+#include <memory>
+#include "SoLib_ImGui.h"
 
 namespace SoLib {
 
@@ -96,7 +100,7 @@ namespace SoLib {
 
 		return x == 0.0f
 			? 0.0f
-			: x ==1.0f
+			: x == 1.0f
 			? 1.0f
 			: std::pow(2.0f, -10.0f * x) * std::sin((x * 10.0f - 0.75f) * c4) + 1.0f;
 	}
@@ -113,6 +117,57 @@ namespace SoLib {
 
 		return (redColor << (4 * 6)) + (greenColor << (4 * 4)) + (blueColor << (4 * 2)) + (alphaColor);
 
+	}
+
+	//void EaseFunc::ImGuiWidget(const char *const label) {
+
+	//	static const std::array<std::unique_ptr<IEase>, 3u> easeType{
+	//		std::make_unique<EaseInSine>(),
+	//		std::make_unique<EaseOutSine>(),
+	//		std::make_unique<EaseInOutSine>(),
+	//	};
+
+
+
+	//}
+
+	template<>
+	bool ImGuiWidget([[maybe_unused]] const char *label, [[maybe_unused]] EaseFunc *value) {
+
+#ifdef _DEBUG
+		using EaseAndString = std::pair<float (*)(float), std::string>;
+		static const std::vector<EaseAndString> easeType = {
+			{ easeLinear, "easeLinear" },
+			{ easeInSine, "easeInSine" }, { easeOutSine, "easeOutSine" }, { easeInOutSine, "easeInOutSine" },
+			{ easeInQuad, "easeInQuad" }, { easeOutQuad, "easeOutQuad" }, { easeInOutQuad, "easeInOutQuad" },
+			{ easeInBack, "easeInBack" }, { easeOutBack, "easeOutBack" }, { easeInOutBack, "easeInOutBack" },
+		};
+
+		std::vector<EaseAndString>::const_iterator item = std::find_if(easeType.begin(), easeType.end(), [&value](const EaseAndString &ease)->bool
+			{
+				return 	ease.first == value->easeFunc_;
+			}
+		);
+
+
+		if (ImGui::BeginCombo((label + std::string("Combo")).c_str(), item->second.c_str())) {
+			for (const auto &easeItem : easeType) {
+				bool is_selected = (easeItem.first == value->easeFunc_);
+				if (ImGui::Selectable(easeItem.second.c_str(), is_selected)) {
+					value->easeFunc_ = easeItem.first;
+				}
+				/*	if (is_selected) {
+						ImGui::SetItemDefaultFocus();
+					}*/
+			}
+			ImGui::EndCombo();
+		}
+
+
+
+#endif // _DEBUG
+
+		return false;
 	}
 
 }

@@ -51,11 +51,14 @@ void Hole::OnCollision(IEntity *other) {
 
 void Hole::UpdateBallChacher(const float deltaTime)
 {
-	std::erase_if(ballList_, [](Hole::BallCatcher &ball)->bool
+	std::erase_if(ballList_, [this](Hole::BallCatcher &ball)->bool
 		{
 			if (ball.time_ <= 0.f) {
 
 				ball.ball_->SetIsAlive(false);
+				for (auto &sword : *pStage_->GetSwordList()) {
+					sword->Attack();
+				}
 				return true;
 			}
 			return false;

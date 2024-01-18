@@ -141,7 +141,11 @@ void Stage::SaveValue(const char *const groupName) const {
 void Stage::ImGuiWidget() {
 	static GlobalVariables *const gVariables = GlobalVariables::GetInstance();
 
+#ifdef _DEBUG
+
 	if (ImGui::TreeNode("StageEditor")) {
+
+		SoLib::ImGuiWidget("SwordEase", &swordEasing_);
 
 		SoLib::ImGuiWidget(&scale_);
 		SoLib::ImGuiWidget(&rotate_);
@@ -155,4 +159,7 @@ void Stage::ImGuiWidget() {
 
 		ImGui::TreePop();
 	}
+
+#endif // _DEBUG
+
 }

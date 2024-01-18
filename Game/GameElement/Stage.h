@@ -31,12 +31,16 @@ public:
 	auto *const GetPinList() { return &pinList_; }
 	auto *const GetHoleList() { return &holeList_; }
 
+	auto *const GetSwordList() { return &swordList_; }
+
 	void LoadValue(const char *const groupName);
 	void SaveValue(const char *const groupName) const;
 
 	void ImGuiWidget();
 
 	float GetHoleChathTime() const { return vHoleChathTime_.GetItem(); }
+
+	const auto &GetSwordEase() const { return swordEasing_; }
 
 private:
 
@@ -67,6 +71,8 @@ private:
 
 	VariantItem<float> vHoleSize_{ "HoleSize", 0.75f };
 	VariantItem<SoLib::SecondF> vHoleChathTime_{ "HoleChathTime", 1.f };
+
+	SoLib::EaseFunc swordEasing_ = { SoLib::easeInOutQuad };
 
 	std::string groupName_{ "Stage" };
 
