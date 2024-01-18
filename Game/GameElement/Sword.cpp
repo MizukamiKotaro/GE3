@@ -1,5 +1,7 @@
 #include "Sword.h"
 #include <BlockManager.h>
+#include "Stage.h"
+#include "ModelDataManager.h"
 
 Sword::Sword()
 {
@@ -7,7 +9,17 @@ Sword::Sword()
 
 void Sword::Init()
 {
+
+	model_ = ModelDataManager::GetInstance()->LoadObj("sword");
+
 	color_ = 0xFFFFFFFF;
+
+	scale_ = Vector3::one * 5;
+	rotate_ = Vector3::zero;
+	position_ = Vector3::zero;
+
+	rotate_.y = -90._deg;
+
 }
 
 void Sword::Update([[maybe_unused]] const float deltaTime) {

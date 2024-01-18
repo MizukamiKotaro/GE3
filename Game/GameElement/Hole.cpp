@@ -5,8 +5,6 @@
 #include "Stage.h"
 #include "MovingBall.h"
 
-Stage *Hole::pStage_;
-
 Hole::Hole() {
 }
 
@@ -23,11 +21,6 @@ void Hole::Init() {
 
 	CalcTransMat();
 
-}
-
-void Hole::SetStage(Stage *stage)
-{
-	pStage_ = stage;
 }
 
 void Hole::Update([[maybe_unused]] const float deltaTime) {

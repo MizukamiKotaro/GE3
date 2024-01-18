@@ -7,5 +7,5 @@ class IWeapon {
 
 	/// @brief 攻撃中か
 	/// @return 攻撃中
-	virtual bool IsAttacked() = 0;
+	virtual bool IsAttacked() const = 0;
 };

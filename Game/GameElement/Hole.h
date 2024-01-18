@@ -26,8 +26,6 @@ public:
 
 	void Init() override;
 
-	static void SetStage(Stage *stage);
-
 	void Update(const float deltaTime) override;
 
 	void Draw() override;
@@ -47,8 +45,6 @@ private:
 	void CalcTransMat();
 
 private:
-
-	static Stage *pStage_;
 
 	uint32_t playerCount_{};
 	uint32_t enemyCount_{};

@@ -3,6 +3,7 @@
 #include <GlobalVariables/GlobalVariables.h>
 
 void Stage::Init() {
+	IEntity::SetStage(this);
 
 	LoadValue(groupName_.c_str());
 
@@ -17,7 +18,9 @@ void Stage::Init() {
 
 	SaveValue(groupName_.c_str());
 
-	Hole::SetStage(this);
+	auto *sword = swordList_.emplace_back(std::make_unique<Sword>()).get();
+
+	sword->Init();
 
 }
 
@@ -79,7 +82,7 @@ void Stage::Update(const float deltaTime) {
 		hole->Update(deltaTime);
 	}
 	for (auto &sword : swordList_) {
-		sword->Draw();
+		sword->Update(deltaTime);
 	}
 
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_.GetItem(), position_);

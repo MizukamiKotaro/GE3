@@ -429,6 +429,9 @@
     <ClCompile Include="Game\GameElement\Sword.cpp">
       <Filter>Game\GameElement</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\IEntity.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
