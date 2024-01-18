@@ -34,6 +34,15 @@ void GraphicsPiplineManager::Init()
 	contrastPSO_ = ContrastGraphicsPipeline::GetInstance();
 	contrastPSO_->Initialize();
 
+	highLumiPSO_ = HighLumiGraphicsPipeline::GetInstance();
+	highLumiPSO_->Initialize();
+
+	blurPSO_ = BlurGraphicsPipeline::GetInstance();
+	blurPSO_->Initialize();
+
+	gaussianBlurPSO_ = GaussianBlurGraphicsPipeline::GetInstance();
+	gaussianBlurPSO_->Initialize();
+
 	spritePSO_->PreDraw();
 }
 
@@ -72,6 +81,15 @@ void GraphicsPiplineManager::PreDraw(PiplineType type)
 		case GraphicsPiplineManager::PiplineType::CONTRAST:
 			contrastPSO_->PreDraw();
 			break;
+		case GraphicsPiplineManager::PiplineType::HIGH_LUMI:
+			highLumiPSO_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::BLUR:
+			blurPSO_->PreDraw();
+			break;
+		case GraphicsPiplineManager::PiplineType::GAUSSIAN_BLUR:
+			gaussianBlurPSO_->PreDraw();
+			break;
 		case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 			break;
 		default:
@@ -104,6 +122,15 @@ void GraphicsPiplineManager::SetBlendMode(PiplineType type, uint32_t blendMode)
 		break;
 	case GraphicsPiplineManager::PiplineType::CONTRAST:
 		contrastPSO_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::HIGH_LUMI:
+		highLumiPSO_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::BLUR:
+		blurPSO_->SetBlendMode(blendMode);
+		break;
+	case GraphicsPiplineManager::PiplineType::GAUSSIAN_BLUR:
+		gaussianBlurPSO_->SetBlendMode(blendMode);
 		break;
 	case GraphicsPiplineManager::PiplineType::COUNT_PIPLINE_TYPE:
 		break;
