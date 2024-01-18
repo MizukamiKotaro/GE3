@@ -36,9 +36,18 @@ namespace SoLib {
 	float easeOutElastic(float x);
 
 	struct EaseFunc {
+
+		using EaseAndString = std::pair<float (*)(float), std::string>;
+	public:
 		float operator()(float value) const {
 			return easeFunc_(value);
 		}
+		static const std::vector<EaseAndString> &GetEasePair();
+
+		EaseFunc &operator=(const EaseFunc &) = default;
+		EaseFunc &operator=(const int32_t index);
+
+		int32_t GetNumber() const;
 
 		//void ImGuiWidget(const char *const label);
 

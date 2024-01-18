@@ -127,6 +127,8 @@ void Stage::LoadValue(const char *const groupName) {
 
 	position_ = gVariables->Get<Vector3>(groupName, position_.GetKey());
 
+	kSwordEasing_.GetItem() = gVariables->Get<int32_t>(groupName, kSwordEasing_.GetKey());
+
 }
 
 void Stage::SaveValue(const char *const groupName) const {
@@ -135,6 +137,8 @@ void Stage::SaveValue(const char *const groupName) const {
 	gVariables->SetValue(groupName, scale_.GetKey(), scale_);
 	gVariables->SetValue(groupName, rotate_.GetKey(), rotate_.GetItem());
 	gVariables->SetValue(groupName, position_.GetKey(), position_);
+
+	gVariables->SetValue(groupName, kSwordEasing_.GetKey(), kSwordEasing_.GetItem().GetNumber());
 
 }
 
@@ -145,7 +149,7 @@ void Stage::ImGuiWidget() {
 
 	if (ImGui::TreeNode("StageEditor")) {
 
-		SoLib::ImGuiWidget("SwordEase", &swordEasing_);
+		SoLib::ImGuiWidget("SwordEase", &kSwordEasing_.GetItem());
 
 		SoLib::ImGuiWidget(&scale_);
 		SoLib::ImGuiWidget(&rotate_);

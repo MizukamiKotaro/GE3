@@ -40,7 +40,7 @@ public:
 
 	float GetHoleChathTime() const { return vHoleChathTime_.GetItem(); }
 
-	const auto &GetSwordEase() const { return swordEasing_; }
+	const auto &GetSwordEase() const { return kSwordEasing_.GetItem(); }
 
 private:
 
@@ -72,7 +72,7 @@ private:
 	VariantItem<float> vHoleSize_{ "HoleSize", 0.75f };
 	VariantItem<SoLib::SecondF> vHoleChathTime_{ "HoleChathTime", 1.f };
 
-	SoLib::EaseFunc swordEasing_ = { SoLib::easeInOutQuad };
+	VariantItem<SoLib::EaseFunc> kSwordEasing_ = { "SwordEasing", { SoLib::easeInOutQuad } };
 
 	std::string groupName_{ "Stage" };
 

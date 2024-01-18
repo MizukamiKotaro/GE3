@@ -135,15 +135,9 @@ namespace SoLib {
 	bool ImGuiWidget([[maybe_unused]] const char *label, [[maybe_unused]] EaseFunc *value) {
 
 #ifdef _DEBUG
-		using EaseAndString = std::pair<float (*)(float), std::string>;
-		static const std::vector<EaseAndString> easeType = {
-			{ easeLinear, "easeLinear" },
-			{ easeInSine, "easeInSine" }, { easeOutSine, "easeOutSine" }, { easeInOutSine, "easeInOutSine" },
-			{ easeInQuad, "easeInQuad" }, { easeOutQuad, "easeOutQuad" }, { easeInOutQuad, "easeInOutQuad" },
-			{ easeInBack, "easeInBack" }, { easeOutBack, "easeOutBack" }, { easeInOutBack, "easeInOutBack" },
-		};
+		const auto &easeType = EaseFunc::GetEasePair();
 
-		std::vector<EaseAndString>::const_iterator item = std::find_if(easeType.begin(), easeType.end(), [&value](const EaseAndString &ease)->bool
+		std::vector<EaseFunc::EaseAndString>::const_iterator item = std::find_if(easeType.begin(), easeType.end(), [&value](const EaseFunc::EaseAndString &ease)->bool
 			{
 				return 	ease.first == value->easeFunc_;
 			}
@@ -168,6 +162,31 @@ namespace SoLib {
 #endif // _DEBUG
 
 		return false;
+	}
+
+	const std::vector<EaseFunc::EaseAndString> &EaseFunc::GetEasePair() {
+		static const std::vector<EaseFunc::EaseAndString> easeType = {
+			{ easeLinear, "easeLinear" },
+			{ easeInSine, "easeInSine" }, { easeOutSine, "easeOutSine" }, { easeInOutSine, "easeInOutSine" },
+			{ easeInQuad, "easeInQuad" }, { easeOutQuad, "easeOutQuad" }, { easeInOutQuad, "easeInOutQuad" },
+			{ easeInBack, "easeInBack" }, { easeOutBack, "easeOutBack" }, { easeInOutBack, "easeInOutBack" },
+		};
+		return easeType;
+	}
+
+	EaseFunc &EaseFunc::operator=(const int32_t index) {
+		easeFunc_ = GetEasePair()[index].first;
+		return *this;
+	}
+
+	int32_t EaseFunc::GetNumber() const {
+		const auto &easeType = GetEasePair();
+		std::vector<EaseFunc::EaseAndString>::const_iterator item = std::find_if(easeType.begin(), easeType.end(), [this](const EaseFunc::EaseAndString &ease)->bool
+			{
+				return 	ease.first == easeFunc_;
+			}
+		);
+		return static_cast<int32_t>(std::distance(easeType.cbegin(), item));
 	}
 
 }
