@@ -9,6 +9,7 @@
 #include "Hole.h"
 #include "Sword.h"
 #include "SoUtils/Math/Angle.h"
+#include "Punch.h"
 
 class Stage {
 public:
@@ -51,6 +52,8 @@ private:
 	uint32_t stageModel_;
 
 	Matrix4x4 transMat_;
+
+	std::list<std::unique_ptr<Punch>> punchList_;
 
 	std::list<std::unique_ptr<Sword>> swordList_;
 

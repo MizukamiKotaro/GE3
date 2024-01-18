@@ -477,6 +477,9 @@
     <ClCompile Include="Engine\Utils\Shape\Line.cpp">
       <Filter>Engine\Utils\Shape</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Punch.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -808,6 +811,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Utils\Shape\IShape.h">
       <Filter>Engine\Utils\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Punch.h">
+      <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
