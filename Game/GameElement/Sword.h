@@ -34,11 +34,13 @@ public:
 
 	const Vector3 &GetPos() const { return position_; }
 
-	const float& GetRotateZ() const { return rotate_.z; }
+	const float &GetRotateZ() const { return rotate_.z; }
 
 	float GetDamage() const override;
 
 	void CalcTransMat();
+
+	float GetBeforeRotate() const { return beforeRotate_; }
 
 private:
 
@@ -53,6 +55,8 @@ private:
 	Vector3 position_;
 
 	Matrix4x4 transMat_;
+
+	float beforeRotate_;
 
 	SoLib::Time::DeltaTimer attackTimer_;
 

@@ -34,6 +34,8 @@ void Sword::AttackUpdate(const float deltaTime) {
 
 	attackTimer_.Update(deltaTime);
 
+	beforeRotate_ = rotate_.z;
+
 	rotate_.z = targetAngle_ * pStage_->GetSwordEase()(attackTimer_.GetProgress());
 
 	capsule_.segment_.diff = Vector3::up * 5.f * Matrix4x4::MakeRotateAxisAngle(Vector3::front, rotate_.z);
