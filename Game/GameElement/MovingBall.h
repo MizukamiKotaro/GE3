@@ -33,6 +33,7 @@ public:
 
 	static void SetMapChip(MapChip *mapChip);
 
+	void SetIsAlive(const bool isAlive) { isAlive_ = isAlive; }
 	bool GetIsAlive() const { return isAlive_; }
 
 	const auto &GetSphere() const { return sphere_; }
@@ -47,6 +48,8 @@ public:
 	void ReflectPin(const BoundPin &pin);
 
 private:
+
+	bool isChathed_ = false;
 
 	Team team_ = Team::kPlayer;
 

@@ -5,12 +5,28 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
+class Stage;
+class MovingBall;
+
 class Hole :public IEntity {
 public:
+
+	struct BallCatcher {
+		MovingBall *ball_;
+		float time_;
+
+		Vector3 begin_;
+	};
+
+
+public:
+
 	Hole();
 	~Hole() = default;
 
 	void Init() override;
+
+	static void SetStage(Stage *stage);
 
 	void Update(const float deltaTime) override;
 
@@ -22,13 +38,17 @@ public:
 	float GetRadius() const { return radius_; }
 
 	void SetPos(const Vector3 &pos) { position_ = pos; }
-
+	const Vector3 &GetPos() const { return position_; }
 
 private:
+
+	void UpdateBallChacher(const float deltaTime);
 
 	void CalcTransMat();
 
 private:
+
+	static Stage *pStage_;
 
 	uint32_t playerCount_{};
 	uint32_t enemyCount_{};
@@ -44,6 +64,8 @@ private:
 	float radius_;
 
 	Matrix4x4 transMat_;
+
+	std::list<BallCatcher> ballList_;
 
 
 private:

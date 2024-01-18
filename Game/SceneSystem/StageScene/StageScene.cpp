@@ -102,6 +102,20 @@ void StageScene::Update()
 			}
 		}
 
+		for (const auto &hole : *stage_->GetHoleList()) {
+
+			Vector3 holePos = hole->GetPos();
+			holePos.z = 0.f;
+
+			if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
+
+				hole->OnCollision(ball.get());
+
+				ball->OnCollision(hole.get());
+
+			}
+		}
+
 	}
 
 	stageUI_->Update();
@@ -110,7 +124,7 @@ void StageScene::Update()
 }
 
 void StageScene::Draw() {
-	
+
 
 	// 描画開始
 	Kyoko::PreDraw();

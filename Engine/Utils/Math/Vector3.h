@@ -4,25 +4,17 @@ struct Vector3
 public:
 
 	bool operator==(const Vector3 &obj) const {
-		if (x == obj.x && y == obj.y && z == obj.z) {
-			return true;
-		}
-		return false;
+		return x == obj.x && y == obj.y && z == obj.z;
 	}
 
 	//変換
-	Vector3 &operator=(const Vector3 &obj) {
-		x = obj.x;
-		y = obj.y;
-		z = obj.z;
-		return *this;
-	}
+	Vector3 &operator=(const Vector3 &obj) = default;
 
 	//加算
 	void operator+=(const Vector3 &obj) {
-		this->x = this->x + obj.x;
-		this->y = this->y + obj.y;
-		this->z = this->z + obj.z;
+		this->x += obj.x;
+		this->y += obj.y;
+		this->z += obj.z;
 	}
 
 	//減算
@@ -50,7 +42,7 @@ public:
 
 	float Length() const;
 
-	float Length(const Vector3 &pos)const;
+	float Length(const Vector3 &pos) const;
 
 	Vector3 Normalize() const;
 

@@ -17,6 +17,8 @@ void Stage::Init() {
 
 	SaveValue(groupName_.c_str());
 
+	Hole::SetStage(this);
+
 }
 
 void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
@@ -33,11 +35,12 @@ void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
 	}
 	const auto holePos = mapChip_->GetChipPos(MapChip::ChipType::kHole);
 
-	for (const auto &pos : holePos) {
+	for (auto pos : holePos) {
 
 		auto holeItem = holeList_.emplace_back(std::make_unique<Hole>()).get();
 
 		holeItem->Init();
+		pos.z = 5.f;
 		holeItem->SetPos(pos);
 
 	}
@@ -75,6 +78,9 @@ void Stage::Update(const float deltaTime) {
 	for (auto &hole : holeList_) {
 		hole->Update(deltaTime);
 	}
+	for (auto &sword : swordList_) {
+		sword->Draw();
+	}
 
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_.GetItem(), position_);
 }
@@ -97,6 +103,10 @@ void Stage::Draw() {
 
 	for (auto &hole : holeList_) {
 		hole->Draw();
+	}
+
+	for (auto &sword : swordList_) {
+		sword->Draw();
 	}
 
 	static auto *const blockManager = BlockManager::GetInstance();

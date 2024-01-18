@@ -121,11 +121,14 @@ void MovingBall::ReflectPin(const BoundPin &pin)
 
 void MovingBall::UpdateRigidbody([[maybe_unused]] const float deltaTime)
 {
+
 	beforePos_ = sphere_.center_;
 
-	velocity_ += acceleration_;
-	Vector3 fixVelocity = velocity_ * deltaTime;
-	acceleration_ = {};
+	if (not isChathed_) {
+		velocity_ += acceleration_;
+		Vector3 fixVelocity = velocity_ * deltaTime;
 
-	sphere_.center_ += fixVelocity;
+		sphere_.center_ += fixVelocity;
+	}
+	acceleration_ = {};
 }

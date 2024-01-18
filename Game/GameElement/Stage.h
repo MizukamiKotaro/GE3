@@ -7,6 +7,8 @@
 #include "SoUtils/IO/VariantItem.h"
 #include <SoUtils/Math/Euler.h>
 #include "Hole.h"
+#include "Sword.h"
+#include "SoUtils/Math/Angle.h"
 
 class Stage {
 public:
@@ -27,17 +29,22 @@ public:
 	auto *const GetSpawnerList() { return &spawnerList_; }
 
 	auto *const GetPinList() { return &pinList_; }
+	auto *const GetHoleList() { return &holeList_; }
 
 	void LoadValue(const char *const groupName);
 	void SaveValue(const char *const groupName) const;
 
 	void ImGuiWidget();
 
+	float GetHoleChathTime() const { return vHoleChathTime_.GetItem(); }
+
 private:
 
 	uint32_t stageModel_;
 
 	Matrix4x4 transMat_;
+
+	std::list<std::unique_ptr<Sword>> swordList_;
 
 	std::list<std::unique_ptr<BoundPin>> pinList_;
 
@@ -53,6 +60,13 @@ private:
 	VariantItem<Vector3> scale_{ "Scale",Vector3::one };
 	VariantItem<SoLib::Math::Euler> rotate_{ "Rotate" };
 	VariantItem<Vector3> position_{ "Position" };
+
+	VariantItem<float> vSwingAngle_{ "SwingAngle",10._deg };
+	VariantItem<SoLib::SecondF> vSwingTime_{ "SwingTime", 1.f };
+	VariantItem<SoLib::SecondF> vSwingReturn_{ "SwingReturn",1.f };
+
+	VariantItem<float> vHoleSize_{ "HoleSize", 0.75f };
+	VariantItem<SoLib::SecondF> vHoleChathTime_{ "HoleChathTime", 1.f };
 
 	std::string groupName_{ "Stage" };
 

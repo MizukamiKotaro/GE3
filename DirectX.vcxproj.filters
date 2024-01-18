@@ -426,6 +426,9 @@
     <ClCompile Include="Game\SceneSystem\SelectScene\SelectScene.cpp">
       <Filter>Game\SceneSystem\SelectScene</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Sword.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -724,6 +727,12 @@
     </ClInclude>
     <ClInclude Include="Game\SceneSystem\SelectScene\SelectScene.h">
       <Filter>Game\SceneSystem\SelectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Sword.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\IWeapon.h">
+      <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

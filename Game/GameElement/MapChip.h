@@ -13,7 +13,7 @@ public:
 		kAir,
 		kBlock,
 		kPin,
-		kHole,
+		kHole = 0b100,
 	};
 
 public:
