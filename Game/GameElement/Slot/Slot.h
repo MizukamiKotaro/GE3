@@ -5,11 +5,12 @@
 #include "Sprite.h"
 #include "PostEffect/PostEffect.h"
 #include "Model.h"
+#include "PostEffect/Blur/Blur.h"
 
 class Camera;
 
 class Slot {
-public: 
+public:
 
 	Slot();
 
@@ -40,9 +41,13 @@ private:
 
 	std::unique_ptr<PostEffect> postEffect_;
 
+	std::array<std::unique_ptr<Blur>, 3> blurs_;
+
 	std::unique_ptr<Model> plane_;
-	
+
 	std::array<std::array<std::unique_ptr<Sprite>, 3>, 3> slot_;
+
+	std::array<std::unique_ptr<Sprite>, 3> backs_;
 
 	std::unique_ptr<Sprite> back_;
 

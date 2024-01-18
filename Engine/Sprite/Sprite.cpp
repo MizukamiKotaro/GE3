@@ -132,6 +132,42 @@ void Sprite::Draw(const Camera& camera, BlendMode blendMode)
 
 }
 
+void Sprite::Draw(BlendMode blendMode)
+{
+
+	if (isInvisible_) {
+		return;
+	}
+
+	PreDraw();
+
+	transformData_->WVP = worldMat_ * Camera::GetOrthographicMat();
+	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
+
+	TextureManager* texManager = TextureManager::GetInstance();
+
+	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
+
+	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+
+	//Spriteの描画。変更に必要なものだけ変更する
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
+	//マテリアルCBufferの場所を設定
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	//TransformationMatrixCBufferの場所を設定
+	commandList->SetGraphicsRootConstantBufferView(1, transformResource_->GetGPUVirtualAddress());
+	if (isLoad_) {
+		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+	}
+	else {
+		this->LoadTexture("Resources/white.png");
+		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+	}
+	//描画!!!!（DrawCall/ドローコール）
+	commandList->DrawInstanced(6, 1, 0, 0);
+
+}
+
 void Sprite::LoadTexture(const std::string& filePath)
 {
 

@@ -6,6 +6,7 @@
 #include <numbers>
 #include "RandomGenerator/RandomGenerator.h"
 #include "Input.h"
+#include <algorithm>
 
 Slot::Slot()
 {
@@ -27,6 +28,12 @@ Slot::Slot()
 		for (int j = 0; j < 3; j++) {
 			slot_[i][j] = std::make_unique<Sprite>("Resources/white.png");
 		}
+
+		blurs_[i] = std::make_unique<Blur>();
+		blurs_[i]->blurData_->angle = 90.0f;
+		blurs_[i]->blurData_->isCenterBlur = 0;
+
+		backs_[i] = std::make_unique<Sprite>("Resources/white.png");
 	}
 
 	TextureManager* texMan = TextureManager::GetInstance();
@@ -49,12 +56,17 @@ Slot::Slot()
 			slot_[i][j]->Update();
 		}
 		isRotStop_[i] = true;
+
+		backs_[i]->size_ = { slot_[i][0]->size_.x,720.0f };
+		backs_[i]->pos_.x = slot_[i][0]->pos_.x;
+		backs_[i]->SetColor({ 0.0f,0.0f,0.0f,1.0f });
+		backs_[i]->Update();
 	}
 	DownToTop();
 
 	plane_->SetSRVGPUDescriptorHandle_(postEffect_->GetSRVGPUDescriptorHandle());
 
-	limitSpeed_ = 15.0f;
+	limitSpeed_ = 20.0f;
 }
 
 void Slot::Initialize() {
@@ -67,7 +79,6 @@ void Slot::Initialize() {
 		isRotStop_[i] = true;
 	}
 	DownToTop();
-	plane_->Update();
 }
 
 void Slot::Update(Camera* camera) {
@@ -79,7 +90,7 @@ void Slot::Update(Camera* camera) {
 	if (input->PressedKey(DIK_T)) {
 		StartRotation();
 	}
-	if (input->PressedKey(DIK_R)) {
+	if (input->PressedKey(DIK_Y)) {
 		StopRotation();
 	}
 	ImGui::Begin("Slot");
@@ -111,7 +122,7 @@ void Slot::StartRotation()
 
 	for (int i = 0; i < 3; i++) {
 		isRotStop_[i] = false;
-		rotSpeed_[i] = rand->RandFloat(25.0f, 35.0f);
+		rotSpeed_[i] = rand->RandFloat(70.0f, 100.0f);
 	}
 }
 
@@ -127,7 +138,12 @@ void Slot::Rotation()
 		for (int i = 0; i < 3; i++) {
 			if (!isRotStop_[i]) {
 				if (rotSpeed_[i] > limitSpeed_) {
-					rotSpeed_[i] -= 0.1f;
+					rotSpeed_[i] -= 0.2f;
+
+					float t = std::clamp<float>(rotSpeed_[i], limitSpeed_ + 5.0f, 65.0f) - (limitSpeed_ + 5.0f);
+					t = t / (60.0f - limitSpeed_);
+
+					blurs_[i]->blurData_->pickRange = t * 0.18f + (1.0f - t) * 0.01f;
 				}
 
 				isAcross_[i] = false;
@@ -192,15 +208,36 @@ void Slot::Rotation()
 
 void Slot::PostEffectWright(Camera* camera)
 {
+	if (isRot_) {
+		for (int i = 0; i < 3; i++) {
+
+			if (blurs_[i]->blurData_->pickRange > 0.01f) {
+				blurs_[i]->PreDrawScene();
+
+				backs_[i]->Draw();
+				for (int j = 0; j < 3; j++) {
+					slot_[i][j]->Draw(*camera);
+				}
+
+				blurs_[i]->PostDrawScene();
+			}
+		}
+	}
+
 	postEffect_->PreDrawScene();
 
 	back_->Draw(*camera);
 
 	for (int i = 0; i < 3; i++) {
+
+		if (isRot_ && blurs_[i]->blurData_->pickRange > 0.01f) {
+			blurs_[i]->Draw();
+		}
 		for (int j = 0; j < 3; j++) {
 			slot_[i][j]->Draw(*camera);
 		}
 	}
+
 
 	postEffect_->PostDrawScene();
 }

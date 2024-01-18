@@ -1,4 +1,4 @@
-#include "PostEffect.h"
+#include "Blur.h"
 
 #include <cassert>
 #include "TextureManager/TextureManager.h"
@@ -9,9 +9,9 @@
 #include "Externals/DirectXTex/d3dx12.h"
 #include <algorithm>
 
-const float PostEffect::clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
+const float Blur::clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 
-PostEffect::PostEffect()
+Blur::Blur()
 {
 	CreateVertexRes();
 
@@ -40,30 +40,46 @@ PostEffect::PostEffect()
 	Update();
 }
 
-PostEffect::~PostEffect()
+Blur::~Blur()
 {
 	vertexResource_->Release();
 	transformResource_->Release();
 	materialResource_->Release();
+	blurResource_->Release();
 }
 
-void PostEffect::Initialize()
+void Blur::Initialize()
 {
 
 }
 
-void PostEffect::Update()
+void Blur::Update()
 {
 	worldMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,0.0f }, { 0.0f,0.0f,rotate_ }, { pos_.x,pos_.y,0.0f });
 	TransferSize();
 }
 
-void PostEffect::Draw(BlendMode blendMode)
+void Blur::Draw(BlendMode blendMode)
 {
+	if (blurData_->pickRange <= 0.0f) {
+		blurData_->pickRange = 0.01f;
+	}
+	if (blurData_->stepWidth <= 0.0f) {
+		blurData_->stepWidth = 0.001f;
+	}
+
+	if (blendMode == BlendMode::kBlendModeNormal) {
+		blurData_->isNormal = 1;
+	}
+	else {
+		blurData_->isNormal = 0;
+	}
 
 	if (isInvisible_) {
 		return;
 	}
+
+	materialData_->color = color_;
 
 	PreDraw();
 
@@ -83,14 +99,15 @@ void PostEffect::Draw(BlendMode blendMode)
 
 	commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 
+	commandList->SetGraphicsRootConstantBufferView(3, blurResource_->GetGPUVirtualAddress());
+
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(6, 1, 0, 0);
 
 }
 
-void PostEffect::PreDrawScene()
+void Blur::PreDrawScene()
 {
-
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	// バリアの変更
@@ -122,7 +139,7 @@ void PostEffect::PreDrawScene()
 	GraphicsPiplineManager::GetInstance()->PreDraw();
 }
 
-void PostEffect::PostDrawScene()
+void Blur::PostDrawScene()
 {
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
@@ -133,14 +150,14 @@ void PostEffect::PostDrawScene()
 
 }
 
-void PostEffect::SetAnchorPoint(const Vector2& anchorpoint)
+void Blur::SetAnchorPoint(const Vector2& anchorpoint)
 {
 	anchorPoint_ = anchorpoint;
 
 	TransferSize();
 }
 
-void PostEffect::SetColor(const Vector4& color)
+void Blur::SetColor(const Vector4& color)
 {
 	color_.x = std::clamp<float>(color.x, 0.0f, 1.0f);
 	color_.y = std::clamp<float>(color.y, 0.0f, 1.0f);
@@ -150,21 +167,21 @@ void PostEffect::SetColor(const Vector4& color)
 	materialData_->color = color;
 }
 
-void PostEffect::SetTextureTopLeft(const Vector2& texTopLeft)
+void Blur::SetTextureTopLeft(const Vector2& texTopLeft)
 {
 	textureLeftTop_ = textureLeftTop_;
 
 	TransferUV();
 }
 
-void PostEffect::SetTextureSize(const Vector2& texSize)
+void Blur::SetTextureSize(const Vector2& texSize)
 {
 	textureSize_ = texSize;
 
 	TransferUV();
 }
 
-void PostEffect::TransferSize()
+void Blur::TransferSize()
 {
 	float left = (0.0f - anchorPoint_.x) * size_.x;
 	float right = (1.0f - anchorPoint_.x) * size_.x;
@@ -180,7 +197,7 @@ void PostEffect::TransferSize()
 	vertexData_[5].vertexPos = { right,bottom,0.0f,1.0f }; // 右下
 }
 
-void PostEffect::TransferUV()
+void Blur::TransferUV()
 {
 	vertexData_[0].texcoord = { textureLeftTop_.x,textureLeftTop_.y + textureSize_.y }; // 左下
 	vertexData_[1].texcoord = textureLeftTop_; // 左上
@@ -191,7 +208,7 @@ void PostEffect::TransferUV()
 	vertexData_[5].texcoord = textureLeftTop_ + textureSize_; // 右下
 }
 
-void PostEffect::CreateVertexRes()
+void Blur::CreateVertexRes()
 {
 	//Sprite用の頂点リソースを作る
 	vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * 6);
@@ -206,7 +223,7 @@ void PostEffect::CreateVertexRes()
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 }
 
-void PostEffect::CreateMaterialRes()
+void Blur::CreateMaterialRes()
 {
 	//マテリアル用のリソースを作る。今回はcolor1つ分を用意する
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
@@ -215,11 +232,12 @@ void PostEffect::CreateMaterialRes()
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	//今回は赤を書き込んでいる
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
 	//*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , false };
 	materialData_->uvTransform = Matrix4x4::MakeIdentity4x4();
 }
 
-void PostEffect::CreateTranformRes()
+void Blur::CreateTranformRes()
 {
 	//Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
 	transformResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
@@ -231,7 +249,24 @@ void PostEffect::CreateTranformRes()
 	//*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
 }
 
-void PostEffect::CreateTexRes()
+void Blur::CreateBlurRes()
+{
+	blurResource_ = DirectXCommon::CreateBufferResource(sizeof(BlurData));
+
+	blurResource_->Map(0, nullptr, reinterpret_cast<void**>(&blurData_));
+
+	blurData_->angle = 0.0f;
+
+	blurData_->pickRange = 0.06f;
+
+	blurData_->stepWidth = 0.005f;
+
+	blurData_->isCenterBlur = 1;
+
+	blurData_->isNormal = 1;
+}
+
+void Blur::CreateTexRes()
 {
 
 	CD3DX12_RESOURCE_DESC texDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -285,7 +320,7 @@ void PostEffect::CreateTexRes()
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(texResource_.Get(), &srvDesc, srvCPUDescriptorHandle_);
 }
 
-void PostEffect::CreateRTV()
+void Blur::CreateRTV()
 {
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; //出力結果をSRGBに変換して書き込む
@@ -297,7 +332,7 @@ void PostEffect::CreateRTV()
 	DirectXCommon::GetInstance()->GetDevice()->CreateRenderTargetView(texResource_.Get(), &rtvDesc, rtvCPUDescriptorHandle_);
 }
 
-void PostEffect::CreateDSV()
+void Blur::CreateDSV()
 {
 	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
@@ -331,11 +366,13 @@ void PostEffect::CreateDSV()
 	DirectXCommon::GetInstance()->GetDevice()->CreateDepthStencilView(dsvResource_.Get(), &dsvDesc, dsvCPUDescriptorHandle_);
 }
 
-void PostEffect::CreateResources()
+void Blur::CreateResources()
 {
 	CreateMaterialRes();
 
 	CreateTranformRes();
+
+	CreateBlurRes();
 
 	CreateTexRes();
 
