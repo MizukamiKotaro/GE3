@@ -33,6 +33,7 @@ public:
 	auto *const GetHoleList() { return &holeList_; }
 
 	auto *const GetSwordList() { return &swordList_; }
+	auto *const GetPunchList() { return &punchList_; }
 
 	void LoadValue(const char *const groupName);
 	void SaveValue(const char *const groupName) const;

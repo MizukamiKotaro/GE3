@@ -22,6 +22,10 @@ void Stage::Init() {
 
 	sword->Init();
 
+	auto *punch = punchList_.emplace_back(std::make_unique<Punch>()).get();
+
+	punch->Init();
+
 }
 
 void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
@@ -81,8 +85,12 @@ void Stage::Update(const float deltaTime) {
 	for (auto &hole : holeList_) {
 		hole->Update(deltaTime);
 	}
+
 	for (auto &sword : swordList_) {
 		sword->Update(deltaTime);
+	}
+	for (auto &punch : punchList_) {
+		punch->Update(deltaTime);
 	}
 
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_.GetItem(), position_);
@@ -110,6 +118,9 @@ void Stage::Draw() {
 
 	for (auto &sword : swordList_) {
 		sword->Draw();
+	}
+	for (auto &punch : punchList_) {
+		punch->Draw();
 	}
 
 	static auto *const blockManager = BlockManager::GetInstance();
