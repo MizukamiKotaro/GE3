@@ -3,8 +3,7 @@
 #include "Stage.h"
 #include "ModelDataManager.h"
 
-Sword::Sword()
-{
+Sword::Sword() {
 }
 
 void Sword::Init()
@@ -14,11 +13,15 @@ void Sword::Init()
 
 	color_ = 0xFFFFFFFF;
 
-	scale_ = Vector3::one * 5;
+	scale_ = Vector3::one * 5.f;
 	rotate_ = Vector3::zero;
 	position_ = Vector3::zero;
 
 	rotate_.y = -90._deg;
+
+	capsule_.segment_.origin = position_;
+	capsule_.segment_.diff = Vector3::up * 5.f;
+	capsule_.radius_ = 2.f;
 
 }
 
@@ -32,6 +35,8 @@ void Sword::AttackUpdate(const float deltaTime) {
 	attackTimer_.Update(deltaTime);
 
 	rotate_.z = targetAngle_ * pStage_->GetSwordEase()(attackTimer_.GetProgress());
+
+	capsule_.segment_.diff = Vector3::up * 5.f * Matrix4x4::MakeRotateAxisAngle(Vector3::front, rotate_.z);
 
 }
 
@@ -47,8 +52,19 @@ void Sword::Draw()
 
 void Sword::Attack() {
 	if (attackTimer_.IsFinish()) {
-		attackTimer_.Start(pStage_->GetHoleChathTime());
+		attackTimer_.Start(pStage_->GetSwingTime());
 	}
+}
+
+const Capsule *Sword::GetCollision() const {
+	// タイマーが止まってたら攻撃判定は無い
+	if (not attackTimer_.IsActive()) { return nullptr; }
+
+	return &capsule_;
+}
+
+float Sword::GetDamage() const {
+	return pStage_->GetSwordDamage();
 }
 
 void Sword::CalcTransMat() {

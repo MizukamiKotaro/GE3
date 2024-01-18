@@ -28,24 +28,24 @@
 
 void Sphere::Initialize(const Vector3& center, const float& radius) {
 	center_ = center;
-	scale_ = { 1.0f,1.0f,1.0f };
-	rotate_ = {};
+	//scale_ = { 1.0f,1.0f,1.0f };
+	//rotate_ = {};
 	radius_ = radius;
 }
-
-void Sphere::Initialize(const Vector3& center, const Vector3& rotate, const float& radius) {
-	center_ = center;
-	scale_ = { 1.0f,1.0f,1.0f };
-	rotate_ = rotate;
-	radius_ = radius;
-}
-
-void Sphere::Initialize(const Vector3& center, const Vector3& scale, const Vector3& rotate, const float& radius) {
-	center_ = center;
-	scale_ = scale;
-	rotate_ = rotate;
-	radius_ = radius;
-}
+//
+//void Sphere::Initialize(const Vector3& center, const Vector3& rotate, const float& radius) {
+//	center_ = center;
+//	scale_ = { 1.0f,1.0f,1.0f };
+//	rotate_ = rotate;
+//	radius_ = radius;
+//}
+//
+//void Sphere::Initialize(const Vector3& center, const Vector3& scale, const Vector3& rotate, const float& radius) {
+//	center_ = center;
+//	scale_ = scale;
+//	rotate_ = rotate;
+//	radius_ = radius;
+//}
 
 //void Sphere::Draw(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
 //	const uint32_t kSubdivision = 16;

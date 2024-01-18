@@ -118,6 +118,16 @@ void StageScene::Update()
 
 	}
 
+	for (const auto &sword : *stage_->GetSwordList()) {
+		auto *collision = sword->GetCollision();
+		if (collision) {
+			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+				player_->OnCollision(sword.get());
+				sword->OnCollision(player_.get());
+			}
+		}
+	}
+
 	stageUI_->Update();
 
 	slot_->Update(camera_.get());

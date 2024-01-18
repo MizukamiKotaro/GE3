@@ -13,9 +13,9 @@ void Player::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
-	radius_ = 0.5f;
+	sphere_.radius_ = 0.5f;
 
-	scale_ = Vector3::one * radius_ * 2.f;
+	scale_ = Vector3::one * sphere_.radius_ * 2.f;
 
 	audio_ = Audio::GetInstance();
 
@@ -38,23 +38,23 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	//	}
 	//}
 
+	invincibleTime_.Update(deltaTime);
+
 	// 移動処理を行う
 	UpdateRigidbody(deltaTime);
 
 	// 移動処理の更新
+	sphere_.center_ = mapData_->HitMap(beforePos_, sphere_.center_, 1.f);
 
-
-	transform_ = mapData_->HitMap(beforePos_, transform_, 1.f);
-
-	if (beforePos_.y == transform_.y && velocity_.y < 0.f && not isLanding_) {
+	if (beforePos_.y == sphere_.center_.y && velocity_.y < 0.f && not isLanding_) {
 		Landing();
 	}
-	if (beforePos_.y != transform_.y) {
+	if (beforePos_.y != sphere_.center_.y) {
 		isLanding_ = false;
 	}
 
 	for (uint8_t i = 0u; i < 3u; i++) {
-		if ((&beforePos_.x)[i] == (&transform_.x)[i]) {
+		if ((&beforePos_.x)[i] == (&sphere_.center_.x)[i]) {
 			(&velocity_.x)[i] = 0.f;
 		}
 	}
@@ -101,14 +101,14 @@ void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
 
 
 void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
-	beforePos_ = transform_;
+	beforePos_ = sphere_.center_;
 
 	velocity_ += acceleration_;
 	acceleration_ = {};
 	Vector3 fixVelocity = velocity_ * deltaTime;
 	velocity_.x = 0.f;
 
-	transform_ += fixVelocity;
+	sphere_.center_ += fixVelocity;
 }
 
 void Player::SetMapChip(MapChip *const mapChip) {
@@ -127,11 +127,33 @@ void Player::Landing() {
 		ballList_->push_back(std::make_unique<MovingBall>());
 		auto ball = ballList_->back().get();
 		ball->Init();
-		ball->SetPos(transform_ + Vector3{ .x = -1.f + 2.f * i });
+		ball->SetPos(sphere_.center_ + Vector3{ .x = -1.f + 2.f * i });
 		ball->SetVelocity(Vector3{ .y = 10.f });
 	}
 }
 
 void Player::CalcTransMat() {
-	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * 0.5f, rotate_, transform_);
+	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * sphere_.radius_, rotate_, sphere_.center_);
+}
+
+void Player::Damage([[maybe_unused]] Sword *sword) {
+
+	// 無敵時間が終わっていたら
+	if (invincibleTime_.IsFinish()) {
+		// 無敵時間を開始
+		invincibleTime_.Start();
+
+		// 体力を減らす
+		health_ -= sword->GetDamage();
+
+	}
+
+}
+
+void Player::OnCollision(IEntity *other) {
+	auto *sword = dynamic_cast<Sword *>(other);
+	if (sword) {
+		Damage(sword);
+	}
+
 }

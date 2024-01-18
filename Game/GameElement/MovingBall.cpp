@@ -44,7 +44,7 @@ void MovingBall::Update([[maybe_unused]] const float deltaTime)
 		}
 	}
 
-	transformMat_ = Matrix4x4::MakeAffinMatrix(sphere_.scale_ * (sphere_.radius_ * modelScale_), sphere_.rotate_, sphere_.center_);
+	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * (sphere_.radius_ * modelScale_), rotate_, sphere_.center_);
 
 	color_.a = 1.f - SoLib::easeInCirc(aliveTime_.GetProgress());
 

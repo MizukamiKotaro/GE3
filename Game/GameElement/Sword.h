@@ -7,6 +7,7 @@
 #include "IEntity.h"
 #include "IWeapon.h"
 #include "SoUtils/SoLib/SoLib.h"
+#include "Shape/Capsule.h"
 
 class Stage;
 
@@ -29,11 +30,17 @@ public:
 
 	bool IsAttacked() const override { return attackTimer_.IsActive(); }
 
+	const Capsule *GetCollision() const;
+
 	const Vector3 &GetPos() const { return position_; }
+
+	float GetDamage() const override;
 
 	void CalcTransMat();
 
 private:
+
+	Capsule capsule_;
 
 	uint32_t model_;
 

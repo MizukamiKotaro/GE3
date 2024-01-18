@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
-bool Collision::IsCollision(const Sphere& s1, const Sphere& s2) {
+bool Collision::IsCollision(const Sphere &s1, const Sphere &s2) {
 	float length = Calc::MakeLength(s1.center_, s2.center_);
 
 	//スケールはいじるな！お願いします。
@@ -14,7 +14,7 @@ bool Collision::IsCollision(const Sphere& s1, const Sphere& s2) {
 	return false;
 }
 
-bool Collision::IsCollision(const Sphere& sphere, const Plane& plane) {
+bool Collision::IsCollision(const Sphere &sphere, const Plane &plane) {
 	float length = Calc::MakeLength(sphere, plane);
 
 	if (length <= sphere.radius_) {
@@ -72,7 +72,7 @@ bool Collision::IsCollision(const Sphere& sphere, const Plane& plane) {
 	return false;
 }
 
-bool Collision::IsCollision(const Segment& segment, const Plane& plane) {
+bool Collision::IsCollision(const Segment &segment, const Plane &plane) {
 
 	if (Calc::Dot(segment.diff, plane.normal) == 0) {
 
@@ -103,7 +103,7 @@ bool Collision::IsCollision(const Segment& segment, const Plane& plane) {
 
 }
 
-bool Collision::IsCollision(const Ray& ray, const Plane& plane) {
+bool Collision::IsCollision(const Ray &ray, const Plane &plane) {
 	if (Calc::Dot(ray.diff, plane.normal) == 0) {
 		Vector3 pos = plane.normal;
 		pos *= plane.distance;
@@ -132,7 +132,7 @@ bool Collision::IsCollision(const Ray& ray, const Plane& plane) {
 
 }
 
-bool Collision::IsCollision(const Line& line, const Plane& plane) {
+bool Collision::IsCollision(const Line &line, const Plane &plane) {
 
 	if (Calc::Dot(line.diff, plane.normal) == 0) {
 		Vector3 pos = plane.normal;
@@ -156,7 +156,7 @@ bool Collision::IsCollision(const Line& line, const Plane& plane) {
 	return true;
 }
 
-bool Collision::IsInPlane(const Segment& segment, const Plane& plane) {
+bool Collision::IsInPlane(const Segment &segment, const Plane &plane) {
 
 	Vector3 pos = plane.normal;
 	pos *= plane.distance;
@@ -190,7 +190,7 @@ bool Collision::IsInPlane(const Segment& segment, const Plane& plane) {
 	return false;
 }
 
-bool Collision::IsInPlane(const Ray& ray, const Plane& plane) {
+bool Collision::IsInPlane(const Ray &ray, const Plane &plane) {
 
 	Vector3 pos = plane.normal;
 	pos *= plane.distance;
@@ -224,7 +224,7 @@ bool Collision::IsInPlane(const Ray& ray, const Plane& plane) {
 	return false;
 }
 
-bool Collision::IsInPlane(const Line& line, const Plane& plane) {
+bool Collision::IsInPlane(const Line &line, const Plane &plane) {
 
 	Vector3 pos = plane.normal;
 	pos *= plane.distance;
@@ -258,7 +258,7 @@ bool Collision::IsInPlane(const Line& line, const Plane& plane) {
 	return false;
 }
 
-bool Collision::IsCollision(const Triangle& triangle, const Segment& segment) {
+bool Collision::IsCollision(const Triangle &triangle, const Segment &segment) {
 
 	Vector3 normal = Calc::Normalize(Calc::Cross(Vector3(triangle.vertices[1]) - Vector3(triangle.vertices[0]),
 		Vector3(triangle.vertices[2]) - Vector3(triangle.vertices[1])));
@@ -277,7 +277,7 @@ bool Collision::IsCollision(const Triangle& triangle, const Segment& segment) {
 		return false;
 	}
 
-	Line tmpLine = { {},normal};
+	Line tmpLine = { {},normal };
 
 	Vector3 closePoint = Calc::ClosestPoint(triangle.vertices[0], tmpLine);
 
@@ -306,7 +306,7 @@ bool Collision::IsCollision(const Triangle& triangle, const Segment& segment) {
 	return false;
 }
 
-bool Collision::IsCollision(const Triangle& triangle, const Ray& ray) {
+bool Collision::IsCollision(const Triangle &triangle, const Ray &ray) {
 
 	Vector3 normal = Calc::Normalize(Calc::Cross(Vector3(triangle.vertices[1]) - Vector3(triangle.vertices[0]),
 		Vector3(triangle.vertices[2]) - Vector3(triangle.vertices[1])));
@@ -354,7 +354,7 @@ bool Collision::IsCollision(const Triangle& triangle, const Ray& ray) {
 	return false;
 }
 
-bool Collision::IsCollision(const Triangle& triangle, const Line& line) {
+bool Collision::IsCollision(const Triangle &triangle, const Line &line) {
 
 	Vector3 normal = Calc::Normalize(Calc::Cross(Vector3(triangle.vertices[1]) - Vector3(triangle.vertices[0]),
 		Vector3(triangle.vertices[2]) - Vector3(triangle.vertices[1])));
@@ -400,7 +400,7 @@ bool Collision::IsCollision(const Triangle& triangle, const Line& line) {
 	return false;
 }
 
-bool Collision::IsCollision(const Quadrangle& quadrangle, const Segment& segment) {
+bool Collision::IsCollision(const Quadrangle &quadrangle, const Segment &segment) {
 
 	Vector3 normal = Calc::Normalize(Calc::Cross(Vector3(quadrangle.vertices[1]) - Vector3(quadrangle.vertices[0]),
 		Vector3(quadrangle.vertices[2]) - Vector3(quadrangle.vertices[1])));
@@ -450,7 +450,7 @@ bool Collision::IsCollision(const Quadrangle& quadrangle, const Segment& segment
 	return false;
 }
 
-bool Collision::IsCollision(const Quadrangle& quadrangle, const Ray& ray) {
+bool Collision::IsCollision(const Quadrangle &quadrangle, const Ray &ray) {
 
 	Vector3 normal = Calc::Normalize(Calc::Cross(Vector3(quadrangle.vertices[1]) - Vector3(quadrangle.vertices[0]),
 		Vector3(quadrangle.vertices[2]) - Vector3(quadrangle.vertices[1])));
@@ -499,7 +499,7 @@ bool Collision::IsCollision(const Quadrangle& quadrangle, const Ray& ray) {
 	return false;
 }
 
-bool Collision::IsCollision(const Quadrangle& quadrangle, const Line& line) {
+bool Collision::IsCollision(const Quadrangle &quadrangle, const Line &line) {
 
 	Vector3 normal = Calc::Normalize(Calc::Cross(Vector3(quadrangle.vertices[1]) - Vector3(quadrangle.vertices[0]),
 		Vector3(quadrangle.vertices[2]) - Vector3(quadrangle.vertices[1])));
@@ -546,7 +546,7 @@ bool Collision::IsCollision(const Quadrangle& quadrangle, const Line& line) {
 	return false;
 }
 
-bool Collision::IsCollision(const AABB& a, const AABB& b) {
+bool Collision::IsCollision(const AABB &a, const AABB &b) {
 
 	if ((a.min.x <= b.max.x && a.max.x >= b.min.x) &&
 		(a.min.y <= b.max.y && a.max.y >= b.min.y) &&
@@ -556,7 +556,7 @@ bool Collision::IsCollision(const AABB& a, const AABB& b) {
 	return false;
 }
 
-bool Collision::IsCollision(const AABB& a, const Sphere& sphere) {
+bool Collision::IsCollision(const AABB &a, const Sphere &sphere) {
 	Vector3 closestPoint = { std::clamp(sphere.center_.x,a.min.x,a.max.x),
 		std::clamp(sphere.center_.y,a.min.y,a.max.y),
 		std::clamp(sphere.center_.z,a.min.z,a.max.z) };
@@ -570,7 +570,7 @@ bool Collision::IsCollision(const AABB& a, const Sphere& sphere) {
 	return false;
 }
 
-bool Collision::IsCollision(const AABB& a, const Segment& segment) {
+bool Collision::IsCollision(const AABB &a, const Segment &segment) {
 
 	AABB b = a;
 
@@ -591,8 +591,8 @@ bool Collision::IsCollision(const AABB& a, const Segment& segment) {
 		(b.min.y <= segment.origin.y && b.max.y >= segment.origin.y) &&
 		(b.min.z <= segment.origin.z && b.max.z >= segment.origin.z)) ||
 		((b.min.x <= segment.origin.x + segment.diff.x && b.max.x >= segment.origin.x + segment.diff.x) &&
-		(b.min.y <= segment.origin.y + segment.diff.y && b.max.y >= segment.origin.y + segment.diff.y) &&
-		(b.min.z <= segment.origin.z + segment.diff.z && b.max.z >= segment.origin.z + segment.diff.z))) {
+			(b.min.y <= segment.origin.y + segment.diff.y && b.max.y >= segment.origin.y + segment.diff.y) &&
+			(b.min.z <= segment.origin.z + segment.diff.z && b.max.z >= segment.origin.z + segment.diff.z))) {
 		return true;
 	}
 
@@ -648,7 +648,7 @@ bool Collision::IsCollision(const AABB& a, const Segment& segment) {
 
 }
 
-bool Collision::IsCollision(const AABB& a, const Ray& ray) {
+bool Collision::IsCollision(const AABB &a, const Ray &ray) {
 
 	AABB b = a;
 
@@ -722,7 +722,7 @@ bool Collision::IsCollision(const AABB& a, const Ray& ray) {
 	return false;
 }
 
-bool Collision::IsCollision(const AABB& a, const Line& line) {
+bool Collision::IsCollision(const AABB &a, const Line &line) {
 
 	Vector3 radius = (Vector3(a.max) - a.min) / 2.0f;
 
@@ -775,7 +775,7 @@ bool Collision::IsCollision(const AABB& a, const Line& line) {
 	return false;
 }
 
-bool Collision::IsCollision(const OBB& a, const Sphere& sphere) {
+bool Collision::IsCollision(const OBB &a, const Sphere &sphere) {
 
 	Matrix4x4 worldMat = {
 		a.orientations[0].x,a.orientations[0].y,a.orientations[0].z,0,
@@ -789,13 +789,13 @@ bool Collision::IsCollision(const OBB& a, const Sphere& sphere) {
 	Vector3 centerInOBBLocalSpase = Matrix4x4::Multiply(sphere.center_, worldMatInverse);
 
 	AABB aabb = { Vector3(a.size) * (-1), a.size };
-	
-	Sphere b = { centerInOBBLocalSpase,sphere.scale_,sphere.rotate_,sphere.radius_ };
-	
+
+	Sphere b = { centerInOBBLocalSpase,sphere.radius_ };
+
 	return IsCollision(aabb, b);
 }
 
-bool Collision::IsCollision(const OBB& a, const Segment& segment) {
+bool Collision::IsCollision(const OBB &a, const Segment &segment) {
 
 	Matrix4x4 worldMat = {
 		a.orientations[0].x,a.orientations[0].y,a.orientations[0].z,0,
@@ -822,7 +822,7 @@ bool Collision::IsCollision(const OBB& a, const Segment& segment) {
 	return IsCollision(aabb, s);
 }
 
-bool Collision::IsCollision(const OBB& a, const Ray& ray) {
+bool Collision::IsCollision(const OBB &a, const Ray &ray) {
 
 	Matrix4x4 worldMat = {
 		a.orientations[0].x,a.orientations[0].y,a.orientations[0].z,0,
@@ -849,7 +849,7 @@ bool Collision::IsCollision(const OBB& a, const Ray& ray) {
 	return IsCollision(aabb, r);
 }
 
-bool Collision::IsCollision(const OBB& a, const Line& line) {
+bool Collision::IsCollision(const OBB &a, const Line &line) {
 
 	Matrix4x4 worldMat = {
 		a.orientations[0].x,a.orientations[0].y,a.orientations[0].z,0,
@@ -876,7 +876,7 @@ bool Collision::IsCollision(const OBB& a, const Line& line) {
 	return IsCollision(aabb, l);
 }
 
-bool Collision::IsCollision(const AABB& a, const OBB& b) {
+bool Collision::IsCollision(const AABB &a, const OBB &b) {
 
 	Matrix4x4 worldMat = {
 		b.orientations[0].x,b.orientations[0].y,b.orientations[0].z,0,
@@ -940,7 +940,7 @@ bool Collision::IsCollision(const AABB& a, const OBB& b) {
 		}
 	}
 
-	radius = (Vector3(a.max) -a.min) / 2.0f;
+	radius = (Vector3(a.max) - a.min) / 2.0f;
 
 	Vector3 verteces2[8] = {
 		{-radius.x,radius.y,-radius.z},
@@ -996,7 +996,7 @@ bool Collision::IsCollision(const AABB& a, const OBB& b) {
 	return false;
 }
 
-bool Collision::IsCollision(const OBB& a, const OBB& b) {
+bool Collision::IsCollision(const OBB &a, const OBB &b) {
 
 	Matrix4x4 worldMat = {
 		b.orientations[0].x,b.orientations[0].y,b.orientations[0].z,0,
@@ -1004,7 +1004,7 @@ bool Collision::IsCollision(const OBB& a, const OBB& b) {
 		b.orientations[2].x,b.orientations[2].y,b.orientations[2].z,0,
 		b.center.x,b.center.y,b.center.z,1
 	};
-	
+
 	Vector3 verteces[8] = {
 		{-b.size.x,b.size.y,-b.size.z},
 		{b.size.x,b.size.y,-b.size.z},
@@ -1115,4 +1115,22 @@ bool Collision::IsCollision(const OBB& a, const OBB& b) {
 	}
 
 	return false;
+}
+
+bool Collision::IsCollision(const Sphere &sp, const Segment &li) {
+	// 最近接点の比率を算出
+	const float t = li.ClosestProgress(sp.center_);
+	// 最近接点の座標を返す
+	const Vector3 nearPos = li.origin + li.diff * t;
+	// 最近接点への距離が半径未満ならヒット
+	return sp.radius_ >= (nearPos - sp.center_).Length();
+}
+
+bool Collision::IsCollision(const Sphere &s, const Capsule &c) {
+	// 最近接点の比率を算出
+	const float t = c.segment_.ClosestProgress(s.center_);
+	// 最近接点の座標を返す
+	const Vector3 nearPos = c.segment_.origin + c.segment_.diff * t;
+	// 最近接点への距離が半径未満ならヒット
+	return (c.radius_ + s.radius_) >= (nearPos - s.center_).Length();
 }

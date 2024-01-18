@@ -200,6 +200,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffect\PostEffect.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
+    <ClCompile Include="Engine\Utils\Shape\Line.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\Graphics\Color.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\IO\CSV.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\IO\File.cpp" />
@@ -299,6 +300,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffect\PostEffect.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\TextureManager\TextureManager.h" />
+    <ClInclude Include="Engine\Utils\Shape\Capsule.h" />
+    <ClInclude Include="Engine\Utils\Shape\IShape.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\ConstVector.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Graphics\Color.h" />

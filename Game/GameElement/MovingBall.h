@@ -5,6 +5,7 @@
 #include "Vector3.h"
 #include <SoUtils/SoLib/SoLib_Timer.h>
 #include "IEntity.h"
+#include "SoUtils/Math/Euler.h"
 
 class MapChip;
 class BoundPin;
@@ -59,6 +60,8 @@ private:
 
 	void UpdateRigidbody(const float deltaTime);
 
+	Vector3 scale_ = Vector3::one;
+	SoLib::Math::Euler rotate_;
 	Sphere sphere_;
 
 	Matrix4x4 transformMat_;

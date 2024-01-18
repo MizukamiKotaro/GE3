@@ -42,6 +42,10 @@ public:
 
 	const auto &GetSwordEase() const { return kSwordEasing_.GetItem(); }
 
+	float GetSwingTime() const { return vSwingTime_.GetItem(); }
+
+	float GetSwordDamage() const { return vSwordDamage_.GetItem(); }
+
 private:
 
 	uint32_t stageModel_;
@@ -60,14 +64,12 @@ private:
 
 	std::unique_ptr<MapChip> mapChip_ = nullptr;
 
-
 	VariantItem<Vector3> scale_{ "Scale",Vector3::one };
 	VariantItem<SoLib::Math::Euler> rotate_{ "Rotate" };
 	VariantItem<Vector3> position_{ "Position" };
 
-	VariantItem<float> vSwingAngle_{ "SwingAngle",10._deg };
+	VariantItem<float> vSwordDamage_{ "SwordDamage", 1.f };
 	VariantItem<SoLib::SecondF> vSwingTime_{ "SwingTime", 1.f };
-	VariantItem<SoLib::SecondF> vSwingReturn_{ "SwingReturn",1.f };
 
 	VariantItem<float> vHoleSize_{ "HoleSize", 0.75f };
 	VariantItem<SoLib::SecondF> vHoleChathTime_{ "HoleChathTime", 1.f };

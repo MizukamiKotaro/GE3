@@ -474,6 +474,9 @@
     <ClCompile Include="Engine\GraphicsPipelines\HighLumiGraphicsPipeline\HighLumiGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\HighLumiGraphicsPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utils\Shape\Line.cpp">
+      <Filter>Engine\Utils\Shape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -799,6 +802,12 @@
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\HighLumiGraphicsPipeline\HighLumiGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\HighLumiGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\Shape\Capsule.h">
+      <Filter>Engine\Utils\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\Shape\IShape.h">
+      <Filter>Engine\Utils\Shape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

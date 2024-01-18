@@ -6,6 +6,8 @@
 #include "Input/Input.h"
 #include "Audio.h"
 #include "IEntity.h"
+#include "Shape/Sphere.h"
+#include "Sword.h"
 
 class MapChip;
 
@@ -23,7 +25,7 @@ public:
 	const Matrix4x4 &GetTransMat() const { return transformMat_; }
 	const Vector3 &GetGrobalPos() const { return *reinterpret_cast<const Vector3 *>(transformMat_.m[3]); }
 
-	float GetRadius() const { return radius_; }
+	float GetRadius() const { return sphere_.radius_; }
 
 	void InputAction(Input *const input, const float deltaTime);
 
@@ -39,16 +41,23 @@ public:
 
 	void CalcTransMat();
 
+	void Damage(Sword *sword);
+
+	void OnCollision(IEntity *other) override;
+
+	const auto &GetSphere() const { return sphere_; }
+
 private:
+
+	float health_;
+	VariantItem<float> vMaxHealth_{ "MaxHealth", 10.f };
 
 	std::list<std::unique_ptr<MovingBall>> *ballList_;
 	bool isLanding_ = false;
 
 	Vector3 scale_;
 	SoLib::Math::Euler rotate_;
-	Vector3 transform_;
-
-	float radius_ = 1.f;
+	Sphere sphere_{ .center_ = Vector3::zero, .radius_ = 1.f };
 
 	Matrix4x4 transformMat_;
 
@@ -58,6 +67,8 @@ private:
 	SoLib::Color::RGB4 color_;
 
 	std::unique_ptr<BarrierItem> barrier_ = nullptr;
+
+	SoLib::Time::DeltaTimer invincibleTime_;
 
 	Vector3 velocity_;
 
