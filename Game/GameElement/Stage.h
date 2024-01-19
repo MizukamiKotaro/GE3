@@ -10,6 +10,7 @@
 #include "Sword.h"
 #include "SoUtils/Math/Angle.h"
 #include "Punch.h"
+#include "Needle.h"
 
 class Stage {
 public:
@@ -19,6 +20,8 @@ public:
 	void Init();
 
 	void LoadCSV(const SoLib::IO::CSV &csv);
+
+	void SetWeapon();
 
 	void Update(const float deltaTime);
 
@@ -35,6 +38,8 @@ public:
 	auto *const GetSwordList() { return &swordList_; }
 	auto *const GetPunchList() { return &punchList_; }
 
+	auto *const GetNeedleList() { return &needleList; }
+
 	void LoadValue(const char *const groupName);
 	void SaveValue(const char *const groupName) const;
 
@@ -42,11 +47,19 @@ public:
 
 	float GetHoleChathTime() const { return vHoleChathTime_.GetItem(); }
 
-	const auto &GetSwordEase() const { return kSwordEasing_.GetItem(); }
+	const auto &GetSwordEase() const { return vSwordEasing_.GetItem(); }
 
 	float GetSwingTime() const { return vSwingTime_.GetItem(); }
 
 	float GetSwordDamage() const { return vSwordDamage_.GetItem(); }
+
+	const auto &GetPunchEase() const { return vPunchEasing_.GetItem(); }
+
+	float GetNeedleTime() const { return vNeedleTime_.GetItem(); }
+
+	float GetNeedleHight() const { return vNeedleHight_; }
+
+	float stageGround_ = 0.f;
 
 private:
 
@@ -54,13 +67,15 @@ private:
 
 	Matrix4x4 transMat_;
 
+	std::list<std::unique_ptr<Needle>> needleList;
+
 	std::list<std::unique_ptr<Punch>> punchList_;
 
 	std::list<std::unique_ptr<Sword>> swordList_;
 
 	std::list<std::unique_ptr<BoundPin>> pinList_;
 
-	std::list<std::unique_ptr<Hole>> holeList_;
+	std::vector<std::unique_ptr<Hole>> holeList_;
 
 	std::list<std::unique_ptr<BallSpawner>> spawnerList_;
 
@@ -78,8 +93,14 @@ private:
 	VariantItem<float> vHoleSize_{ "HoleSize", 0.75f };
 	VariantItem<SoLib::SecondF> vHoleChathTime_{ "HoleChathTime", 1.f };
 
-	VariantItem<SoLib::EaseFunc> kSwordEasing_ = { "SwordEasing", { SoLib::easeInOutQuad } };
+	VariantItem<SoLib::EaseFunc> vSwordEasing_ = { "SwordEasing", { SoLib::easeInOutQuad } };
 
-	std::string groupName_{ "Stage" };
+	VariantItem<SoLib::EaseFunc> vPunchEasing_ = { "PunchEasing", { SoLib::easeInOutQuad } };
+
+	VariantItem<SoLib::SecondF> vNeedleTime_{ "NeedleTime", 1.f };
+
+	VariantItem<float> vNeedleHight_{ "NeedleHight", 1.f };
+
+	const std::string groupName_{ "Stage" };
 
 };

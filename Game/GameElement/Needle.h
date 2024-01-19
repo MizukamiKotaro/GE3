@@ -1,0 +1,44 @@
+#pragma once
+#include "IEntity.h"
+#include "IWeapon.h"
+#include "Vector3.h"
+#include <SoUtils/Math/Euler.h>
+#include <SoUtils/SoLib/SoLib_Timer.h>
+
+class Needle : public IEntity, public IWeapon {
+public:
+	Needle();
+	~Needle() = default;
+
+	void Init() override;
+
+	void Update(const float deltaTime) override;
+
+	void Draw() override;
+
+	void AttackUpdate(const float deltaTime);
+
+	void Attack() override;
+
+	bool IsAttacked() const override;
+
+	float GetDamage() const override;
+
+private:
+
+	void CalcTransMat();
+
+private:
+
+	uint32_t model_;
+
+	SoLib::Time::DeltaTimer attackTimer_;
+	SoLib::Time::DeltaTimer followTimer_;
+
+	Vector3 scale_;
+	SoLib::Math::Euler rotate_;
+	Vector3 translate_;
+
+	Matrix4x4 transMat_;
+
+};

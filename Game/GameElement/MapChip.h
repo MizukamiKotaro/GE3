@@ -36,6 +36,8 @@ public:
 
 	Vector3 HitMap(const Vector3 &beforePos, const Vector3 &afterPos, float) const;
 
+	const auto &GetMapData() const { return mapData_; }
+
 private:
 
 	void TransferBox();

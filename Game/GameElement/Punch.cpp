@@ -2,6 +2,7 @@
 #include <SoUtils/SoLib/SoLib.h>
 #include <BlockManager.h>
 #include <ModelDataManager.h>
+#include "Stage.h"
 
 Punch::Punch() {
 }
@@ -55,14 +56,14 @@ void Punch::AttackUpdate(const float deltaTime) {
 	followTimer_.Update(deltaTime);
 
 	if (attackTimer_.IsActive()) {
-		sphere_.center_ = SoLib::Lerp(origin_, target_, attackTimer_.GetProgress());
+		sphere_.center_ = SoLib::Lerp(origin_, target_, pStage_->GetPunchEase()(attackTimer_.GetProgress()));
 
 		if (attackTimer_.IsFinish()) {
 			followTimer_.Start(1.f);
 		}
 	}
 	if (followTimer_.IsActive()) {
-		sphere_.center_ = SoLib::Lerp(target_, origin_, followTimer_.GetProgress());
+		sphere_.center_ = SoLib::Lerp(target_, origin_, pStage_->GetPunchEase()(followTimer_.GetProgress()));
 	}
 }
 

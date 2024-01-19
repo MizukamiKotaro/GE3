@@ -28,6 +28,7 @@ void StageScene::Init()
 	stage_ = std::make_unique<Stage>();
 	stage_->Init();
 	stage_->LoadCSV(csv_);
+	stage_->SetWeapon();
 
 	stage_->GetSpawnerList()->push_back(std::make_unique<BallSpawner>());
 	auto spawner = stage_->GetSpawnerList()->back().get();
@@ -178,10 +179,10 @@ void StageScene::CreatePostEffects()
 
 	auto swordList = stage_->GetSwordList();
 	isDrawSwordBlur_ = false;
-	
+
 	pBlockManager_->clear();
 
-	for (const auto& sword : *swordList) {
+	for (const auto &sword : *swordList) {
 		if (sword->IsAttacked()) {
 			sword->Draw();
 			isDrawSwordBlur_ = true;

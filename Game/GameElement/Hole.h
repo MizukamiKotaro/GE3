@@ -4,6 +4,7 @@
 #include "SoUtils/Graphics/Color.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "IWeapon.h"
 
 class Stage;
 class MovingBall;
@@ -38,6 +39,8 @@ public:
 	void SetPos(const Vector3 &pos) { position_ = pos; }
 	const Vector3 &GetPos() const { return position_; }
 
+	void AddWeapon(IWeapon *weapon);
+
 private:
 
 	void UpdateBallChacher(const float deltaTime);
@@ -63,6 +66,7 @@ private:
 
 	std::list<BallCatcher> ballList_;
 
+	std::vector<IWeapon *> weapons_;
 
 private:
 

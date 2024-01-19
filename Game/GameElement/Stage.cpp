@@ -26,6 +26,10 @@ void Stage::Init() {
 
 	punch->Init();
 
+	auto *needle = needleList.emplace_back(std::make_unique<Needle>()).get();
+
+	needle->Init();
+
 }
 
 void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
@@ -42,7 +46,9 @@ void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
 	}
 	const auto holePos = mapChip_->GetChipPos(MapChip::ChipType::kHole);
 
-	for (auto pos : holePos) {
+	holeList_.reserve(holePos.size());
+
+	for (Vector3 pos : holePos) {
 
 		auto holeItem = holeList_.emplace_back(std::make_unique<Hole>()).get();
 
@@ -51,6 +57,25 @@ void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
 		holeItem->SetPos(pos);
 
 	}
+	stageGround_ = (-static_cast<float>(mapChip_->GetMapData().GetRows()) + 1.f) * 0.5f;
+
+}
+
+void Stage::SetWeapon() {
+
+	for (const auto &sword : swordList_) {
+		holeList_[sword->GetNumber()]->AddWeapon(sword.get());
+	}
+
+	for (const auto &sword : punchList_) {
+		holeList_[sword->GetNumber()]->AddWeapon(sword.get());
+	}
+	
+
+	for (const auto &needle : needleList) {
+		holeList_[needle->GetNumber()]->AddWeapon(needle.get());
+	}
+
 
 }
 
@@ -92,6 +117,9 @@ void Stage::Update(const float deltaTime) {
 	for (auto &punch : punchList_) {
 		punch->Update(deltaTime);
 	}
+	for (auto &needle : needleList) {
+		needle->Update(deltaTime);
+	}
 
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_.GetItem(), position_);
 }
@@ -122,6 +150,9 @@ void Stage::Draw() {
 	for (auto &punch : punchList_) {
 		punch->Draw();
 	}
+	for (auto &needle : needleList) {
+		needle->Draw();
+	}
 
 	static auto *const blockManager = BlockManager::GetInstance();
 
@@ -138,7 +169,7 @@ void Stage::LoadValue(const char *const groupName) {
 
 	position_ = gVariables->Get<Vector3>(groupName, position_.GetKey());
 
-	kSwordEasing_.GetItem() = gVariables->Get<int32_t>(groupName, kSwordEasing_.GetKey());
+	vSwordEasing_.GetItem() = gVariables->Get<int32_t>(groupName, vSwordEasing_.GetKey());
 
 }
 
@@ -149,7 +180,7 @@ void Stage::SaveValue(const char *const groupName) const {
 	gVariables->SetValue(groupName, rotate_.GetKey(), rotate_.GetItem());
 	gVariables->SetValue(groupName, position_.GetKey(), position_);
 
-	gVariables->SetValue(groupName, kSwordEasing_.GetKey(), kSwordEasing_.GetItem().GetNumber());
+	gVariables->SetValue(groupName, vSwordEasing_.GetKey(), vSwordEasing_.GetItem().GetNumber());
 
 }
 
@@ -160,7 +191,7 @@ void Stage::ImGuiWidget() {
 
 	if (ImGui::TreeNode("StageEditor")) {
 
-		SoLib::ImGuiWidget("SwordEase", &kSwordEasing_.GetItem());
+		SoLib::ImGuiWidget("SwordEase", &vSwordEasing_.GetItem());
 
 		SoLib::ImGuiWidget(&scale_);
 		SoLib::ImGuiWidget(&rotate_);
