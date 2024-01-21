@@ -26,7 +26,7 @@ public:
 
 	void SetPos(const Vector3 &pos) { position_ = pos; }
 
-	void Attack() override;
+	void Attack(const AttackType attackType = AttackType::kNormal) override;
 
 	bool IsAttacked() const override { return attackTimer_.IsActive(); }
 

@@ -10,6 +10,12 @@ protected:
 	float ClosestProgress(const Vector3 &point) const;
 
 public:
+	/// @brief 係数に応じた座標を取得する
+	/// @param t 係数
+	/// @return 座標
+	Vector3 GetPoint(const float t) const;
+
+	Vector3 GetEnd() const { return origin + diff; }
 
 	Vector3 origin; // 始点
 	Vector3 diff; // 終点への差分ベクトル

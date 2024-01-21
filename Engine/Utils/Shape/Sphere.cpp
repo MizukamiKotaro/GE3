@@ -26,11 +26,33 @@
 //	radius_ = radius;
 //}
 
-void Sphere::Initialize(const Vector3& center, const float& radius) {
+void Sphere::Initialize(const Vector3 &center, const float &radius) {
 	center_ = center;
 	//scale_ = { 1.0f,1.0f,1.0f };
 	//rotate_ = {};
 	radius_ = radius;
+}
+
+Matrix4x4 Sphere::MakeAffineMatrix() const {
+	return MakeAffineMatrix(center_, radius_);
+}
+
+Matrix4x4 Sphere::MakeAffineMatrix(const Vector3 &center, const float radius) {
+	// アフィン行列
+	Matrix4x4 result{};
+
+	// 末端を1に( 0 除算対策 )
+	result.m[3][3] = 1.f;
+
+	// 平行移動成分
+	*reinterpret_cast<Vector3 *>(result.m[3]) = center;
+
+	// スケール成分
+	for (uint8_t i = 0u; i < 3u; i++) {
+		result.m[i][i] = radius;
+	}
+
+	return result;
 }
 //
 //void Sphere::Initialize(const Vector3& center, const Vector3& rotate, const float& radius) {

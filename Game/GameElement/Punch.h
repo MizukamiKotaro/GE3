@@ -26,7 +26,7 @@ public:
 
 	void AttackUpdate(const float deltaTime);
 
-	void Attack() override;
+	void Attack(const AttackType attackType = AttackType::kNormal) override;
 
 	bool IsAttacked() const override;
 

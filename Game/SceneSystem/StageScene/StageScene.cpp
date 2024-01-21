@@ -8,6 +8,8 @@ StageScene::StageScene() {
 	FirstInit();
 	pBlockManager_ = BlockManager::GetInstance();
 
+	collisionRenderer_ = CollisionRenderer::GetInstance();
+
 }
 
 void StageScene::Init()
@@ -159,6 +161,19 @@ void StageScene::Draw() {
 	player_->Draw();
 
 	slot_->Draw(camera_.get());
+
+	collisionRenderer_->AddCollision(player_->GetSphere());
+
+	// 剣の配列から、有効な当たり判定を取得して描画する
+	const auto &swordList = *stage_->GetSwordList();
+	for (const auto &sword : swordList) {
+		const auto *const swordCollision = sword->GetCollision();
+		if (swordCollision) {
+			collisionRenderer_->AddCollision(*swordCollision);
+		}
+	}
+
+	collisionRenderer_->AddCollision(player_->GetSphere());
 
 	pBlockManager_->Draw(*camera_.get());
 

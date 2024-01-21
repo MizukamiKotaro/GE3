@@ -201,6 +201,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
     <ClCompile Include="Engine\Utils\Shape\Line.cpp" />
+    <ClCompile Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\Graphics\Color.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\IO\CSV.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\IO\File.cpp" />
@@ -307,6 +308,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\ConstVector.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Graphics\Color.h" />
+    <ClInclude Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.h" />
     <ClInclude Include="Engine\Utils\SoUtils\IO\CSV.h" />
     <ClInclude Include="Engine\Utils\SoUtils\IO\File.h" />
     <ClInclude Include="Engine\Utils\SoUtils\IO\VariantItem.h" />

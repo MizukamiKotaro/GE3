@@ -480,8 +480,11 @@
     <ClCompile Include="Game\GameElement\Punch.cpp">
       <Filter>Game\GameElement</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.cpp">
+      <Filter>Engine\Utils\SoUtils\Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="Game\GameElement\Needle.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Game\GameElement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -820,6 +823,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\Needle.h">
       <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.h">
+      <Filter>Engine\Utils\SoUtils\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

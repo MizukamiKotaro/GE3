@@ -2,8 +2,9 @@
 #include "IEntity.h"
 #include "IWeapon.h"
 #include "Vector3.h"
-#include <SoUtils/Math/Euler.h>
-#include <SoUtils/SoLib/SoLib_Timer.h>
+#include "SoUtils/Math/Euler.h"
+#include "SoUtils/SoLib/SoLib.h"
+#include "Shape/Capsule.h"
 
 class Needle : public IEntity, public IWeapon {
 public:
@@ -18,7 +19,7 @@ public:
 
 	void AttackUpdate(const float deltaTime);
 
-	void Attack() override;
+	void Attack(const AttackType attackType = AttackType::kNormal) override;
 
 	bool IsAttacked() const override;
 
@@ -40,5 +41,7 @@ private:
 	Vector3 translate_;
 
 	Matrix4x4 transMat_;
+
+	Capsule capsule_;
 
 };

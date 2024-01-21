@@ -67,7 +67,7 @@ void Punch::AttackUpdate(const float deltaTime) {
 	}
 }
 
-void Punch::Attack()
+void Punch::Attack(const AttackType attackType)
 {
 	if (attackTimer_.IsFinish() && followTimer_.IsFinish()) {
 		attackTimer_.Start(1.f);

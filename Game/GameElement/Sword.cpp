@@ -52,7 +52,7 @@ void Sword::Draw()
 
 }
 
-void Sword::Attack() {
+void Sword::Attack(const AttackType attackType) {
 	if (attackTimer_.IsFinish()) {
 		attackTimer_.Start(pStage_->GetSwingTime());
 	}

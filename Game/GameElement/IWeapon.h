@@ -3,8 +3,15 @@
 
 class IWeapon {
 public:
+
+	enum class AttackType {
+		kWeak,		// 弱攻撃
+		kNormal,	// 中攻撃
+		kStrong,	// 強攻撃
+	};
+
 	/// @brief 攻撃発生
-	virtual void Attack() = 0;
+	virtual void Attack(const AttackType attackType = AttackType::kNormal) = 0;
 
 	/// @brief 攻撃中か
 	/// @return 攻撃中

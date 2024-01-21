@@ -14,6 +14,8 @@ void Needle::Init()
 	translate_ = Vector3::zero;
 	translate_.y = pStage_->stageGround_;
 
+	capsule_ = Capsule{ .radius_ = 1.f, .segment_{ Vector3::zero, Vector3::up } };
+
 	CalcTransMat();
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
@@ -50,9 +52,11 @@ void Needle::AttackUpdate(const float deltaTime)
 		translate_.y = SoLib::Lerp(pStage_->GetNeedleHight(), pStage_->stageGround_, pStage_->GetPunchEase()(followTimer_.GetProgress()));
 	}
 
+	capsule_.segment_.origin = translate_;
+
 }
 
-void Needle::Attack()
+void Needle::Attack(const AttackType attackType)
 {
 	if (attackTimer_.IsFinish()) {
 		attackTimer_.Start(pStage_->GetNeedleTime());

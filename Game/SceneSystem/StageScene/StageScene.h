@@ -19,6 +19,7 @@
 #include "GameElement/Slot/Slot.h"
 
 #include "PostEffect/Blur/Blur.h"
+#include <SoUtils/Graphics/CollisionRenderer.h>
 
 class StageScene : public IScene {
 public:
@@ -36,6 +37,8 @@ private:
 private:
 
 	std::unique_ptr<Player> player_;
+
+	CollisionRenderer *collisionRenderer_;
 
 	BlockManager *pBlockManager_;
 	std::unique_ptr<Stage> stage_;
