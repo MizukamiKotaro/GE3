@@ -164,12 +164,30 @@ void StageScene::Draw() {
 
 	collisionRenderer_->AddCollision(player_->GetSphere());
 
-	// 剣の配列から、有効な当たり判定を取得して描画する
+	// 剣の配列から、当たり判定を取得して有効なら描画する
+	const auto &punchList = *stage_->GetPunchList();
+	for (const auto &punch : punchList) {
+		const auto *const swordCollision = punch->GetCollision();
+		if (swordCollision) {
+			collisionRenderer_->AddCollision(*swordCollision);
+		}
+	}
+
+	// 剣の配列から、当たり判定を取得して有効なら描画する
 	const auto &swordList = *stage_->GetSwordList();
 	for (const auto &sword : swordList) {
 		const auto *const swordCollision = sword->GetCollision();
 		if (swordCollision) {
 			collisionRenderer_->AddCollision(*swordCollision);
+		}
+	}
+
+	// トゲの配列から、当たり判定を取得して有効なら描画する
+	const auto &needleList = *stage_->GetNeedleList();
+	for (const auto &needle : needleList) {
+		const auto *const needleCollision = needle->GetCollision();
+		if (needleCollision) {
+			collisionRenderer_->AddCollision(*needleCollision);
 		}
 	}
 

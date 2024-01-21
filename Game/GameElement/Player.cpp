@@ -5,6 +5,8 @@
 #include "MovingBall.h"
 #include "MapChip.h"
 #include "Audio.h"
+#include "Punch.h"
+#include "Needle.h"
 
 void Player::Init() {
 	barrier_ = std::make_unique<BarrierItem>();
@@ -136,7 +138,7 @@ void Player::CalcTransMat() {
 	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * sphere_.radius_, rotate_, sphere_.center_);
 }
 
-void Player::Damage([[maybe_unused]] Sword *sword) {
+void Player::Damage([[maybe_unused]] IWeapon *weapon) {
 
 	// 無敵時間が終わっていたら
 	if (invincibleTime_.IsFinish()) {
@@ -144,16 +146,22 @@ void Player::Damage([[maybe_unused]] Sword *sword) {
 		invincibleTime_.Start();
 
 		// 体力を減らす
-		health_ -= sword->GetDamage();
+		health_ -= weapon->GetDamage();
 
 	}
 
 }
 
 void Player::OnCollision(IEntity *other) {
-	auto *sword = dynamic_cast<Sword *>(other);
-	if (sword) {
-		Damage(sword);
+	IWeapon *weapon = dynamic_cast<Sword *>(other);
+	if (not weapon) {
+		weapon = dynamic_cast<Punch *>(other);
+	}
+	if (not weapon) {
+		weapon = dynamic_cast<Needle *>(other);
+	}
+	if (weapon) {
+		Damage(weapon);
 	}
 
 }

@@ -69,7 +69,7 @@ void Punch::AttackUpdate(const float deltaTime) {
 
 void Punch::Attack(const AttackType attackType)
 {
-	if (attackTimer_.IsFinish() && followTimer_.IsFinish()) {
+	if (not attackTimer_.IsActive() && not followTimer_.IsActive()) {
 		attackTimer_.Start(1.f);
 	}
 
@@ -77,7 +77,7 @@ void Punch::Attack(const AttackType attackType)
 
 bool Punch::IsAttacked() const
 {
-	return false;
+	return attackTimer_.IsActive();
 }
 
 float Punch::GetDamage() const

@@ -13,6 +13,8 @@ public:
 
 	void Init() override;
 
+	void SetParametor();
+
 	void Update(const float deltaTime) override;
 
 	void Draw() override;
@@ -25,7 +27,11 @@ public:
 
 	float GetDamage() const override;
 
+	const Capsule *GetCollision() const;
+
 private:
+
+	void CalcSegment();
 
 	void CalcTransMat();
 

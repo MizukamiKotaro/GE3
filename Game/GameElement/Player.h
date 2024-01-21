@@ -41,7 +41,7 @@ public:
 
 	void CalcTransMat();
 
-	void Damage(Sword *sword);
+	void Damage(IWeapon *weapon);
 
 	void OnCollision(IEntity *other) override;
 

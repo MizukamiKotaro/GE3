@@ -59,6 +59,8 @@ public:
 
 	float GetNeedleHight() const { return vNeedleHight_; }
 
+	float GetNeedleScale() const { return vNeedleScale_; }
+
 	float stageGround_ = 0.f;
 
 private:
@@ -100,6 +102,7 @@ private:
 	VariantItem<SoLib::SecondF> vNeedleTime_{ "NeedleTime", 1.f };
 
 	VariantItem<float> vNeedleHight_{ "NeedleHight", 1.f };
+	VariantItem<float> vNeedleScale_{ "NeedleScale", 3.f };
 
 	const std::string groupName_{ "Stage" };
 

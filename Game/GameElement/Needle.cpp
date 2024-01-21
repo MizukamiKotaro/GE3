@@ -12,7 +12,6 @@ void Needle::Init()
 	scale_ = Vector3::one;
 	rotate_ = Vector3::zero;
 	translate_ = Vector3::zero;
-	translate_.y = pStage_->stageGround_;
 	rotate_.y = 90._deg;
 
 	capsule_ = Capsule{ .radius_ = 1.f, .segment_{ Vector3::zero, Vector3::up } };
@@ -20,6 +19,17 @@ void Needle::Init()
 	CalcTransMat();
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("arrow");
+}
+
+void Needle::SetParametor() {
+
+	scale_ = Vector3::one * pStage_->GetNeedleScale();
+	translate_.y = pStage_->stageGround_;
+
+	capsule_.radius_ = scale_.x * 0.2f;
+
+	CalcSegment();
+
 }
 
 void Needle::Update(const float deltaTime)
@@ -53,13 +63,13 @@ void Needle::AttackUpdate(const float deltaTime)
 		translate_.y = SoLib::Lerp(pStage_->GetNeedleHight(), pStage_->stageGround_, pStage_->GetPunchEase()(followTimer_.GetProgress()));
 	}
 
-	capsule_.segment_.origin = translate_;
+	CalcSegment();
 
 }
 
 void Needle::Attack(const AttackType attackType)
 {
-	if (attackTimer_.IsFinish()) {
+	if (not attackTimer_.IsActive() && not followTimer_.IsActive()) {
 		attackTimer_.Start(pStage_->GetNeedleTime());
 	}
 
@@ -75,8 +85,18 @@ float Needle::GetDamage() const
 	return 1.f;
 }
 
-void Needle::CalcTransMat()
-{
+const Capsule *Needle::GetCollision() const {
+	if (not IsAttacked()) { return nullptr; }
+	return &capsule_;
+}
+
+void Needle::CalcSegment() {
+	capsule_.segment_.diff.y = scale_.y;
+	capsule_.segment_.origin = translate_ + capsule_.segment_.diff * -0.5f;
+	capsule_.segment_.origin.z = 0.f;
+}
+
+void Needle::CalcTransMat() {
 
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_, translate_);
 

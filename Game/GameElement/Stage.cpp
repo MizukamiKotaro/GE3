@@ -70,9 +70,10 @@ void Stage::SetWeapon() {
 	for (const auto &sword : punchList_) {
 		holeList_[sword->GetNumber()]->AddWeapon(sword.get());
 	}
-	
+
 
 	for (const auto &needle : needleList) {
+		needle->SetParametor();
 		holeList_[needle->GetNumber()]->AddWeapon(needle.get());
 	}
 
