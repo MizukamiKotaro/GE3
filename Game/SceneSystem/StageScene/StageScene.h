@@ -43,7 +43,6 @@ private:
 	BlockManager *pBlockManager_;
 	std::unique_ptr<Stage> stage_;
 
-	SoLib::IO::File file_;
 	SoLib::IO::CSV csv_;
 
 	std::unique_ptr<StageUI> stageUI_;

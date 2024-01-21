@@ -19,14 +19,9 @@ void StageScene::Init()
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 	camera_->Update();
 
-	//for (uint32_t i = 0; i < 4; i++) {
-	//	blocks_[i] = BlockManager::GetInstance()->AddBox(mesh1, IBlock{});
-	//	blocks_[i]->transformMat_ = Matrix4x4::MakeAffinMatrix({ 1.0f,1.0f,1.0f }, {}, { 2.0f * i,0.0f,0.0f });
-	//	blocks_[i]->color_.r = 0.3f * i;
-	//}
-
-	file_.Load("Resources/LevelData/Level1.csv");
-	csv_ = file_;
+	if (not csv_) {
+		csv_ = SoLib::IO::File("Resources/LevelData/Level1.csv");
+	}
 
 	stage_ = std::make_unique<Stage>();
 	stage_->Init();

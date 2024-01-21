@@ -97,11 +97,13 @@ namespace SoLib {
 			size_t GetWidth() const { return width_; }
 			size_t GetHeight() const { return height_; }
 
+			operator bool() const { return width_ && height_; }
+
 		private:
 			// 横幅
-			size_t width_;
+			size_t width_ = 0u;
 			// 縦幅
-			size_t height_;
+			size_t height_ = 0u;
 
 			Map data_;
 
