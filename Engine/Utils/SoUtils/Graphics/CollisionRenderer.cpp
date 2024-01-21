@@ -2,18 +2,6 @@
 #include <array>
 #include "ModelDataManager.h"
 
-std::unique_ptr<CollisionRenderer, CollisionRenderer::SingletonDeleter> CollisionRenderer::instance_;
-
-CollisionRenderer *const CollisionRenderer::GetInstance() {
-	// インスタンスが無ければ生成
-	if (not instance_) {
-		instance_.reset(new CollisionRenderer);
-		instance_->Init();
-	}
-
-	return instance_.get();
-}
-
 void CollisionRenderer::Init() {
 
 	this->clear();

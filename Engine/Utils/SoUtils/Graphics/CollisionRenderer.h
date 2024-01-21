@@ -1,19 +1,16 @@
 #pragma once
 #include <memory>
 #include "BlockManager.h"
+#include "SoUtils/Containers/Singleton.h"
 
 #include "Shape/Sphere.h"
 #include "Shape/Capsule.h"
 
-class CollisionRenderer {
+class CollisionRenderer : public SoLib::Singleton<CollisionRenderer> {
+friend SoLib::Singleton<CollisionRenderer>;
 	CollisionRenderer() = default;
-	CollisionRenderer(const CollisionRenderer &) = delete;
-	CollisionRenderer &operator=(const CollisionRenderer &) = delete;
-
 	~CollisionRenderer() = default;
 public:
-
-	static CollisionRenderer *const GetInstance();
 
 	void Init();
 
@@ -30,13 +27,6 @@ public:
 
 
 private:
-	struct SingletonDeleter {
-		void operator()(CollisionRenderer *ptr) const {
-			delete ptr;
-		}
-	};
-
-	static std::unique_ptr<CollisionRenderer, SingletonDeleter> instance_;
 
 	uint32_t sphere_;
 	uint32_t cylinder_;

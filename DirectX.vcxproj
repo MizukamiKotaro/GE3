@@ -307,6 +307,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\Shape\IShape.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\ConstVector.h" />
+    <ClInclude Include="Engine\Utils\SoUtils\Containers\Singleton.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Graphics\Color.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.h" />
     <ClInclude Include="Engine\Utils\SoUtils\IO\CSV.h" />

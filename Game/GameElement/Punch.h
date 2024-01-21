@@ -36,6 +36,8 @@ public:
 
 private:
 
+	void CalcCollision();
+
 	/// @brief アフィン行列の計算
 	void CalcTransMat();
 
@@ -50,6 +52,7 @@ private:
 
 	Vector3 scale_;
 	SoLib::Math::Euler rotate_;
+	Vector3 translate_;
 	Sphere sphere_;
 
 	Matrix4x4 transMat_;

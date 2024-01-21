@@ -14,6 +14,7 @@ StageScene::StageScene() {
 
 void StageScene::Init()
 {
+	collisionRenderer_->Init();
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 	camera_->Update();

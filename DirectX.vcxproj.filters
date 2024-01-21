@@ -827,6 +827,9 @@
     <ClInclude Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.h">
       <Filter>Engine\Utils\SoUtils\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\Containers\Singleton.h">
+      <Filter>Engine\Utils\SoUtils\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
