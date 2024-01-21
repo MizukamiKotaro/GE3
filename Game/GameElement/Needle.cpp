@@ -13,12 +13,13 @@ void Needle::Init()
 	rotate_ = Vector3::zero;
 	translate_ = Vector3::zero;
 	translate_.y = pStage_->stageGround_;
+	rotate_.y = 90._deg;
 
 	capsule_ = Capsule{ .radius_ = 1.f, .segment_{ Vector3::zero, Vector3::up } };
 
 	CalcTransMat();
 
-	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
+	model_ = ModelDataManager::GetInstance()->LoadObj("arrow");
 }
 
 void Needle::Update(const float deltaTime)
