@@ -1,0 +1,42 @@
+{
+    "Level": [
+        {
+            "Weapon": {
+                "Sword": [
+                    {
+                        // 回転軸の座標
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        // 回転方向
+                        "RotateTarget": 360.0,
+                        // 紐づいている穴のインデックス
+                        "HoleIndex": 0
+                    }
+                ],
+                "Punch": [
+                    {
+                        // 開始地点
+                        "StartPosition": [5.0, 0.0, 0.0],
+                        // 終了地点
+                        "EndPosition": [0.0, 0.0, 0.0],
+                        // 右側か
+                        "IsRight": true,
+                        // 紐づいている穴のインデックス
+                        "HoleIndex": 1
+                    }
+                ],
+                "Needle": [
+                    {
+                        // 発射するx座標
+                        "Position": 0.0,
+                        // 紐づいている穴のインデックス
+                        "HoleIndex": 2
+                    }
+                ]
+            }
+        }
+    ]
+}
