@@ -17,7 +17,7 @@ namespace SoLib {
 
 	protected:
 		Singleton() = default;
-		virtual ~Singleton() = default;
+		~Singleton() = default;
 
 	public:
 

@@ -21,14 +21,17 @@ void Stage::Init() {
 	auto *sword = swordList_.emplace_back(std::make_unique<Sword>()).get();
 
 	sword->Init();
+	sword->SetNumber(0u);
 
 	auto *punch = punchList_.emplace_back(std::make_unique<Punch>()).get();
 
 	punch->Init();
+	punch->SetNumber(1u);
 
 	auto *needle = needleList.emplace_back(std::make_unique<Needle>()).get();
 
 	needle->Init();
+	needle->SetNumber(2u);
 
 }
 

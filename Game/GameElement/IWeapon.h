@@ -22,6 +22,9 @@ public:
 	virtual float GetDamage() const = 0;
 
 	uint32_t GetNumber() const { return holeNumber_; }
+	void SetNumber(const uint32_t number) { holeNumber_ = number; }
+
+	bool ImGuiWidget(const char *const label);
 
 protected:
 
