@@ -42,7 +42,7 @@ private:
 
 	void TransferBox();
 
-	const float kChipScale_ = 1.f;
+	const float kChipScale_ = 0.8f;
 	const float kBoxScale = 0.5f;
 
 	BlockManager *pBlockManager_;

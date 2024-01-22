@@ -13,9 +13,9 @@ void Sword::Init()
 
 	color_ = 0xFFFFFFFF;
 
-	scale_ = Vector3::one * 5.f;
+	scale_ = Vector3::one * 8.f;
 	rotate_ = Vector3::zero;
-	position_ = Vector3::zero;
+	position_ = Vector3(13,0,-3);
 
 	rotate_.y = -90._deg;
 

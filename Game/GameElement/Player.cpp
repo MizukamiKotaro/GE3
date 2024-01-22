@@ -15,7 +15,7 @@ void Player::Init() {
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
-	sphere_.radius_ = 0.5f;
+	sphere_.radius_ = 0.4f;
 
 	scale_ = Vector3::one * sphere_.radius_ * 2.f;
 
@@ -90,7 +90,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 	}
 
 	if (isLanding_ && (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A) || input->PressedGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
-		acceleration_.y += 10.f;
+		acceleration_.y += 15.f;
 		audio_->Play(jumpSE_, false, 0.6f);
 	}
 

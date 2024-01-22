@@ -9,9 +9,9 @@ Needle::Needle()
 
 void Needle::Init()
 {
-	scale_ = Vector3::one;
+	scale_ = Vector3::one * 4.f;
 	rotate_ = Vector3::zero;
-	translate_ = Vector3::zero;
+	translate_ = Vector3(0,0,-3);
 	rotate_.y = 90._deg;
 
 	capsule_ = Capsule{ .radius_ = 1.f, .segment_{ Vector3::zero, Vector3::up } };
@@ -23,8 +23,8 @@ void Needle::Init()
 
 void Needle::SetParametor() {
 
-	scale_ = Vector3::one * pStage_->GetNeedleScale();
-	translate_.y = pStage_->stageGround_;
+	scale_ = Vector3::one * pStage_->GetNeedleScale() * 2;
+	translate_.y = pStage_->stageGround_ - 1.f;
 
 	capsule_.radius_ = scale_.x * 0.2f;
 
@@ -53,14 +53,14 @@ void Needle::AttackUpdate(const float deltaTime)
 	followTimer_.Update(deltaTime);
 
 	if (attackTimer_.IsActive()) {
-		translate_.y = SoLib::Lerp(pStage_->stageGround_, pStage_->GetNeedleHight(), pStage_->GetPunchEase()(attackTimer_.GetProgress()));
+		translate_.y = SoLib::Lerp(pStage_->stageGround_- 6.0f, pStage_->GetNeedleHight(), pStage_->GetPunchEase()(attackTimer_.GetProgress()));
 
 		if (attackTimer_.IsFinish()) {
 			followTimer_.Start(1.f);
 		}
 	}
 	if (followTimer_.IsActive()) {
-		translate_.y = SoLib::Lerp(pStage_->GetNeedleHight(), pStage_->stageGround_, pStage_->GetPunchEase()(followTimer_.GetProgress()));
+		translate_.y = SoLib::Lerp(pStage_->GetNeedleHight(), pStage_->stageGround_ -1.0f , pStage_->GetPunchEase()(followTimer_.GetProgress()));
 	}
 
 	CalcSegment();
