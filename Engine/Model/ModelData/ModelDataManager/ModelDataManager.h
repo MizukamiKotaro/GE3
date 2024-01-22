@@ -2,12 +2,13 @@
 
 #include "Model/ModelData/ModelData.h"
 #include <vector>
+#include <memory>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-class ModelDataManager 
+class ModelDataManager
 {
 public:
 
@@ -42,14 +43,14 @@ public:
 	/// </summary>
 	/// <param name="hundle">モデルハンドル( 0 等)</param>
 	/// <returns>テクスチャーハンドル</returns>
-	const uint32_t& GetTextureHundle(uint32_t hundle) { return modelDatas_[hundle].textureHundle_; }
+	const uint32_t& GetTextureHundle(uint32_t hundle) { return modelDatas_[hundle]->textureHundle_; }
 
 	/// <summary>
 	/// モデルデータの取得
 	/// </summary>
 	/// <param name="hundle">モデルハンドル( 0 等)</param>
 	/// <returns>モデルデータ</returns>
-	const ModelData* GetModelData(uint32_t hundle) { return &modelDatas_[hundle]; }
+	const ModelData* GetModelData(uint32_t hundle) { return modelDatas_[hundle].get(); }
 
 private:
 	ModelDataManager() = default;
@@ -67,7 +68,7 @@ private:
 
 private:
 
-	std::vector<ModelData> modelDatas_;
+	std::vector<std::unique_ptr<ModelData>> modelDatas_;
 
 	const std::string directoryPath_ = "Resources";
 

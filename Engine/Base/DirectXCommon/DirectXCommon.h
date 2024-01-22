@@ -3,9 +3,10 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
-#include "Engine/Base/WinApp/WinApp.h"
+#include "WinApp/WinApp.h"
 #include <vector>
 #include <chrono>
+#include "DescriptorHeapManager/DescriptorHeap/DescriptorHeap.h"
 
 class DirectXCommon
 {
@@ -79,8 +80,8 @@ private: // メンバ変数
 	ComPtr<ID3D12Fence> fence_;
 	uint64_t fenceValue_ = 0;
 
-	ID3D12DescriptorHeap* rtvHeap_ = nullptr;
-	ID3D12DescriptorHeap* dsvHeap_ = nullptr;
+	std::vector<const DescriptorHandles*> rtvHandles_;
+	const DescriptorHandles* dsvHandles_;
 
 	// 記録時間(FPS固定)
 	std::chrono::steady_clock::time_point reference_;

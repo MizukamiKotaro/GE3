@@ -205,6 +205,9 @@
     <Filter Include="Engine\GraphicsPipelines\HighLumiGraphicsPipeline">
       <UniqueIdentifier>{00da4ce4-dde6-4b36-86a4-316a296e86c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Base\DescriptorHeapManager\DescriptorHeap">
+      <UniqueIdentifier>{67266de9-ca2a-4e5e-9009-c89a95353591}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -485,6 +488,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\Needle.cpp">
       <Filter>Game\GameElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.cpp">
+      <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -829,6 +835,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Utils\SoUtils\Containers\Singleton.h">
       <Filter>Engine\Utils\SoUtils\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.h">
+      <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

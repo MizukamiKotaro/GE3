@@ -5,10 +5,12 @@
 #include <string>
 #include "Externals/DirectXTex/DirectXTex.h"
 #include <vector>
+#include <memory>
+#include "DescriptorHeapManager/DescriptorHeap/DescriptorHeap.h"
 
 class TextureManager {
 public:
-	
+
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -21,8 +23,7 @@ public:
 	struct Texture {
 		ComPtr<ID3D12Resource> resource_;
 		ComPtr<ID3D12Resource> intermediateResource_;
-		D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
-		D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
+		const DescriptorHandles* handles_;
 		std::string filePath_;
 	};
 
@@ -30,10 +31,10 @@ public:
 
 	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(const uint32_t& handle) const
 	{
-		return textures_[handle].srvGPUDescriptorHandle_;
+		return textures_[handle]->handles_->gpuHandle;
 	};
 
-	const D3D12_RESOURCE_DESC GetTextureDesc(uint32_t handle) const { return textures_[handle].resource_->GetDesc(); }
+	const D3D12_RESOURCE_DESC GetTextureDesc(uint32_t handle) const { return textures_[handle]->resource_->GetDesc(); }
 
 	uint32_t LoadTexture(const std::string& filePath);
 
@@ -55,6 +56,6 @@ private:
 
 	ID3D12Device* device_ = nullptr;
 
-	std::vector<Texture> textures_;
+	std::vector<std::unique_ptr<Texture>> textures_;
 
 };

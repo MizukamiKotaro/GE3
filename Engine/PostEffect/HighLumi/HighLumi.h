@@ -8,6 +8,7 @@
 #include "Utils/Math/Vector4.h"
 #include "Utils/Math/Matrix4x4.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
+#include "DescriptorHeapManager/DescriptorHeap/DescriptorHeap.h"
 
 // スプライト
 class HighLumi
@@ -54,7 +55,7 @@ private:
 
 public:
 
-	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle() const { return srvGPUDescriptorHandle_; };
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle() const { return srvHandles_->gpuHandle; };
 
 private:
 
@@ -97,16 +98,13 @@ private:
 	TransformationMatrix* transformData_;
 
 	ComPtr<ID3D12Resource> texResource_;
-	D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
+	const DescriptorHandles* srvHandles_;
 
 	ComPtr<ID3D12Resource> rtvResource_;
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvCPUDescriptorHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE rtvGPUDescriptorHandle_;
+	const DescriptorHandles* rtvHandles_;
 
 	ComPtr<ID3D12Resource> dsvResource_;
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvCPUDescriptorHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE dsvGPUDescriptorHandle_;
+	const DescriptorHandles* dsvHandles_;
 
 private:
 

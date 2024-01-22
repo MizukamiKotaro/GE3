@@ -8,7 +8,6 @@
 #pragma comment(lib, "dxgi.lib")
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "DescriptorHeapManager/DescriptorHeapManager.h"
-#include <thread>
 
 using namespace Microsoft::WRL;
 
@@ -55,7 +54,7 @@ void DirectXCommon::Finalize()
 }
 
 void DirectXCommon::PreDraw() {
-	
+
 	//これから書き込むバックバッファのインデックスを取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
 
@@ -70,20 +69,15 @@ void DirectXCommon::PreDraw() {
 	//TransitionBarrierを張る
 	commandList_->ResourceBarrier(1, &barrier);
 
-	// レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap_->GetCPUDescriptorHandleForHeapStart();
-	rtvHandle.ptr += backBufferIndex * device_->GetDescriptorHandleIncrementSize(rtvHeap_->GetDesc().Type);
-	// 深度ステンシルビュー用ディスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap_->GetCPUDescriptorHandleForHeapStart();
 	// 描画先の指定
-	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+	commandList_->OMSetRenderTargets(1, &rtvHandles_[backBufferIndex]->cpuHandle, false, &dsvHandles_->cpuHandle);
 
 	//指定した色で画面全体をクリアする
 	float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; //青っぽい色。RGBAの順
 	// レンダーターゲットクリア
-	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	commandList_->ClearRenderTargetView(rtvHandles_[backBufferIndex]->cpuHandle, clearColor, 0, nullptr);
 	//指定した深度で画面全体をクリアする
-	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	commandList_->ClearDepthStencilView(dsvHandles_->cpuHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	// ビューポート領域の設定
 	//ビューポート
@@ -108,7 +102,7 @@ void DirectXCommon::PreDraw() {
 	commandList_->RSSetScissorRects(1, &scissorRect); //Scissorを設定
 
 	//描画用のDescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVHeap() };
+	ID3D12DescriptorHeap* descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetHeap() };
 	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
 }
 
@@ -132,7 +126,7 @@ void DirectXCommon::PostDraw() {
 	assert(SUCCEEDED(hr));
 
 	//GPUにコマンドリストの実行を行わせる
-	ID3D12CommandList* commandLists[] = { commandList_.Get()};
+	ID3D12CommandList* commandLists[] = { commandList_.Get() };
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 	//GPUとOSに画面の交換を行うように通知する
 	hr = swapChain_->Present(1, 0);
@@ -300,7 +294,7 @@ void DirectXCommon::CreateSwapChain() {
 	backBuffers_.resize(swapChainDesc.BufferCount);
 
 	for (int i = 0; i < backBuffers_.size(); i++) {
-		
+
 		hr = swapChain_->GetBuffer(i, IID_PPV_ARGS(backBuffers_[i].GetAddressOf()));
 		assert(SUCCEEDED(hr));
 	}
@@ -327,34 +321,35 @@ void DirectXCommon::InitializeCommand() {
 
 void DirectXCommon::CreateFinalRenderTargets() {
 
-	rtvHeap_ = DescriptorHeapManager::GetInstance()->GetRTVHeap();
+	DescriptorHeap* heap = DescriptorHeapManager::GetInstance()->GetRTVDescriptorHeap();
 
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; //出力結果をSRGBに変換して書き込む
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; //2dテクスチャとして書き込む
 
+	rtvHandles_.resize(backBuffers_.size());
+
 	for (size_t i = 0; i < backBuffers_.size(); i++) {
-		//ディスクリプトの先頭を取得する
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap_->GetCPUDescriptorHandleForHeapStart();
-		rtvHandle.ptr +=  i * device_->GetDescriptorHandleIncrementSize(rtvHeap_->GetDesc().Type);
-		device_->CreateRenderTargetView(backBuffers_[i].Get(), &rtvDesc, rtvHandle);
+		rtvHandles_[i] = heap->GetNewDescriptorHandles();
+
+		device_->CreateRenderTargetView(backBuffers_[i].Get(), &rtvDesc, rtvHandles_[i]->cpuHandle);
 	}
 }
 
 void DirectXCommon::CreateDepthBuffer() {
 
-	dsvHeap_ = DescriptorHeapManager::GetInstance()->GetDSVHeap();
+	DescriptorHeap* heap = DescriptorHeapManager::GetInstance()->GetDSVDescriptorHeap();
+
+	dsvHandles_ = heap->GetNewDescriptorHandles();
 
 	//DepthStencilTextureをウィンドウのサイズで作成
-	depthStencilResource_ =  CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);
+	depthStencilResource_ = CreateDepthStencilTextureResource(device_.Get(), WinApp::kWindowWidth, WinApp::kWindowHeight);
 	//DSVの設定
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // Format。基本的にはResourceに合わせる
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D; // 2dTexture
 	// DSVHeapの先頭にDSVを作る
-	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc, dsvHeap_->GetCPUDescriptorHandleForHeapStart());
-
-
+	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc, dsvHandles_->cpuHandle);
 }
 
 ID3D12Resource* DirectXCommon::CreateDepthStencilTextureResource(ID3D12Device* device_, int32_t width, int32_t height) {

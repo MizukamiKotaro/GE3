@@ -15,6 +15,7 @@
 #include "Utils/SoUtils/Graphics/Color.h"
 #include "GraphicsPipelines/GraphicsPiplineManager/GraphicsPiplineManager.h"
 #include "Light/DirectionalLight/DirectionalLight.h"
+#include "DescriptorHeapManager/DescriptorHeap/DescriptorHeap.h"
 
 class Camera;
 
@@ -87,8 +88,7 @@ private:
 
 	uint32_t textureHundle_;
 
-	D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
+	const DescriptorHandles* srvHandles_;
 };
 
 /// <summary>

@@ -16,7 +16,7 @@ ModelDataManager* ModelDataManager::GetInstance()
 void ModelDataManager::Finalize()
 {
 	for (uint32_t modelNum = 0; modelNum < static_cast<uint32_t>(modelDatas_.size()); modelNum++) {
-		modelDatas_[modelNum].mesh.vertexResource_->Release();
+		modelDatas_[modelNum]->mesh.vertexResource_->Release();
 	}
 }
 
@@ -24,7 +24,7 @@ uint32_t ModelDataManager::LoadObj(const std::string& fileName)
 {
 	for (uint32_t modelNum = 0; modelNum < static_cast<uint32_t>(modelDatas_.size()); modelNum++) {
 
-		if (modelDatas_[modelNum].fileName == fileName) {
+		if (modelDatas_[modelNum]->fileName == fileName) {
 			return modelNum;
 		}
 	}
@@ -38,7 +38,7 @@ uint32_t ModelDataManager::LoadGLTF(const std::string& fileName)
 {
 	for (uint32_t modelNum = 0; modelNum < static_cast<uint32_t>(modelDatas_.size()); modelNum++) {
 
-		if (modelDatas_[modelNum].fileName == fileName) {
+		if (modelDatas_[modelNum]->fileName == fileName) {
 			return modelNum;
 		}
 	}
@@ -80,9 +80,9 @@ MaterialData ModelDataManager::LoadMaterialTemplateFile(const std::string& direc
 void ModelDataManager::LoadObjFile(const std::string& directoryPath, const std::string& fileName)
 {
 	// 1. 中で必要となる変数の宣言
-	modelDatas_.push_back(ModelData());; // 構築するModelData
+	modelDatas_.push_back(std::make_unique<ModelData>());; // 構築するModelData
 
-	modelDatas_.back().fileName = fileName;
+	modelDatas_.back()->fileName = fileName;
 
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + fileName + "/" + fileName + ".obj";
@@ -116,7 +116,7 @@ void ModelDataManager::LoadObjFile(const std::string& directoryPath, const std::
 				vertex.vertexPos.x *= -1.0f;
 				vertex.normal.x *= -1.0f;
 
-				modelDatas_.back().mesh.verteces.push_back(vertex);
+				modelDatas_.back()->mesh.verteces.push_back(vertex);
 			}
 		}
 	}
@@ -127,28 +127,28 @@ void ModelDataManager::LoadObjFile(const std::string& directoryPath, const std::
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
 			aiString textureFilePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-			modelDatas_.back().material.textureFilePath = directoryPath + "/" + fileName + "/" + textureFilePath.C_Str();
+			modelDatas_.back()->material.textureFilePath = directoryPath + "/" + fileName + "/" + textureFilePath.C_Str();
 		}
 	}
 
-	modelDatas_.back().textureHundle_ = TextureManager::GetInstance()->LoadTexture(modelDatas_.back().material.textureFilePath);
+	modelDatas_.back()->textureHundle_ = TextureManager::GetInstance()->LoadTexture(modelDatas_.back()->material.textureFilePath);
 
-	modelDatas_.back().mesh.vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * modelDatas_.back().mesh.verteces.size());
+	modelDatas_.back()->mesh.vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * modelDatas_.back()->mesh.verteces.size());
 
 	//VertexBufferViewを作成する
 	//頂点バッファビューを作成する
 	//リソースの先頭のアドレスから使う
-	modelDatas_.back().mesh.vertexBufferView_.BufferLocation = modelDatas_.back().mesh.vertexResource_->GetGPUVirtualAddress();
+	modelDatas_.back()->mesh.vertexBufferView_.BufferLocation = modelDatas_.back()->mesh.vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点3つ分のサイズ
-	modelDatas_.back().mesh.vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelDatas_.back().mesh.verteces.size());
+	modelDatas_.back()->mesh.vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelDatas_.back()->mesh.verteces.size());
 	//頂点当たりのサイズ
-	modelDatas_.back().mesh.vertexBufferView_.StrideInBytes = sizeof(VertexData);
+	modelDatas_.back()->mesh.vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
 	//Resourceにデータを書き込む
 	//頂点リソースにデータを書き込む
 	//書き込むためのアドレスを取得
-	modelDatas_.back().mesh.vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&modelDatas_.back().mesh.vertexData_));
-	std::memcpy(modelDatas_.back().mesh.vertexData_, modelDatas_.back().mesh.verteces.data(), sizeof(VertexData) * modelDatas_.back().mesh.verteces.size());
+	modelDatas_.back()->mesh.vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&modelDatas_.back()->mesh.vertexData_));
+	std::memcpy(modelDatas_.back()->mesh.vertexData_, modelDatas_.back()->mesh.verteces.data(), sizeof(VertexData) * modelDatas_.back()->mesh.verteces.size());
 }
 
 NodeData ModelDataManager::ReadNode(aiNode* node)
@@ -156,7 +156,7 @@ NodeData ModelDataManager::ReadNode(aiNode* node)
 	NodeData result;
 	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // nodeのlocalMatrixを取得
 	aiLocalMatrix.Transpose(); // 列ベクトルを行ベクトルに転置
-	
+
 	for (int row = 0; row < 4; row++) {
 		for (int column = 0; column < 4; column++) {
 			result.localMatrix.m[row][column] = aiLocalMatrix[row][column];
@@ -174,9 +174,9 @@ NodeData ModelDataManager::ReadNode(aiNode* node)
 
 void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std::string& fileName)
 {// 1. 中で必要となる変数の宣言
-	modelDatas_.push_back(ModelData());; // 構築するModelData
+	modelDatas_.push_back(std::make_unique<ModelData>());; // 構築するModelData
 
-	modelDatas_.back().fileName = fileName;
+	modelDatas_.back()->fileName = fileName;
 
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + fileName + "/" + fileName + ".gltf";
@@ -193,7 +193,7 @@ void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std:
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3); // 三角形のみサポート
-	
+
 			// vertexを解析
 			for (uint32_t element = 0; element < face.mNumIndices; element++) {
 				uint32_t vertexIndex = face.mIndices[element];
@@ -210,7 +210,7 @@ void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std:
 				vertex.vertexPos.x *= -1.0f;
 				vertex.normal.x *= -1.0f;
 
-				modelDatas_.back().mesh.verteces.push_back(vertex);
+				modelDatas_.back()->mesh.verteces.push_back(vertex);
 			}
 		}
 
@@ -222,10 +222,10 @@ void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std:
 				aiMatrix4x4 offsetMatrix = bone->mOffsetMatrix;
 				offsetMatrix.Transpose();
 
-				modelDatas_.back().boneData.name = boneName.C_Str();
+				modelDatas_.back()->boneData.name = boneName.C_Str();
 				for (int row = 0; row < 4; row++) {
 					for (int column = 0; column < 4; column++) {
-						modelDatas_.back().boneData.offsetMatrix.m[row][column] = offsetMatrix[row][column];
+						modelDatas_.back()->boneData.offsetMatrix.m[row][column] = offsetMatrix[row][column];
 					}
 				}
 
@@ -236,7 +236,7 @@ void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std:
 					vertexWeight.vertexID = bone->mWeights[weightIndex].mVertexId;
 					vertexWeight.weight = bone->mWeights[weightIndex].mWeight;
 
-					modelDatas_.back().boneData.vertexWeights.push_back(vertexWeight);
+					modelDatas_.back()->boneData.vertexWeights.push_back(vertexWeight);
 
 				}
 			}
@@ -250,23 +250,23 @@ void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std:
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
 			aiString textureFilePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-			modelDatas_.back().material.textureFilePath = directoryPath + "/" + fileName + "/" + textureFilePath.C_Str();
+			modelDatas_.back()->material.textureFilePath = directoryPath + "/" + fileName + "/" + textureFilePath.C_Str();
 		}
 	}
 
 	// rootNodeの解析
-	modelDatas_.back().rootNode = ReadNode(scene->mRootNode);
+	modelDatas_.back()->rootNode = ReadNode(scene->mRootNode);
 
 	// animationの解析
 	if (scene->HasAnimations()) {
 		for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
 			aiAnimation* animation = scene->mAnimations[animationIndex];
-			modelDatas_.back().animationData.duration = static_cast<float>(animation->mDuration);
-			modelDatas_.back().animationData.ticksPerSecond = static_cast<float>(animation->mTicksPerSecond);
+			modelDatas_.back()->animationData.duration = static_cast<float>(animation->mDuration);
+			modelDatas_.back()->animationData.ticksPerSecond = static_cast<float>(animation->mTicksPerSecond);
 
 			for (uint32_t channelIndex = 0; channelIndex < animation->mNumChannels; channelIndex++) {
 				aiNodeAnim* nodeAnim = animation->mChannels[channelIndex];
-				
+
 				NodeAnime channel;
 				channel.name = nodeAnim->mNodeName.C_Str();
 
@@ -295,29 +295,29 @@ void ModelDataManager::LoadGLTFFile(const std::string& directoryPath, const std:
 					channel.scales.push_back(scale);
 				}
 
-				modelDatas_.back().animationData.channels.push_back(channel);
+				modelDatas_.back()->animationData.channels.push_back(channel);
 			}
 		}
 	}
 
 
 
-	modelDatas_.back().textureHundle_ = TextureManager::GetInstance()->LoadTexture(modelDatas_.back().material.textureFilePath);
+	modelDatas_.back()->textureHundle_ = TextureManager::GetInstance()->LoadTexture(modelDatas_.back()->material.textureFilePath);
 
-	modelDatas_.back().mesh.vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * modelDatas_.back().mesh.verteces.size());
+	modelDatas_.back()->mesh.vertexResource_ = DirectXCommon::CreateBufferResource(sizeof(VertexData) * modelDatas_.back()->mesh.verteces.size());
 
 	//VertexBufferViewを作成する
 	//頂点バッファビューを作成する
 	//リソースの先頭のアドレスから使う
-	modelDatas_.back().mesh.vertexBufferView_.BufferLocation = modelDatas_.back().mesh.vertexResource_->GetGPUVirtualAddress();
+	modelDatas_.back()->mesh.vertexBufferView_.BufferLocation = modelDatas_.back()->mesh.vertexResource_->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点3つ分のサイズ
-	modelDatas_.back().mesh.vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelDatas_.back().mesh.verteces.size());
+	modelDatas_.back()->mesh.vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelDatas_.back()->mesh.verteces.size());
 	//頂点当たりのサイズ
-	modelDatas_.back().mesh.vertexBufferView_.StrideInBytes = sizeof(VertexData);
+	modelDatas_.back()->mesh.vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
 	//Resourceにデータを書き込む
 	//頂点リソースにデータを書き込む
 	//書き込むためのアドレスを取得
-	modelDatas_.back().mesh.vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&modelDatas_.back().mesh.vertexData_));
-	std::memcpy(modelDatas_.back().mesh.vertexData_, modelDatas_.back().mesh.verteces.data(), sizeof(VertexData) * modelDatas_.back().mesh.verteces.size());
+	modelDatas_.back()->mesh.vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&modelDatas_.back()->mesh.vertexData_));
+	std::memcpy(modelDatas_.back()->mesh.vertexData_, modelDatas_.back()->mesh.verteces.data(), sizeof(VertexData) * modelDatas_.back()->mesh.verteces.size());
 }
