@@ -21,7 +21,7 @@ void Stage::Init() {
 	auto *sword = swordList_.emplace_back(std::make_unique<Sword>()).get();
 
 	sword->Init();
-	sword->SetNumber(0u);
+	sword->SetNumber(2u);
 
 	auto *punch = punchList_.emplace_back(std::make_unique<Punch>()).get();
 
@@ -31,7 +31,7 @@ void Stage::Init() {
 	auto *needle = needleList.emplace_back(std::make_unique<Needle>()).get();
 
 	needle->Init();
-	needle->SetNumber(2u);
+	needle->SetNumber(0u);
 
 }
 

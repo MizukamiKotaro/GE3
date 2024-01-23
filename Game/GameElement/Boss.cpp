@@ -5,8 +5,8 @@ Boss::Boss() {
 }
 
 void Boss::Init() {
-	scale_ = Vector3::one;
-	rotate_ = Vector3::zero;
+	scale_ = Vector3{ 3.2f,1.8f,1.0f };
+	rotate_ = Vector3{ 0.f, 180._deg, 0.f };
 	translate_ = Vector3::zero;
 
 	sphere_.radius_ = 1.f;
