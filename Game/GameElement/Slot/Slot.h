@@ -46,7 +46,7 @@ private:
 
 private:
 
-	GlobalVariables *globalVariable_;
+	/*GlobalVariables *globalVariable_;
 
 	const std::string groupName_ = "Slot";
 
@@ -70,7 +70,7 @@ private:
 
 	std::string v3ItemNames[V3EndCount] = {
 		"ポジション"
-	};
+	};*/
 
 private:
 
