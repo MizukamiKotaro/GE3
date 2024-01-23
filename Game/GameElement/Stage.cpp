@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include <ModelDataManager.h>
 #include <GlobalVariables/GlobalVariables.h>
+#include "BossState/IBossState.h"
 
 void Stage::Init() {
 	IEntity::SetStage(this);

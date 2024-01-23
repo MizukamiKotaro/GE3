@@ -14,6 +14,8 @@ public:
 
 	static void SetStage(Stage *stage) { pStage_ = stage; }
 
+	static Stage *GetStage() { return pStage_; }
+
 protected:
 	static Stage *pStage_;
 };

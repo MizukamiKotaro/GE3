@@ -13,7 +13,7 @@ class MapChip;
 
 class Player : public IEntity {
 public:
-	Player() = default;
+	Player();
 	~Player() = default;
 
 	void Init();

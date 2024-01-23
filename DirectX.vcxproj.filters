@@ -504,6 +504,12 @@
     <ClCompile Include="Game\GameElement\BossState\IBossState.cpp">
       <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\EscapeState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\SimpleTransform.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -856,6 +862,12 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\BossState\IBossState.h">
       <Filter>Game\GameElement\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BossState\EscapeState.h">
+      <Filter>Game\GameElement\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\SimpleTransform.h">
+      <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,12 +12,12 @@ namespace SoLib {
 			Array2D() = default;
 			Array2D(size_t rows, size_t cols) { Resize(rows, cols); }
 
-			// 行数を取得
+			// 行数を取得 (y要素)
 			size_t GetRows() const {
 				return rows_;
 			}
 
-			// 列数を取得
+			// 列数を取得 (x要素)
 			size_t GetCols() const {
 				return cols_;
 			}

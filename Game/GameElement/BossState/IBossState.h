@@ -2,6 +2,7 @@
 #include <cstdint>
 
 class Boss;
+class Player;
 
 class IBossState {
 public:
@@ -21,18 +22,21 @@ public:
 
 	virtual void Update(const float deltaTime) = 0;
 
-	virtual void Draw() = 0;
+	// virtual void Draw() = 0;
 
 	static void SetBoss(Boss *boss) { if (boss) { pBoss_ = boss; } }
+	static void SetPlayer(Player *player) { if (player) { pPlayer_ = player; } }
 
 protected:
 
 	SlotState slotState_;
 
 	static Boss *const GetBoss() { return pBoss_; }
+	static Player *const GetPlayer() { return pPlayer_; }
 
 private:
 
 	static Boss *pBoss_;
+	static Player *pPlayer_;
 
 };

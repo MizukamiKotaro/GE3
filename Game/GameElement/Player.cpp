@@ -7,6 +7,12 @@
 #include "Audio.h"
 #include "Punch.h"
 #include "Needle.h"
+#include "BossState/IBossState.h"
+
+Player::Player() {
+
+	IBossState::SetPlayer(this);
+}
 
 void Player::Init() {
 	barrier_ = std::make_unique<BarrierItem>();

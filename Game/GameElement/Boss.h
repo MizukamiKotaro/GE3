@@ -6,6 +6,7 @@
 #include "Vector3.h"
 #include "Slot/Slot.h"
 #include "BossState/IBossState.h"
+#include "SimpleTransform.h"
 
 class Boss : public IEntity {
 public:
@@ -22,6 +23,8 @@ public:
 
 	void SetCamera(Camera *camera);
 
+	auto &GetTransform() { return transform_; }
+
 private:
 
 	void CalcTransMat();
@@ -32,15 +35,17 @@ private:
 
 private:
 
-	std::unique_ptr<IBossState> S = nullptr;
+	std::unique_ptr<IBossState> bossState_ = nullptr;
 
 	Sphere sphere_;
 
-	Vector3 scale_;
-	SoLib::Math::Euler rotate_;
-	Vector3 translate_;
+	SimpleTransform transform_;
 
-	Matrix4x4 transMat_;
+	//Vector3 scale_;
+	//SoLib::Math::Euler rotate_;
+	//Vector3 translate_;
+
+	//Matrix4x4 transMat_;
 
 	std::unique_ptr<Slot> slot_;
 

@@ -222,6 +222,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\BallSpawner.cpp" />
     <ClCompile Include="Game\GameElement\Barrier.cpp" />
     <ClCompile Include="Game\GameElement\Boss.cpp" />
+    <ClCompile Include="Game\GameElement\BossState\EscapeState.cpp" />
     <ClCompile Include="Game\GameElement\BoundPin.cpp" />
     <ClCompile Include="Game\GameElement\Hole.cpp" />
     <ClCompile Include="Game\GameElement\BossState\IBossState.cpp" />
@@ -231,6 +232,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Needle.cpp" />
     <ClCompile Include="Game\GameElement\Player.cpp" />
     <ClCompile Include="Game\GameElement\Punch.cpp" />
+    <ClCompile Include="Game\GameElement\SimpleTransform.cpp" />
     <ClCompile Include="Game\GameElement\Slot\Slot.cpp" />
     <ClCompile Include="Game\GameElement\Stage.cpp" />
     <ClCompile Include="Game\GameElement\StageLights\StageLights.cpp" />
@@ -357,6 +359,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\BallSpawner.h" />
     <ClInclude Include="Game\GameElement\Barrier.h" />
     <ClInclude Include="Game\GameElement\Boss.h" />
+    <ClInclude Include="Game\GameElement\BossState\EscapeState.h" />
     <ClInclude Include="Game\GameElement\BoundPin.h" />
     <ClInclude Include="Game\GameElement\Hole.h" />
     <ClInclude Include="Game\GameElement\BossState\IBossState.h" />
@@ -367,6 +370,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\Needle.h" />
     <ClInclude Include="Game\GameElement\Player.h" />
     <ClInclude Include="Game\GameElement\Punch.h" />
+    <ClInclude Include="Game\GameElement\SimpleTransform.h" />
     <ClInclude Include="Game\GameElement\Slot\Slot.h" />
     <ClInclude Include="Game\GameElement\Stage.h" />
     <ClInclude Include="Game\GameElement\StageLights\StageLights.h" />
