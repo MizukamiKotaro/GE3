@@ -2,6 +2,8 @@
 
 Boss::Boss() {
 	slot_ = std::make_unique<Slot>();
+
+	//IBossState = 
 }
 
 void Boss::Init() {

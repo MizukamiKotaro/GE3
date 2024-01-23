@@ -492,6 +492,9 @@
     <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.cpp">
       <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\IBossState.cpp">
+      <Filter>Game\GameElement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -838,6 +841,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.h">
       <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\IBossState.h">
+      <Filter>Game\GameElement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include "Vector3.h"
 #include "Slot/Slot.h"
+#include "IBossState.h"
 
 class Boss : public IEntity {
 public:
@@ -30,6 +31,8 @@ private:
 	void TransferData();
 
 private:
+
+	std::unique_ptr<IBossState> S = nullptr;
 
 	Sphere sphere_;
 
