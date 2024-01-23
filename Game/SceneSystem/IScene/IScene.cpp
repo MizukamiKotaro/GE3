@@ -25,6 +25,11 @@ void IScene::FirstInit()
 	black_->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
 	black_->Update();
 
+	backgroundSprite_ = std::make_unique<Sprite>("Resources/white.png");
+	backgroundSprite_->size_ = { 1280.0f,720.0f };
+	backgroundSprite_->pos_ = { 640.0f,360.0f };
+	backgroundSprite_->SetColor(Vector4{ 0.3f,0.3f,0.3f,1.0f });
+	backgroundSprite_->Update();
 }
 
 int IScene::GetSceneNo() { return sceneNo_; }

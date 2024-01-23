@@ -51,4 +51,10 @@ private:
 
 	std::unique_ptr<Blur> swordBlur_;
 	bool isDrawSwordBlur_;
+
+	std::unique_ptr<Blur> needleBlur_;
+	bool isDrawNeedleBlur_;
+
+	std::unique_ptr<Blur> punchBlur_;
+	bool isDrawPunchBlur_;
 };

@@ -62,7 +62,7 @@ int SceneManager::Run()
 		default:
 			break;
 		}
-
+		ImGui::Text("Spaceで切り替え");
 		ImGui::End();
 #endif // _DEBUG
 

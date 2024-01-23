@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceneSystem/IScene/IScene.h"
+#include "Sprite.h"
 
 class SelectScene : public IScene
 {
@@ -13,8 +14,7 @@ public:
 
 private:
 
-	std::vector<uint32_t> soundHandles_;
-	std::vector<uint32_t> voiceHandles_;
+	std::unique_ptr<Sprite> selectSprite_;
 
 };
 

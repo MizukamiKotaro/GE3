@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceneSystem/IScene/IScene.h"
+#include "Sprite.h"
 
 class ClearScene : public IScene
 {
@@ -13,5 +14,5 @@ public:
 
 private:
 
-
+	std::unique_ptr<Sprite> clearSprite_;
 };
