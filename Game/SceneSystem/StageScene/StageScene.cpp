@@ -250,7 +250,7 @@ void StageScene::CreatePostEffects()
 			isDrawSwordBlur_ = true;
 			swordBlur_->blurData_->isCenterBlur = 0;
 			swordBlur_->blurData_->pickRange = 0.04f;
-			swordBlur_->blurData_->stepWidth = 0.001f;
+			swordBlur_->blurData_->stepWidth = 0.005f;
 			float postRot = sword->GetBeforeRotate();
 			float rot = sword->GetRotateZ();
 			if (rot - postRot <= 0.0f) {
@@ -283,7 +283,7 @@ void StageScene::CreatePostEffects()
 			isDrawNeedleBlur_ = true;
 			needleBlur_->blurData_->isCenterBlur = 0;
 			needleBlur_->blurData_->pickRange = 0.08f;
-			needleBlur_->blurData_->stepWidth = 0.001f;
+			needleBlur_->blurData_->stepWidth = 0.005f;
 			needleBlur_->blurData_->angle = -std::numbers::pi_v<float> / 2.0f;
 			break;
 		}
@@ -309,7 +309,7 @@ void StageScene::CreatePostEffects()
 			isDrawPunchBlur_ = true;
 			punchBlur_->blurData_->isCenterBlur = 0;
 			punchBlur_->blurData_->pickRange = 0.08f;
-			punchBlur_->blurData_->stepWidth = 0.001f;
+			punchBlur_->blurData_->stepWidth = 0.005f;
 			punchBlur_->blurData_->angle = 0.0f;
 			break;
 		}
