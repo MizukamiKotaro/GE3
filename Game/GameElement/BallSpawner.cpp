@@ -8,7 +8,7 @@ BallSpawner::BallSpawner() : position_(Vector3::zero) {
 }
 
 void BallSpawner::Init() {
-	position_ = {-2.7f,6,0};
+	position_ = {0.f,8,0};
 }
 
 void BallSpawner::Update(const float deltaTime) {
