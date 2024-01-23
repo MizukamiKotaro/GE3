@@ -119,8 +119,8 @@ void Kyoko::Finalize()
 	Audio::GetInstance()->Finalize();
 	TextureManager::GetInstance()->Finalize();
 	ModelDataManager::GetInstance()->Finalize();
-	DescriptorHeapManager::GetInstance()->Finalize();
 	DirectXCommon::GetInstance()->Finalize();
+	DescriptorHeapManager::GetInstance()->Finalize();
 	WinApp::GetInstance()->Finalize();
 
 #pragma endregion 基盤システムの終了

@@ -14,7 +14,9 @@ void ImGuiManager::Initialize()
 {
 //#ifdef _DEBUG
 
-	ID3D12DescriptorHeap* srvHeap = DescriptorHeapManager::GetInstance()->GetSRVHeap();
+	DescriptorHeap* srvHeap = DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap();
+
+	const DescriptorHandles* handles = srvHeap->GetNewDescriptorHandles();
 
 	//ImGuiの初期化
 	IMGUI_CHECKVERSION();
@@ -24,9 +26,9 @@ void ImGuiManager::Initialize()
 	ImGui_ImplDX12_Init(DirectXCommon::GetInstance()->GetDevice(),
 		2,
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
-		srvHeap,
-		srvHeap->GetCPUDescriptorHandleForHeapStart(),
-		srvHeap->GetGPUDescriptorHandleForHeapStart());
+		srvHeap->GetHeap(),
+		handles->cpuHandle,
+		handles->gpuHandle);
 
 	static const ImWchar glyphRangesJapanese[] = {
 	0x0020, 0x007E, 0x00A2, 0x00A3, 0x00A7, 0x00A8, 0x00AC, 0x00AC, 0x00B0, 0x00B1, 0x00B4, 0x00B4, 0x00B6, 0x00B6, 0x00D7, 0x00D7,

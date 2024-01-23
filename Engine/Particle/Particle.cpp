@@ -18,7 +18,7 @@ Particle::Particle(const std::string& fileName)
 
 	meshHundle_ = modelManager->LoadObj("Plane");
 
-	textureHundle_ = TextureManager::GetInstance()->LoadTexture("Resources/"+ fileName);
+	textureHundle_ = TextureManager::GetInstance()->LoadTexture("Resources/" + fileName);
 
 	CreateResources();
 
@@ -50,7 +50,7 @@ Particle::~Particle()
 
 void Particle::Initialize()
 {
-	
+
 }
 
 void Particle::Update()
@@ -146,7 +146,7 @@ void Particle::Draw(const Camera& camera, BlendMode blendMode)
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
 	//commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootDescriptorTable(1, srvGPUDescriptorHandle_);
+	commandList->SetGraphicsRootDescriptorTable(1, srvHandles_->gpuHandle);
 	//平行光源CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(3, light_.GetDirectionalLightGPUVirtualAddress());
 
@@ -186,10 +186,9 @@ void Particle::CreateSRV()
 	srvDesc.Buffer.NumElements = kNumInstance;
 	srvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
 
-	srvCPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVCPUDescriptorHandle();
-	srvGPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVGPUDescriptorHandle();
+	srvHandles_ = DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetNewDescriptorHandles();
 
-	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(instancingResource_.Get(), &srvDesc, srvCPUDescriptorHandle_);
+	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(instancingResource_.Get(), &srvDesc, srvHandles_->cpuHandle);
 
 }
 
@@ -211,7 +210,7 @@ void Particle::CreateMaterialResource()
 
 void Particle::CreateInstancingResource()
 {
-	
+
 	//WVP用のリソースを作る。Matrix4x4　1つ分のサイズを用意する
 	instancingResource_ = DirectXCommon::CreateBufferResource(sizeof(ParticleForGPU) * kNumInstance);
 	instancingData_ = nullptr;

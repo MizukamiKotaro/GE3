@@ -5,7 +5,7 @@ TitleScene::TitleScene()
 {
 	FirstInit();
 
-
+	titleSprite_ = std::make_unique<Sprite>("Resources/title.png");
 }
 
 void TitleScene::Init()
@@ -27,7 +27,9 @@ void TitleScene::Draw()
 {
 	Kyoko::PreDraw();
 
+	backgroundSprite_->Draw();
 
+	titleSprite_->Draw();
 
 	BlackDraw();
 

@@ -5,7 +5,7 @@ ClearScene::ClearScene()
 {
 	FirstInit();
 
-
+	clearSprite_ = std::make_unique<Sprite>("Resources/result.png");
 }
 
 void ClearScene::Init()
@@ -27,7 +27,9 @@ void ClearScene::Draw()
 {
 	Kyoko::PreDraw();
 
+	backgroundSprite_->Draw();
 
+	clearSprite_->Draw();
 
 	BlackDraw();
 

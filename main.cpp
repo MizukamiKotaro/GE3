@@ -11,6 +11,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR lpCmdLine, _In
 	std::unique_ptr<SceneManager> sceneManager = std::make_unique<SceneManager>();
 	sceneManager->Run();
 
+	sceneManager.reset();
+
 	Kyoko::Finalize();
 
 	return 0;

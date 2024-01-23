@@ -13,6 +13,7 @@
 #include <list>
 #include "Utils/Shape/AABB.h"
 #include "Light/Light.h"
+#include "DescriptorHeapManager/DescriptorHeap/DescriptorHeap.h"
 
 class Camera;
 
@@ -145,8 +146,6 @@ private:
 
 	uint32_t textureHundle_;
 
-	D3D12_CPU_DESCRIPTOR_HANDLE srvCPUDescriptorHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
-
+	const DescriptorHandles* srvHandles_;
 };
 

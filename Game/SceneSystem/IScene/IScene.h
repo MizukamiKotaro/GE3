@@ -59,6 +59,8 @@ protected:
 	Audio* audio_ = nullptr;
 	Input* input_ = nullptr;
 
+	std::unique_ptr<Sprite> backgroundSprite_;
+
 protected:
 
 	std::unique_ptr<Camera> camera_;

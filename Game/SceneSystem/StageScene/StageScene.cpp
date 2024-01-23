@@ -3,6 +3,7 @@
 #include "FrameInfo/FrameInfo.h"
 #include <calc.h>
 #include "Kyoko.h"
+#include <numbers>
 
 StageScene::StageScene() {
 	FirstInit();
@@ -51,6 +52,12 @@ void StageScene::Init()
 
 	swordBlur_ = std::make_unique<Blur>();
 	isDrawSwordBlur_ = false;
+
+	needleBlur_ = std::make_unique<Blur>();
+	isDrawNeedleBlur_ = false;
+
+	punchBlur_ = std::make_unique<Blur>();
+	isDrawPunchBlur_ = false;
 }
 
 void StageScene::Update()
@@ -151,6 +158,8 @@ void StageScene::Draw() {
 	// 描画開始
 	Kyoko::PreDraw();
 
+	backgroundSprite_->Draw();
+
 	pBlockManager_->clear();
 	stage_->Draw();
 
@@ -195,6 +204,14 @@ void StageScene::Draw() {
 		swordBlur_->Draw(BlendMode::kBlendModeAdd);
 	}
 
+	if (isDrawNeedleBlur_) {
+		needleBlur_->Draw(BlendMode::kBlendModeAdd);
+	}
+
+	if (isDrawPunchBlur_) {
+		punchBlur_->Draw(BlendMode::kBlendModeAdd);
+	}
+
 	stageUI_->Draw(*camera_.get());
 
 
@@ -205,7 +222,7 @@ void StageScene::Draw() {
 
 void StageScene::CreatePostEffects()
 {
-
+	// 剣のブラー
 	auto swordList = stage_->GetSwordList();
 	isDrawSwordBlur_ = false;
 
@@ -218,7 +235,14 @@ void StageScene::CreatePostEffects()
 			swordBlur_->blurData_->isCenterBlur = 0;
 			swordBlur_->blurData_->pickRange = 0.02f;
 			swordBlur_->blurData_->stepWidth = 0.001f;
-			swordBlur_->blurData_->angle = sword->GetRotateZ();
+			float postRot = sword->GetBeforeRotate();
+			float rot = sword->GetRotateZ();
+			if (rot - postRot <= 0.0f) {
+				swordBlur_->blurData_->angle = std::numbers::pi_v<float> + rot;
+			}
+			else {
+				swordBlur_->blurData_->angle = rot;
+			}
 			break;
 		}
 	}
@@ -231,4 +255,55 @@ void StageScene::CreatePostEffects()
 		swordBlur_->PostDrawScene();
 	}
 
+	// 槍のブラー
+	auto needleList = stage_->GetNeedleList();
+	isDrawNeedleBlur_ = false;
+
+	pBlockManager_->clear();
+
+	for (const auto& needle : *needleList) {
+		if (needle->IsAttacked()) {
+			needle->Draw();
+			isDrawNeedleBlur_ = true;
+			needleBlur_->blurData_->isCenterBlur = 0;
+			needleBlur_->blurData_->pickRange = 0.04f;
+			needleBlur_->blurData_->stepWidth = 0.001f;
+			needleBlur_->blurData_->angle = -std::numbers::pi_v<float> / 2.0f;
+			break;
+		}
+	}
+
+	if (isDrawNeedleBlur_) {
+		needleBlur_->PreDrawScene();
+
+		pBlockManager_->Draw(*camera_.get());
+
+		needleBlur_->PostDrawScene();
+	}
+
+	// パンチのブラー
+	auto punchList = stage_->GetPunchList();
+	isDrawPunchBlur_ = false;
+
+	pBlockManager_->clear();
+
+	for (const auto& punch : *punchList) {
+		if (punch->IsAttacked()) {
+			punch->Draw();
+			isDrawPunchBlur_ = true;
+			punchBlur_->blurData_->isCenterBlur = 0;
+			punchBlur_->blurData_->pickRange = 0.02f;
+			punchBlur_->blurData_->stepWidth = 0.001f;
+			punchBlur_->blurData_->angle = 0.0f;
+			break;
+		}
+	}
+
+	if (isDrawPunchBlur_) {
+		punchBlur_->PreDrawScene();
+
+		pBlockManager_->Draw(*camera_.get());
+
+		punchBlur_->PostDrawScene();
+	}
 }

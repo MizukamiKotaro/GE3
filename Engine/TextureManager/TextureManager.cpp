@@ -20,29 +20,29 @@ void TextureManager::Initialize()
 void TextureManager::Finalize()
 {
 	for (uint32_t texNum = 0; texNum < static_cast<uint32_t>(textures_.size()); texNum++) {
-		textures_[texNum].resource_->Release();
-		textures_[texNum].intermediateResource_->Release();
+		textures_[texNum]->resource_->Release();
+		textures_[texNum]->intermediateResource_->Release();
 	}
 }
 
 uint32_t TextureManager::LoadTexture(const std::string& filePath)
 {
-	
+
 	for (uint32_t texNum = 0; texNum < static_cast<uint32_t>(textures_.size()); texNum++) {
 
-		if (textures_[texNum].filePath_ == filePath) {
+		if (textures_[texNum]->filePath_ == filePath) {
 			return texNum;
 		}
 	}
 
-	textures_.push_back(Texture());
+	textures_.push_back(std::make_unique<Texture>());
 
-	textures_.back().filePath_ = filePath;
+	textures_.back()->filePath_ = filePath;
 
 	DirectX::ScratchImage mipImages = Load(filePath);
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	textures_.back().resource_ = CreateTextureResource(metadata);
-	textures_.back().intermediateResource_ = UploadTextureData(textures_.back().resource_.Get(), mipImages);
+	textures_.back()->resource_ = CreateTextureResource(metadata);
+	textures_.back()->intermediateResource_ = UploadTextureData(textures_.back()->resource_.Get(), mipImages);
 
 	//metadataを基にSRVの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
@@ -51,10 +51,9 @@ uint32_t TextureManager::LoadTexture(const std::string& filePath)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
-	textures_.back().srvCPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVCPUDescriptorHandle();
-	textures_.back().srvGPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVGPUDescriptorHandle();
+	textures_.back()->handles_ = DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetNewDescriptorHandles();
 
-	device_->CreateShaderResourceView(textures_.back().resource_.Get(), &srvDesc, textures_.back().srvCPUDescriptorHandle_);
+	device_->CreateShaderResourceView(textures_.back()->resource_.Get(), &srvDesc, textures_.back()->handles_->cpuHandle);
 
 	return static_cast<uint32_t>(textures_.size()) - 1;
 }

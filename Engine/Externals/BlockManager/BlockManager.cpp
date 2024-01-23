@@ -112,7 +112,7 @@ void Blocks::Draw(const Camera& camera, std::list<IBlock>& blocks, BlendMode ble
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
 	//commandList->SetGraphicsRootConstantBufferView(1, instancingResource_->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootDescriptorTable(1, srvGPUDescriptorHandle_);
+	commandList->SetGraphicsRootDescriptorTable(1, srvHandles_->gpuHandle);
 	//平行光源CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(3, directionalLight_->GetGPUVirtualAddress());
 
@@ -139,10 +139,9 @@ void Blocks::CreateSRV()
 	srvDesc.Buffer.NumElements = kNumInstance;
 	srvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
 
-	srvCPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVCPUDescriptorHandle();
-	srvGPUDescriptorHandle_ = DescriptorHeapManager::GetInstance()->GetNewSRVGPUDescriptorHandle();
+	srvHandles_ = DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetNewDescriptorHandles();
 
-	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(instancingResource_.Get(), &srvDesc, srvCPUDescriptorHandle_);
+	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(instancingResource_.Get(), &srvDesc, srvHandles_->cpuHandle);
 
 }
 
