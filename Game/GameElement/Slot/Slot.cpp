@@ -7,6 +7,7 @@
 #include "RandomGenerator/RandomGenerator.h"
 #include "Input.h"
 #include <algorithm>
+#include <numbers>
 
 Slot::Slot()
 {
@@ -30,7 +31,7 @@ Slot::Slot()
 		}
 
 		blurs_[i] = std::make_unique<Blur>();
-		blurs_[i]->blurData_->angle = 90.0f;
+		blurs_[i]->blurData_->angle = std::numbers::pi_v<float> / 2.0f;
 		blurs_[i]->blurData_->isCenterBlur = 0;
 
 		backs_[i] = std::make_unique<Sprite>("Resources/white.png");
@@ -67,6 +68,10 @@ Slot::Slot()
 	plane_->SetSRVGPUDescriptorHandle_(postEffect_->GetSRVGPUDescriptorHandle());
 
 	limitSpeed_ = 20.0f;
+
+	globalVariable_ = GlobalVariables::GetInstance();
+
+	SetGlobalVariable();
 }
 
 void Slot::Initialize() {
@@ -78,6 +83,7 @@ void Slot::Initialize() {
 		}
 		isRotStop_[i] = true;
 	}
+	SetGlobalVariable();
 	DownToTop();
 }
 
@@ -93,10 +99,8 @@ void Slot::Update(Camera* camera) {
 	if (input->PressedKey(DIK_Y)) {
 		StopRotation();
 	}
-	ImGui::Begin("Slot");
-	ImGui::DragFloat3("位置", &plane_->transform_.translate_.x, 0.01f);
-	ImGui::DragFloat2("スケール", &plane_->transform_.scale_.x, 0.01f);
-	ImGui::End();
+	ApplyGlobalVariable();
+
 #endif // _DEBUG
 
 	Rotation();
@@ -129,6 +133,41 @@ void Slot::StartRotation()
 void Slot::StopRotation()
 {
 	isStop_ = true;
+}
+
+void Slot::SetGlobalVariable()
+{
+	v2Info_[EnumV2Info::Scale] = { plane_->transform_.scale_.x,plane_->transform_.scale_.y };
+
+	v3Info_[EnumV3Info::Pos] = plane_->transform_.translate_;
+
+	globalVariable_->CreateGroup(groupName_);
+
+	for (int i = 0; i < EnumV2Info::V2EndCount; i++) {
+		globalVariable_->AddItem(groupName_, v2ItemNames[i], v2Info_[i]);
+	}
+
+	for (int i = 0; i < EnumV3Info::V3EndCount; i++) {
+		globalVariable_->AddItem(groupName_, v3ItemNames[i], v3Info_[i]);
+	}
+
+	ApplyGlobalVariable();
+}
+
+void Slot::ApplyGlobalVariable()
+{
+	for (int i = 0; i < EnumV2Info::V2EndCount; i++) {
+		v2Info_[i] = globalVariable_->GetVector2Value(groupName_, v2ItemNames[i]);
+	}
+
+	for (int i = 0; i < EnumV3Info::V3EndCount; i++) {
+		v3Info_[i] = globalVariable_->GetVector3Value(groupName_, v3ItemNames[i]);
+	}
+
+	plane_->transform_.scale_.x = v2Info_[EnumV2Info::Scale].x;
+	plane_->transform_.scale_.y = v2Info_[EnumV2Info::Scale].y;
+
+	plane_->transform_.translate_ = v3Info_[EnumV3Info::Pos];
 }
 
 void Slot::Rotation()

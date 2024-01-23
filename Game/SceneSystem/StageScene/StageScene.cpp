@@ -4,6 +4,7 @@
 #include <calc.h>
 #include "Kyoko.h"
 #include <numbers>
+#include "GlobalVariables/GlobalVariables.h"
 
 StageScene::StageScene() {
 	FirstInit();
@@ -19,6 +20,17 @@ void StageScene::Init()
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
 	camera_->Update();
+
+	firstCameraPos_ = camera_->transform_.translate_;
+	GlobalVariables* globalVariable = GlobalVariables::GetInstance();
+	globalVariable->CreateGroup("StageCamera");
+	globalVariable->AddItem("StageCamera", "ポジション", firstCameraPos_);
+	Vector3 prePos = firstCameraPos_;
+	firstCameraPos_ = globalVariable->GetVector3Value("StageCamera", "ポジション");
+	if (prePos != firstCameraPos_) {
+		camera_->transform_.translate_ = firstCameraPos_;
+		camera_->Update();
+	}
 
 	if (not csv_) {
 		csv_ = SoLib::IO::File("Resources/LevelData/Level1.csv");
@@ -58,6 +70,7 @@ void StageScene::Init()
 
 	punchBlur_ = std::make_unique<Blur>();
 	isDrawPunchBlur_ = false;
+
 }
 
 void StageScene::Update()
@@ -71,14 +84,17 @@ void StageScene::Update()
 		ChangeScene(CLEAR);
 	}
 
-	ImGui::Begin("a");
-	ImGui::SliderFloat3("cameraTra", &camera_->transform_.translate_.x, -100.0f, 100.0f);
-	ImGui::SliderFloat3("cameraRot", &camera_->transform_.rotate_.x, -3.14f, 3.14f);
-	ImGui::End();
-
 	ImGui::Begin("StageEditor");
 	stage_->ImGuiWidget();
 	ImGui::End();
+
+	GlobalVariables* globalVariable = GlobalVariables::GetInstance();
+	Vector3 prePos = firstCameraPos_;
+	firstCameraPos_ = globalVariable->GetVector3Value("StageCamera", "ポジション");
+	if (prePos != firstCameraPos_) {
+		camera_->transform_.translate_ = firstCameraPos_;
+		camera_->Update();
+	}
 #endif // _DEBUG
 
 	camera_->Update();
@@ -233,7 +249,7 @@ void StageScene::CreatePostEffects()
 			sword->Draw();
 			isDrawSwordBlur_ = true;
 			swordBlur_->blurData_->isCenterBlur = 0;
-			swordBlur_->blurData_->pickRange = 0.02f;
+			swordBlur_->blurData_->pickRange = 0.04f;
 			swordBlur_->blurData_->stepWidth = 0.001f;
 			float postRot = sword->GetBeforeRotate();
 			float rot = sword->GetRotateZ();
@@ -266,7 +282,7 @@ void StageScene::CreatePostEffects()
 			needle->Draw();
 			isDrawNeedleBlur_ = true;
 			needleBlur_->blurData_->isCenterBlur = 0;
-			needleBlur_->blurData_->pickRange = 0.04f;
+			needleBlur_->blurData_->pickRange = 0.08f;
 			needleBlur_->blurData_->stepWidth = 0.001f;
 			needleBlur_->blurData_->angle = -std::numbers::pi_v<float> / 2.0f;
 			break;
@@ -292,7 +308,7 @@ void StageScene::CreatePostEffects()
 			punch->Draw();
 			isDrawPunchBlur_ = true;
 			punchBlur_->blurData_->isCenterBlur = 0;
-			punchBlur_->blurData_->pickRange = 0.02f;
+			punchBlur_->blurData_->pickRange = 0.08f;
 			punchBlur_->blurData_->stepWidth = 0.001f;
 			punchBlur_->blurData_->angle = 0.0f;
 			break;

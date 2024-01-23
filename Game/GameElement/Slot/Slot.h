@@ -6,6 +6,8 @@
 #include "PostEffect/PostEffect.h"
 #include "Model.h"
 #include "PostEffect/Blur/Blur.h"
+#include "GlobalVariables/GlobalVariables.h"
+#include <string>
 
 class Camera;
 
@@ -32,10 +34,41 @@ public:
 
 private:
 
+	void SetGlobalVariable();
+
+	void ApplyGlobalVariable();
+
 	void Rotation();
 
-
 	void DownToTop();
+
+private:
+
+	GlobalVariables* globalVariable_;
+
+	const std::string groupName_ = "Slot";
+
+	enum EnumV2Info {
+		Scale,
+		V2EndCount,
+	};
+
+	Vector2 v2Info_[V2EndCount];
+
+	std::string v2ItemNames[V2EndCount] = {
+		"スケール"
+	};
+
+	enum EnumV3Info {
+		Pos,
+		V3EndCount,
+	};
+
+	Vector3 v3Info_[V3EndCount];
+
+	std::string v3ItemNames[V3EndCount] = {
+		"ポジション"
+	};
 
 private:
 

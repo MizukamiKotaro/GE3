@@ -59,7 +59,6 @@ protected:
 	Audio* audio_ = nullptr;
 	Input* input_ = nullptr;
 
-	std::unique_ptr<Sprite> backgroundSprite_;
 
 protected:
 
@@ -68,6 +67,10 @@ protected:
 	std::optional<Transition> transitionRequest_ = std::nullopt;
 
 	Transition transition_ = Transition::kFromBlack;
+
+	std::unique_ptr<Sprite> backgroundSprite_;
+
+	Vector3 firstCameraPos_;
 
 private:
 

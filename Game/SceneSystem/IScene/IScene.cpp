@@ -18,6 +18,7 @@ void IScene::FirstInit()
 
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
+	firstCameraPos_ = camera_->transform_.translate_;
 
 	black_ = std::make_unique<Sprite>("Resources/white.png");
 	black_->size_ = { 1280.0f,720.0f };

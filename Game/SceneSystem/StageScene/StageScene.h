@@ -20,6 +20,7 @@
 
 #include "PostEffect/Blur/Blur.h"
 #include <SoUtils/Graphics/CollisionRenderer.h>
+#include <string>
 
 class StageScene : public IScene {
 public:
