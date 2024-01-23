@@ -69,7 +69,7 @@ Slot::Slot()
 
 	limitSpeed_ = 20.0f;
 
-	globalVariable_ = GlobalVariables::GetInstance();
+	//globalVariable_ = GlobalVariables::GetInstance();
 
 	SetGlobalVariable();
 }
@@ -137,7 +137,7 @@ void Slot::StopRotation()
 
 void Slot::SetGlobalVariable()
 {
-	v2Info_[EnumV2Info::Scale] = { plane_->transform_.scale_.x,plane_->transform_.scale_.y };
+	/*v2Info_[EnumV2Info::Scale] = { plane_->transform_.scale_.x,plane_->transform_.scale_.y };
 
 	v3Info_[EnumV3Info::Pos] = plane_->transform_.translate_;
 
@@ -151,12 +151,12 @@ void Slot::SetGlobalVariable()
 		globalVariable_->AddItem(groupName_, v3ItemNames[i], v3Info_[i]);
 	}
 
-	ApplyGlobalVariable();
+	ApplyGlobalVariable();*/
 }
 
 void Slot::ApplyGlobalVariable()
 {
-	for (int i = 0; i < EnumV2Info::V2EndCount; i++) {
+	/*for (int i = 0; i < EnumV2Info::V2EndCount; i++) {
 		v2Info_[i] = globalVariable_->GetVector2Value(groupName_, v2ItemNames[i]);
 	}
 
@@ -167,7 +167,7 @@ void Slot::ApplyGlobalVariable()
 	plane_->transform_.scale_.x = v2Info_[EnumV2Info::Scale].x;
 	plane_->transform_.scale_.y = v2Info_[EnumV2Info::Scale].y;
 
-	plane_->transform_.translate_ = v3Info_[EnumV3Info::Pos];
+	plane_->transform_.translate_ = v3Info_[EnumV3Info::Pos];*/
 }
 
 void Slot::Rotation()
