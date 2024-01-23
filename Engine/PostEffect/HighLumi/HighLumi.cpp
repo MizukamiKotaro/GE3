@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "WinApp/WinApp.h"
 #include "Externals/DirectXTex/d3dx12.h"
+#include <algorithm>
 
 const float HighLumi::clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 
@@ -74,7 +75,7 @@ void HighLumi::Draw(BlendMode blendMode)
 
 	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
-	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	ID3D12GraphicsCommandList *commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	//Spriteの描画。変更に必要なものだけ変更する
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
@@ -92,7 +93,7 @@ void HighLumi::Draw(BlendMode blendMode)
 
 void HighLumi::PreDrawScene()
 {
-	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	ID3D12GraphicsCommandList *commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	// バリアの変更
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(texResource_.Get(),
@@ -117,7 +118,7 @@ void HighLumi::PreDrawScene()
 	commandList->ClearDepthStencilView(dsvHandles_->cpuHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	//描画用のDescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetHeap() };
+	ID3D12DescriptorHeap *descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetHeap() };
 	commandList->SetDescriptorHeaps(1, descriptorHeaps);
 
 	GraphicsPiplineManager::GetInstance()->PreDraw();
@@ -125,7 +126,7 @@ void HighLumi::PreDrawScene()
 
 void HighLumi::PostDrawScene()
 {
-	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	ID3D12GraphicsCommandList *commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	// バリアの変更
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(texResource_.Get(),
@@ -134,14 +135,14 @@ void HighLumi::PostDrawScene()
 
 }
 
-void HighLumi::SetAnchorPoint(const Vector2& anchorpoint)
+void HighLumi::SetAnchorPoint(const Vector2 &anchorpoint)
 {
 	anchorPoint_ = anchorpoint;
 
 	TransferSize();
 }
 
-void HighLumi::SetColor(const Vector4& color)
+void HighLumi::SetColor(const Vector4 &color)
 {
 	color_.x = std::clamp<float>(color.x, 0.0f, 1.0f);
 	color_.y = std::clamp<float>(color.y, 0.0f, 1.0f);
@@ -151,14 +152,14 @@ void HighLumi::SetColor(const Vector4& color)
 	materialData_->color = color;
 }
 
-void HighLumi::SetTextureTopLeft(const Vector2& texTopLeft)
+void HighLumi::SetTextureTopLeft(const Vector2 &texTopLeft)
 {
 	textureLeftTop_ = textureLeftTop_;
 
 	TransferUV();
 }
 
-void HighLumi::SetTextureSize(const Vector2& texSize)
+void HighLumi::SetTextureSize(const Vector2 &texSize)
 {
 	textureSize_ = texSize;
 
@@ -204,7 +205,7 @@ void HighLumi::CreateVertexRes()
 	//1頂点あたりのサイズ
 	vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void **>(&vertexData_));
 }
 
 void HighLumi::CreateMaterialRes()
@@ -213,7 +214,7 @@ void HighLumi::CreateMaterialRes()
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 	//マテリアルデータを書き込む
 	//書き込むためのアドレスを取得\l
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialResource_->Map(0, nullptr, reinterpret_cast<void **>(&materialData_));
 	//今回は赤を書き込んでいる
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	//*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , false };
@@ -226,7 +227,7 @@ void HighLumi::CreateTranformRes()
 	transformResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
 	//データを書き込む
 	//書き込むためのアドレスを取得
-	transformResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformData_));
+	transformResource_->Map(0, nullptr, reinterpret_cast<void **>(&transformData_));
 	//単位行列を書き込んでいく
 	transformData_->WVP = { Matrix4x4::MakeIdentity4x4() };
 	//*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
@@ -266,7 +267,7 @@ void HighLumi::CreateTexRes()
 	const UINT depthPitch = rowPitch * WinApp::kWindowHeight;
 
 	// 画像イメージ
-	UINT* img = new UINT[pixelCount];
+	UINT *img = new UINT[pixelCount];
 	for (int i = 0; i < pixelCount; i++) { img[i] = 0xFF0000FF; }
 
 	// データの転送

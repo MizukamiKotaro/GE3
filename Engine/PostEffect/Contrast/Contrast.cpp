@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "WinApp/WinApp.h"
 #include "Externals/DirectXTex/d3dx12.h"
+#include <algorithm>
 
 const float Contrast::clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 
@@ -75,7 +76,7 @@ void Contrast::Draw(BlendMode blendMode)
 
 	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
-	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	ID3D12GraphicsCommandList *commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	//Spriteの描画。変更に必要なものだけ変更する
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
@@ -95,7 +96,7 @@ void Contrast::Draw(BlendMode blendMode)
 
 void Contrast::PreDrawScene()
 {
-	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	ID3D12GraphicsCommandList *commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	// バリアの変更
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(texResource_.Get(),
@@ -120,7 +121,7 @@ void Contrast::PreDrawScene()
 	commandList->ClearDepthStencilView(dsvHandles_->cpuHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	//描画用のDescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetHeap() };
+	ID3D12DescriptorHeap *descriptorHeaps[] = { DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->GetHeap() };
 	commandList->SetDescriptorHeaps(1, descriptorHeaps);
 
 	GraphicsPiplineManager::GetInstance()->PreDraw();
@@ -128,7 +129,7 @@ void Contrast::PreDrawScene()
 
 void Contrast::PostDrawScene()
 {
-	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+	ID3D12GraphicsCommandList *commandList = DirectXCommon::GetInstance()->GetCommandList();
 
 	// バリアの変更
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(texResource_.Get(),
@@ -137,14 +138,14 @@ void Contrast::PostDrawScene()
 
 }
 
-void Contrast::SetAnchorPoint(const Vector2& anchorpoint)
+void Contrast::SetAnchorPoint(const Vector2 &anchorpoint)
 {
 	anchorPoint_ = anchorpoint;
 
 	TransferSize();
 }
 
-void Contrast::SetColor(const Vector4& color)
+void Contrast::SetColor(const Vector4 &color)
 {
 	color_.x = std::clamp<float>(color.x, 0.0f, 1.0f);
 	color_.y = std::clamp<float>(color.y, 0.0f, 1.0f);
@@ -154,14 +155,14 @@ void Contrast::SetColor(const Vector4& color)
 	materialData_->color = color;
 }
 
-void Contrast::SetTextureTopLeft(const Vector2& texTopLeft)
+void Contrast::SetTextureTopLeft(const Vector2 &texTopLeft)
 {
 	textureLeftTop_ = textureLeftTop_;
 
 	TransferUV();
 }
 
-void Contrast::SetTextureSize(const Vector2& texSize)
+void Contrast::SetTextureSize(const Vector2 &texSize)
 {
 	textureSize_ = texSize;
 
@@ -207,7 +208,7 @@ void Contrast::CreateVertexRes()
 	//1頂点あたりのサイズ
 	vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void **>(&vertexData_));
 }
 
 void Contrast::CreateMaterialRes()
@@ -216,7 +217,7 @@ void Contrast::CreateMaterialRes()
 	materialResource_ = DirectXCommon::CreateBufferResource(sizeof(Material));
 	//マテリアルデータを書き込む
 	//書き込むためのアドレスを取得\l
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialResource_->Map(0, nullptr, reinterpret_cast<void **>(&materialData_));
 	//今回は赤を書き込んでいる
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	//*materialData_ = { Vector4(1.0f, 1.0f, 1.0f, 1.0f) , false };
@@ -229,7 +230,7 @@ void Contrast::CreateTranformRes()
 	transformResource_ = DirectXCommon::CreateBufferResource(sizeof(TransformationMatrix));
 	//データを書き込む
 	//書き込むためのアドレスを取得
-	transformResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformData_));
+	transformResource_->Map(0, nullptr, reinterpret_cast<void **>(&transformData_));
 	//単位行列を書き込んでいく
 	transformData_->WVP = { Matrix4x4::MakeIdentity4x4() };
 	//*transformationMatrixData_ = { Matrix4x4::MakeIdentity4x4() ,Matrix4x4::MakeIdentity4x4() };
@@ -239,7 +240,7 @@ void Contrast::CreateContrastRes()
 {
 	contrastResource_ = DirectXCommon::CreateBufferResource(sizeof(ContrastData));
 
-	contrastResource_->Map(0, nullptr, reinterpret_cast<void**>(&contrastData_));
+	contrastResource_->Map(0, nullptr, reinterpret_cast<void **>(&contrastData_));
 
 	contrastData_->brightness_ = 0.2f;
 
@@ -280,7 +281,7 @@ void Contrast::CreateTexRes()
 	const UINT depthPitch = rowPitch * WinApp::kWindowHeight;
 
 	// 画像イメージ
-	UINT* img = new UINT[pixelCount];
+	UINT *img = new UINT[pixelCount];
 	for (int i = 0; i < pixelCount; i++) { img[i] = 0xFF0000FF; }
 
 	// データの転送

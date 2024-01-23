@@ -21,6 +21,7 @@
 #include "PostEffect/Blur/Blur.h"
 #include <SoUtils/Graphics/CollisionRenderer.h>
 #include <string>
+#include <GameElement/Boss.h>
 
 class StageScene : public IScene {
 public:
@@ -48,7 +49,9 @@ private:
 
 	std::unique_ptr<StageUI> stageUI_;
 
-	std::unique_ptr<Slot> slot_;
+	std::unique_ptr<Boss> boss_;
+
+	//std::unique_ptr<Slot> slot_;
 
 	std::unique_ptr<Blur> swordBlur_;
 	bool isDrawSwordBlur_;

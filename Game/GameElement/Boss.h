@@ -1,21 +1,46 @@
 #pragma once
-#include "Stage.h"
+#include <cstdint>
 
-class Boss {
+#include "SoUtils/Math/Euler.h"
+#include "Stage.h"
+#include "Vector3.h"
+#include "Slot/Slot.h"
+
+class Boss : public IEntity {
 public:
-	Boss() = default;
+	Boss();
 	~Boss() = default;
 
-	void Init();
+	void Init() override;
 
-	void Update(const float deltaTime);
+	void Update(const float deltaTime) override;
 
-	void Draw();
+	void Draw() override;
 
-	void SetStage(Stage *stage) { pStage_ = stage; }
+	void OnCollision(IEntity *other) override;
+
+	void SetCamera(Camera *camera);
 
 private:
 
-	Stage *pStage_ = nullptr;
+	void CalcTransMat();
+
+	void CalcCollision();
+
+	void TransferData();
+
+private:
+
+	Sphere sphere_;
+
+	Vector3 scale_;
+	SoLib::Math::Euler rotate_;
+	Vector3 translate_;
+
+	Matrix4x4 transMat_;
+
+	std::unique_ptr<Slot> slot_;
+
+	Camera *pCamera_ = nullptr;
 
 };

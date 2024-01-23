@@ -22,7 +22,7 @@ void StageScene::Init()
 	camera_->Update();
 
 	firstCameraPos_ = camera_->transform_.translate_;
-	GlobalVariables* globalVariable = GlobalVariables::GetInstance();
+	GlobalVariables *globalVariable = GlobalVariables::GetInstance();
 	globalVariable->CreateGroup("StageCamera");
 	globalVariable->AddItem("StageCamera", "ポジション", firstCameraPos_);
 	Vector3 prePos = firstCameraPos_;
@@ -58,9 +58,9 @@ void StageScene::Init()
 	stageUI_ = std::make_unique<StageUI>();
 	stageUI_->Init();
 
-	slot_ = std::make_unique<Slot>();
-	slot_->Initialize();
-	slot_->PostEffectWright(camera_.get());
+	boss_ = std::make_unique<Boss>();
+	boss_->Init();
+	boss_->SetCamera(camera_.get());
 
 	swordBlur_ = std::make_unique<Blur>();
 	isDrawSwordBlur_ = false;
@@ -88,7 +88,7 @@ void StageScene::Update()
 	stage_->ImGuiWidget();
 	ImGui::End();
 
-	GlobalVariables* globalVariable = GlobalVariables::GetInstance();
+	GlobalVariables *globalVariable = GlobalVariables::GetInstance();
 	Vector3 prePos = firstCameraPos_;
 	firstCameraPos_ = globalVariable->GetVector3Value("StageCamera", "ポジション");
 	if (prePos != firstCameraPos_) {
@@ -164,7 +164,7 @@ void StageScene::Update()
 
 	stageUI_->Update();
 
-	slot_->Update(camera_.get());
+	boss_->Update(deltaTime);
 }
 
 void StageScene::Draw() {
@@ -181,7 +181,7 @@ void StageScene::Draw() {
 
 	player_->Draw();
 
-	slot_->Draw(camera_.get());
+	boss_->Draw();
 
 	collisionRenderer_->AddCollision(player_->GetSphere());
 
@@ -254,7 +254,7 @@ void StageScene::CreatePostEffects()
 			float postRot = sword->GetBeforeRotate();
 			float rot = sword->GetRotateZ();
 			if (rot - postRot <= 0.0f) {
-				swordBlur_->blurData_->angle = std::numbers::pi_v<float> + rot;
+				swordBlur_->blurData_->angle = std::numbers::pi_v<float> +rot;
 			}
 			else {
 				swordBlur_->blurData_->angle = rot;
@@ -277,7 +277,7 @@ void StageScene::CreatePostEffects()
 
 	pBlockManager_->clear();
 
-	for (const auto& needle : *needleList) {
+	for (const auto &needle : *needleList) {
 		if (needle->IsAttacked()) {
 			needle->Draw();
 			isDrawNeedleBlur_ = true;
@@ -303,7 +303,7 @@ void StageScene::CreatePostEffects()
 
 	pBlockManager_->clear();
 
-	for (const auto& punch : *punchList) {
+	for (const auto &punch : *punchList) {
 		if (punch->IsAttacked()) {
 			punch->Draw();
 			isDrawPunchBlur_ = true;

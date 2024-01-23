@@ -17,11 +17,11 @@ public:
 	Slot();
 
 	void Initialize();
-	void PostEffectWright(Camera* camera);
+	void PostEffectWright(Camera *camera);
 
-	void Update(Camera* camera);
+	void Update(Camera *camera);
 
-	void Draw(Camera* camera);
+	void Draw(Camera *camera);
 
 public:
 
@@ -31,6 +31,8 @@ public:
 
 	// 顔のタイプ
 	const int GetFaceType() const { return faceType_; }
+
+	auto &GetTransform() { return plane_->transform_; }
 
 private:
 
@@ -44,7 +46,7 @@ private:
 
 private:
 
-	GlobalVariables* globalVariable_;
+	GlobalVariables *globalVariable_;
 
 	const std::string groupName_ = "Slot";
 

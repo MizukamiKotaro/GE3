@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "WinApp/WinApp.h"
 #include "Externals/DirectXTex/d3dx12.h"
+#include <algorithm>
 
 const float PostEffect::clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 

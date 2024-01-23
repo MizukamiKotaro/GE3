@@ -8,6 +8,7 @@
 #pragma comment(lib, "dxgi.lib")
 #include "Engine/Base/DescriptorHeapManager/DescriptorHeapManager.h"
 #include "DescriptorHeapManager/DescriptorHeapManager.h"
+#include <thread>
 
 using namespace Microsoft::WRL;
 
