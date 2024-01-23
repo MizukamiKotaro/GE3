@@ -182,7 +182,8 @@ void Slot::Rotation()
 					float t = std::clamp<float>(rotSpeed_[i], limitSpeed_ + 5.0f, 65.0f) - (limitSpeed_ + 5.0f);
 					t = t / (60.0f - limitSpeed_);
 
-					blurs_[i]->blurData_->pickRange = t * 0.18f + (1.0f - t) * 0.01f;
+					blurs_[i]->blurData_->pickRange = t * 0.14f + (1.0f - t) * 0.01f;
+					blurs_[i]->blurData_->stepWidth = t * 0.04f + (1.0f - t) * 0.005f;
 				}
 
 				isAcross_[i] = false;
