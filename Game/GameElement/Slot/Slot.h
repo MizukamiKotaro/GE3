@@ -11,6 +11,15 @@
 
 class Camera;
 
+enum FaceType
+{
+	kSad, // 青
+	kOko, // 赤
+	kNormal, // 緑
+	kGekiOko, // 今は亡き新たな顔
+	kBad, // はずれ。プレイヤーにとってチャンス
+};
+
 class Slot {
 public:
 
@@ -25,12 +34,20 @@ public:
 
 public:
 
+	// ルーレットを回し始める関数。赤の顔から
 	void StartRotation();
 
+	// ルーレットを止め始める関数
 	void StopRotation();
+
+	// 回っている顔のレベルを下げる
+	void DownLevel();
 
 	// 顔のタイプ
 	const int GetFaceType() const { return faceType_; }
+
+	// これは分けたけどまだ書いてない
+	void StartGekiOkoRotation();
 
 	auto &GetTransform() { return plane_->transform_; }
 
@@ -41,6 +58,8 @@ private:
 	void ApplyGlobalVariable();
 
 	void Rotation();
+
+	void Rotation2();
 
 	void DownToTop();
 
@@ -102,4 +121,8 @@ private:
 	int faceType_;
 
 	float interval_;
+
+	float timeCount_;
+
+	std::array<int, 3> faceTypes_;
 };
