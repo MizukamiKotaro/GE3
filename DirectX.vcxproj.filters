@@ -208,6 +208,9 @@
     <Filter Include="Engine\Base\DescriptorHeapManager\DescriptorHeap">
       <UniqueIdentifier>{67266de9-ca2a-4e5e-9009-c89a95353591}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\StageLights">
+      <UniqueIdentifier>{1309d40f-7bcf-49fc-a94e-7913e225e1ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -491,6 +494,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.cpp">
       <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\StageLights\StageLights.cpp">
+      <Filter>Game\GameElement\StageLights</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameElement\IBossState.cpp">
       <Filter>Game\GameElement</Filter>
@@ -841,6 +847,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.h">
       <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\StageLights\StageLights.h">
+      <Filter>Game\GameElement\StageLights</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\IBossState.h">
       <Filter>Game\GameElement</Filter>
