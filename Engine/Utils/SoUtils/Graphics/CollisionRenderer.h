@@ -7,7 +7,7 @@
 #include "Shape/Capsule.h"
 
 class CollisionRenderer : public SoLib::Singleton<CollisionRenderer> {
-friend SoLib::Singleton<CollisionRenderer>;
+	friend SoLib::Singleton<CollisionRenderer>;
 	CollisionRenderer() = default;
 	~CollisionRenderer() = default;
 public:
@@ -25,6 +25,8 @@ public:
 	void AddCollision(const Sphere &sphere);
 	void AddCollision(const Capsule &capsule);
 
+	bool ImGuiWidget(const char *const label);
+
 
 private:
 
@@ -34,6 +36,6 @@ private:
 
 	BlockManager *pBlockManager_ = nullptr;
 
-	bool isDraw_ = true;
+	bool isDraw_ = false;
 
 };

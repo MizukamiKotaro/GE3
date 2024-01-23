@@ -95,6 +95,9 @@ void StageScene::Update()
 		camera_->transform_.translate_ = firstCameraPos_;
 		camera_->Update();
 	}
+
+	collisionRenderer_->ImGuiWidget("Collision");
+
 #endif // _DEBUG
 
 	camera_->Update();
