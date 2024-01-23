@@ -8,6 +8,7 @@
 #include "Input.h"
 #include <algorithm>
 #include <numbers>
+#include "FrameInfo/FrameInfo.h"
 
 Slot::Slot()
 {
@@ -38,12 +39,12 @@ Slot::Slot()
 	}
 
 	TextureManager* texMan = TextureManager::GetInstance();
-	slot_[0][0]->SetTextureHandle(texMan->LoadTexture("Resources/slot/a1.png"));
-	slot_[1][0]->SetTextureHandle(texMan->LoadTexture("Resources/slot/a2.png"));
-	slot_[2][0]->SetTextureHandle(texMan->LoadTexture("Resources/slot/a3.png"));
-	slot_[0][1]->SetTextureHandle(texMan->LoadTexture("Resources/slot/b1.png"));
-	slot_[1][1]->SetTextureHandle(texMan->LoadTexture("Resources/slot/b2.png"));
-	slot_[2][1]->SetTextureHandle(texMan->LoadTexture("Resources/slot/b3.png"));
+	slot_[0][1]->SetTextureHandle(texMan->LoadTexture("Resources/slot/a1.png"));
+	slot_[1][1]->SetTextureHandle(texMan->LoadTexture("Resources/slot/a2.png"));
+	slot_[2][1]->SetTextureHandle(texMan->LoadTexture("Resources/slot/a3.png"));
+	slot_[0][0]->SetTextureHandle(texMan->LoadTexture("Resources/slot/b1.png"));
+	slot_[1][0]->SetTextureHandle(texMan->LoadTexture("Resources/slot/b2.png"));
+	slot_[2][0]->SetTextureHandle(texMan->LoadTexture("Resources/slot/b3.png"));
 	slot_[0][2]->SetTextureHandle(texMan->LoadTexture("Resources/slot/c1.png"));
 	slot_[1][2]->SetTextureHandle(texMan->LoadTexture("Resources/slot/c2.png"));
 	slot_[2][2]->SetTextureHandle(texMan->LoadTexture("Resources/slot/c3.png"));
@@ -99,11 +100,15 @@ void Slot::Update(Camera* camera) {
 	if (input->PressedKey(DIK_Y)) {
 		StopRotation();
 	}
+	if (input->PressedKey(DIK_U)) {
+		DownLevel();
+	}
 	ApplyGlobalVariable();
 
 #endif // _DEBUG
 
-	Rotation();
+	//Rotation();
+	Rotation2();
 
 	plane_->Update();
 
@@ -123,6 +128,9 @@ void Slot::StartRotation()
 	isStop_ = false;
 
 	RandomGenerator* rand = RandomGenerator::GetInstance();
+	timeCount_ = 0.0f;
+
+	faceType_ = FaceType::kOko;
 
 	for (int i = 0; i < 3; i++) {
 		isRotStop_[i] = false;
@@ -133,6 +141,48 @@ void Slot::StartRotation()
 void Slot::StopRotation()
 {
 	isStop_ = true;
+}
+
+void Slot::DownLevel()
+{
+	if (faceType_ != FaceType::kBad && faceType_ != FaceType::kGekiOko) {
+		isRot_ = true;
+		isStop_ = false;
+		timeCount_ = 0.0f;
+
+		RandomGenerator* rand = RandomGenerator::GetInstance();
+
+		if (faceType_ == FaceType::kOko) {
+			faceType_ = FaceType::kNormal;
+		}
+		else if (faceType_ == FaceType::kNormal) {
+			faceType_ = FaceType::kSad;
+		}
+		else if (faceType_ == FaceType::kSad) {
+			faceType_ = FaceType::kBad;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			isRotStop_[i] = false;
+			rotSpeed_[i] = rand->RandFloat(70.0f, 100.0f);
+		}
+	}
+}
+
+void Slot::StartGekiOkoRotation()
+{
+	isRot_ = true;
+	isStop_ = false;
+
+	RandomGenerator* rand = RandomGenerator::GetInstance();
+
+	faceType_ = FaceType::kGekiOko;
+	timeCount_ = 0.0f;
+
+	for (int i = 0; i < 3; i++) {
+		isRotStop_[i] = false;
+		rotSpeed_[i] = rand->RandFloat(70.0f, 100.0f);
+	}
 }
 
 void Slot::SetGlobalVariable()
@@ -243,6 +293,152 @@ void Slot::Rotation()
 		}
 
 
+	}
+}
+
+void Slot::Rotation2()
+{
+	if (isRot_) {
+		
+		if (faceType_ == FaceType::kBad) {
+			// はずれの場合
+
+			timeCount_ += FrameInfo::GetInstance()->GetDeltaTime();
+
+			for (int i = 0; i < 3; i++) {
+				if (!isRotStop_[i]) {
+					float t = std::clamp<float>(rotSpeed_[i], limitSpeed_ + 5.0f, 65.0f) - (limitSpeed_ + 5.0f);
+					t = t / (60.0f - limitSpeed_);
+
+					blurs_[i]->blurData_->pickRange = t * 0.14f + (1.0f - t) * 0.01f;
+					blurs_[i]->blurData_->stepWidth = t * 0.04f + (1.0f - t) * 0.005f;
+
+					isAcross_[i] = false;
+
+					for (int j = 0; j < 3; j++) {
+
+						float posY = slot_[i][j]->pos_.y;
+						slot_[i][j]->pos_.y += rotSpeed_[i];
+
+						if (posY <= 360.0f && slot_[i][j]->pos_.y >= 360.0f) {
+							isAcross_[i] = true;
+							acrossNum_ = j;
+						}
+					}
+
+					if (timeCount_ >= 0.2f && i == 0 && !isRotStop_[0] && isAcross_[i]) {
+						float y = 360.0f - slot_[i][acrossNum_]->pos_.y;
+
+						for (int j = 0; j < 3; j++) {
+							slot_[i][j]->pos_.y += y;
+						}
+
+						isRotStop_[i] = true;
+						faceTypes_[i] = acrossNum_;
+						timeCount_ = 0.0f;
+					}
+					else if (timeCount_ >= 0.2f && isRotStop_[0] && i == 2 && isAcross_[i]) {
+						if (isAcross_[i] && acrossNum_ != faceTypes_[0]) {
+							float y = 360.0f - slot_[i][acrossNum_]->pos_.y;
+
+							for (int j = 0; j < 3; j++) {
+								slot_[i][j]->pos_.y += y;
+							}
+							faceTypes_[i] = acrossNum_;
+							isRotStop_[i] = true;
+							timeCount_ = 0.0f;
+						}
+					}
+					else if (isRotStop_[2] && timeCount_ >= 0.2f) {
+						if (isAcross_[i] && acrossNum_ != faceTypes_[0] && acrossNum_ != faceTypes_[2]) {
+							float y = 360.0f - slot_[i][acrossNum_]->pos_.y;
+
+							for (int j = 0; j < 3; j++) {
+								slot_[i][j]->pos_.y += y;
+							}
+							isRotStop_[i] = true;
+							isRot_ = false;
+							timeCount_ = 0.0f;
+						}
+					}
+				}
+
+				for (int j = 0; j < 3; j++) {
+					slot_[i][j]->Update();
+				}
+			}
+		}
+		else if (faceType_ == FaceType::kGekiOko) {
+			// 激おこの場合
+		}
+		else {
+			// その他の場合
+
+			timeCount_ += FrameInfo::GetInstance()->GetDeltaTime();
+
+			for (int i = 0; i < 3; i++) {
+				if (!isRotStop_[i]) {
+					float t = std::clamp<float>(rotSpeed_[i], limitSpeed_ + 5.0f, 65.0f) - (limitSpeed_ + 5.0f);
+					t = t / (60.0f - limitSpeed_);
+
+					blurs_[i]->blurData_->pickRange = t * 0.14f + (1.0f - t) * 0.01f;
+					blurs_[i]->blurData_->stepWidth = t * 0.04f + (1.0f - t) * 0.005f;
+
+					isAcross_[i] = false;
+
+					for (int j = 0; j < 3; j++) {
+
+						float posY = slot_[i][j]->pos_.y;
+						slot_[i][j]->pos_.y += rotSpeed_[i];
+
+						if (j == faceType_ && posY <= 360.0f && slot_[i][j]->pos_.y >= 360.0f) {
+							isAcross_[i] = true;
+							acrossNum_ = j;
+						}
+					}
+
+					if (timeCount_ >= 1.0f && i == 0 && !isRotStop_[0] && isAcross_[i]) {
+						float y = 360.0f - slot_[i][acrossNum_]->pos_.y;
+
+						for (int j = 0; j < 3; j++) {
+							slot_[i][j]->pos_.y += y;
+						}
+
+						isRotStop_[i] = true;
+						faceType_ = acrossNum_;
+						timeCount_ = 0.0f;
+					}
+					else if (timeCount_ >= 0.3f && isRotStop_[0] && i == 2 && isAcross_[i]) {
+						if (isAcross_[i] && acrossNum_ == faceType_) {
+							float y = 360.0f - slot_[i][acrossNum_]->pos_.y;
+
+							for (int j = 0; j < 3; j++) {
+								slot_[i][j]->pos_.y += y;
+							}
+
+							isRotStop_[i] = true;
+							timeCount_ = 0.0f;
+						}
+					}
+					else if (isRotStop_[2] && isStop_) {
+						if (isAcross_[i] && acrossNum_ == faceType_) {
+							float y = 360.0f - slot_[i][acrossNum_]->pos_.y;
+
+							for (int j = 0; j < 3; j++) {
+								slot_[i][j]->pos_.y += y;
+							}
+							isRotStop_[i] = true;
+							isRot_ = false;
+							timeCount_ = 0.0f;
+						}
+					}
+				}
+
+				for (int j = 0; j < 3; j++) {
+					slot_[i][j]->Update();
+				}
+			}
+		}
 	}
 }
 
