@@ -224,7 +224,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Boss.cpp" />
     <ClCompile Include="Game\GameElement\BoundPin.cpp" />
     <ClCompile Include="Game\GameElement\Hole.cpp" />
-    <ClCompile Include="Game\GameElement\IBossState.cpp" />
+    <ClCompile Include="Game\GameElement\BossState\IBossState.cpp" />
     <ClCompile Include="Game\GameElement\IEntity.cpp" />
     <ClCompile Include="Game\GameElement\MapChip.cpp" />
     <ClCompile Include="Game\GameElement\MovingBall.cpp" />
@@ -359,7 +359,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\Boss.h" />
     <ClInclude Include="Game\GameElement\BoundPin.h" />
     <ClInclude Include="Game\GameElement\Hole.h" />
-    <ClInclude Include="Game\GameElement\IBossState.h" />
+    <ClInclude Include="Game\GameElement\BossState\IBossState.h" />
     <ClInclude Include="Game\GameElement\IEntity.h" />
     <ClInclude Include="Game\GameElement\IWeapon.h" />
     <ClInclude Include="Game\GameElement\MapChip.h" />

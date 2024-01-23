@@ -211,6 +211,9 @@
     <Filter Include="Game\GameElement\StageLights">
       <UniqueIdentifier>{1309d40f-7bcf-49fc-a94e-7913e225e1ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\BossState">
+      <UniqueIdentifier>{de7046dc-5406-4d9c-bee9-e3a5ea473b12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -498,8 +501,8 @@
     <ClCompile Include="Game\GameElement\StageLights\StageLights.cpp">
       <Filter>Game\GameElement\StageLights</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\IBossState.cpp">
-      <Filter>Game\GameElement</Filter>
+    <ClCompile Include="Game\GameElement\BossState\IBossState.cpp">
+      <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -851,8 +854,8 @@
     <ClInclude Include="Game\GameElement\StageLights\StageLights.h">
       <Filter>Game\GameElement\StageLights</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\IBossState.h">
-      <Filter>Game\GameElement</Filter>
+    <ClInclude Include="Game\GameElement\BossState\IBossState.h">
+      <Filter>Game\GameElement\BossState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

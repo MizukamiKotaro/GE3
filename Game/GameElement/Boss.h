@@ -5,7 +5,7 @@
 #include "Stage.h"
 #include "Vector3.h"
 #include "Slot/Slot.h"
-#include "IBossState.h"
+#include "BossState/IBossState.h"
 
 class Boss : public IEntity {
 public:
