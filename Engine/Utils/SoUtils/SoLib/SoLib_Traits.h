@@ -32,6 +32,12 @@ namespace SoLib {
 		requires std::same_as<typename T::value_type, U>; // Tの要素の型がUであることを確認
 	};
 
+	template <typename T, typename U>
+	concept IsBased = requires(T a) {
+
+		requires std::is_base_of_v<U, T>; // TがUを継承しているか
+	};
+
 
 
 	/// @brief 浮動小数点型である

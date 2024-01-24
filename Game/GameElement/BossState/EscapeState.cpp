@@ -1,12 +1,14 @@
 #include "EscapeState.h"
 #include "../Boss.h"
 #include "../Player.h"
+#include "Tackle.h"
 
 void EscapeState::Init() {
-
+	changeTimer_.Start(5.f);
 }
 
 void EscapeState::Update([[maybe_unused]] const float deltaTime) {
+	changeTimer_.Update(deltaTime);
 
 	// ステージのポインタ
 	const auto *const stage = IEntity::GetStage();
@@ -28,4 +30,12 @@ void EscapeState::Update([[maybe_unused]] const float deltaTime) {
 
 	bossTransform.translate_.x = std::clamp<float>(bossTransform.translate_.x, -static_cast<float>(mapData.GetCols()) / 2.f + (bossTransform.scale_.x * 2.f + 1.5f), static_cast<float>(mapData.GetCols()) / 2.f - (bossTransform.scale_.x * 2.f + 1.5f));
 	bossTransform.translate_.y = std::clamp<float>(bossTransform.translate_.y, -static_cast<float>(mapData.GetRows()) / 2.f + (bossTransform.scale_.y * 2.f + 3.f), static_cast<float>(mapData.GetRows()) / 2.f - (bossTransform.scale_.y * 2.f + 3.f));
+
+	if (changeTimer_.IsFinish()) {
+		ChangeState();
+	}
+}
+
+void EscapeState::ChangeState() {
+	GetBoss()->ChangeState<TackleState>();
 }

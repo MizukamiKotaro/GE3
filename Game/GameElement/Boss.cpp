@@ -20,8 +20,9 @@ void Boss::Init() {
 		slot_->Initialize();
 	}
 
-	bossState_ = std::make_unique<EscapeState>();
-	bossState_->Init();
+	//bossState_ = std::make_unique<EscapeState>();
+	//bossState_->Init();
+	ChangeState<EscapeState>();
 
 	CalcTransMat();
 	CalcCollision();
@@ -30,6 +31,10 @@ void Boss::Init() {
 
 void Boss::Update([[maybe_unused]] const float deltaTime) {
 
+	if (nextState_) {
+		bossState_ = std::move(nextState_);
+		bossState_->Init();
+	}
 	if (bossState_) {
 		bossState_->Update(deltaTime);
 	}

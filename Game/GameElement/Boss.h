@@ -25,6 +25,9 @@ public:
 
 	auto &GetTransform() { return transform_; }
 
+	template<SoLib::IsBased<IBossState> T>
+	void ChangeState();
+
 private:
 
 	void CalcTransMat();
@@ -35,6 +38,7 @@ private:
 
 private:
 
+	std::unique_ptr<IBossState> nextState_ = nullptr;
 	std::unique_ptr<IBossState> bossState_ = nullptr;
 
 	Sphere sphere_;
@@ -52,3 +56,8 @@ private:
 	Camera *pCamera_ = nullptr;
 
 };
+
+template<SoLib::IsBased<IBossState> T>
+inline void Boss::ChangeState() {
+	nextState_ = std::make_unique<T>();
+}

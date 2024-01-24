@@ -1,5 +1,6 @@
 #pragma once
 #include "IBossState.h"
+#include "SoUtils/SoLib/SoLib.h"
 
 class EscapeState : public IBossState {
 public:
@@ -10,8 +11,10 @@ public:
 
 	void Update(const float deltaTime) override;
 
+	void ChangeState();
+
 private:
 
-
+	SoLib::Time::DeltaTimer changeTimer_;
 
 };
