@@ -504,11 +504,14 @@
     <ClCompile Include="Game\GameElement\BossState\IBossState.cpp">
       <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\BossState\EscapeState.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Game\GameElement\SimpleTransform.cpp">
       <Filter>Game\GameElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\EscapeState.cpp">
+      <Filter>Game\GameElement\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\Tackle.cpp">
+      <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -949,6 +952,9 @@
     </None>
     <None Include="Resources\Shaders\Contrast.hlsli">
       <Filter>Engine\Shaders</Filter>
+    </None>
+    <None Include="Game\GameElement\BossState\Tackle.h">
+      <Filter>Game\GameElement\BossState</Filter>
     </None>
   </ItemGroup>
 </Project>

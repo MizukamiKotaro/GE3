@@ -223,6 +223,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Barrier.cpp" />
     <ClCompile Include="Game\GameElement\Boss.cpp" />
     <ClCompile Include="Game\GameElement\BossState\EscapeState.cpp" />
+    <ClCompile Include="Game\GameElement\BossState\Tackle.cpp" />
     <ClCompile Include="Game\GameElement\BoundPin.cpp" />
     <ClCompile Include="Game\GameElement\Hole.cpp" />
     <ClCompile Include="Game\GameElement\BossState\IBossState.cpp" />
@@ -394,6 +395,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <None Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\PointLight.hlsli" />
     <None Include="..\..\..\..\Downloads\LE2A_21_ミズカミ_コタロウ_音ゲー\LE2A_21_ミズカミ_コタロウ_音ゲー\Resources\Shaders\SpotLight.hlsli" />
+    <None Include="Game\GameElement\BossState\Tackle.h" />
     <None Include="Resources\Shaders\Blocks.hlsli" />
     <None Include="Resources\Shaders\Contrast.hlsli" />
     <None Include="Resources\Shaders\Object3d.hlsli" />
