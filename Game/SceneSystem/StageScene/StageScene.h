@@ -22,6 +22,7 @@
 #include <SoUtils/Graphics/CollisionRenderer.h>
 #include <string>
 #include <GameElement/Boss.h>
+#include "GameElement/HPBar/HPBar.h"
 
 class StageScene : public IScene {
 public:
@@ -61,4 +62,7 @@ private:
 
 	std::unique_ptr<Blur> punchBlur_;
 	bool isDrawPunchBlur_;
+
+	std::unique_ptr<HPBar> playerHPBar_;
+	std::unique_ptr<HPBar> bossHPBar_;
 };
