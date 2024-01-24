@@ -71,6 +71,21 @@ void StageScene::Init()
 	punchBlur_ = std::make_unique<Blur>();
 	isDrawPunchBlur_ = false;
 
+	playerHPBar_ = std::make_unique<HPBar>("PlayerHPBar");
+	// playerの最大HP
+	playerHPBar_->SetMaxHP(10.0f);
+	// playerに合わせて動かす場合、ワールドポジションのポインタをポインタセット
+	//playerHPBar_->SetParent();
+	playerHPBar_->Initialize();
+	playerHPBar_->Update(camera_.get());
+
+	bossHPBar_ = std::make_unique<HPBar>("BossHPBar");
+	// bossの最大HP
+	bossHPBar_->SetMaxHP(10.0f);
+	// bossに合わせて動かす場合、ワールドポジションのポインタをセット
+	// bossHPBar_->SetParent();
+	bossHPBar_->Initialize();
+	bossHPBar_->Update(camera_.get());
 }
 
 void StageScene::Update()
@@ -168,6 +183,9 @@ void StageScene::Update()
 	stageUI_->Update();
 
 	boss_->Update(deltaTime);
+
+	playerHPBar_->Update(camera_.get());
+	bossHPBar_->Update(camera_.get());
 }
 
 void StageScene::Draw() {
@@ -231,6 +249,8 @@ void StageScene::Draw() {
 		punchBlur_->Draw(BlendMode::kBlendModeAdd);
 	}
 
+	playerHPBar_->Draw();
+	bossHPBar_->Draw();
 	stageUI_->Draw(*camera_.get());
 
 

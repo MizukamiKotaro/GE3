@@ -214,6 +214,9 @@
     <Filter Include="Game\GameElement\BossState">
       <UniqueIdentifier>{de7046dc-5406-4d9c-bee9-e3a5ea473b12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\HPBar">
+      <UniqueIdentifier>{e77df862-7185-407a-9127-49b3cfc705e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -512,6 +515,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\BossState\Tackle.cpp">
       <Filter>Game\GameElement\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\HPBar\HPBar.cpp">
+      <Filter>Game\GameElement\HPBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -871,6 +877,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\SimpleTransform.h">
       <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\HPBar\HPBar.h">
+      <Filter>Game\GameElement\HPBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
