@@ -24,6 +24,8 @@
 #include <GameElement/Boss.h>
 #include "GameElement/HPBar/HPBar.h"
 
+#include "GameElement/TitleObject/TitleObject.h"
+
 class StageScene : public IScene {
 public:
 
@@ -34,6 +36,8 @@ public:
 	void Draw() override;
 
 private:
+
+	void TitleUpdate();
 
 	void CreatePostEffects();
 
@@ -65,4 +69,11 @@ private:
 
 	std::unique_ptr<HPBar> playerHPBar_;
 	std::unique_ptr<HPBar> bossHPBar_;
+
+	std::unique_ptr<TitleObject> titleObj_;
+
+	Vector3 titleCameraPos_;
+	bool isTitle_ = true;
+	bool isStart_ = false;
+	float countEaseTime_;
 };

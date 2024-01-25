@@ -5,6 +5,8 @@
 #include "Kyoko.h"
 #include <numbers>
 #include "GlobalVariables/GlobalVariables.h"
+#include <algorithm>
+#include "Ease/Ease.h"
 
 StageScene::StageScene() {
 	FirstInit();
@@ -22,13 +24,17 @@ void StageScene::Init()
 	camera_->Update();
 
 	firstCameraPos_ = camera_->transform_.translate_;
+	titleCameraPos_ = camera_->transform_.translate_;
 	GlobalVariables *globalVariable = GlobalVariables::GetInstance();
 	globalVariable->CreateGroup("StageCamera");
 	globalVariable->AddItem("StageCamera", "ポジション", firstCameraPos_);
-	Vector3 prePos = firstCameraPos_;
+	globalVariable->AddItem("StageCamera", "タイトル待機時のポジション", titleCameraPos_);
+	Vector3 prePos = titleCameraPos_;
 	firstCameraPos_ = globalVariable->GetVector3Value("StageCamera", "ポジション");
+	titleCameraPos_ = globalVariable->GetVector3Value("StageCamera", "タイトル待機時のポジション");
+
 	if (prePos != firstCameraPos_) {
-		camera_->transform_.translate_ = firstCameraPos_;
+		camera_->transform_.translate_ = titleCameraPos_;
 		camera_->Update();
 	}
 
@@ -86,6 +92,15 @@ void StageScene::Init()
 	// bossHPBar_->SetParent();
 	bossHPBar_->Initialize();
 	bossHPBar_->Update(camera_.get());
+
+	titleObj_ = std::make_unique<TitleObject>();
+	titleObj_->WrightPostEffect(camera_.get());
+
+	isTitle_ = true;
+	isStart_ = false;
+
+	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
+	stage_->Update(deltaTime);
 }
 
 void StageScene::Update()
@@ -103,11 +118,24 @@ void StageScene::Update()
 	stage_->ImGuiWidget();
 	ImGui::End();
 
-	GlobalVariables *globalVariable = GlobalVariables::GetInstance();
-	Vector3 prePos = firstCameraPos_;
+	GlobalVariables* globalVariable = GlobalVariables::GetInstance();
+	Vector3 prePos;
+	if (isTitle_) {
+		prePos = titleCameraPos_;
+	}
+	else {
+		prePos = firstCameraPos_;
+	}
+
+	titleCameraPos_ = globalVariable->GetVector3Value("StageCamera", "タイトル待機時のポジション");
 	firstCameraPos_ = globalVariable->GetVector3Value("StageCamera", "ポジション");
 	if (prePos != firstCameraPos_) {
-		camera_->transform_.translate_ = firstCameraPos_;
+		if (isTitle_) {
+			camera_->transform_.translate_ = titleCameraPos_;
+		}
+		else {
+			camera_->transform_.translate_ = firstCameraPos_;
+		}
 		camera_->Update();
 	}
 
@@ -115,77 +143,83 @@ void StageScene::Update()
 
 #endif // _DEBUG
 
-	camera_->Update();
-	stage_->Update(deltaTime);
+	if (isTitle_) {
+		TitleUpdate();
+	}
+	else {
+		camera_->Update();
+		stage_->Update(deltaTime);
 
 
-	player_->InputAction(input_, deltaTime);
-	player_->Update(deltaTime);
+		player_->InputAction(input_, deltaTime);
+		player_->Update(deltaTime);
 
-	for (auto &ball : *stage_->GetBallList()) {
+		for (auto& ball : *stage_->GetBallList()) {
 
-		const auto &sphere = ball->GetSphere();
+			const auto& sphere = ball->GetSphere();
 
-		if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
+			if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
 
-			player_->OnCollision(ball.get());
+				player_->OnCollision(ball.get());
 
-			ball->OnCollision(player_.get());
+				ball->OnCollision(player_.get());
+
+			}
+
+			for (const auto& pin : *stage_->GetPinList()) {
+
+				if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
+
+					pin->OnCollision(ball.get());
+
+					ball->OnCollision(pin.get());
+
+				}
+			}
+
+			for (const auto& hole : *stage_->GetHoleList()) {
+
+				Vector3 holePos = hole->GetPos();
+				holePos.z = 0.f;
+
+				if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
+
+					hole->OnCollision(ball.get());
+
+					ball->OnCollision(hole.get());
+
+				}
+			}
 
 		}
 
-		for (const auto &pin : *stage_->GetPinList()) {
-
-			if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
-
-				pin->OnCollision(ball.get());
-
-				ball->OnCollision(pin.get());
-
+		for (const auto& sword : *stage_->GetSwordList()) {
+			auto* collision = sword->GetCollision();
+			if (collision) {
+				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+					player_->OnCollision(sword.get());
+					sword->OnCollision(player_.get());
+				}
+			}
+		}
+		for (const auto& punch : *stage_->GetPunchList()) {
+			auto* collision = punch->GetCollision();
+			if (collision) {
+				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+					player_->OnCollision(punch.get());
+					punch->OnCollision(player_.get());
+				}
 			}
 		}
 
-		for (const auto &hole : *stage_->GetHoleList()) {
+		stageUI_->Update();
 
-			Vector3 holePos = hole->GetPos();
-			holePos.z = 0.f;
+		boss_->Update(deltaTime);
 
-			if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
-
-				hole->OnCollision(ball.get());
-
-				ball->OnCollision(hole.get());
-
-			}
-		}
-
+		playerHPBar_->Update(camera_.get());
+		bossHPBar_->Update(camera_.get());
 	}
 
-	for (const auto &sword : *stage_->GetSwordList()) {
-		auto *collision = sword->GetCollision();
-		if (collision) {
-			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-				player_->OnCollision(sword.get());
-				sword->OnCollision(player_.get());
-			}
-		}
-	}
-	for (const auto &punch : *stage_->GetPunchList()) {
-		auto *collision = punch->GetCollision();
-		if (collision) {
-			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-				player_->OnCollision(punch.get());
-				punch->OnCollision(player_.get());
-			}
-		}
-	}
-
-	stageUI_->Update();
-
-	boss_->Update(deltaTime);
-
-	playerHPBar_->Update(camera_.get());
-	bossHPBar_->Update(camera_.get());
 }
 
 void StageScene::Draw() {
@@ -249,14 +283,42 @@ void StageScene::Draw() {
 		punchBlur_->Draw(BlendMode::kBlendModeAdd);
 	}
 
-	playerHPBar_->Draw();
-	bossHPBar_->Draw();
-	stageUI_->Draw(*camera_.get());
-
+	if (isTitle_) {
+		titleObj_->Draw(camera_.get());
+	}
+	else {
+		playerHPBar_->Draw();
+		bossHPBar_->Draw();
+		stageUI_->Draw(*camera_.get());
+	}
 
 	// フレームの終了
 	BlackDraw();
 	Kyoko::PostDraw();
+}
+
+void StageScene::TitleUpdate()
+{
+	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
+		isStart_ = true;
+		countEaseTime_ = 0.0f;
+	}
+
+	if (isStart_) {
+		float maxTime = 1.5f;
+
+		countEaseTime_ += FrameInfo::GetInstance()->GetDeltaTime();
+		countEaseTime_ = std::clamp(countEaseTime_, 0.0f, maxTime);
+
+		camera_->transform_.translate_ = Ease::UseEase(titleCameraPos_, firstCameraPos_, countEaseTime_, maxTime, Ease::Constant);
+
+		if (countEaseTime_ >= maxTime) {
+			isTitle_ = false;
+		}
+	}
+	camera_->Update();
+
+	titleObj_->Update(camera_.get());
 }
 
 void StageScene::CreatePostEffects()

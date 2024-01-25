@@ -217,6 +217,9 @@
     <Filter Include="Game\GameElement\HPBar">
       <UniqueIdentifier>{e77df862-7185-407a-9127-49b3cfc705e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\TitleObject">
+      <UniqueIdentifier>{bb7ef455-8599-40a7-ac98-f5f8607ab07f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -518,6 +521,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\HPBar\HPBar.cpp">
       <Filter>Game\GameElement\HPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\TitleObject\TitleObject.cpp">
+      <Filter>Game\GameElement\TitleObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -880,6 +886,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\HPBar\HPBar.h">
       <Filter>Game\GameElement\HPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\TitleObject\TitleObject.h">
+      <Filter>Game\GameElement\TitleObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
