@@ -55,6 +55,9 @@ private:
 
 	Camera *pCamera_ = nullptr;
 
+	float maxHealth_;
+	float nowHealth_;
+
 };
 
 template<SoLib::IsBased<IBossState> T>

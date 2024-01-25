@@ -6,7 +6,7 @@
 
 void TackleState::Init() {
 	stateArray_[0u] = AttackParameter{ .totalTime_ = 1.f, .damage_ = 0.f };
-	stateArray_[1u] = AttackParameter{ .totalTime_ = 0.5f, .damage_ = 5.f, .initFunc_ = &TackleState::AttackStart,.updateFunc_ = &TackleState::AttackUpdate };
+	stateArray_[1u] = AttackParameter{ .totalTime_ = 1.5f, .damage_ = 5.f, .initFunc_ = &TackleState::AttackStart,.updateFunc_ = &TackleState::AttackUpdate };
 	stateArray_[2u] = AttackParameter{ .totalTime_ = 2.f, .damage_ = 0.f };
 	stateArray_[3u] = AttackParameter{ .totalTime_ = 2.f, .damage_ = 0.f, .initFunc_ = &TackleState::ChangeState };
 
@@ -56,6 +56,6 @@ void TackleState::AttackStart() {
 }
 
 void TackleState::AttackUpdate() {
-	GetBoss()->GetTransform().translate_ = attackVec_.GetPoint(stateTimer_.GetProgress());
+	GetBoss()->GetTransform().translate_ = attackVec_.GetPoint(SoLib::easeInOutBack(stateTimer_.GetProgress()));
 
 }
