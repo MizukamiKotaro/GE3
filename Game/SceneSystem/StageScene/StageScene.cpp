@@ -194,10 +194,54 @@ void StageScene::Update()
 		}
 	}
 
+	for (const auto &sword : *stage_->GetSwordList()) {
+		auto *collision = sword->GetCollision();
+		if (collision) {
+			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+				player_->OnCollision(sword.get());
+				sword->OnCollision(player_.get());
+			}
 
-	auto *bossCollision = boss_->GetCollision();
-	if (bossCollision) {
-		if (Collision::IsCollision(player_->GetSphere(), *bossCollision)) {
+			if (not sword->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+				boss_->OnCollision(sword.get());
+				sword->OnCollision(boss_.get());
+			}
+		}
+	}
+
+	for (const auto &punch : *stage_->GetPunchList()) {
+		auto *collision = punch->GetCollision();
+		if (collision) {
+			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+				player_->OnCollision(punch.get());
+				punch->OnCollision(player_.get());
+			}
+
+			if (not punch->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+				boss_->OnCollision(punch.get());
+				punch->OnCollision(boss_.get());
+			}
+		}
+	}
+	for (const auto &needle : *stage_->GetNeedleList()) {
+		auto *collision = needle->GetCollision();
+		if (collision) {
+			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+				player_->OnCollision(needle.get());
+				needle->OnCollision(player_.get());
+			}
+
+			if (not needle->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+				boss_->OnCollision(needle.get());
+				needle->OnCollision(boss_.get());
+			}
+		}
+	}
+
+
+	auto &bossCollision = boss_->GetCollision();
+	if (boss_->IsAttacked()) {
+		if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
 			player_->OnCollision(boss_.get());
 			boss_->OnCollision(player_.get());
 		}

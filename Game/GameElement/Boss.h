@@ -35,9 +35,12 @@ public:
 	template<SoLib::IsBased<IBossState> T>
 	void ChangeState();
 
-	const Sphere *const GetCollision() const {
-		if (not bossState_ || not bossState_->IsAttacked()) { return nullptr; }
-		return &sphere_;
+	bool IsAttacked() const {
+		return  bossState_ && bossState_->IsAttacked();
+	}
+
+	const Sphere &GetCollision() const {
+		return sphere_;
 	}
 
 private:

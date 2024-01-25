@@ -57,11 +57,16 @@ void Boss::OnCollision(IEntity *other) {
 		bossState_->OnCollision(other);
 	}
 
+	IWeapon *weapon = dynamic_cast<IWeapon *>(other);
+	if (weapon) {
+		Damage(weapon);
+	}
+
 }
 
 void Boss::Damage(IWeapon *weapon) {
 
-	// 当たってなかった場合ダメージ処理
+	// 一度も当たってなかった場合ダメージ処理
 	if (not weapon->GetIsHitBoss()) {
 		Damage(weapon->GetDamage());
 
