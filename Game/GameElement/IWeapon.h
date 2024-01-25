@@ -26,7 +26,12 @@ public:
 
 	bool ImGuiWidget(const char *const label);
 
+	void SetIsHitBoss(bool value) { isHitBoss_ = value; }
+	bool GetIsHitBoss() const { return isHitBoss_; }
+
 protected:
 
 	uint32_t holeNumber_ = 0u;
+
+	bool isHitBoss_ = false;
 };

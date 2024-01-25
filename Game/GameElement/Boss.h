@@ -7,6 +7,7 @@
 #include "Slot/Slot.h"
 #include "BossState/IBossState.h"
 #include "SimpleTransform.h"
+#include "HPBar/HPBar.h"
 
 class Boss : public IEntity {
 public:
@@ -20,6 +21,12 @@ public:
 	void Draw() override;
 
 	void OnCollision(IEntity *other) override;
+
+	void Damage(IWeapon *weapon);
+
+	void Damage(float damage);
+
+	void SetHPBar(HPBar *hpBar);
 
 	void SetCamera(Camera *camera);
 
@@ -45,6 +52,13 @@ private:
 
 	std::unique_ptr<IBossState> nextState_ = nullptr;
 	std::unique_ptr<IBossState> bossState_ = nullptr;
+
+	VariantItem<float> vTackleDamage_{ "TackleDamage", 5.f };
+
+	VariantItem<float> vMaxHealth_{ "MaxHealth", 200.f };
+	float health_;
+
+	HPBar *pHPBar_ = nullptr;
 
 	Sphere sphere_;
 

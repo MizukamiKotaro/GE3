@@ -27,6 +27,8 @@ void Boss::Init() {
 	CalcTransMat();
 	CalcCollision();
 
+	health_ = vMaxHealth_;
+
 }
 
 void Boss::Update([[maybe_unused]] const float deltaTime) {
@@ -54,6 +56,27 @@ void Boss::OnCollision(IEntity *other) {
 	if (bossState_) {
 		bossState_->OnCollision(other);
 	}
+
+}
+
+void Boss::Damage(IWeapon *weapon) {
+
+	// 当たってなかった場合ダメージ処理
+	if (not weapon->GetIsHitBoss()) {
+		Damage(weapon->GetDamage());
+
+		weapon->SetIsHitBoss(true);
+	}
+}
+
+void Boss::Damage(float damage) {
+	health_ -= damage;
+	pHPBar_->SetDamage(damage);
+}
+
+void Boss::SetHPBar(HPBar *hpBar) {
+	pHPBar_ = hpBar;
+	pHPBar_->SetMaxHP(vMaxHealth_);
 }
 
 void Boss::SetCamera(Camera *camera) {

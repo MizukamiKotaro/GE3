@@ -89,6 +89,7 @@ void StageScene::Init()
 
 
 	player_->SetHPBar(playerHPBar_.get());
+	boss_->SetHPBar(bossHPBar_.get());
 }
 
 void StageScene::Update()

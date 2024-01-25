@@ -29,6 +29,8 @@ void Player::Init() {
 
 	jumpSE_ = audio_->LoadWave("Resources/playerSE/jump.wav");
 	CalcTransMat();
+
+	health_ = vMaxHealth_;
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {

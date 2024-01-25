@@ -11,7 +11,7 @@ void Needle::Init()
 {
 	scale_ = Vector3::one * 4.f;
 	rotate_ = Vector3::zero;
-	translate_ = Vector3(0,0,-3);
+	translate_ = Vector3(0, 0, -3);
 	rotate_.y = 90._deg;
 
 	capsule_ = Capsule{ .radius_ = 1.f, .segment_{ Vector3::zero, Vector3::up } };
@@ -53,14 +53,14 @@ void Needle::AttackUpdate(const float deltaTime)
 	followTimer_.Update(deltaTime);
 
 	if (attackTimer_.IsActive()) {
-		translate_.y = SoLib::Lerp(pStage_->stageGround_- 6.0f, pStage_->GetNeedleHight(), pStage_->GetPunchEase()(attackTimer_.GetProgress()));
+		translate_.y = SoLib::Lerp(pStage_->stageGround_ - 6.0f, pStage_->GetNeedleHight(), pStage_->GetPunchEase()(attackTimer_.GetProgress()));
 
 		if (attackTimer_.IsFinish()) {
 			followTimer_.Start(1.f);
 		}
 	}
 	if (followTimer_.IsActive()) {
-		translate_.y = SoLib::Lerp(pStage_->GetNeedleHight(), pStage_->stageGround_ -1.0f , pStage_->GetPunchEase()(followTimer_.GetProgress()));
+		translate_.y = SoLib::Lerp(pStage_->GetNeedleHight(), pStage_->stageGround_ - 1.0f, pStage_->GetPunchEase()(followTimer_.GetProgress()));
 	}
 
 	CalcSegment();
@@ -70,6 +70,7 @@ void Needle::AttackUpdate(const float deltaTime)
 void Needle::Attack(const AttackType attackType)
 {
 	if (not attackTimer_.IsActive() && not followTimer_.IsActive()) {
+		SetIsHitBoss(false);
 		attackTimer_.Start(pStage_->GetNeedleTime());
 	}
 

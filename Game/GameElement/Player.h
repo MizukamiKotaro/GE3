@@ -60,7 +60,7 @@ public:
 private:
 
 	float health_;
-	VariantItem<float> vMaxHealth_{ "MaxHealth", 10.f };
+	VariantItem<float> vMaxHealth_{ "MaxHealth", 100.f };
 	HPBar *pHPBar_;
 
 	std::list<std::unique_ptr<MovingBall>> *ballList_;

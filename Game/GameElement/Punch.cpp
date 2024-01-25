@@ -74,6 +74,7 @@ void Punch::AttackUpdate(const float deltaTime) {
 void Punch::Attack(const AttackType attackType)
 {
 	if (not attackTimer_.IsActive() && not followTimer_.IsActive()) {
+		SetIsHitBoss(false);
 		attackTimer_.Start(1.f);
 	}
 

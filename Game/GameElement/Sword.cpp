@@ -51,6 +51,7 @@ void Sword::Draw()
 
 void Sword::Attack(const AttackType attackType) {
 	if (attackTimer_.IsFinish()) {
+		SetIsHitBoss(false);
 		attackTimer_.Start(pStage_->GetSwingTime());
 	}
 }
