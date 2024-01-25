@@ -31,6 +31,10 @@ public:
 	void AttackStart();
 	void AttackUpdate();
 
+	void OnCollision(IEntity *other) override;
+
+	bool IsAttacked() const override;
+
 private:
 
 	std::array<AttackParameter, 4u> stateArray_;

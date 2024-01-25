@@ -77,6 +77,12 @@ void Player::Draw() {
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }
 
+void Player::SetHPBar(HPBar *hpBar) {
+	pHPBar_ = hpBar;
+
+	pHPBar_->SetMaxHP(vMaxHealth_);
+}
+
 void Player::InputAction(Input *const input, const float deltaTime) {
 	Vector2 inputRight = input->GetGamePadRStick();
 
@@ -144,18 +150,29 @@ void Player::CalcTransMat() {
 	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * sphere_.radius_, rotate_, sphere_.center_);
 }
 
-void Player::Damage([[maybe_unused]] IWeapon *weapon) {
+bool Player::Damage([[maybe_unused]] IWeapon *weapon) {
+
+	return Damage(weapon->GetDamage());
+
+}
+
+bool Player::Damage(float damage) {
 
 	// 無敵時間が終わっていたら
 	if (invincibleTime_.IsFinish()) {
 		// 無敵時間を開始
-		invincibleTime_.Start();
+		invincibleTime_.Start(1.5f);
 
 		// 体力を減らす
-		health_ -= weapon->GetDamage();
+		health_ -= damage;
+
+		pHPBar_->SetDamage(damage);
+
+		return true;
 
 	}
 
+	return false;
 }
 
 void Player::OnCollision(IEntity *other) {

@@ -66,3 +66,20 @@ void TackleState::AttackUpdate() {
 	GetBoss()->GetTransform().translate_ = attackVec_.GetPoint(SoLib::easeInOutBack(stateTimer_.GetProgress()));
 
 }
+
+void TackleState::OnCollision(IEntity *other) {
+	Player *player = dynamic_cast<Player *>(other);
+	if (player) {
+
+		// ダメージがあるなら接触
+		if (stateArray_[stateIndex_].damage_ > 0.f) {
+			if (player->Damage(stateArray_[stateIndex_].damage_)) {
+
+			}
+		}
+	}
+}
+
+bool TackleState::IsAttacked() const {
+	return stateArray_[stateIndex_].damage_ > 0.f;
+}

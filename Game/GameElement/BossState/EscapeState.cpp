@@ -39,3 +39,6 @@ void EscapeState::Update([[maybe_unused]] const float deltaTime) {
 void EscapeState::ChangeState() {
 	GetBoss()->ChangeState<TackleState>();
 }
+
+void EscapeState::OnCollision([[maybe_unused]] IEntity *other) {
+}

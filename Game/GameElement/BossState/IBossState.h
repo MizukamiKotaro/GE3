@@ -4,6 +4,8 @@
 class Boss;
 class Player;
 
+class IEntity;
+
 class IBossState {
 public:
 
@@ -21,6 +23,10 @@ public:
 	virtual void Init() = 0;
 
 	virtual void Update(const float deltaTime) = 0;
+
+	virtual void OnCollision(IEntity *other) = 0;
+
+	virtual bool IsAttacked() const { return false; }
 
 	// virtual void Draw() = 0;
 

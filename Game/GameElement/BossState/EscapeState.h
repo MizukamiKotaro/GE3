@@ -13,6 +13,8 @@ public:
 
 	void ChangeState();
 
+	void OnCollision(IEntity *other) override;
+
 private:
 
 	SoLib::Time::DeltaTimer changeTimer_;

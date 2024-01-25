@@ -51,7 +51,9 @@ void Boss::Draw() {
 }
 
 void Boss::OnCollision(IEntity *other) {
-
+	if (bossState_) {
+		bossState_->OnCollision(other);
+	}
 }
 
 void Boss::SetCamera(Camera *camera) {

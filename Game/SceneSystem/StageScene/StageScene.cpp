@@ -86,6 +86,9 @@ void StageScene::Init()
 	// bossHPBar_->SetParent();
 	bossHPBar_->Initialize();
 	bossHPBar_->Update(camera_.get());
+
+
+	player_->SetHPBar(playerHPBar_.get());
 }
 
 void StageScene::Update()
@@ -170,6 +173,7 @@ void StageScene::Update()
 			}
 		}
 	}
+
 	for (const auto &punch : *stage_->GetPunchList()) {
 		auto *collision = punch->GetCollision();
 		if (collision) {
@@ -177,6 +181,24 @@ void StageScene::Update()
 				player_->OnCollision(punch.get());
 				punch->OnCollision(player_.get());
 			}
+		}
+	}
+	for (const auto &needle : *stage_->GetNeedleList()) {
+		auto *collision = needle->GetCollision();
+		if (collision) {
+			if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+				player_->OnCollision(needle.get());
+				needle->OnCollision(player_.get());
+			}
+		}
+	}
+
+
+	auto *bossCollision = boss_->GetCollision();
+	if (bossCollision) {
+		if (Collision::IsCollision(player_->GetSphere(), *bossCollision)) {
+			player_->OnCollision(boss_.get());
+			boss_->OnCollision(player_.get());
 		}
 	}
 

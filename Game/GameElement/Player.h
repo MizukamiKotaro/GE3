@@ -8,6 +8,7 @@
 #include "IEntity.h"
 #include "Shape/Sphere.h"
 #include "Sword.h"
+#include "HPBar/HPBar.h"
 
 class MapChip;
 
@@ -21,6 +22,8 @@ public:
 	void Update(const float deltaTime);
 
 	void Draw();
+
+	void SetHPBar(HPBar *hpBar);
 
 	const Matrix4x4 &GetTransMat() const { return transformMat_; }
 	const Vector3 &GetGrobalPos() const { return *reinterpret_cast<const Vector3 *>(transformMat_.m[3]); }
@@ -40,8 +43,15 @@ public:
 	void Landing();
 
 	void CalcTransMat();
+	/// @brief ダメージを与える
+	/// @param weapon ブキ
+	/// @return ダメージが入ったか
+	bool Damage(IWeapon *weapon);
 
-	void Damage(IWeapon *weapon);
+	/// @brief ダメージを与える
+	/// @param damage ダメージ量
+	/// @return ダメージが入ったか
+	bool Damage(float damage);
 
 	void OnCollision(IEntity *other) override;
 
@@ -51,6 +61,7 @@ private:
 
 	float health_;
 	VariantItem<float> vMaxHealth_{ "MaxHealth", 10.f };
+	HPBar *pHPBar_;
 
 	std::list<std::unique_ptr<MovingBall>> *ballList_;
 	bool isLanding_ = false;
