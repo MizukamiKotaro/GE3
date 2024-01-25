@@ -26,6 +26,8 @@ public:
 
 	void ChangeState();
 
+	void RotateUpdate();
+
 	void AttackStart();
 	void AttackUpdate();
 

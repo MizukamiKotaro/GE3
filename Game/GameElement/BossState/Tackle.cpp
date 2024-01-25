@@ -5,7 +5,7 @@
 #include "EscapeState.h"
 
 void TackleState::Init() {
-	stateArray_[0u] = AttackParameter{ .totalTime_ = 1.f, .damage_ = 0.f };
+	stateArray_[0u] = AttackParameter{ .totalTime_ = 1.f, .damage_ = 0.f, .updateFunc_ = &TackleState::RotateUpdate };
 	stateArray_[1u] = AttackParameter{ .totalTime_ = 1.5f, .damage_ = 5.f, .initFunc_ = &TackleState::AttackStart,.updateFunc_ = &TackleState::AttackUpdate };
 	stateArray_[2u] = AttackParameter{ .totalTime_ = 2.f, .damage_ = 0.f };
 	stateArray_[3u] = AttackParameter{ .totalTime_ = 2.f, .damage_ = 0.f, .initFunc_ = &TackleState::ChangeState };
@@ -17,6 +17,14 @@ void TackleState::Init() {
 void TackleState::Update(const float deltaTime) {
 
 	stateTimer_.Update(deltaTime);
+
+	if (stateTimer_.IsActive()) {
+
+		// 関数が指定されているなら実行
+		if (stateArray_[stateIndex_].updateFunc_) {
+			(this->*stateArray_[stateIndex_].updateFunc_)();
+		}
+	}
 
 	if (stateTimer_.IsFinish()) {
 
@@ -32,17 +40,16 @@ void TackleState::Update(const float deltaTime) {
 			}
 		}
 	}
-	else {
-		// 関数が指定されているなら実行
-		if (stateArray_[stateIndex_].updateFunc_) {
-			(this->*stateArray_[stateIndex_].updateFunc_)();
-		}
-	}
 
 }
 
 void TackleState::ChangeState() {
 	GetBoss()->ChangeState<EscapeState>();
+}
+
+void TackleState::RotateUpdate() {
+	auto &transform = GetBoss()->GetTransform();
+	transform.rotate_.z = SoLib::easeInOutBack(stateTimer_.GetProgress()) * SoLib::Math::Angle::PI2;
 }
 
 void TackleState::AttackStart() {
