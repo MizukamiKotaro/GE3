@@ -56,7 +56,7 @@ void WinApp::CreateGameWindow() {
 	//ウィンドウの生成
 	hwnd_ = CreateWindow(
 		wndClass_.lpszClassName,      // 利用するクラス名
-		L"LE2A_21_ミズカミ_コタロウ",	               // タイトルバーの文字(何でもいい)
+		L"2303_LD2Bコヤマ_LE2Aオヌキ_LE2Aミズカミ_バトスロ",	               // タイトルバーの文字(何でもいい)
 		WS_OVERLAPPEDWINDOW,   // よく見るウィンドウスタイル
 		CW_USEDEFAULT,         // 表示x座標(windowsに任せる)
 		CW_USEDEFAULT,         // 表示y座標(windowsに任せる)
