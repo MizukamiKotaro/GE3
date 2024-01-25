@@ -15,14 +15,11 @@ void Sword::Init()
 
 	scale_ = Vector3::one * 8.f;
 	rotate_ = Vector3::zero;
-	position_ = Vector3(13,0,-3);
+	position_ = Vector3(13, 0, -3);
 
 	rotate_.y = -90._deg;
 
-	capsule_.segment_.origin = position_;
-	capsule_.segment_.origin.z = 0.f;
-	capsule_.segment_.diff = Vector3::up * 5.f;
-	capsule_.radius_ = 2.f;
+	CalcCollision();
 
 }
 
@@ -39,8 +36,7 @@ void Sword::AttackUpdate(const float deltaTime) {
 
 	rotate_.z = targetAngle_ * pStage_->GetSwordEase()(attackTimer_.GetProgress());
 
-	capsule_.segment_.diff = Vector3::up * 5.f * Matrix4x4::MakeRotateAxisAngle(Vector3::front, rotate_.z);
-
+	CalcCollision();
 }
 
 void Sword::Draw()
@@ -72,4 +68,18 @@ float Sword::GetDamage() const {
 
 void Sword::CalcTransMat() {
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_, position_);
+}
+
+void Sword::CalcCollision() {
+	capsule_.radius_ = 2.f;
+	Vector3 targetVec = Vector3::up * Matrix4x4::MakeRotateAxisAngle(Vector3::front, rotate_.z);
+
+	capsule_.segment_.diff = targetVec * (scale_.x - capsule_.radius_);
+
+	capsule_.segment_.origin = position_ + targetVec * capsule_.radius_;
+
+
+	capsule_.segment_.origin.z = 0.f;
+
+
 }

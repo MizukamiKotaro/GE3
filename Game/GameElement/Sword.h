@@ -40,9 +40,13 @@ public:
 
 	void CalcTransMat();
 
+	void CalcCollision();
+
 	float GetBeforeRotate() const { return beforeRotate_; }
 
 private:
+
+	// float collisionDiff_ = 2.f;
 
 	Capsule capsule_;
 
