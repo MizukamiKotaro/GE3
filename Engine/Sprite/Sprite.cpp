@@ -48,6 +48,7 @@ Sprite::Sprite(uint32_t texHundle, const Vector2& pos, const Vector2& texLeftTop
 	CreateVertexRes();
 
 	textureHundle_ = texHundle;
+	srvGPUDescriptorHandle_ = TextureManager::GetInstance()->GetSRVGPUDescriptorHandle(textureHundle_);
 	AdjustTextureSize();
 
 	CreateMaterialRes();
@@ -108,8 +109,6 @@ void Sprite::Draw(const Camera& camera, BlendMode blendMode)
 	transformData_->WVP = worldMat_ * camera.GetOrthographicMat();
 	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
 
-	TextureManager* texManager = TextureManager::GetInstance();
-
 	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
@@ -121,11 +120,11 @@ void Sprite::Draw(const Camera& camera, BlendMode blendMode)
 	//TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformResource_->GetGPUVirtualAddress());
 	if (isLoad_) {
-		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+		commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 	}
 	else {
 		this->LoadTexture("Resources/white.png");
-		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+		commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 	}
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(6, 1, 0, 0);
@@ -144,8 +143,6 @@ void Sprite::Draw(BlendMode blendMode)
 	transformData_->WVP = worldMat_ * Camera::GetOrthographicMat();
 	materialData_->uvTransform = Matrix4x4::MakeAffinMatrix({ uvScale_.x,uvScale_.y,0.0f }, { 0.0f,0.0f,uvRotate_ }, { uvTranslate_.x,uvTranslate_.y,0.0f });
 
-	TextureManager* texManager = TextureManager::GetInstance();
-
 	GraphicsPiplineManager::GetInstance()->SetBlendMode(piplineType, static_cast<uint32_t>(blendMode));
 
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
@@ -157,15 +154,22 @@ void Sprite::Draw(BlendMode blendMode)
 	//TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformResource_->GetGPUVirtualAddress());
 	if (isLoad_) {
-		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+		commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 	}
 	else {
 		this->LoadTexture("Resources/white.png");
-		commandList->SetGraphicsRootDescriptorTable(2, texManager->GetSRVGPUDescriptorHandle(textureHundle_));
+		commandList->SetGraphicsRootDescriptorTable(2, srvGPUDescriptorHandle_);
 	}
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(6, 1, 0, 0);
 
+}
+
+void Sprite::SetSRVGPUDescriptorHandle_(D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle)
+{
+	srvGPUDescriptorHandle_ = srvGPUDescriptorHandle;
+	size_ = { 1280.0f,720.0f };
+	TransferSize();
 }
 
 void Sprite::LoadTexture(const std::string& filePath)
@@ -175,13 +179,15 @@ void Sprite::LoadTexture(const std::string& filePath)
 
 	textureHundle_ = texManager->LoadTexture(filePath);
 
+	srvGPUDescriptorHandle_ = texManager->GetSRVGPUDescriptorHandle(textureHundle_);
+
 	isLoad_ = true;
 }
 
 void Sprite::SetTextureHandle(uint32_t textureHundle)
 {
 	textureHundle_ = textureHundle;
-
+	srvGPUDescriptorHandle_ = TextureManager::GetInstance()->GetSRVGPUDescriptorHandle(textureHundle_);
 	AdjustTextureSize();
 }
 

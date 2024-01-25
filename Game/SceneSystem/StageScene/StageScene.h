@@ -25,6 +25,7 @@
 #include "GameElement/HPBar/HPBar.h"
 
 #include "GameElement/TitleObject/TitleObject.h"
+#include "PostEffect/PostEffect.h"
 
 class StageScene : public IScene {
 public:
@@ -37,7 +38,7 @@ public:
 
 private:
 
-	void TitleUpdate();
+	void TitleUpdate(float deltaTime);
 
 	void CreatePostEffects();
 
@@ -76,4 +77,8 @@ private:
 	bool isTitle_ = true;
 	bool isStart_ = false;
 	float countEaseTime_;
+
+	std::unique_ptr<PostEffect> postEffect_;
+	std::array<std::unique_ptr<Sprite>, 2> slotMirrors_;
+	float slotMirrorsPosX_;
 };

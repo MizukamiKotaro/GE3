@@ -98,9 +98,22 @@ void StageScene::Init()
 
 	isTitle_ = true;
 	isStart_ = false;
+	postEffect_ = std::make_unique<PostEffect>();
+	for (int i = 0; i < 2; i++) {
+		slotMirrors_[i] = std::make_unique<Sprite>("Resources/white.png");
+		slotMirrors_[i]->SetSRVGPUDescriptorHandle_(postEffect_->GetSRVGPUDescriptorHandle());
+	}
+	slotMirrors_[1]->SetIsFlipX(true);
+	slotMirrorsPosX_ = 700.0f;
+	slotMirrors_[0]->pos_.x -= slotMirrorsPosX_;
+	slotMirrors_[1]->pos_.x += slotMirrorsPosX_;
+	slotMirrors_[0]->Update();
+	slotMirrors_[1]->Update();
 
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 	stage_->Update(deltaTime);
+
+	CreatePostEffects();
 }
 
 void StageScene::Update()
@@ -144,7 +157,7 @@ void StageScene::Update()
 #endif // _DEBUG
 
 	if (isTitle_) {
-		TitleUpdate();
+		TitleUpdate(deltaTime);
 	}
 	else {
 		camera_->Update();
@@ -229,64 +242,72 @@ void StageScene::Draw() {
 	// 描画開始
 	Kyoko::PreDraw();
 
-	backgroundSprite_->Draw();
-
-	pBlockManager_->clear();
-	stage_->Draw();
-
-	player_->Draw();
-
-	boss_->Draw();
-
-	collisionRenderer_->AddCollision(player_->GetSphere());
-
-	// 剣の配列から、当たり判定を取得して有効なら描画する
-	const auto &punchList = *stage_->GetPunchList();
-	for (const auto &punch : punchList) {
-		const auto *const swordCollision = punch->GetCollision();
-		if (swordCollision) {
-			collisionRenderer_->AddCollision(*swordCollision);
-		}
-	}
-
-	// 剣の配列から、当たり判定を取得して有効なら描画する
-	const auto &swordList = *stage_->GetSwordList();
-	for (const auto &sword : swordList) {
-		const auto *const swordCollision = sword->GetCollision();
-		if (swordCollision) {
-			collisionRenderer_->AddCollision(*swordCollision);
-		}
-	}
-
-	// トゲの配列から、当たり判定を取得して有効なら描画する
-	const auto &needleList = *stage_->GetNeedleList();
-	for (const auto &needle : needleList) {
-		const auto *const needleCollision = needle->GetCollision();
-		if (needleCollision) {
-			collisionRenderer_->AddCollision(*needleCollision);
-		}
-	}
-
-	collisionRenderer_->AddCollision(player_->GetSphere());
-
-	pBlockManager_->Draw(*camera_.get());
-
-	if (isDrawSwordBlur_) {
-		swordBlur_->Draw(BlendMode::kBlendModeAdd);
-	}
-
-	if (isDrawNeedleBlur_) {
-		needleBlur_->Draw(BlendMode::kBlendModeAdd);
-	}
-
-	if (isDrawPunchBlur_) {
-		punchBlur_->Draw(BlendMode::kBlendModeAdd);
-	}
-
 	if (isTitle_) {
+		backgroundSprite_->Draw();
+
+		postEffect_->Draw();
+
 		titleObj_->Draw(camera_.get());
+
+		for (const std::unique_ptr<Sprite>& sprite : slotMirrors_) {
+			sprite->Draw();
+		}
 	}
 	else {
+		backgroundSprite_->Draw();
+
+		pBlockManager_->clear();
+		stage_->Draw();
+
+		player_->Draw();
+
+		boss_->Draw();
+
+		collisionRenderer_->AddCollision(player_->GetSphere());
+
+		// 剣の配列から、当たり判定を取得して有効なら描画する
+		const auto& punchList = *stage_->GetPunchList();
+		for (const auto& punch : punchList) {
+			const auto* const swordCollision = punch->GetCollision();
+			if (swordCollision) {
+				collisionRenderer_->AddCollision(*swordCollision);
+			}
+		}
+
+		// 剣の配列から、当たり判定を取得して有効なら描画する
+		const auto& swordList = *stage_->GetSwordList();
+		for (const auto& sword : swordList) {
+			const auto* const swordCollision = sword->GetCollision();
+			if (swordCollision) {
+				collisionRenderer_->AddCollision(*swordCollision);
+			}
+		}
+
+		// トゲの配列から、当たり判定を取得して有効なら描画する
+		const auto& needleList = *stage_->GetNeedleList();
+		for (const auto& needle : needleList) {
+			const auto* const needleCollision = needle->GetCollision();
+			if (needleCollision) {
+				collisionRenderer_->AddCollision(*needleCollision);
+			}
+		}
+
+		collisionRenderer_->AddCollision(player_->GetSphere());
+
+		pBlockManager_->Draw(*camera_.get());
+
+		if (isDrawSwordBlur_) {
+			swordBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
+		if (isDrawNeedleBlur_) {
+			needleBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
+		if (isDrawPunchBlur_) {
+			punchBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
 		playerHPBar_->Draw();
 		bossHPBar_->Draw();
 		stageUI_->Draw(*camera_.get());
@@ -297,8 +318,10 @@ void StageScene::Draw() {
 	Kyoko::PostDraw();
 }
 
-void StageScene::TitleUpdate()
+void StageScene::TitleUpdate(float deltaTime)
 {
+	stage_->Update(deltaTime);
+
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
@@ -311,6 +334,10 @@ void StageScene::TitleUpdate()
 		countEaseTime_ = std::clamp(countEaseTime_, 0.0f, maxTime);
 
 		camera_->transform_.translate_ = Ease::UseEase(titleCameraPos_, firstCameraPos_, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[0]->pos_.x = Ease::UseEase(-slotMirrorsPosX_ + 640.0f, -slotMirrorsPosX_, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[1]->pos_.x = Ease::UseEase(slotMirrorsPosX_ + 640.0f, slotMirrorsPosX_ + 640.0f * 2.0f, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[0]->Update();
+		slotMirrors_[1]->Update();
 
 		if (countEaseTime_ >= maxTime) {
 			isTitle_ = false;
@@ -406,5 +433,64 @@ void StageScene::CreatePostEffects()
 		pBlockManager_->Draw(*camera_.get());
 
 		punchBlur_->PostDrawScene();
+	}
+
+	if (isTitle_) {
+
+		postEffect_->PreDrawScene();
+
+		pBlockManager_->clear();
+		stage_->Draw();
+
+		player_->Draw();
+
+		boss_->Draw();
+
+		collisionRenderer_->AddCollision(player_->GetSphere());
+
+		// 剣の配列から、当たり判定を取得して有効なら描画する
+		const auto& punchList = *stage_->GetPunchList();
+		for (const auto& punch : punchList) {
+			const auto* const swordCollision = punch->GetCollision();
+			if (swordCollision) {
+				collisionRenderer_->AddCollision(*swordCollision);
+			}
+		}
+
+		// 剣の配列から、当たり判定を取得して有効なら描画する
+		const auto& swordList = *stage_->GetSwordList();
+		for (const auto& sword : swordList) {
+			const auto* const swordCollision = sword->GetCollision();
+			if (swordCollision) {
+				collisionRenderer_->AddCollision(*swordCollision);
+			}
+		}
+
+		// トゲの配列から、当たり判定を取得して有効なら描画する
+		const auto& needleList = *stage_->GetNeedleList();
+		for (const auto& needle : needleList) {
+			const auto* const needleCollision = needle->GetCollision();
+			if (needleCollision) {
+				collisionRenderer_->AddCollision(*needleCollision);
+			}
+		}
+
+		collisionRenderer_->AddCollision(player_->GetSphere());
+
+		pBlockManager_->Draw(*camera_.get());
+
+		if (isDrawSwordBlur_) {
+			swordBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
+		if (isDrawNeedleBlur_) {
+			needleBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
+		if (isDrawPunchBlur_) {
+			punchBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
+		postEffect_->PostDrawScene();
 	}
 }

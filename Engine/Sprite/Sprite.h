@@ -55,6 +55,8 @@ private:
 
 public:
 
+	void SetSRVGPUDescriptorHandle_(D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle);
+
 	void LoadTexture(const std::string& filePath);
 
 	void SetTextureHandle(uint32_t textureHundle);
@@ -130,5 +132,6 @@ private:
 	bool isLoad_;
 	uint32_t textureHundle_;
 
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUDescriptorHandle_;
 };
 
