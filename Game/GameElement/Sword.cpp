@@ -20,6 +20,7 @@ void Sword::Init()
 	rotate_.y = -90._deg;
 
 	capsule_.segment_.origin = position_;
+	capsule_.segment_.origin.z = 0.f;
 	capsule_.segment_.diff = Vector3::up * 5.f;
 	capsule_.radius_ = 2.f;
 
