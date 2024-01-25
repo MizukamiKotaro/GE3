@@ -240,6 +240,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\StageLights\StageLights.cpp" />
     <ClCompile Include="Game\GameElement\StageUI.cpp" />
     <ClCompile Include="Game\GameElement\Sword.cpp" />
+    <ClCompile Include="Game\GameElement\TitleObject\TitleObject.cpp" />
     <ClCompile Include="Game\SceneSystem\ClearScene\ClearScene.cpp" />
     <ClCompile Include="Game\SceneSystem\IScene\IScene.cpp" />
     <ClCompile Include="Game\SceneSystem\SceneManager\SceneManager.cpp" />
@@ -379,6 +380,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\StageLights\StageLights.h" />
     <ClInclude Include="Game\GameElement\StageUI.h" />
     <ClInclude Include="Game\GameElement\Sword.h" />
+    <ClInclude Include="Game\GameElement\TitleObject\TitleObject.h" />
     <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h" />
     <ClInclude Include="Game\SceneSystem\IScene\IScene.h" />
     <ClInclude Include="Game\SceneSystem\SceneManager\SceneManager.h" />
