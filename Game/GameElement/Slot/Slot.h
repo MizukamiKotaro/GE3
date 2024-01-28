@@ -44,7 +44,7 @@ public:
 	void DownLevel();
 
 	// 顔のタイプ
-	const int GetFaceType() const { return faceType_; }
+	const FaceType GetFaceType() const { return static_cast<FaceType>(faceType_); }
 
 	// これは分けたけどまだ書いてない
 	void StartGekiOkoRotation();

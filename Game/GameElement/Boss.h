@@ -49,6 +49,8 @@ public:
 
 	bool IsSlotActive() const;
 
+	FaceType GetFaceType() const;
+
 private:
 
 	void CalcTransMat();

@@ -106,6 +106,11 @@ bool Boss::IsSlotActive() const
 	return false;
 }
 
+FaceType Boss::GetFaceType() const
+{
+	return slot_->GetFaceType();
+}
+
 void Boss::CalcTransMat() {
 
 	transform_.CalcTransMat();

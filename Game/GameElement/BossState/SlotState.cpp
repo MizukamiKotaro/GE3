@@ -27,6 +27,8 @@ void SlotState::Update(const float deltaTime)
 	}
 
 	if (stopTimer_.IsActive() && stopTimer_.IsFinish()) {
+		// 顔の状態を転送
+		SetFaceType(GetBoss()->GetFaceType());
 		ChangeState();
 	}
 }
