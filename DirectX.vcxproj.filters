@@ -519,6 +519,9 @@
     <ClCompile Include="Game\GameElement\HPBar\HPBar.cpp">
       <Filter>Game\GameElement\HPBar</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\SlotState.cpp">
+      <Filter>Game\GameElement\BossState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -880,6 +883,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\HPBar\HPBar.h">
       <Filter>Game\GameElement\HPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BossState\SlotState.h">
+      <Filter>Game\GameElement\BossState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

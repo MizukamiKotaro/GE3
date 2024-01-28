@@ -92,6 +92,20 @@ void Boss::SetCamera(Camera *camera) {
 	}
 }
 
+void Boss::StartSlot() {
+	// 回転の開始
+	slot_->StartRotation();
+}
+
+void Boss::StopSlot() {
+	slot_->StopRotation();
+}
+
+bool Boss::IsSlotActive() const
+{
+	return false;
+}
+
 void Boss::CalcTransMat() {
 
 	transform_.CalcTransMat();

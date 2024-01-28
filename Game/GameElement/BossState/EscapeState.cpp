@@ -2,6 +2,7 @@
 #include "../Boss.h"
 #include "../Player.h"
 #include "Tackle.h"
+#include "SlotState.h"
 
 void EscapeState::Init() {
 	changeTimer_.Start(5.f);
@@ -37,7 +38,7 @@ void EscapeState::Update([[maybe_unused]] const float deltaTime) {
 }
 
 void EscapeState::ChangeState() {
-	GetBoss()->ChangeState<TackleState>();
+	GetBoss()->ChangeState<SlotState>();
 }
 
 void EscapeState::OnCollision([[maybe_unused]] IEntity *other) {

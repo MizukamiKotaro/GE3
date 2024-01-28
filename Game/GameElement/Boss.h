@@ -43,6 +43,12 @@ public:
 		return sphere_;
 	}
 
+	void StartSlot();
+
+	void StopSlot();
+
+	bool IsSlotActive() const;
+
 private:
 
 	void CalcTransMat();

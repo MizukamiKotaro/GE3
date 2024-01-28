@@ -9,7 +9,7 @@ class IEntity;
 class IBossState {
 public:
 
-	enum class SlotState {
+	enum class SlotData {
 		kLow,
 		kMiddle,
 		kHigh,
@@ -35,7 +35,7 @@ public:
 
 protected:
 
-	SlotState slotState_;
+	SlotData slotState_;
 
 	static Boss *const GetBoss() { return pBoss_; }
 	static Player *const GetPlayer() { return pPlayer_; }
