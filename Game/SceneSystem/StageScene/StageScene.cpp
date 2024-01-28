@@ -135,7 +135,7 @@ void StageScene::Update()
 	stage_->ImGuiWidget();
 	ImGui::End();
 
-	GlobalVariables* globalVariable = GlobalVariables::GetInstance();
+	GlobalVariables *globalVariable = GlobalVariables::GetInstance();
 	Vector3 prePos;
 	if (isTitle_) {
 		prePos = titleCameraPos_;
@@ -171,9 +171,9 @@ void StageScene::Update()
 		player_->InputAction(input_, deltaTime);
 		player_->Update(deltaTime);
 
-		for (auto& ball : *stage_->GetBallList()) {
+		for (auto &ball : *stage_->GetBallList()) {
 
-			const auto& sphere = ball->GetSphere();
+			const auto &sphere = ball->GetSphere();
 
 			if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
 
@@ -183,7 +183,7 @@ void StageScene::Update()
 
 			}
 
-			for (const auto& pin : *stage_->GetPinList()) {
+			for (const auto &pin : *stage_->GetPinList()) {
 
 				if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
 
@@ -194,7 +194,7 @@ void StageScene::Update()
 				}
 			}
 
-			for (const auto& hole : *stage_->GetHoleList()) {
+			for (const auto &hole : *stage_->GetHoleList()) {
 
 				Vector3 holePos = hole->GetPos();
 				holePos.z = 0.f;
@@ -210,8 +210,8 @@ void StageScene::Update()
 
 		}
 
-		for (const auto& sword : *stage_->GetSwordList()) {
-			auto* collision = sword->GetCollision();
+		for (const auto &sword : *stage_->GetSwordList()) {
+			auto *collision = sword->GetCollision();
 			if (collision) {
 				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 					player_->OnCollision(sword.get());
@@ -220,8 +220,8 @@ void StageScene::Update()
 			}
 		}
 
-		for (const auto& punch : *stage_->GetPunchList()) {
-			auto* collision = punch->GetCollision();
+		for (const auto &punch : *stage_->GetPunchList()) {
+			auto *collision = punch->GetCollision();
 			if (collision) {
 				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 					player_->OnCollision(punch.get());
@@ -229,8 +229,8 @@ void StageScene::Update()
 				}
 			}
 		}
-		for (const auto& needle : *stage_->GetNeedleList()) {
-			auto* collision = needle->GetCollision();
+		for (const auto &needle : *stage_->GetNeedleList()) {
+			auto *collision = needle->GetCollision();
 			if (collision) {
 				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 					player_->OnCollision(needle.get());
@@ -239,8 +239,8 @@ void StageScene::Update()
 			}
 		}
 
-		for (const auto& sword : *stage_->GetSwordList()) {
-			auto* collision = sword->GetCollision();
+		for (const auto &sword : *stage_->GetSwordList()) {
+			auto *collision = sword->GetCollision();
 			if (collision) {
 				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 					player_->OnCollision(sword.get());
@@ -254,8 +254,8 @@ void StageScene::Update()
 			}
 		}
 
-		for (const auto& punch : *stage_->GetPunchList()) {
-			auto* collision = punch->GetCollision();
+		for (const auto &punch : *stage_->GetPunchList()) {
+			auto *collision = punch->GetCollision();
 			if (collision) {
 				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 					player_->OnCollision(punch.get());
@@ -268,8 +268,8 @@ void StageScene::Update()
 				}
 			}
 		}
-		for (const auto& needle : *stage_->GetNeedleList()) {
-			auto* collision = needle->GetCollision();
+		for (const auto &needle : *stage_->GetNeedleList()) {
+			auto *collision = needle->GetCollision();
 			if (collision) {
 				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 					player_->OnCollision(needle.get());
@@ -284,7 +284,7 @@ void StageScene::Update()
 		}
 
 
-		auto& bossCollision = boss_->GetCollision();
+		auto &bossCollision = boss_->GetCollision();
 		if (boss_->IsAttacked()) {
 			if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
 				player_->OnCollision(boss_.get());
@@ -316,7 +316,7 @@ void StageScene::Draw() {
 
 		titleObj_->Draw(camera_.get());
 
-		for (const std::unique_ptr<Sprite>& sprite : slotMirrors_) {
+		for (const std::unique_ptr<Sprite> &sprite : slotMirrors_) {
 			sprite->Draw();
 		}
 	}
@@ -333,27 +333,27 @@ void StageScene::Draw() {
 		collisionRenderer_->AddCollision(player_->GetSphere());
 
 		// 剣の配列から、当たり判定を取得して有効なら描画する
-		const auto& punchList = *stage_->GetPunchList();
-		for (const auto& punch : punchList) {
-			const auto* const swordCollision = punch->GetCollision();
+		const auto &punchList = *stage_->GetPunchList();
+		for (const auto &punch : punchList) {
+			const auto *const swordCollision = punch->GetCollision();
 			if (swordCollision) {
 				collisionRenderer_->AddCollision(*swordCollision);
 			}
 		}
 
 		// 剣の配列から、当たり判定を取得して有効なら描画する
-		const auto& swordList = *stage_->GetSwordList();
-		for (const auto& sword : swordList) {
-			const auto* const swordCollision = sword->GetCollision();
+		const auto &swordList = *stage_->GetSwordList();
+		for (const auto &sword : swordList) {
+			const auto *const swordCollision = sword->GetCollision();
 			if (swordCollision) {
 				collisionRenderer_->AddCollision(*swordCollision);
 			}
 		}
 
 		// トゲの配列から、当たり判定を取得して有効なら描画する
-		const auto& needleList = *stage_->GetNeedleList();
-		for (const auto& needle : needleList) {
-			const auto* const needleCollision = needle->GetCollision();
+		const auto &needleList = *stage_->GetNeedleList();
+		for (const auto &needle : needleList) {
+			const auto *const needleCollision = needle->GetCollision();
 			if (needleCollision) {
 				collisionRenderer_->AddCollision(*needleCollision);
 			}
@@ -387,7 +387,7 @@ void StageScene::Draw() {
 
 void StageScene::TitleUpdate(float deltaTime)
 {
-	stage_->Update(deltaTime);
+	stage_->Update(0.f);
 
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
@@ -516,27 +516,27 @@ void StageScene::CreatePostEffects()
 		collisionRenderer_->AddCollision(player_->GetSphere());
 
 		// 剣の配列から、当たり判定を取得して有効なら描画する
-		const auto& punchList = *stage_->GetPunchList();
-		for (const auto& punch : punchList) {
-			const auto* const swordCollision = punch->GetCollision();
+		const auto &punchList = *stage_->GetPunchList();
+		for (const auto &punch : punchList) {
+			const auto *const swordCollision = punch->GetCollision();
 			if (swordCollision) {
 				collisionRenderer_->AddCollision(*swordCollision);
 			}
 		}
 
 		// 剣の配列から、当たり判定を取得して有効なら描画する
-		const auto& swordList = *stage_->GetSwordList();
-		for (const auto& sword : swordList) {
-			const auto* const swordCollision = sword->GetCollision();
+		const auto &swordList = *stage_->GetSwordList();
+		for (const auto &sword : swordList) {
+			const auto *const swordCollision = sword->GetCollision();
 			if (swordCollision) {
 				collisionRenderer_->AddCollision(*swordCollision);
 			}
 		}
 
 		// トゲの配列から、当たり判定を取得して有効なら描画する
-		const auto& needleList = *stage_->GetNeedleList();
-		for (const auto& needle : needleList) {
-			const auto* const needleCollision = needle->GetCollision();
+		const auto &needleList = *stage_->GetNeedleList();
+		for (const auto &needle : needleList) {
+			const auto *const needleCollision = needle->GetCollision();
 			if (needleCollision) {
 				collisionRenderer_->AddCollision(*needleCollision);
 			}
