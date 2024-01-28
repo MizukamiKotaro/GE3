@@ -36,16 +36,15 @@ public:
 	static void SetBoss(Boss *boss) { if (boss) { pBoss_ = boss; } }
 	static void SetPlayer(Player *player) { if (player) { pPlayer_ = player; } }
 
-	void SetFaceType(const FaceType face);
+	static void SetFaceType(const FaceType face);
 
 protected:
-
-	FaceState faceState_;
 
 	static Boss *const GetBoss() { return pBoss_; }
 	static Player *const GetPlayer() { return pPlayer_; }
 
 private:
+	static FaceState faceState_;
 
 	static Boss *pBoss_;
 	static Player *pPlayer_;

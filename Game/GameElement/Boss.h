@@ -75,6 +75,9 @@ private:
 
 	SimpleTransform transform_;
 
+	MapChip *mapChip_ = nullptr;
+	const SoLib::Containers::Array2D<uint32_t> *mapData_ = nullptr;
+
 	//Vector3 scale_;
 	//SoLib::Math::Euler rotate_;
 	//Vector3 translate_;

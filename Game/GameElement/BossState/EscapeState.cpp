@@ -29,9 +29,6 @@ void EscapeState::Update([[maybe_unused]] const float deltaTime) {
 	// 離れる
 	bossTransform.translate_ += escapeVector;
 
-	bossTransform.translate_.x = std::clamp<float>(bossTransform.translate_.x, -static_cast<float>(mapData.GetCols()) / 2.f + (bossTransform.scale_.x * 2.f + 1.5f), static_cast<float>(mapData.GetCols()) / 2.f - (bossTransform.scale_.x * 2.f + 1.5f));
-	bossTransform.translate_.y = std::clamp<float>(bossTransform.translate_.y, -static_cast<float>(mapData.GetRows()) / 2.f + (bossTransform.scale_.y * 2.f + 3.f), static_cast<float>(mapData.GetRows()) / 2.f - (bossTransform.scale_.y * 2.f + 3.f));
-
 	if (changeTimer_.IsFinish()) {
 		ChangeState();
 	}

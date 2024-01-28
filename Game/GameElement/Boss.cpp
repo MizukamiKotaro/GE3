@@ -29,6 +29,9 @@ void Boss::Init() {
 
 	health_ = vMaxHealth_;
 
+	mapChip_ = pStage_->GetMapChip();
+	mapData_ = &mapChip_->GetMapData();
+
 }
 
 void Boss::Update([[maybe_unused]] const float deltaTime) {
@@ -39,6 +42,10 @@ void Boss::Update([[maybe_unused]] const float deltaTime) {
 	}
 	if (bossState_) {
 		bossState_->Update(deltaTime);
+
+		transform_.translate_.x = std::clamp<float>(transform_.translate_.x, -static_cast<float>(mapData_->GetCols()) / 2.f + (transform_.scale_.x * 2.f + 1.5f), static_cast<float>(mapData_->GetCols()) / 2.f - (transform_.scale_.x * 2.f + 1.5f));
+		transform_.translate_.y = std::clamp<float>(transform_.translate_.y, -static_cast<float>(mapData_->GetRows()) / 2.f + (transform_.scale_.y * 2.f + 3.f), static_cast<float>(mapData_->GetRows()) / 2.f - (transform_.scale_.y * 2.f + 3.f));
+
 	}
 
 	CalcTransMat();
