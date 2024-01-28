@@ -43,8 +43,14 @@ void Boss::Update([[maybe_unused]] const float deltaTime) {
 	if (bossState_) {
 		bossState_->Update(deltaTime);
 
-		transform_.translate_.x = std::clamp<float>(transform_.translate_.x, -static_cast<float>(mapData_->GetCols()) / 2.f + (transform_.scale_.x * 2.f + 1.5f), static_cast<float>(mapData_->GetCols()) / 2.f - (transform_.scale_.x * 2.f + 1.5f));
-		transform_.translate_.y = std::clamp<float>(transform_.translate_.y, -static_cast<float>(mapData_->GetRows()) / 2.f + (transform_.scale_.y * 2.f + 3.f), static_cast<float>(mapData_->GetRows()) / 2.f - (transform_.scale_.y * 2.f + 3.f));
+		// ステージのサイズに合わせて座標を調整
+		const Vector2 stageSize{ static_cast<float>(mapData_->GetCols()) / 2.f - (transform_.scale_.x * 2.f + 1.5f), static_cast<float>(mapData_->GetRows()) / 2.f - (transform_.scale_.y * 2.f + 3.f) };
+
+		// 画面内に収める処理
+		transform_.translate_.x = std::clamp<float>(transform_.translate_.x, -stageSize.x, stageSize.x);
+		transform_.translate_.y = std::clamp<float>(transform_.translate_.y, -stageSize.y, stageSize.y);
+		// 前後の計算誤差の修正
+		transform_.translate_.z = 0.f;
 
 	}
 
