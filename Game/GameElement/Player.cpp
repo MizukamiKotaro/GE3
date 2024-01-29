@@ -100,7 +100,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		inputLeft.x += input->PressingKey(DIK_D);
 	}
 	if (inputLeft.x) {
-		Move(inputLeft.x * 200.f, deltaTime);
+		Move(inputLeft.x * 15000.f, std::powf(deltaTime, 2.f));
 	}
 
 	if (isLanding_ && (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A) || input->PressedGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {

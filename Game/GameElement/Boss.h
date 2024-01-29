@@ -30,33 +30,42 @@ public:
 
 	void SetCamera(Camera *camera);
 
+	/// @brief Transformクラスの取得
+	/// @return Transformクラス
 	auto &GetTransform() { return transform_; }
 
+	/// @brief 行動パターンの遷移
+	/// @tparam T ボスのステート
 	template<SoLib::IsBased<IBossState> T>
 	void ChangeState();
 
+	/// @brief 攻撃中か
+	/// @return 攻撃中ならtrue
 	bool IsAttacked() const {
 		return  bossState_ && bossState_->IsAttacked();
 	}
 
-	const Sphere &GetCollision() const {
-		return sphere_;
-	}
+	/// @brief 当たり判定の取得
+	/// @return 球体コライダ
+	const Sphere &GetCollision() const { return sphere_; }
 
+	/// @brief スロットの開始
 	void StartSlot();
 
+	/// @brief スロットの停止
 	void StopSlot();
-
-	bool IsSlotActive() const;
 
 	FaceType GetFaceType() const;
 
 private:
 
+	/// @brief 行列の計算
 	void CalcTransMat();
 
+	/// @brief 当たり判定の計算
 	void CalcCollision();
 
+	/// @brief Slotへのデータの転送
 	void TransferData();
 
 private:

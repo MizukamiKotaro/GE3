@@ -114,11 +114,6 @@ void Boss::StopSlot() {
 	slot_->StopRotation();
 }
 
-bool Boss::IsSlotActive() const
-{
-	return false;
-}
-
 FaceType Boss::GetFaceType() const
 {
 	return slot_->GetFaceType();
