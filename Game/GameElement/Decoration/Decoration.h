@@ -11,10 +11,10 @@
 
 class Camera;
 
-class TitleObject
-{
+class Decoration {
 public:
-	TitleObject();
+
+	Decoration();
 
 	void Initialize();
 
@@ -26,31 +26,17 @@ public:
 
 	void WrightPostEffect(Camera* camera);
 
+	void SetIsSword(const bool* isSword) { isSword_ = isSword; }
+
 private:
 
-	/*GlobalVariables* globalVariable_;
-
-	std::string groupName_;
-
-	enum EnumV2Info {
-		Size,
-		Interval,
-		Position,
-		Offset,
-		V2EndCount,
-	};
-
-	Vector2 v2Info_[V2EndCount];
-
-	std::string v2ItemNames[V2EndCount] = {
-		"サイズ",
-		"フレームの空白の幅",
-		"固定の場合のポジション",
-		"親子付けした場合のローカルのポジション"
-	};*/
 private:
 
-	std::unique_ptr<Model> titleObj_;
+	const bool* isSword_ = nullptr;
+	const bool* isNeedle_ = nullptr;
+	const bool* isPunch_ = nullptr;
+
+	std::unique_ptr<Model> swordDecration_;
 
 	std::unique_ptr<HighLumi> highLumi_;
 
@@ -60,4 +46,5 @@ private:
 
 	std::unique_ptr<Sprite> rainbow_;
 	float texcoodY_;
+
 };

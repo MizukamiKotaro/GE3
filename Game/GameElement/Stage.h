@@ -27,6 +27,11 @@ public:
 
 	void Draw();
 
+	//追加
+	void DrawFarObject();
+	void DrawNearObject();
+	//
+
 	MapChip *GetMapChip() const { return mapChip_.get(); }
 
 	auto *const GetBallList() { return &ballList_; }

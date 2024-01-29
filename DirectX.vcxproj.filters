@@ -220,6 +220,9 @@
     <Filter Include="Game\GameElement\TitleObject">
       <UniqueIdentifier>{bb7ef455-8599-40a7-ac98-f5f8607ab07f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\Decoration">
+      <UniqueIdentifier>{01050cf2-9888-4623-acd1-3fe91120dbb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -527,6 +530,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\BossState\SlotState.cpp">
       <Filter>Game\GameElement\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\Decoration\Decoration.cpp">
+      <Filter>Game\GameElement\Decoration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -895,6 +901,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\BossState\SlotState.h">
       <Filter>Game\GameElement\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Decoration\Decoration.h">
+      <Filter>Game\GameElement\Decoration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

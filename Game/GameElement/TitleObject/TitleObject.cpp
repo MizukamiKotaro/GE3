@@ -15,18 +15,8 @@ TitleObject::TitleObject()
 	titleObj_->transform_.rotate_.y = -1.57f;
 	titleObj_->Update();
 
-	for (int i = 0; i < 10; i++) {
-		sprites_[i] = std::make_unique<Sprite>("Resources/white.png");
-		if (i == 9) {
-			sprites_[i]->size_ = { 1280.0f,720.0f };
-		}
-		else {
-			sprites_[i]->size_ = { 1280.0f,40.0f };
-			sprites_[i]->pos_.y -= 40.0f * i;
-			sprites_[i]->SetColor({ 1.0f * ((i + 2) % 4) / 3,1.0f * (i % 5) / 4,1.0f * ((i + 3) % 7) / 6,1.0f });
-		}
-		sprites_[i]->Update();
-	}
+	rainbow_ = std::make_unique<Sprite>("Resources/rainbow.png");
+	texcoodY_ = 0.0f;
 
 	highLumi_ = std::make_unique<HighLumi>();
 
@@ -37,6 +27,7 @@ TitleObject::TitleObject()
 
 void TitleObject::Initialize()
 {
+	texcoodY_ = 0.0f;
 }
 
 void TitleObject::Update(Camera* camera)
@@ -50,14 +41,12 @@ void TitleObject::Update(Camera* camera)
 	ImGui::End();
 
 #endif // _DEBUG
-	for (int i = 0; i < 9; i++) {
-		sprites_[i]->pos_.y -= 20.0f;
-
-		if (sprites_[i]->pos_.y <= -20.0f) {
-			sprites_[i]->pos_.y += 360.0f;
-		}
-		sprites_[i]->Update();
+	
+	texcoodY_ += 10.0f;
+	if (texcoodY_ >= 720.0f) {
+		texcoodY_ -= 720.0f;
 	}
+	rainbow_->SetTextureTopLeft({ 0.0f,texcoodY_ });
 
 	titleObj_->Update();
 
@@ -86,9 +75,7 @@ void TitleObject::WrightPostEffect(Camera* camera)
 
 	post_->PreDrawScene();
 
-	for (int i = 0; i < 9; i++) {
-		sprites_[i]->Draw();
-	}
+	rainbow_->Draw();
 
 	highLumi_->Draw(BlendMode::kBlendModeMultiply);
 

@@ -117,6 +117,13 @@ void StageScene::Init()
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 	stage_->Update(deltaTime);
 
+	decoration_ = std::make_unique<Decoration>();
+	decoration_->SetIsSword(&isDrawSwordBlur_);
+	decoration_->Initialize();
+	//decoration_->Update(camera_.get());
+
+	farPostEffect_ = std::make_unique<PostEffect>();
+
 	CreatePostEffects();
 }
 
@@ -300,6 +307,8 @@ void StageScene::Update()
 		bossHPBar_->Update(camera_.get());
 	}
 
+
+	decoration_->Update(camera_.get());
 }
 
 void StageScene::Draw() {
@@ -323,12 +332,16 @@ void StageScene::Draw() {
 	else {
 		backgroundSprite_->Draw();
 
+		farPostEffect_->Draw();
+		decoration_->Draw(camera_.get());
+
 		pBlockManager_->clear();
-		stage_->Draw();
+		stage_->DrawNearObject();
+		/*stage_->Draw();
 
 		player_->Draw();
 
-		boss_->Draw();
+		boss_->Draw();*/
 
 		collisionRenderer_->AddCollision(player_->GetSphere());
 
@@ -395,14 +408,14 @@ void StageScene::TitleUpdate(float deltaTime)
 	}
 
 	if (isStart_) {
-		float maxTime = 1.5f;
+		float maxTime = 1.0f;
 
 		countEaseTime_ += FrameInfo::GetInstance()->GetDeltaTime();
 		countEaseTime_ = std::clamp(countEaseTime_, 0.0f, maxTime);
 
 		camera_->transform_.translate_ = Ease::UseEase(titleCameraPos_, firstCameraPos_, countEaseTime_, maxTime, Ease::Constant);
-		slotMirrors_[0]->pos_.x = Ease::UseEase(-slotMirrorsPosX_ + 640.0f, -slotMirrorsPosX_, countEaseTime_, maxTime, Ease::Constant);
-		slotMirrors_[1]->pos_.x = Ease::UseEase(slotMirrorsPosX_ + 640.0f, slotMirrorsPosX_ + 640.0f * 2.0f, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[0]->pos_.x = Ease::UseEase(-slotMirrorsPosX_ + 640.0f, -slotMirrorsPosX_ + 50.0f, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[1]->pos_.x = Ease::UseEase(slotMirrorsPosX_ + 640.0f, slotMirrorsPosX_ + 1230.0f, countEaseTime_, maxTime, Ease::Constant);
 		slotMirrors_[0]->Update();
 		slotMirrors_[1]->Update();
 
@@ -502,16 +515,31 @@ void StageScene::CreatePostEffects()
 		punchBlur_->PostDrawScene();
 	}
 
+	farPostEffect_->PreDrawScene();
+
+	pBlockManager_->clear();
+	stage_->DrawFarObject();
+	player_->Draw();
+	boss_->Draw();
+
+	pBlockManager_->Draw(*camera_.get());
+
+	farPostEffect_->PostDrawScene();
+
 	if (isTitle_) {
 
 		postEffect_->PreDrawScene();
 
+		farPostEffect_->Draw();
+		decoration_->Draw(camera_.get());
+
 		pBlockManager_->clear();
-		stage_->Draw();
+		stage_->DrawNearObject();
+		/*stage_->Draw();
 
 		player_->Draw();
 
-		boss_->Draw();
+		boss_->Draw();*/
 
 		collisionRenderer_->AddCollision(player_->GetSphere());
 

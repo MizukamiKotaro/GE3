@@ -165,6 +165,44 @@ void Stage::Draw() {
 
 }
 
+void Stage::DrawFarObject()
+{
+	mapChip_->Draw();
+
+	for (auto& pin : pinList_) {
+		pin->Draw();
+	}
+
+	for (auto& spawner : spawnerList_) {
+		spawner->Draw();
+	}
+
+	for (auto& ball : ballList_) {
+		ball->Draw();
+	}
+
+	for (auto& hole : holeList_) {
+		hole->Draw();
+	}
+
+	static auto* const blockManager = BlockManager::GetInstance();
+
+	blockManager->AddBox(stageModel_, IBlock{ .transformMat_ = transMat_,.color_ = 0xFFFFFFFF });
+}
+
+void Stage::DrawNearObject()
+{
+	for (auto& sword : swordList_) {
+		sword->Draw();
+	}
+	for (auto& punch : punchList_) {
+		punch->Draw();
+	}
+	for (auto& needle : needleList) {
+		needle->Draw();
+	}
+}
+
 void Stage::LoadValue(const char *const groupName) {
 	static GlobalVariables *const gVariables = GlobalVariables::GetInstance();
 

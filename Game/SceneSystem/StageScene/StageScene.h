@@ -26,6 +26,7 @@
 
 #include "GameElement/TitleObject/TitleObject.h"
 #include "PostEffect/PostEffect.h"
+#include "GameElement/Decoration/Decoration.h"
 
 class StageScene : public IScene {
 public:
@@ -81,4 +82,7 @@ private:
 	std::unique_ptr<PostEffect> postEffect_;
 	std::array<std::unique_ptr<Sprite>, 2> slotMirrors_;
 	float slotMirrorsPosX_;
+
+	std::unique_ptr<Decoration> decoration_;
+	std::unique_ptr<PostEffect> farPostEffect_;
 };
