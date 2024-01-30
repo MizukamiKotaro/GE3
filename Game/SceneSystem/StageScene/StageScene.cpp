@@ -70,12 +70,17 @@ void StageScene::Init()
 
 	swordBlur_ = std::make_unique<Blur>();
 	isDrawSwordBlur_ = false;
+	isSwordAttack_ = false;
 
 	needleBlur_ = std::make_unique<Blur>();
 	isDrawNeedleBlur_ = false;
+	isNeedleAttack_ = false;
 
 	punchBlur_ = std::make_unique<Blur>();
 	isDrawPunchBlur_ = false;
+	isPunchAttack_ = false;
+
+	isRight_ = true;
 
 	playerHPBar_ = std::make_unique<HPBar>("PlayerHPBar");
 	// playerの最大HP
@@ -118,9 +123,12 @@ void StageScene::Init()
 	stage_->Update(deltaTime);
 
 	decoration_ = std::make_unique<Decoration>();
-	decoration_->SetIsSword(&isDrawSwordBlur_);
+	decoration_->SetIsSword(&isSwordAttack_);
+	decoration_->SetIsNeedle(&isNeedleAttack_);
+	decoration_->SetIsPunch(&isPunchAttack_);
+	decoration_->SetIsRight(&isRight_);
 	decoration_->Initialize();
-	//decoration_->Update(camera_.get());
+	decoration_->Update(camera_.get());
 
 	farPostEffect_ = std::make_unique<PostEffect>();
 
@@ -306,9 +314,6 @@ void StageScene::Update()
 		playerHPBar_->Update(camera_.get());
 		bossHPBar_->Update(camera_.get());
 	}
-
-
-	decoration_->Update(camera_.get());
 }
 
 void StageScene::Draw() {
@@ -433,12 +438,30 @@ void StageScene::CreatePostEffects()
 	// 剣のブラー
 	auto swordList = stage_->GetSwordList();
 	isDrawSwordBlur_ = false;
+	isSwordAttack_ = false;
 
 	pBlockManager_->clear();
 
 	for (const auto &sword : *swordList) {
+		if (sword->IsPreAttacked()) {
+			isSwordAttack_ = true;
+			if (sword->GetPos().x > 0) {
+				isRight_ = true;
+			}
+			else {
+				isRight_ = false;
+			}
+		}
+
 		if (sword->IsAttacked()) {
 			sword->Draw();
+			if (sword->GetPos().x > 0) {
+				isRight_ = true;
+			}
+			else {
+				isRight_ = false;
+			}
+			isSwordAttack_ = true;
 			isDrawSwordBlur_ = true;
 			swordBlur_->blurData_->isCenterBlur = 0;
 			swordBlur_->blurData_->pickRange = 0.04f;
@@ -466,12 +489,18 @@ void StageScene::CreatePostEffects()
 	// 槍のブラー
 	auto needleList = stage_->GetNeedleList();
 	isDrawNeedleBlur_ = false;
+	isNeedleAttack_ = false;
 
 	pBlockManager_->clear();
 
 	for (const auto &needle : *needleList) {
+		if (needle->IsPreAttacked()) {
+			isNeedleAttack_ = true;
+		}
+
 		if (needle->IsAttacked()) {
 			needle->Draw();
+			isNeedleAttack_ = true;
 			isDrawNeedleBlur_ = true;
 			needleBlur_->blurData_->isCenterBlur = 0;
 			needleBlur_->blurData_->pickRange = 0.08f;
@@ -492,12 +521,20 @@ void StageScene::CreatePostEffects()
 	// パンチのブラー
 	auto punchList = stage_->GetPunchList();
 	isDrawPunchBlur_ = false;
+	isPunchAttack_ = false;
 
 	pBlockManager_->clear();
 
 	for (const auto &punch : *punchList) {
+		if (punch->IsPreAttacked()) {
+			isPunchAttack_ = true;
+			isRight_ = punch->IsRight();
+		}
+
 		if (punch->IsAttacked()) {
 			punch->Draw();
+			isRight_ = punch->IsRight();
+			isPunchAttack_ = true;
 			isDrawPunchBlur_ = true;
 			punchBlur_->blurData_->isCenterBlur = 0;
 			punchBlur_->blurData_->pickRange = 0.08f;
@@ -514,6 +551,8 @@ void StageScene::CreatePostEffects()
 
 		punchBlur_->PostDrawScene();
 	}
+
+	decoration_->Update(camera_.get());
 
 	farPostEffect_->PreDrawScene();
 

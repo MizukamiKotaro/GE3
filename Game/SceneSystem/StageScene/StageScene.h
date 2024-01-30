@@ -59,15 +59,19 @@ private:
 	std::unique_ptr<Boss> boss_;
 
 	//std::unique_ptr<Slot> slot_;
+	bool isRight_;
 
 	std::unique_ptr<Blur> swordBlur_;
 	bool isDrawSwordBlur_;
+	bool isSwordAttack_;
 
 	std::unique_ptr<Blur> needleBlur_;
 	bool isDrawNeedleBlur_;
+	bool isNeedleAttack_;
 
 	std::unique_ptr<Blur> punchBlur_;
 	bool isDrawPunchBlur_;
+	bool isPunchAttack_;
 
 	std::unique_ptr<HPBar> playerHPBar_;
 	std::unique_ptr<HPBar> bossHPBar_;
