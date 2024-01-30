@@ -8,6 +8,7 @@
 #include "Punch.h"
 #include "Needle.h"
 #include "BossState/IBossState.h"
+#include "Stage.h"
 
 Player::Player() {
 
@@ -65,8 +66,14 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	for (uint8_t i = 0u; i < 3u; i++) {
 		if ((&beforePos_.x)[i] == (&sphere_.center_.x)[i]) {
-			(&velocity_.x)[i] = 0.f;
+			(&velocity_.x)[i] *= -1.f;
 		}
+	}
+	const auto &mapArray = pStage_->GetMapChip()->GetMapData();
+	const Vector2 stageSize = Vector2{ static_cast<float>(mapArray.GetCols()) - 3.f, static_cast<float>(mapArray.GetRows()) - 3.f } *0.5f;
+
+	for (uint32_t i = 0u; i < 2u; i++) {
+		(&sphere_.center_.x)[i] = std::clamp((&sphere_.center_.x)[i], -(&stageSize.x)[i], (&stageSize.x)[i]);
 	}
 
 }

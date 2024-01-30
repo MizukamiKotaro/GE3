@@ -51,8 +51,14 @@ namespace Calc
 
 	//内積
 	float Dot(const Vector2 &v1, const Vector2 &v2);
+	// 内積
 	float Dot(const Vector3 &v1, const Vector3 &v2);
 
+	/// @brief 内積
+	/// @tparam I 要素数
+	/// @param v1 配列A
+	/// @param v2 配列B
+	/// @return ドット積
 	template<uint32_t I>
 	float Dot(const float *v1, const float *v2);
 
