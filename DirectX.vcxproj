@@ -190,6 +190,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Light\Light.cpp" />
     <ClCompile Include="Engine\Light\PointLight\PointLight.cpp" />
     <ClCompile Include="Engine\Light\SpotLight\SpotLight.cpp" />
+    <ClCompile Include="Engine\Model\BoneModel.cpp" />
     <ClCompile Include="Engine\Model\ModelData\ModelDataManager\ModelDataManager.cpp" />
     <ClCompile Include="Engine\Model\Model.cpp" />
     <ClCompile Include="Engine\Particle\Particle.cpp" />
@@ -201,12 +202,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffect\PostEffect.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
+    <ClCompile Include="Engine\Utils\Math\Vector3Norm.cpp" />
     <ClCompile Include="Engine\Utils\Shape\Line.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\Graphics\CollisionRenderer.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\Graphics\Color.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\IO\CSV.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\IO\File.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\Math\Angle.cpp" />
+    <ClCompile Include="Engine\Utils\SoUtils\Math\Math.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_Easing.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_ImGui.cpp" />
     <ClCompile Include="Engine\Utils\SoUtils\SoLib\SoLib_Json.cpp" />
@@ -299,6 +302,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Light\Light.h" />
     <ClInclude Include="Engine\Light\PointLight\PointLight.h" />
     <ClInclude Include="Engine\Light\SpotLight\SpotLight.h" />
+    <ClInclude Include="Engine\Model\BoneModel.h" />
     <ClInclude Include="Engine\Model\ModelData\AnimationData3D.h" />
     <ClInclude Include="Engine\Model\ModelData\BoneData3D.h" />
     <ClInclude Include="Engine\Model\ModelData\ModelData.h" />
@@ -314,6 +318,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffect\PostEffect.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\TextureManager\TextureManager.h" />
+    <ClInclude Include="Engine\Utils\Math\Vector3Norm.h" />
     <ClInclude Include="Engine\Utils\Shape\Capsule.h" />
     <ClInclude Include="Engine\Utils\Shape\IShape.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Containers\Array2D.h" />
@@ -326,6 +331,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\SoUtils\IO\VariantItem.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Math\Angle.h" />
     <ClInclude Include="Engine\Utils\SoUtils\Math\Euler.h" />
+    <ClInclude Include="Engine\Utils\SoUtils\Math\Math.h" />
     <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib.h" />
     <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_Easing.h" />
     <ClInclude Include="Engine\Utils\SoUtils\SoLib\SoLib_ImGui.h" />

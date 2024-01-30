@@ -430,18 +430,19 @@ Matrix4x4 Matrix4x4::MakeRotateMatrix(const Quaternion& quaternion)
 	return result;
 }
 
-Matrix4x4 operator+(const Matrix4x4 m1, const Matrix4x4& m2) {
+Matrix4x4 operator+(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return Matrix4x4::Add(m1, m2);
 }
 
-Matrix4x4 operator-(const Matrix4x4 m1, const Matrix4x4& m2) {
+Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return Matrix4x4::Subtract(m1, m2);
 }
 
-Matrix4x4 operator*(const Matrix4x4 m1, const Matrix4x4& m2) {
+Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return Matrix4x4::Multiply(m1, m2);
 }
 
+Matrix4x4 &operator*=(Matrix4x4 &m1, const Matrix4x4 &m2) { return m1 = m1 * m2; }
 Matrix4x4 operator*(float s, const Matrix4x4& m) {
 	return Matrix4x4::Multiply(s, m);
 }

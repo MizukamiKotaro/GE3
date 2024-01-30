@@ -534,6 +534,15 @@
     <ClCompile Include="Game\GameElement\Decoration\Decoration.cpp">
       <Filter>Game\GameElement\Decoration</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Model\BoneModel.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utils\Math\Vector3Norm.cpp">
+      <Filter>Engine\Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utils\SoUtils\Math\Math.cpp">
+      <Filter>Engine\Utils\SoUtils\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -904,6 +913,15 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\Decoration\Decoration.h">
       <Filter>Game\GameElement\Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\BoneModel.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\Math\Vector3Norm.h">
+      <Filter>Engine\Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\SoUtils\Math\Math.h">
+      <Filter>Engine\Utils\SoUtils\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
