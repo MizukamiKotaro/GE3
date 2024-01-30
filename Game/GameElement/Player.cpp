@@ -70,9 +70,12 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 		}
 	}
 	const auto &mapArray = pStage_->GetMapChip()->GetMapData();
-	const Vector2 stageSize = Vector2{ static_cast<float>(mapArray.GetCols()) - 3.f, static_cast<float>(mapArray.GetRows()) - 3.f } *0.5f;
+	const Vector2 stageSize = Vector2{ static_cast<float>(mapArray.GetCols()) - 9.5f, static_cast<float>(mapArray.GetRows()) - 10.f } *0.5f;
 
 	for (uint32_t i = 0u; i < 2u; i++) {
+		if (std::abs((&sphere_.center_.x)[i]) > (&stageSize.x)[i]) {
+			(&velocity_.x)[i] *= -1.f;
+		}
 		(&sphere_.center_.x)[i] = std::clamp((&sphere_.center_.x)[i], -(&stageSize.x)[i], (&stageSize.x)[i]);
 	}
 
@@ -107,7 +110,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		inputLeft.x += input->PressingKey(DIK_D);
 	}
 	if (inputLeft.x) {
-		Move(inputLeft.x * 15000.f, std::powf(deltaTime, 2.f));
+		Move(inputLeft.x * 10.f, deltaTime);
 	}
 
 	if (isLanding_ && (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A) || input->PressedGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
@@ -118,7 +121,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 }
 
 void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
-	velocity_.x += power * deltaTime;
+	acceleration_.x += power * deltaTime;
 }
 
 
@@ -129,7 +132,6 @@ void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	velocity_ += acceleration_;
 	acceleration_ = {};
 	Vector3 fixVelocity = velocity_ * deltaTime;
-	velocity_.x = 0.f;
 
 	sphere_.center_ += fixVelocity;
 }
