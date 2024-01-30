@@ -34,6 +34,8 @@ public:
 
 	const Sphere *GetCollision() const;
 
+	bool IsRight() const;
+
 private:
 
 	void CalcCollision();

@@ -28,6 +28,12 @@ public:
 
 	void SetIsSword(const bool* isSword) { isSword_ = isSword; }
 
+	void SetIsNeedle(const bool* isNeedle) { isNeedle_ = isNeedle; }
+
+	void SetIsPunch(const bool* isPunch) { isPunch_ = isPunch; }
+
+	void SetIsRight(const bool* isRight) { isRight_ = isRight; }
+
 private:
 
 private:
@@ -36,7 +42,15 @@ private:
 	const bool* isNeedle_ = nullptr;
 	const bool* isPunch_ = nullptr;
 
+	const bool* isRight_ = nullptr;
+
 	std::unique_ptr<Model> swordDecration_;
+	std::unique_ptr<Model> swordDecrationB_;
+
+	std::unique_ptr<Model> punchDecration_;
+	std::unique_ptr<Model> punchDecrationB_;
+
+	std::unique_ptr<Model> needleDecration_;
 
 	std::unique_ptr<HighLumi> highLumi_;
 
@@ -47,4 +61,5 @@ private:
 	std::unique_ptr<Sprite> rainbow_;
 	float texcoodY_;
 
+	bool isFirst_;
 };

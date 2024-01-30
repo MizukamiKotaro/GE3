@@ -97,6 +97,11 @@ const Sphere *Punch::GetCollision() const {
 	return &sphere_;
 }
 
+bool Punch::IsRight() const
+{
+	return handType_ == HandType::kRight;
+}
+
 void Punch::CalcCollision() {
 	sphere_.center_ = translate_;
 	sphere_.center_.z = 0.f;
