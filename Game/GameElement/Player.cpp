@@ -16,9 +16,9 @@ Player::Player() {
 }
 
 void Player::Init() {
-	barrier_ = std::make_unique<BarrierItem>();
-	barrier_->Init();
-	barrier_->SetParent(this);
+	//barrier_ = std::make_unique<BarrierItem>();
+	//barrier_->Init();
+	//barrier_->SetParent(this);
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
@@ -38,7 +38,7 @@ void Player::Init() {
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {
-	barrier_->Update(deltaTime);
+	//barrier_->Update(deltaTime);
 
 	CalcTransMat();
 
@@ -92,7 +92,7 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 void Player::Draw() {
 	static auto *const blockManager = BlockManager::GetInstance();
 
-	barrier_->Draw();
+	//barrier_->Draw();
 
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }
@@ -104,7 +104,15 @@ void Player::SetHPBar(HPBar *hpBar) {
 }
 
 void Player::InputAction(Input *const input, const float deltaTime) {
-	Vector2 inputRight = input->GetGamePadRStick();
+	Vector2 inputRight;
+
+	inputRight.x = static_cast<float>(input->PressingKey(DIK_RIGHT) - input->PressingKey(DIK_LEFT));
+	inputRight.y = static_cast<float>(input->PressingKey(DIK_UP) - input->PressingKey(DIK_DOWN));
+
+	if (Calc::MakeLength(inputRight) <= 0.f) {
+		inputRight = input->GetGamePadRStick();
+
+	}
 
 	// 入力があったら
 	if (Calc::MakeLength(inputRight) > 0.5f) {
@@ -133,10 +141,10 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		Move(inputLeft.x * 10.f, deltaTime);
 	}
 
-	if (isLanding_ && (input->PressingKey(DIK_SPACE) || input->PressingGamePadButton(Input::GamePadButton::A) || input->PressingGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
+	/*if (isLanding_ && (input->PressingKey(DIK_SPACE) || input->PressingGamePadButton(Input::GamePadButton::A) || input->PressingGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
 		acceleration_.y += 15.f;
 		audio_->Play(jumpSE_, false, 0.6f);
-	}
+	}*/
 
 	// 0.5以上の入力があった場合
 	if (Calc::MakeLength(inputRight) > 0.5f) {
@@ -169,7 +177,7 @@ void Player::SetMapChip(MapChip *const mapChip) {
 }
 
 void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
-	barrier_->SetBallList(ballList);
+	//barrier_->SetBallList(ballList);
 	ballList_ = ballList;
 }
 

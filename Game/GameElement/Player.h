@@ -107,7 +107,7 @@ private:
 	uint32_t model_;
 	SoLib::Color::RGB4 color_;
 
-	std::unique_ptr<BarrierItem> barrier_ = nullptr;
+	// std::unique_ptr<BarrierItem> barrier_ = nullptr;
 
 	SoLib::Time::DeltaTimer invincibleTime_;
 
