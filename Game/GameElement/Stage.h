@@ -35,7 +35,7 @@ public:
 	MapChip *GetMapChip() const { return mapChip_.get(); }
 
 	auto *const GetBallList() { return &ballList_; }
-	auto *const GetSpawnerList() { return &spawnerList_; }
+	//auto *const GetSpawnerList() { return &spawnerList_; }
 
 	auto *const GetPinList() { return &pinList_; }
 	auto *const GetHoleList() { return &holeList_; }
@@ -84,7 +84,7 @@ private:
 
 	std::vector<std::unique_ptr<Hole>> holeList_;
 
-	std::list<std::unique_ptr<BallSpawner>> spawnerList_;
+	//std::list<std::unique_ptr<BallSpawner>> spawnerList_;
 
 	std::list<std::unique_ptr<MovingBall>> ballList_;
 

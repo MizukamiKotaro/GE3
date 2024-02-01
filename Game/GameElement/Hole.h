@@ -12,13 +12,6 @@ class MovingBall;
 class Hole :public IEntity {
 public:
 
-	struct BallCatcher {
-		MovingBall *ball_;
-		float time_;
-
-		Vector3 begin_;
-	};
-
 
 public:
 
@@ -39,7 +32,7 @@ public:
 	void SetPos(const Vector3 &pos) { position_ = pos; }
 	const Vector3 &GetPos() const { return position_; }
 
-	void AddWeapon(IWeapon *weapon);
+	void SetWeapon(IWeapon *weapon);
 
 private:
 
@@ -64,9 +57,7 @@ private:
 
 	Matrix4x4 transMat_;
 
-	std::list<BallCatcher> ballList_;
-
-	std::vector<IWeapon *> weapons_;
+	IWeapon *weapon_;
 
 private:
 

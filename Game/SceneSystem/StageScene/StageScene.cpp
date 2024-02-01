@@ -47,10 +47,10 @@ void StageScene::Init()
 	stage_->LoadCSV(csv_);
 	stage_->SetWeapon();
 
-	stage_->GetSpawnerList()->push_back(std::make_unique<BallSpawner>());
+	/*stage_->GetSpawnerList()->push_back(std::make_unique<BallSpawner>());
 	auto spawner = stage_->GetSpawnerList()->back().get();
 	spawner->Init();
-	BallSpawner::SetStage(stage_.get());
+	BallSpawner::SetStage(stage_.get());*/
 
 	/*ballList_.push_back(std::make_unique<MovingBall>());
 	ballList_.back()->Init();*/

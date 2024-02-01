@@ -38,33 +38,33 @@ void Hole::Draw() {
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transMat_, .color_ = color_ });
 }
 
-void Hole::OnCollision(IEntity *other) {
+void Hole::OnCollision([[maybe_unused]] IEntity *other) {
 
-	MovingBall *ball = dynamic_cast<MovingBall *>(other);
-	if (ball) {
+	//MovingBall *ball = dynamic_cast<MovingBall *>(other);
+	//if (ball) {
 
-		ballList_.push_back(BallCatcher{ .ball_ = ball,.time_ = pStage_->GetHoleChathTime(), .begin_ = ball->GetNowPos() });
+	//	ballList_.push_back(BallCatcher{ .ball_ = ball,.time_ = pStage_->GetHoleChathTime(), .begin_ = ball->GetNowPos() });
 
-	}
+	//}
 
 }
 
-void Hole::AddWeapon(IWeapon *weapon) {
+void Hole::SetWeapon(IWeapon *weapon) {
 	if (weapon) {
-		weapons_.push_back(weapon);
+		weapon_ = weapon;
 	}
 }
 
 void Hole::UpdateBallChacher(const float deltaTime)
 {
-	std::erase_if(ballList_, [this](Hole::BallCatcher &ball)->bool
+	/*std::erase_if(ballList_, [this](Hole::BallCatcher &ball)->bool
 		{
 			if (ball.time_ <= 0.f) {
 
 				ball.ball_->SetIsAlive(false);
 
-				for (auto weapon : weapons_) {
-					weapon->Attack();
+				if (weapon_) {
+					weapon_->Attack();
 				}
 
 				return true;
@@ -77,7 +77,7 @@ void Hole::UpdateBallChacher(const float deltaTime)
 		ball.time_ -= deltaTime;
 		const float t = 1.f - (ball.time_ / pStage_->GetHoleChathTime());
 		ball.ball_->SetPos(SoLib::Lerp(ball.begin_, position_, t));
-	}
+	}*/
 
 }
 
