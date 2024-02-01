@@ -72,6 +72,8 @@ public:
 
 	static Vector3 RotateVector(const Vector3 &vector, const Quaternion &quaternion) { return Matrix4x4::Multiply(vector, MakeRotateMatrix(quaternion)); }
 
+	Matrix4x4 &operator=(const Matrix4x4 &) = default;
+
 public:
 	float m[4][4];
 };

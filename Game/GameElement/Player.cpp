@@ -13,6 +13,10 @@
 Player::Player() {
 
 	IBossState::SetPlayer(this);
+
+	playerModel_ = std::make_unique<BoneModel>();
+	modelTransform_ = std::make_unique<std::array<BoneModel::SimpleTransform, 8u>>();
+	modelMat_ = std::make_unique<std::array<Matrix4x4, 8u>>();
 }
 
 void Player::Init() {
@@ -20,7 +24,9 @@ void Player::Init() {
 	//barrier_->Init();
 	//barrier_->SetParent(this);
 
-	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
+	ModelDataManager *const modelManager = ModelDataManager::GetInstance();
+
+	model_ = modelManager->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
 	sphere_.radius_ = 0.4f;
 
@@ -33,6 +39,19 @@ void Player::Init() {
 	jumpSE_ = audio_->LoadWave("Resources/playerSE/jump.wav");
 	CalcTransMat();
 
+	{
+		playerModel_->Init();
+		auto body = playerModel_->AddBone("Body", modelManager->LoadObj("playerBody"));
+		auto eye = playerModel_->AddBone("Eye", body);
+		eye->AddBox(modelManager->LoadObj("playerEyeL"));
+		eye->AddBox(modelManager->LoadObj("playerEyeR"));
+
+		playerModel_->AddBone("Mouth", modelManager->LoadObj("playerMouth"), body);
+
+		playerModel_->SetNumber();
+
+	}
+
 	health_ = vMaxHealth_;
 
 }
@@ -41,6 +60,7 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	//barrier_->Update(deltaTime);
 	sphere_.center_.z = 0.f;
 	CalcTransMat();
+	*modelMat_ = playerModel_->CalcTransMat(*modelTransform_);
 	if (GetState() != State::kFacing) {
 		acceleration_.y -= 9.8f * deltaTime * 2.f;
 	}
@@ -101,6 +121,7 @@ void Player::Draw() {
 	static auto *const blockManager = BlockManager::GetInstance();
 
 	//barrier_->Draw();
+	playerModel_->Draw(*modelMat_);
 
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }

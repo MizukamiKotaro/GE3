@@ -12,6 +12,7 @@
 #include "StateParametor.h"
 #include "Hole.h"
 #include "DirectionArrow.h"
+#include "BoneModel.h"
 
 class MapChip;
 
@@ -91,6 +92,11 @@ public:
 private:
 
 	// StateParametor<Player> stateParametor_;
+
+	std::unique_ptr<BoneModel> playerModel_ = nullptr;
+	std::unique_ptr<std::array<BoneModel::SimpleTransform, 8u>> modelTransform_;
+	std::unique_ptr<std::array<Matrix4x4, 8u>> modelMat_;
+	SoLib::DeltaTimer inputFacingTimer_;
 
 	std::unique_ptr<IPlayerState> playerState_;
 

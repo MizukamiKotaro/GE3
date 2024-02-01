@@ -11,21 +11,21 @@ public:
 	class Box {
 		friend Bone;
 		// モデルデータ
-		Model *model_;
+		uint32_t model_;
 
 		// 親のボーン
 		Bone *parent_ = nullptr;
 
 	public:
-		Box(Model *model) :model_(model) {};
+		Box(uint32_t model) :model_(model) {};
 
 		/// @brief 親ボーンのゲッタ
 		/// @return 親ボーンのアドレス
 		Bone *GetParent() const { return parent_; }
 
 		/// @brief モデルデータのゲッタ
-		/// @return モデルデータアドレス
-		Model *GetModel() const { return model_; }
+		/// @return モデルデータのインデックス
+		uint32_t GetModel() const { return model_; }
 
 	};
 
@@ -39,7 +39,7 @@ public:
 
 	public:
 
-		Box *AddBox(Model *const model);
+		Box *AddBox(uint32_t model);
 		uint32_t AddBox(Box &&box);
 		Bone *AddChild(std::unique_ptr<Bone> child);
 		Bone *AddChild();
@@ -101,7 +101,7 @@ public:
 	/// @param model モデル
 	/// @param parent 親ボーン
 	/// @return 追加されたボーン
-	Bone *AddBone(const std::string &key, Model *model, Bone *parent = nullptr);
+	Bone *AddBone(const std::string &key, uint32_t model, Bone *parent = nullptr);
 
 	Bone *AddBone(const std::string &key, Bone *parent = nullptr);
 
@@ -153,7 +153,7 @@ inline std::array<Matrix4x4, I> BoneModel::CalcTransMat(std::array<SimpleTransfo
 	std::array<Matrix4x4, I> result;
 
 	// 全て初期化
-	std::fill_n(result.data(), I, Matrix4x4::Identity());
+	std::fill_n(result.data(), I, Matrix4x4::MakeIdentity4x4());
 
 	// ボーンのトランスフォームを行列に格納
 	for (const auto *const bone : bone_->GetBoneList()) {
@@ -227,10 +227,9 @@ inline void BoneModel::Draw(const std::array<Matrix4x4, I> &boneTrans) const {
 
 		const Matrix4x4 &item = boneTrans[boxNumberMap_.at(box)];
 
-		const auto *const model = box->GetModel();
-		if (not model) { continue; }
+		const auto model = box->GetModel();
 
-		blockManager->AddBox(model, IBlock{ .transMat_ = item });
+		blockManager->AddBox(model, IBlock{ .transformMat_ = item });
 
 	}
 

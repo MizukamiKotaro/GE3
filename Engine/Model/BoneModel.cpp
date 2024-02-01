@@ -1,7 +1,7 @@
 #include "BoneModel.h"
 #include <SoUtils/Math/Math.h>
 
-BoneModel::Box *BoneModel::Bone::AddBox(Model *const model) {
+BoneModel::Box *BoneModel::Bone::AddBox(uint32_t model) {
 	// モデルを保存したBoxを追加して、その添え字を返す
 	uint32_t index = AddBox(Box{ model });
 
@@ -96,7 +96,7 @@ void BoneModel::Init() {
 	bone_ = std::make_unique<Bone>();
 }
 
-BoneModel::Bone *BoneModel::AddBone(const std::string &key, Model *model, Bone *parent) {
+BoneModel::Bone *BoneModel::AddBone(const std::string &key, uint32_t model, Bone *parent) {
 
 	Bone *newBone = AddBone(key, parent);
 	newBone->AddBox(model);
