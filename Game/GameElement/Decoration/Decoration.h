@@ -64,6 +64,8 @@ private:
 	std::array<std::unique_ptr<Model>, EndModelType> decrations_;
 
 	std::array<std::unique_ptr<Model>, EndModelType> numbers_;
+	std::array<std::unique_ptr<Model>, EndModelType> denominators_;
+	std::array<std::unique_ptr<Model>, EndModelType> slashes_;
 	std::array<uint32_t, 6> numberModelDatas_;
 
 	std::unique_ptr<HighLumi> highLumi_;
