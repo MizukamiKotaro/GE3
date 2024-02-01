@@ -136,6 +136,11 @@ void Stage::Update(const float deltaTime) {
 		needle->Update(deltaTime);
 	}
 
+
+	if (this->IsAttackEnd()) {
+		Hole::EndAttack();
+	}
+
 	transMat_ = Matrix4x4::MakeAffinMatrix(scale_, rotate_.GetItem(), position_);
 }
 
@@ -261,4 +266,24 @@ void Stage::ImGuiWidget() {
 
 #endif // _DEBUG
 
+}
+
+bool Stage::IsAttackEnd() const {
+
+	for (auto &sword : swordList_) {
+		if (sword->IsAttackEnd()) {
+			return true;
+		}
+	}
+	for (auto &punch : punchList_) {
+		if (punch->IsAttackEnd()) {
+			return true;
+		}
+	}
+	for (auto &needle : needleList) {
+		if (needle->IsAttackEnd()) {
+			return true;
+		}
+	}
+	return false;
 }

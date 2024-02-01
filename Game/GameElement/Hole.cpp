@@ -4,10 +4,14 @@
 #include <ModelDataManager.h>
 #include "Stage.h"
 #include "MovingBall.h"
+#include "Player.h"
 
 std::array<uint32_t, static_cast<uint32_t>(Hole::WeaponType::kMaxSize)> Hole::modelList_;
+bool Hole::isAttacking_ = false;
+
 void Hole::StaticInit() {
 	modelList_ = { ModelDataManager::GetInstance()->LoadObj("miniSword"),ModelDataManager::GetInstance()->LoadObj("miniHand"),ModelDataManager::GetInstance()->LoadObj("miniArrow") };
+	isAttacking_ = false;
 }
 Hole::Hole() {
 }
@@ -52,6 +56,23 @@ void Hole::OnCollision([[maybe_unused]] IEntity *other) {
 	//	ballList_.push_back(BallCatcher{ .ball_ = ball,.time_ = pStage_->GetHoleChathTime(), .begin_ = ball->GetNowPos() });
 
 	//}
+
+	{
+		Player *player = dynamic_cast<Player *>(other);
+		if (player) {
+			// 攻撃中フラグが折れていた場合
+			if (not Hole::isAttacking_) {
+				// それを立てる
+				Hole::isAttacking_ = true;
+				// 攻撃を実行
+				if (weapon_) {
+					weapon_->Attack();
+				}
+
+
+			}
+		}
+	}
 
 }
 

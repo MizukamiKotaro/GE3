@@ -13,12 +13,12 @@ StageScene::StageScene() {
 	pBlockManager_ = BlockManager::GetInstance();
 
 	collisionRenderer_ = CollisionRenderer::GetInstance();
-	Hole::StaticInit();
 
 }
 
 void StageScene::Init()
 {
+	Hole::StaticInit();
 	collisionRenderer_->Init();
 
 	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };

@@ -22,6 +22,8 @@ public:
 
 	void AttackUpdate(const float deltaTime);
 
+	bool IsAttackEnd() const override { return attackTimer_.IsActive() && attackTimer_.IsFinish(); }
+
 	void Draw();
 
 	void SetPos(const Vector3 &pos) { position_ = pos; }

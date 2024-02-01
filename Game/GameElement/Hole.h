@@ -44,6 +44,8 @@ public:
 
 	void SetWeapon(IWeapon *weapon);
 
+	static void EndAttack() { Hole::isAttacking_ = false; }
+
 private:
 
 	void UpdateBallChacher(const float deltaTime);
@@ -58,7 +60,6 @@ private:
 	uint32_t activeCount_ = 5u;
 
 	uint32_t model_;
-	uint32_t miniModel_;
 
 	Vector3 position_;
 	SoLib::Math::Euler rotate_;
@@ -75,6 +76,8 @@ private:
 
 private:
 	static std::array<uint32_t, static_cast<uint32_t>(WeaponType::kMaxSize)> modelList_;
+
+	static bool isAttacking_;
 
 	const float kModelScale_ = 1.f;
 };

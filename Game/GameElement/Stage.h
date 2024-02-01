@@ -68,6 +68,8 @@ public:
 
 	float stageGround_ = 0.f;
 
+	bool IsAttackEnd() const;
+
 private:
 
 	uint32_t stageModel_;

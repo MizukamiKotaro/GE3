@@ -26,6 +26,8 @@ public:
 
 	void AttackUpdate(const float deltaTime);
 
+	bool IsAttackEnd() const override { return followTimer_.IsActive() && followTimer_.IsFinish(); }
+
 	void Attack(const AttackType attackType = AttackType::kNormal) override;
 
 	bool IsAttacked() const override;

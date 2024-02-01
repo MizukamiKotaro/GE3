@@ -19,6 +19,8 @@ public:
 
 	virtual bool IsPreAttacked() { return IsAttacked(); }
 
+	virtual bool IsAttackEnd() const= 0;
+
 	/// @brief 攻撃ダメージ
 	/// @return ダメージ
 	virtual float GetDamage() const = 0;
@@ -26,7 +28,7 @@ public:
 	uint32_t GetNumber() const { return holeNumber_; }
 	void SetNumber(const uint32_t number) { holeNumber_ = number; }
 
-	bool ImGuiWidget(const char* const label);
+	bool ImGuiWidget(const char *const label);
 
 	void SetIsHitBoss(bool value) { isHitBoss_ = value; }
 	bool GetIsHitBoss() const { return isHitBoss_; }

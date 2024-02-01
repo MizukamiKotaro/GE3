@@ -25,6 +25,8 @@ public:
 
 	bool IsAttacked() const override;
 
+	bool IsAttackEnd() const override { return followTimer_.IsActive() && followTimer_.IsFinish(); }
+
 	float GetDamage() const override;
 
 	const Capsule *GetCollision() const;
