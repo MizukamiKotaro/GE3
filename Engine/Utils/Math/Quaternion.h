@@ -55,4 +55,7 @@ struct Quaternion final {
 	/// @return クォータニオン
 	static Quaternion LookAt(const Vector3Norm &direction);
 
+
+	static Quaternion DirectionToDirection(const Vector3Norm &begin, const Vector3Norm &end);
+
 };

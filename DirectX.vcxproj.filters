@@ -923,6 +923,9 @@
     <ClInclude Include="Engine\Utils\SoUtils\Math\Math.h">
       <Filter>Engine\Utils\SoUtils\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Game\GameElement\StateParametor.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

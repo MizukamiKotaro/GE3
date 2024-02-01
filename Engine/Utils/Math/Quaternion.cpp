@@ -141,20 +141,26 @@ inline Quaternion Quaternion::Slerp(Quaternion start, const Quaternion &end, flo
 }
 
 inline Quaternion Quaternion::LookAt(const Vector3Norm &direction) {
-	if (not direction) {
+	return DirectionToDirection(Vector3::front, direction);
+}
+
+Quaternion Quaternion::DirectionToDirection(const Vector3Norm &begin, const Vector3Norm &end) {
+	if (not begin) {
 		return Quaternion::Identity;
+	}
+	if (not end) {
+		return LookAt(begin);
 	}
 
 	// ドット積を計算
-	float dot = Calc::Dot(Vector3::front, direction);
+	float dot = Calc::Dot(begin, end);
 	// acosの時に範囲を超えないように
 	dot = std::clamp(dot, -1.f, 1.f);
 	// 角度を取得
 	const float theta = std::acos(dot);
 
 	// 回転軸のベクトル
-	const Vector3Norm cross = Calc::Cross(Vector3::front, direction);
+	const Vector3Norm cross = Calc::Cross(begin, end);
 	// 任意軸回転クォータニオンを作成
 	return Quaternion::AnyAxisRotation(cross, theta).Normalize();
-
 }

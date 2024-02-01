@@ -185,6 +185,7 @@ void StageScene::Update()
 
 		player_->InputAction(input_, deltaTime);
 		player_->Update(deltaTime);
+		player_->ImGuiWidget();
 
 		for (auto &ball : *stage_->GetBallList()) {
 

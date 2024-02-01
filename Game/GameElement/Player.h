@@ -9,11 +9,28 @@
 #include "Shape/Sphere.h"
 #include "Sword.h"
 #include "HPBar/HPBar.h"
+#include "StateParametor.h"
 
 class MapChip;
 
+class IPlayerState;
+class PlayerFacing;
+class PlayerTackle;
+
 class Player : public IEntity {
+	friend PlayerFacing;
+	friend PlayerTackle;
+
 public:
+
+	enum class State {
+		kFacing,	// 方向転換
+		kTackle,	// 突進中
+		kMoving,	// 通常移動
+	};
+
+public:
+
 	Player();
 	~Player() = default;
 
@@ -42,6 +59,8 @@ public:
 
 	void Landing();
 
+	void AttackStart();
+
 	void CalcTransMat();
 	/// @brief ダメージを与える
 	/// @param weapon ブキ
@@ -57,14 +76,28 @@ public:
 
 	const auto &GetSphere() const { return sphere_; }
 
+	template <SoLib::IsBased<IPlayerState> T>
+	void SetPlayerState();
+
+	State GetState() const;
+
+	bool ImGuiWidget();
+
 private:
+
+	// StateParametor<Player> stateParametor_;
+
+	std::unique_ptr<IPlayerState> playerState_;
 
 	float health_;
 	VariantItem<float> vMaxHealth_{ "MaxHealth", 100.f };
 	HPBar *pHPBar_;
 
+	VariantItem<float> vAttackTime_{ "AttackTime", 0.75f };
 	std::list<std::unique_ptr<MovingBall>> *ballList_;
 	bool isLanding_ = false;
+
+	Vector2 preInputRStick_;
 
 	Vector3 scale_;
 	SoLib::Math::Euler rotate_;
@@ -77,7 +110,7 @@ private:
 	uint32_t model_;
 	SoLib::Color::RGB4 color_;
 
-	std::unique_ptr<BarrierItem> barrier_ = nullptr;
+	// std::unique_ptr<BarrierItem> barrier_ = nullptr;
 
 	SoLib::Time::DeltaTimer invincibleTime_;
 
@@ -95,3 +128,57 @@ private:
 
 	Vector2 kMaxSpeed_ = Vector2{ 1.f,1.f }*15.f;
 };
+
+class IPlayerState {
+public:
+	IPlayerState(Player *player) : player_(player) {}
+	virtual ~IPlayerState() = default;
+
+	virtual void Init() = 0;
+	virtual void Update(const float deltaTime) = 0;
+	virtual bool IsExit() const = 0;
+
+	virtual Player::State GetState() const = 0;
+
+	Player *const GetPlayer() const { return player_; }
+protected:
+	Player *const player_;
+};
+
+class PlayerFacing : public IPlayerState {
+public:
+	using IPlayerState::IPlayerState;
+	~PlayerFacing() = default;
+
+	void Init() override;
+	void Update(const float deltaTime) override;
+	bool IsExit() const override { return false; }
+
+	Player::State GetState() const override { return Player::State::kFacing; }
+};
+
+class PlayerTackle : public IPlayerState {
+public:
+	using IPlayerState::IPlayerState;
+	~PlayerTackle() = default;
+
+	void Init() override;
+	void Update(const float deltaTime) override;
+	bool IsExit() const override;
+
+	Player::State GetState() const override { return Player::State::kTackle; }
+
+	SoLib::DeltaTimer activeTime_;
+};
+
+template<SoLib::IsBased<IPlayerState> T>
+inline void Player::SetPlayerState() {
+	// 変更先と現在の状態が一致した場合は無視
+	if (dynamic_cast<T *>(playerState_.get())) { return; }
+
+	// 状態を変更
+	playerState_ = std::make_unique<T>(this);
+	// 初期化
+	playerState_->Init();
+
+}
