@@ -392,6 +392,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\StateParametor.h" />
     <ClInclude Include="Game\GameElement\Sword.h" />
     <ClInclude Include="Game\GameElement\TitleObject\TitleObject.h" />
+    <ClInclude Include="Game\GameElement\DirectionArrow.h" />
     <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h" />
     <ClInclude Include="Game\SceneSystem\IScene\IScene.h" />
     <ClInclude Include="Game\SceneSystem\SceneManager\SceneManager.h" />

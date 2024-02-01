@@ -926,6 +926,9 @@
     <ClInclude Include="Game\GameElement\StateParametor.h">
       <Filter>Game\GameElement</Filter>
     </ClInclude>
+    <ClInclude Include="Game\GameElement\DirectionArrow.h">
+      <Filter>Game\GameElement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

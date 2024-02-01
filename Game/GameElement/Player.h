@@ -11,6 +11,7 @@
 #include "HPBar/HPBar.h"
 #include "StateParametor.h"
 #include "Hole.h"
+#include "DirectionArrow.h"
 
 class MapChip;
 
@@ -114,7 +115,7 @@ private:
 	uint32_t model_;
 	SoLib::Color::RGB4 color_;
 
-	// std::unique_ptr<BarrierItem> barrier_ = nullptr;
+	std::unique_ptr<DirectionArrow> directionArrow_ = nullptr;
 
 	SoLib::Time::DeltaTimer invincibleTime_;
 
