@@ -32,6 +32,9 @@ void Player::Init() {
 	CalcTransMat();
 
 	health_ = vMaxHealth_;
+
+	state_ = State::kMoving;
+
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {
@@ -50,6 +53,10 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	//}
 
 	invincibleTime_.Update(deltaTime);
+
+	if (state_ == State::kMoving) {
+		acceleration_ -= velocity_ * (0.6f / 60.f);
+	}
 
 	// 移動処理を行う
 	UpdateRigidbody(deltaTime);
@@ -99,9 +106,21 @@ void Player::SetHPBar(HPBar *hpBar) {
 void Player::InputAction(Input *const input, const float deltaTime) {
 	Vector2 inputRight = input->GetGamePadRStick();
 
-	if (Calc::MakeLength(inputRight)) {
-		barrier_->Attack(Calc::Normalize(inputRight));
+	// 入力があったら
+	if (Calc::MakeLength(inputRight) > 0.5f) {
+		SetPlayerState<PlayerFacing>();
+	}
+	else {
+		// 現在の状態が facingStateであるか
+		auto facingState = dynamic_cast<PlayerFacing *>(playerState_.get());
+		// そうであれば変更
+		if (facingState) {
+			SetPlayerState<PlayerTackle>();
+		}
+	}
 
+	if (playerState_) {
+		playerState_->Update(deltaTime);
 	}
 
 
@@ -119,6 +138,10 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		audio_->Play(jumpSE_, false, 0.6f);
 	}
 
+	// 0.5以上の入力があった場合
+	if (Calc::MakeLength(inputRight) > 0.5f) {
+		preInputRStick_ = inputRight;
+	}
 }
 
 void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
@@ -129,8 +152,6 @@ void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
 
 void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	beforePos_ = sphere_.center_;
-
-	acceleration_ -= velocity_ * (0.6f / 60.f);
 
 	velocity_ += acceleration_;
 	acceleration_ = {};
@@ -164,6 +185,9 @@ void Player::Landing() {
 	//}
 }
 
+void Player::AttackStart() {
+}
+
 void Player::CalcTransMat() {
 	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * sphere_.radius_, rotate_, sphere_.center_);
 }
@@ -194,15 +218,26 @@ bool Player::Damage(float damage) {
 }
 
 void Player::OnCollision(IEntity *other) {
-	IWeapon *weapon = dynamic_cast<Sword *>(other);
-	if (not weapon) {
-		weapon = dynamic_cast<Punch *>(other);
-	}
-	if (not weapon) {
-		weapon = dynamic_cast<Needle *>(other);
-	}
+	IWeapon *weapon = dynamic_cast<IWeapon *>(other);
 	if (weapon) {
 		Damage(weapon);
 	}
 
+}
+
+void PlayerFacing::Init() {
+	player_->velocity_ = {};
+}
+
+void PlayerFacing::Update(const float deltaTime) {
+	player_->velocity_ = {};
+}
+
+void PlayerTackle::Init() {
+	Vector2 inputDir = player_->preInputRStick_;
+	const Vector3Norm input3d{ inputDir.x, inputDir.y, 0.f };
+	player_->acceleration_ += input3d * 15.f;
+}
+
+void PlayerTackle::Update(const float deltaTime) {
 }

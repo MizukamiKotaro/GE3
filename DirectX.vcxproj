@@ -389,6 +389,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\Stage.h" />
     <ClInclude Include="Game\GameElement\StageLights\StageLights.h" />
     <ClInclude Include="Game\GameElement\StageUI.h" />
+    <ClInclude Include="Game\GameElement\StateParametor.h" />
     <ClInclude Include="Game\GameElement\Sword.h" />
     <ClInclude Include="Game\GameElement\TitleObject\TitleObject.h" />
     <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h" />
