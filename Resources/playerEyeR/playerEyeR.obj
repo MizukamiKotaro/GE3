@@ -1,0 +1,14 @@
+# Blender v3.5.0 OBJ File: 'player.blend'
+# www.blender.org
+mtllib playerEyeR.mtl
+o 目_平面
+v 0.035126 0.035429 1.121365
+v 0.972371 0.212752 0.574106
+v -0.495306 0.937593 1.490704
+vt 0.529055 0.587366
+vt 0.740716 0.799027
+vt 0.529055 0.799027
+vn 0.5108 -0.0510 0.8582
+usemtl Material
+s off
+f 1/1/1 2/2/1 3/3/1
