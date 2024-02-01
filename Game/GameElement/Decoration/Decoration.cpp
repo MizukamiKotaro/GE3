@@ -52,16 +52,36 @@ Decoration::Decoration()
 		numbers_[i] = std::make_unique<Model>(numberModelDatas_[5]);
 		numbers_[i]->UnUsedLight();
 		numbers_[i]->transform_.rotate_.y = -3.14f;
-		numbers_[i]->transform_.scale_ = { 4.0f,4.0f,1.0f };
+		numbers_[i]->transform_.scale_ = { 2.0f,2.0f,1.0f };
+
+		denominators_[i] = std::make_unique<Model>(numberModelDatas_[5]);
+		denominators_[i]->UnUsedLight();
+		denominators_[i]->transform_.rotate_.y = -3.14f;
+		denominators_[i]->transform_.scale_ = { 2.0f,2.0f,1.0f };
+
+		slashes_[i] = std::make_unique<Model>("slash");
+		slashes_[i]->UnUsedLight();
+		slashes_[i]->transform_.rotate_.y = -3.14f;
+		slashes_[i]->transform_.scale_ = { 2.0f,2.0f,1.0f };
 
 		if (i == SwordB || i == PunchB) {
-			numbers_[i]->transform_.translate_ = decrations_[i]->transform_.translate_ + Vector3{ -5.0f,3.0f,-2.0f };
+			numbers_[i]->transform_.translate_ = decrations_[i]->transform_.translate_ + Vector3{ -6.0f,3.0f,-2.0f };
 		}
 		else {
-			numbers_[i]->transform_.translate_ = decrations_[i]->transform_.translate_ + Vector3{ 5.0f,3.0f,-2.0f };
+			numbers_[i]->transform_.translate_ = decrations_[i]->transform_.translate_ + Vector3{ 4.0f,3.0f,-2.0f };
 		}
+
+		slashes_[i]->transform_.translate_ = numbers_[i]->transform_.translate_ + Vector3{ 1.0f,-1.0f,0.0f };
+		denominators_[i]->transform_.translate_ = slashes_[i]->transform_.translate_ + Vector3{ 1.0f,-1.0f,0.0f };
+
 		numbers_[i]->SetColor({ 1.0f,0.14f,0.31f,1.0f });
 		numbers_[i]->Update();
+
+		denominators_[i]->SetColor({ 1.0f,0.14f,0.31f,1.0f });
+		denominators_[i]->Update();
+
+		slashes_[i]->SetColor({ 1.0f,0.14f,0.31f,1.0f });
+		slashes_[i]->Update();
 	}
 
 	rainbow_ = std::make_unique<Sprite>("Resources/rainbow.png");
@@ -103,7 +123,9 @@ void Decoration::Update(Camera* camera)
 
 	for (int i = 0; i < EndModelType; i++) {
 		//decrations_[i]->Update();
-		numbers_[i]->Update();
+		//numbers_[i]->Update();
+		//denominators_[i]->Update();
+		//slashes_[i]->Update();
 	}
 
 	/*gaussian_->gaussianBlurData_->pickRange = 0.01f;
@@ -117,6 +139,9 @@ void Decoration::Draw(Camera* camera)
 	for (int i = 0; i < EndModelType; i++) {
 		decrations_[i]->Draw(*camera);
 		numbers_[i]->Draw(*camera);
+		denominators_[i]->Draw(*camera);
+		slashes_[i]->Draw(*camera);
+		
 	}
 
 	if (*isSword_ || *isPunch_ || *isNeedle_) {
@@ -141,25 +166,35 @@ void Decoration::WrightPostEffect(Camera* camera)
 			if (*isRight_) {
 				decrations_[Sword]->Draw(*camera);
 				numbers_[Sword]->Draw(*camera);
+				denominators_[Sword]->Draw(*camera);
+				slashes_[Sword]->Draw(*camera);
 			}
 			else {
 				decrations_[SwordB]->Draw(*camera);
 				numbers_[SwordB]->Draw(*camera);
+				denominators_[SwordB]->Draw(*camera);
+				slashes_[SwordB]->Draw(*camera);
 			}
 		}
 		if (*isPunch_) {
 			if (*isRight_) {
 				decrations_[Punch]->Draw(*camera);
 				numbers_[Punch]->Draw(*camera);
+				denominators_[Punch]->Draw(*camera);
+				slashes_[Punch]->Draw(*camera);
 			}
 			else {
 				decrations_[PunchB]->Draw(*camera);
 				numbers_[PunchB]->Draw(*camera);
+				denominators_[PunchB]->Draw(*camera);
+				slashes_[PunchB]->Draw(*camera);
 			}
 		}
 		if (*isNeedle_) {
 			decrations_[Needle]->Draw(*camera);
 			numbers_[Needle]->Draw(*camera);
+			denominators_[Needle]->Draw(*camera);
+			slashes_[Needle]->Draw(*camera);
 		}
 
 		highLumi_->PostDrawScene();

@@ -108,7 +108,6 @@ void StageScene::Init()
 		slotMirrors_[i] = std::make_unique<Sprite>("Resources/white.png");
 		slotMirrors_[i]->SetSRVGPUDescriptorHandle_(postEffect_->GetSRVGPUDescriptorHandle());
 	}
-	slotMirrors_[1]->SetIsFlipX(true);
 	slotMirrorsPosX_ = 700.0f;
 	slotMirrors_[0]->pos_.x -= slotMirrorsPosX_;
 	slotMirrors_[1]->pos_.x += slotMirrorsPosX_;
@@ -413,14 +412,17 @@ void StageScene::TitleUpdate(float deltaTime)
 	}
 
 	if (isStart_) {
-		float maxTime = 1.0f;
+		float maxTime = 0.6f;
+
+		//float ratio = std::tanf(0.225f) * (titleCameraPos_.z) * 2 * 16 / 9;
+		float hoge = slotMirrorsPosX_ * firstCameraPos_.z / titleCameraPos_.z * 1.6f;
 
 		countEaseTime_ += FrameInfo::GetInstance()->GetDeltaTime();
 		countEaseTime_ = std::clamp(countEaseTime_, 0.0f, maxTime);
 
 		camera_->transform_.translate_ = Ease::UseEase(titleCameraPos_, firstCameraPos_, countEaseTime_, maxTime, Ease::Constant);
-		slotMirrors_[0]->pos_.x = Ease::UseEase(-slotMirrorsPosX_ + 640.0f, -slotMirrorsPosX_ + 50.0f, countEaseTime_, maxTime, Ease::Constant);
-		slotMirrors_[1]->pos_.x = Ease::UseEase(slotMirrorsPosX_ + 640.0f, slotMirrorsPosX_ + 1230.0f, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[0]->pos_.x = Ease::UseEase(-slotMirrorsPosX_ + 640.0f, -slotMirrorsPosX_ - hoge + 640.0f, countEaseTime_, maxTime, Ease::Constant);
+		slotMirrors_[1]->pos_.x = Ease::UseEase(slotMirrorsPosX_ + 640.0f, slotMirrorsPosX_ + hoge + 640.0f, countEaseTime_, maxTime, Ease::Constant);
 		slotMirrors_[0]->Update();
 		slotMirrors_[1]->Update();
 
@@ -469,7 +471,7 @@ void StageScene::CreatePostEffects()
 			float postRot = sword->GetBeforeRotate();
 			float rot = sword->GetRotateZ();
 			if (rot - postRot <= 0.0f) {
-				swordBlur_->blurData_->angle = std::numbers::pi_v<float> +rot;
+				swordBlur_->blurData_->angle = std::numbers::pi_v<float> + rot;
 			}
 			else {
 				swordBlur_->blurData_->angle = rot;
@@ -539,7 +541,13 @@ void StageScene::CreatePostEffects()
 			punchBlur_->blurData_->isCenterBlur = 0;
 			punchBlur_->blurData_->pickRange = 0.08f;
 			punchBlur_->blurData_->stepWidth = 0.005f;
-			punchBlur_->blurData_->angle = 0.0f;
+
+			if (isRight_) {
+				punchBlur_->blurData_->angle = 0.0f;
+			}
+			else {
+				punchBlur_->blurData_->angle = std::numbers::pi_v<float>;
+			}
 			break;
 		}
 	}
