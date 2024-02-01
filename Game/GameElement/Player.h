@@ -90,4 +90,8 @@ private:
 	Audio *audio_ = nullptr;
 
 	uint32_t jumpSE_;
+
+	float kReflectionPower_ = 0.9f;
+
+	Vector2 kMaxSpeed_ = Vector2{ 1.f,1.f }*15.f;
 };

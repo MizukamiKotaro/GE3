@@ -8,6 +8,7 @@
 #include "Punch.h"
 #include "Needle.h"
 #include "BossState/IBossState.h"
+#include "Stage.h"
 
 Player::Player() {
 
@@ -59,14 +60,24 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	if (beforePos_.y == sphere_.center_.y && velocity_.y < 0.f && not isLanding_) {
 		Landing();
 	}
+
 	if (beforePos_.y != sphere_.center_.y) {
 		isLanding_ = false;
 	}
 
 	for (uint8_t i = 0u; i < 3u; i++) {
 		if ((&beforePos_.x)[i] == (&sphere_.center_.x)[i]) {
-			(&velocity_.x)[i] = 0.f;
+			(&velocity_.x)[i] *= -kReflectionPower_;
 		}
+	}
+	const auto &mapArray = pStage_->GetMapChip()->GetMapData();
+	const Vector2 stageSize = Vector2{ static_cast<float>(mapArray.GetCols()) - 9.5f, static_cast<float>(mapArray.GetRows()) - 10.f } *0.5f;
+
+	for (uint32_t i = 0u; i < 2u; i++) {
+		if (std::abs((&sphere_.center_.x)[i]) > (&stageSize.x)[i]) {
+			(&velocity_.x)[i] *= -kReflectionPower_;
+		}
+		(&sphere_.center_.x)[i] = std::clamp((&sphere_.center_.x)[i], -(&stageSize.x)[i], (&stageSize.x)[i]);
 	}
 
 }
@@ -100,10 +111,10 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		inputLeft.x += input->PressingKey(DIK_D);
 	}
 	if (inputLeft.x) {
-		Move(inputLeft.x * 15000.f, std::powf(deltaTime, 2.f));
+		Move(inputLeft.x * 10.f, deltaTime);
 	}
 
-	if (isLanding_ && (input->PressedKey(DIK_SPACE) || input->PressedGamePadButton(Input::GamePadButton::A) || input->PressedGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
+	if (isLanding_ && (input->PressingKey(DIK_SPACE) || input->PressingGamePadButton(Input::GamePadButton::A) || input->PressingGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
 		acceleration_.y += 15.f;
 		audio_->Play(jumpSE_, false, 0.6f);
 	}
@@ -111,7 +122,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 }
 
 void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
-	velocity_.x += power * deltaTime;
+	acceleration_.x += power * deltaTime;
 }
 
 
@@ -119,10 +130,15 @@ void Player::Move(const float power, [[maybe_unused]] const float deltaTime) {
 void Player::UpdateRigidbody([[maybe_unused]] const float deltaTime) {
 	beforePos_ = sphere_.center_;
 
+	acceleration_ -= velocity_ * (0.6f / 60.f);
+
 	velocity_ += acceleration_;
 	acceleration_ = {};
+	/*for (uint32_t i = 0u; i < 2u; i++) {
+		(&velocity_.x)[i] = std::clamp((&velocity_.x)[i], -(&kMaxSpeed_.x)[i], (&kMaxSpeed_.x)[i]);
+	}*/
 	Vector3 fixVelocity = velocity_ * deltaTime;
-	velocity_.x = 0.f;
+
 
 	sphere_.center_ += fixVelocity;
 }
@@ -139,13 +155,13 @@ void Player::SetBallList(std::list<std::unique_ptr<MovingBall>> *ballList) {
 void Player::Landing() {
 	isLanding_ = true;
 
-	for (uint8_t i = 0u; i < 2u; i++) {
-		ballList_->push_back(std::make_unique<MovingBall>());
-		auto ball = ballList_->back().get();
-		ball->Init();
-		ball->SetPos(sphere_.center_ + Vector3{ .x = -1.f + 2.f * i });
-		ball->SetVelocity(Vector3{ .y = 10.f });
-	}
+	//for (uint8_t i = 0u; i < 2u; i++) {
+	//	ballList_->push_back(std::make_unique<MovingBall>());
+	//	auto ball = ballList_->back().get();
+	//	ball->Init();
+	//	ball->SetPos(sphere_.center_ + Vector3{ .x = -1.f + 2.f * i });
+	//	ball->SetVelocity(Vector3{ .y = 10.f });
+	//}
 }
 
 void Player::CalcTransMat() {

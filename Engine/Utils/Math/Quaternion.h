@@ -1,58 +1,58 @@
 #pragma once
 #include "Vector3.h"
+#include "Vector3Norm.h"
 
-struct Quaternion
-{
-public:
+namespace SoLib::Math {
 
+	struct Euler;
+}
 
-	Quaternion& operator=(const Quaternion& obj) {
-		x = obj.x;
-		y = obj.y;
-		z = obj.z;
-		w = obj.w;
-		return *this;
-	}
+struct Quaternion final {
+	Quaternion() = default;
+	Quaternion(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {};
+	Quaternion(const Vector3 &vec, float w = 0.f) :w(w) { this->vec() = vec; };
 
-	void operator+=(const Quaternion& obj) {
-		this->x = this->x + obj.x;
-		this->y = this->y + obj.y;
-		this->z = this->z + obj.z;
-		this->w = this->w + obj.w;
-	}
-
-	void  operator-=(const Quaternion& obj) {
-		this->x -= obj.x;
-		this->y -= obj.y;
-		this->z -= obj.z;
-		this->w -= obj.w;
-	}
-
-	void operator*=(float a) {
-		this->x *= a;
-		this->y *= a;
-		this->z *= a;
-		this->w *= a;
-	}
-
-	void operator/=(float a) {
-		this->x /= a;
-		this->y /= a;
-		this->z /= a;
-		this->w /= a;
-	}
-
-	static Quaternion MakeRotateAxisAngle(const Vector3& axis, float angle);
-
-public:
-	float x;
-	float y;
-	float z;
+	float x, y, z;
 	float w;
-};
 
-Quaternion operator+(const Quaternion& obj1, const Quaternion& obj2);
-Quaternion operator-(const Quaternion& obj1, const Quaternion& obj2);
-Quaternion operator*(const Quaternion& obj, float a);
-Quaternion operator*(float a, const Quaternion& obj);
-Quaternion operator/(const Quaternion& obj, float a);
+	/// @brief ベクトル部を取得する関数
+	/// @return クォータニオンのベクトル部 [ 参照 ]
+	inline Vector3 &vec() noexcept { return *reinterpret_cast<Vector3 *>(&x); }
+	inline const Vector3 &vec() const noexcept { return *reinterpret_cast<const Vector3 *>(&x); }
+
+	/// @brief 単位クォータニオン
+	static const Quaternion Identity;
+
+	/// @brief 共役クォータニオン関数
+	/// @return 共役クォータニオン
+	inline Quaternion Conjugation() const;
+
+	/// @brief 逆クォータニオン関数
+	/// @return 逆クォータニオン
+	inline Quaternion Inverse() const;
+
+	/// @brief 二乗ノルム
+	/// @return 二乗したクォータニオンの長さ
+	inline float LengthSQ() const;
+
+	/// @brief ノルム
+	/// @return クォータニオンの長さ
+	inline float Length() const;
+
+	/// @brief 正規化関数
+	/// @return 単位クォータニオン
+	inline Quaternion Normalize() const;
+
+	static inline Vector3 RotateVector(const Vector3 &a, const Quaternion &b);
+	inline Vector3 RotateVector(const Vector3 &v) const;
+
+	static Quaternion AnyAxisRotation(const Vector3Norm &axis, float angle);
+
+	static Quaternion Slerp(Quaternion start, const Quaternion &end, float t);
+
+	/// @brief 指定の方向に向く回転クォータニオンを作成
+	/// @param direction 向きたい方向( 非正規化 OK )
+	/// @return クォータニオン
+	static Quaternion LookAt(const Vector3Norm &direction);
+
+};
