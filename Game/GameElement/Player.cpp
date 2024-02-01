@@ -25,6 +25,8 @@ void Player::Init() {
 	sphere_.radius_ = 0.4f;
 
 	scale_ = Vector3::one * sphere_.radius_ * 2.f;
+	velocity_ = {};
+	acceleration_ = {};
 
 	audio_ = Audio::GetInstance();
 
@@ -33,17 +35,15 @@ void Player::Init() {
 
 	health_ = vMaxHealth_;
 
-	state_ = State::kMoving;
-
 }
 
 void Player::Update([[maybe_unused]] const float deltaTime) {
 	//barrier_->Update(deltaTime);
-
+	sphere_.center_.z = 0.f;
 	CalcTransMat();
-
-	acceleration_.y -= 9.8f * deltaTime * 2.f;
-
+	if (GetState() != State::kFacing) {
+		acceleration_.y -= 9.8f * deltaTime * 2.f;
+	}
 	//static const float kMaxAcceleration = 2.f;
 
 	//for (uint8_t i = 0u; i < 3u; i++) {
@@ -54,8 +54,16 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	invincibleTime_.Update(deltaTime);
 
-	if (state_ == State::kMoving) {
-		acceleration_ -= velocity_ * (0.6f / 60.f);
+	//if (GetState() == State::kMoving) {
+	acceleration_ -= velocity_ * (0.6f / 60.f);
+	//}
+
+	if (playerState_) {
+		playerState_->Update(deltaTime);
+
+		if (playerState_->IsExit()) {
+			playerState_ = nullptr;
+		}
 	}
 
 	// 移動処理を行う
@@ -78,7 +86,7 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 		}
 	}
 	const auto &mapArray = pStage_->GetMapChip()->GetMapData();
-	const Vector2 stageSize = Vector2{ static_cast<float>(mapArray.GetCols()) - 9.5f, static_cast<float>(mapArray.GetRows()) - 10.f } *0.5f;
+	const Vector2 stageSize = Vector2{ static_cast<float>(mapArray.GetCols()) - 9.5f, static_cast<float>(mapArray.GetRows()) - 10.5f } *0.5f;
 
 	for (uint32_t i = 0u; i < 2u; i++) {
 		if (std::abs((&sphere_.center_.x)[i]) > (&stageSize.x)[i]) {
@@ -116,7 +124,10 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 
 	// 入力があったら
 	if (Calc::MakeLength(inputRight) > 0.5f) {
-		SetPlayerState<PlayerFacing>();
+		// 状態が存在しないなら変更
+		if (not playerState_) {
+			SetPlayerState<PlayerFacing>();
+		}
 	}
 	else {
 		// 現在の状態が facingStateであるか
@@ -127,10 +138,6 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		}
 	}
 
-	if (playerState_) {
-		playerState_->Update(deltaTime);
-	}
-
 
 	Vector2 inputLeft = input->GetGamePadLStick();
 	if (inputLeft.x == 0.f) {
@@ -138,7 +145,7 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 		inputLeft.x += input->PressingKey(DIK_D);
 	}
 	if (inputLeft.x) {
-		Move(inputLeft.x * 10.f, deltaTime);
+		Move(inputLeft.x * 500.f, deltaTime * deltaTime);
 	}
 
 	/*if (isLanding_ && (input->PressingKey(DIK_SPACE) || input->PressingGamePadButton(Input::GamePadButton::A) || input->PressingGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
@@ -233,6 +240,19 @@ void Player::OnCollision(IEntity *other) {
 
 }
 
+Player::State Player::GetState() const {
+	if (playerState_) {
+		return playerState_->GetState();
+	}
+	return State::kMoving;
+}
+
+bool Player::ImGuiWidget() {
+	SoLib::ImGuiWidget(&vMaxHealth_);
+	SoLib::ImGuiWidget(&vAttackTime_);
+	return false;
+}
+
 void PlayerFacing::Init() {
 	player_->velocity_ = {};
 }
@@ -245,7 +265,14 @@ void PlayerTackle::Init() {
 	Vector2 inputDir = player_->preInputRStick_;
 	const Vector3Norm input3d{ inputDir.x, inputDir.y, 0.f };
 	player_->acceleration_ += input3d * 15.f;
+
+	activeTime_.Start(player_->vAttackTime_);
 }
 
 void PlayerTackle::Update(const float deltaTime) {
+	activeTime_.Update(deltaTime);
+}
+
+bool PlayerTackle::IsExit() const {
+	return activeTime_.IsFinish();
 }

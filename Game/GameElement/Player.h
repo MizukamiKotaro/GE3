@@ -79,11 +79,13 @@ public:
 	template <SoLib::IsBased<IPlayerState> T>
 	void SetPlayerState();
 
+	State GetState() const;
+
+	bool ImGuiWidget();
+
 private:
 
 	// StateParametor<Player> stateParametor_;
-
-	State state_;
 
 	std::unique_ptr<IPlayerState> playerState_;
 
@@ -91,6 +93,7 @@ private:
 	VariantItem<float> vMaxHealth_{ "MaxHealth", 100.f };
 	HPBar *pHPBar_;
 
+	VariantItem<float> vAttackTime_{ "AttackTime", 0.75f };
 	std::list<std::unique_ptr<MovingBall>> *ballList_;
 	bool isLanding_ = false;
 
@@ -131,8 +134,11 @@ public:
 	IPlayerState(Player *player) : player_(player) {}
 	virtual ~IPlayerState() = default;
 
-	virtual void Init() {};
-	virtual void Update(const float deltaTime) { deltaTime; };
+	virtual void Init() = 0;
+	virtual void Update(const float deltaTime) = 0;
+	virtual bool IsExit() const = 0;
+
+	virtual Player::State GetState() const = 0;
 
 	Player *const GetPlayer() const { return player_; }
 protected:
@@ -146,6 +152,9 @@ public:
 
 	void Init() override;
 	void Update(const float deltaTime) override;
+	bool IsExit() const override { return false; }
+
+	Player::State GetState() const override { return Player::State::kFacing; }
 };
 
 class PlayerTackle : public IPlayerState {
@@ -155,7 +164,11 @@ public:
 
 	void Init() override;
 	void Update(const float deltaTime) override;
+	bool IsExit() const override;
 
+	Player::State GetState() const override { return Player::State::kTackle; }
+
+	SoLib::DeltaTimer activeTime_;
 };
 
 template<SoLib::IsBased<IPlayerState> T>
