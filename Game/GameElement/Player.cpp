@@ -238,6 +238,11 @@ void Player::OnCollision(IEntity *other) {
 		Damage(weapon);
 	}
 
+	Hole *hole = dynamic_cast<Hole *>(other);
+	if (hole) {
+		ReflectHole(*hole);
+	}
+
 }
 
 Player::State Player::GetState() const {
@@ -258,6 +263,18 @@ bool Player::ImGuiWidget() {
 #endif // _DEBUG
 
 	return isChange;
+}
+
+void Player::ReflectHole(const Hole &hole)
+{
+
+	Vector3 normalVec = (this->sphere_.center_ - hole.GetPos());
+	normalVec.z = 0.f;
+
+	// 法線の向きがvelocityと逆を向いていた場合は反射しない
+	if (Calc::Dot(velocity_, normalVec) < 0.f) {
+		velocity_ = velocity_.Reflect(normalVec.Normalize(), 0.9f);
+	}
 }
 
 void PlayerFacing::Init() {

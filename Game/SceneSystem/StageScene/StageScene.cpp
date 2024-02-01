@@ -225,6 +225,22 @@ void StageScene::Update()
 			}
 
 		}
+		{
+			const Sphere &sphere = player_->GetSphere();
+			for (const auto &hole : *stage_->GetHoleList()) {
+
+				Vector3 holePos = hole->GetPos();
+				holePos.z = 0.f;
+
+				if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
+
+					hole->OnCollision(player_.get());
+
+					player_->OnCollision(hole.get());
+
+				}
+			}
+		}
 
 		for (const auto &sword : *stage_->GetSwordList()) {
 			auto *collision = sword->GetCollision();

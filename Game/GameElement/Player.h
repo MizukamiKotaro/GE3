@@ -10,6 +10,7 @@
 #include "Sword.h"
 #include "HPBar/HPBar.h"
 #include "StateParametor.h"
+#include "Hole.h"
 
 class MapChip;
 
@@ -83,6 +84,8 @@ public:
 	State GetState() const;
 
 	bool ImGuiWidget();
+
+	void ReflectHole(const Hole &hole);
 
 private:
 
