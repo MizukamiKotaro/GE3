@@ -60,7 +60,7 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	//barrier_->Update(deltaTime);
 	sphere_.center_.z = 0.f;
 	CalcTransMat();
-	*modelMat_ = playerModel_->CalcTransMat(*modelTransform_);
+	*modelMat_ = playerModel_->CalcTransMat(*modelTransform_, &transformMat_);
 	if (GetState() != State::kFacing) {
 		acceleration_.y -= 9.8f * deltaTime * 2.f;
 	}
@@ -123,7 +123,7 @@ void Player::Draw() {
 	//barrier_->Draw();
 	playerModel_->Draw(*modelMat_);
 
-	blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
+	//blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }
 
 void Player::SetHPBar(HPBar *hpBar) {

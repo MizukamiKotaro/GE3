@@ -90,7 +90,7 @@ public:
 	void CalcTransMat(std::array<BoneTransform, I> &boneTrans) const;
 
 	template<size_t I>
-	std::array<Matrix4x4, I> CalcTransMat(std::array<SimpleTransform, I> &boneTrans) const;
+	std::array<Matrix4x4, I> CalcTransMat(std::array<SimpleTransform, I> &boneTrans, const Matrix4x4 *const parent = nullptr) const;
 
 	void SetNumber();
 
@@ -147,7 +147,7 @@ inline void BoneModel::CalcTransMat(std::array<BoneTransform, I> &boneTrans) con
 
 }
 template<size_t I>
-inline std::array<Matrix4x4, I> BoneModel::CalcTransMat(std::array<SimpleTransform, I> &boneTrans) const {
+inline std::array<Matrix4x4, I> BoneModel::CalcTransMat(std::array<SimpleTransform, I> &boneTrans, const Matrix4x4 *const parentMatPtr) const {
 
 	// 返す行列
 	std::array<Matrix4x4, I> result;
@@ -165,11 +165,14 @@ inline std::array<Matrix4x4, I> BoneModel::CalcTransMat(std::array<SimpleTransfo
 		// 親の情報を取得
 		auto *parent = bone->GetParent();
 		// 親の行列
-		Matrix4x4 *parentMat = nullptr;
+		const Matrix4x4 *parentMat = nullptr;
 
 		// 親が存在するなら行列に保存
 		if (parent) {
 			parentMat = &result[boneNumberMap_.at(parent)];
+		}
+		else {
+			parentMat = parentMatPtr;
 		}
 
 		// トランスフォームから行列を生成
