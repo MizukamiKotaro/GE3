@@ -45,6 +45,7 @@ HighLumi::~HighLumi()
 	vertexResource_->Release();
 	transformResource_->Release();
 	materialResource_->Release();
+	highLumiResource_->Release();
 	DescriptorHeapManager::GetInstance()->GetSRVDescriptorHeap()->DeleteDescriptor(srvHandles_);
 	DescriptorHeapManager::GetInstance()->GetRTVDescriptorHeap()->DeleteDescriptor(rtvHandles_);
 	DescriptorHeapManager::GetInstance()->GetDSVDescriptorHeap()->DeleteDescriptor(dsvHandles_);
@@ -85,6 +86,8 @@ void HighLumi::Draw(BlendMode blendMode)
 	commandList->SetGraphicsRootConstantBufferView(1, transformResource_->GetGPUVirtualAddress());
 
 	commandList->SetGraphicsRootDescriptorTable(2, srvHandles_->gpuHandle);
+
+	commandList->SetGraphicsRootConstantBufferView(3, highLumiResource_->GetGPUVirtualAddress());
 
 	//描画!!!!（DrawCall/ドローコール）
 	commandList->DrawInstanced(6, 1, 0, 0);
@@ -330,11 +333,26 @@ void HighLumi::CreateDSV()
 	DirectXCommon::GetInstance()->GetDevice()->CreateDepthStencilView(dsvResource_.Get(), &dsvDesc, dsvHandles_->cpuHandle);
 }
 
+void HighLumi::CreateHighLumiRes()
+{
+	highLumiResource_ = DirectXCommon::CreateBufferResource(sizeof(HighLumiData));
+
+	highLumiResource_->Map(0, nullptr, reinterpret_cast<void**>(&highLumiData_));
+
+	highLumiData_->min = 0.6f;
+
+	highLumiData_->max = 0.9f;
+
+	highLumiData_->isToWhite = 0;
+}
+
 void HighLumi::CreateResources()
 {
 	CreateMaterialRes();
 
 	CreateTranformRes();
+
+	CreateHighLumiRes();
 
 	CreateTexRes();
 

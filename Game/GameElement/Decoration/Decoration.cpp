@@ -1,50 +1,77 @@
 #include "Decoration.h"
 #include "ImGuiManager/ImGuiManager.h"
+#include "ModelDataManager.h"
 
 Decoration::Decoration()
 {
-	swordDecration_ = std::make_unique<Model>("decoration");
-	swordDecration_->UnUsedLight();
-	swordDecration_->transform_.translate_ = { 13.6f,5.8f,5.0f };
-	swordDecration_->transform_.scale_ = { 1.0f,8.0f,8.0f };
-	swordDecration_->transform_.rotate_.y = -1.57f;
-	swordDecration_->Update();
+	decrations_[Sword] = std::make_unique<Model>("decoration");
+	decrations_[Sword]->UnUsedLight();
+	decrations_[Sword]->transform_.translate_ = { 13.6f,5.8f,5.0f };
+	decrations_[Sword]->transform_.scale_ = { 1.0f,8.0f,8.0f };
+	decrations_[Sword]->transform_.rotate_.y = -1.57f;
+	decrations_[Sword]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
+	decrations_[Sword]->Update();
 
-	swordDecrationB_ = std::make_unique<Model>("decorationB");
-	swordDecrationB_->UnUsedLight();
-	swordDecrationB_->transform_.translate_ = { -13.6f,5.8f,5.0f };
-	swordDecrationB_->transform_.scale_ = { 1.0f,8.0f,8.0f };
-	swordDecrationB_->transform_.rotate_.y = -1.57f;
-	swordDecrationB_->Update();
+	decrations_[SwordB] = std::make_unique<Model>("decorationB");
+	decrations_[SwordB]->UnUsedLight();
+	decrations_[SwordB]->transform_.translate_ = { -13.6f,5.8f,5.0f };
+	decrations_[SwordB]->transform_.scale_ = { 1.0f,8.0f,8.0f };
+	decrations_[SwordB]->transform_.rotate_.y = -1.57f;
+	decrations_[SwordB]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
+	decrations_[SwordB]->Update();
 
-	punchDecration_ = std::make_unique<Model>("decoration2");
-	punchDecration_->UnUsedLight();
-	punchDecration_->transform_.translate_ = { 13.6f,-7.8f,5.0f };
-	punchDecration_->transform_.scale_ = { 1.0f,8.0f,8.0f };
-	punchDecration_->transform_.rotate_.y = -1.57f;
-	punchDecration_->Update();
+	decrations_[Punch] = std::make_unique<Model>("decoration2");
+	decrations_[Punch]->UnUsedLight();
+	decrations_[Punch]->transform_.translate_ = { 13.6f,-7.8f,5.0f };
+	decrations_[Punch]->transform_.scale_ = { 1.0f,8.0f,8.0f };
+	decrations_[Punch]->transform_.rotate_.y = -1.57f;
+	decrations_[Punch]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
+	decrations_[Punch]->Update();
 
-	punchDecrationB_ = std::make_unique<Model>("decoration2B");
-	punchDecrationB_->UnUsedLight();
-	punchDecrationB_->transform_.translate_ = { -13.6f,-7.8f,5.0f };
-	punchDecrationB_->transform_.scale_ = { 1.0f,8.0f,8.0f };
-	punchDecrationB_->transform_.rotate_.y = -1.57f;
-	punchDecrationB_->Update();
+	decrations_[PunchB] = std::make_unique<Model>("decoration2B");
+	decrations_[PunchB]->UnUsedLight();
+	decrations_[PunchB]->transform_.translate_ = { -13.6f,-7.8f,5.0f };
+	decrations_[PunchB]->transform_.scale_ = { 1.0f,8.0f,8.0f };
+	decrations_[PunchB]->transform_.rotate_.y = -1.57f;
+	decrations_[PunchB]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
+	decrations_[PunchB]->Update();
 
-	needleDecration_ = std::make_unique<Model>("decoration1");
-	needleDecration_->UnUsedLight();
-	needleDecration_->transform_.translate_ = { 0.0f,-15.8f,5.0f };
-	needleDecration_->transform_.scale_ = { 1.0f,8.0f,8.0f };
-	needleDecration_->transform_.rotate_.y = -1.57f;
-	needleDecration_->Update();
+	decrations_[Needle] = std::make_unique<Model>("decoration1");
+	decrations_[Needle]->UnUsedLight();
+	decrations_[Needle]->transform_.translate_ = { 0.0f,-15.8f,5.0f };
+	decrations_[Needle]->transform_.scale_ = { 1.0f,8.0f,8.0f };
+	decrations_[Needle]->transform_.rotate_.y = -1.57f;
+	decrations_[Needle]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
+	decrations_[Needle]->Update();
 
+	for (int i = 0; i < 6; i++) {
+		numberModelDatas_[i] = ModelDataManager::GetInstance()->LoadObj(std::to_string(i));
+	}
+
+	for (int i = 0; i < 5; i++) {
+		numbers_[i] = std::make_unique<Model>(numberModelDatas_[5]);
+		numbers_[i]->UnUsedLight();
+		numbers_[i]->transform_.rotate_.y = -3.14f;
+		numbers_[i]->transform_.scale_ = { 4.0f,4.0f,1.0f };
+
+		if (i == SwordB || i == PunchB) {
+			numbers_[i]->transform_.translate_ = decrations_[i]->transform_.translate_ + Vector3{ -5.0f,3.0f,-2.0f };
+		}
+		else {
+			numbers_[i]->transform_.translate_ = decrations_[i]->transform_.translate_ + Vector3{ 5.0f,3.0f,-2.0f };
+		}
+		numbers_[i]->SetColor({ 1.0f,0.14f,0.31f,1.0f });
+		numbers_[i]->Update();
+	}
 
 	rainbow_ = std::make_unique<Sprite>("Resources/rainbow.png");
 	texcoodY_ = 0.0f;
 
 	highLumi_ = std::make_unique<HighLumi>();
+	highLumi_->highLumiData_->min = 0.01f;
+	highLumi_->highLumiData_->isToWhite = true;
 
-	gaussian_ = std::make_unique<GaussianBlur>();
+	//gaussian_ = std::make_unique<GaussianBlur>();
 
 	post_ = std::make_unique<PostEffect>();
 	isFirst_ = true;
@@ -74,31 +101,33 @@ void Decoration::Update(Camera* camera)
 	}
 	rainbow_->SetTextureTopLeft({ 0.0f,texcoodY_ });
 
-	swordDecration_->Update();
-	swordDecrationB_->Update();
-	punchDecration_->Update();
-	punchDecrationB_->Update();
-	needleDecration_->Update();
+	for (int i = 0; i < EndModelType; i++) {
+		//decrations_[i]->Update();
+		numbers_[i]->Update();
+	}
 
-	gaussian_->gaussianBlurData_->pickRange = 0.01f;
-	gaussian_->gaussianBlurData_->stepWidth = 0.0025f;
+	/*gaussian_->gaussianBlurData_->pickRange = 0.01f;
+	gaussian_->gaussianBlurData_->stepWidth = 0.0025f;*/
 
 	WrightPostEffect(camera);
 }
 
 void Decoration::Draw(Camera* camera)
 {
-	swordDecration_->Draw(*camera);
-	swordDecrationB_->Draw(*camera);
-	punchDecration_->Draw(*camera);
-	punchDecrationB_->Draw(*camera);
-	needleDecration_->Draw(*camera);
+	for (int i = 0; i < EndModelType; i++) {
+		decrations_[i]->Draw(*camera);
+		numbers_[i]->Draw(*camera);
+	}
 
 	if (*isSword_ || *isPunch_ || *isNeedle_) {
 		post_->Draw();
 
 		//gaussian_->Draw(BlendMode::kBlendModeAdd);
 	}
+
+	/*for (int i = 0; i < EndModelType; i++) {
+		numbers_[i]->Draw(*camera);
+	}*/
 }
 
 void Decoration::WrightPostEffect(Camera* camera)
@@ -110,22 +139,27 @@ void Decoration::WrightPostEffect(Camera* camera)
 
 		if (*isSword_) {
 			if (*isRight_) {
-				swordDecration_->Draw(*camera);
+				decrations_[Sword]->Draw(*camera);
+				numbers_[Sword]->Draw(*camera);
 			}
 			else {
-				swordDecrationB_->Draw(*camera);
+				decrations_[SwordB]->Draw(*camera);
+				numbers_[SwordB]->Draw(*camera);
 			}
 		}
 		if (*isPunch_) {
 			if (*isRight_) {
-				punchDecration_->Draw(*camera);
+				decrations_[Punch]->Draw(*camera);
+				numbers_[Punch]->Draw(*camera);
 			}
 			else {
-				punchDecrationB_->Draw(*camera);
+				decrations_[PunchB]->Draw(*camera);
+				numbers_[PunchB]->Draw(*camera);
 			}
 		}
 		if (*isNeedle_) {
-			needleDecration_->Draw(*camera);
+			decrations_[Needle]->Draw(*camera);
+			numbers_[Needle]->Draw(*camera);
 		}
 
 		highLumi_->PostDrawScene();
