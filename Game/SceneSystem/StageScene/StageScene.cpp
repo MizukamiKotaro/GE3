@@ -119,8 +119,7 @@ void StageScene::Init()
 	player_->SetHPBar(playerHPBar_.get());
 	boss_->SetHPBar(bossHPBar_.get());
 
-	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
-	stage_->Update(deltaTime);
+	stage_->Update(0.f);
 
 	decoration_ = std::make_unique<Decoration>();
 	decoration_->SetIsSword(&isSwordAttack_);

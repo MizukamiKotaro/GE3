@@ -62,8 +62,9 @@ public:
 	void AttackStart();
 
 	void CalcTransMat();
+
 	/// @brief ダメージを与える
-	/// @param weapon ブキ
+	/// @param weapon 武器のアドレス
 	/// @return ダメージが入ったか
 	bool Damage(IWeapon *weapon);
 
@@ -74,7 +75,7 @@ public:
 
 	void OnCollision(IEntity *other) override;
 
-	const auto &GetSphere() const { return sphere_; }
+	const Sphere &GetSphere() const { return sphere_; }
 
 	template <SoLib::IsBased<IPlayerState> T>
 	void SetPlayerState();

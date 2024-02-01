@@ -10,12 +10,12 @@ Punch::Punch() {
 void Punch::Init() {
 	scale_ = Vector3::one * 4.f;
 	rotate_ = Vector3{ 0._deg, -90._deg, 0._deg };
-	translate_ = Vector3(13, -7, -3);
+	translate_ = Vector3(13.f, -7.f, -3.f);
 	//Vector3::right * 5.f;
 	sphere_ = Sphere{ .radius_ = scale_.x * 0.5f };
 
-	origin_ = Vector3(13, -7, -3);
-	target_ = Vector3(-10, -7, -3);
+	origin_ = Vector3(13.f, -7.f, -3.f);
+	target_ = Vector3(0.f, -7.f, -3.f);
 
 	SetHandType(HandType::kRight);
 
@@ -100,6 +100,14 @@ const Sphere *Punch::GetCollision() const {
 bool Punch::IsRight() const
 {
 	return handType_ == HandType::kRight;
+}
+
+void Punch::Flip() {
+	SetHandType(HandType::kLeft);
+	translate_.x *= -1.f;
+	origin_.x *= -1.f;
+
+	CalcTransMat();
 }
 
 void Punch::CalcCollision() {

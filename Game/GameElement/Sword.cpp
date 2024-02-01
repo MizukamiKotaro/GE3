@@ -15,7 +15,7 @@ void Sword::Init()
 
 	scale_ = Vector3::one * 8.f;
 	rotate_ = Vector3::zero;
-	position_ = Vector3(13, 0, -3);
+	position_ = Vector3(13.f, 0.f, -3.f);
 
 	rotate_.y = -90._deg;
 
@@ -83,4 +83,12 @@ void Sword::CalcCollision() {
 	capsule_.segment_.origin.z = 0.f;
 
 
+}
+
+void Sword::Flip() {
+	position_.x *= -1.f;
+
+	targetAngle_ *= -1.f;
+
+	CalcCollision();
 }

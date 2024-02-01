@@ -19,16 +19,25 @@ void Stage::Init() {
 
 	SaveValue(groupName_.c_str());
 
-	auto *sword = swordList_.emplace_back(std::make_unique<Sword>()).get();
+	for (uint32_t i = 0u; i < 2u; i++) {
+		auto *sword = swordList_.emplace_back(std::make_unique<Sword>()).get();
 
-	sword->Init();
-	sword->SetNumber(2u);
+		sword->Init();
+		sword->SetNumber(3u + i);
+		if (i == 0u) {
+			sword->Flip();
+		}
+	}
 
-	auto *punch = punchList_.emplace_back(std::make_unique<Punch>()).get();
+	for (uint32_t i = 0u; i < 2u; i++) {
+		auto *punch = punchList_.emplace_back(std::make_unique<Punch>()).get();
 
-	punch->Init();
-	punch->SetNumber(1u);
-
+		punch->Init();
+		punch->SetNumber(1u + i);
+		if (i == 0u) {
+			punch->Flip();
+		}
+	}
 	auto *needle = needleList.emplace_back(std::make_unique<Needle>()).get();
 
 	needle->Init();
@@ -50,11 +59,12 @@ void Stage::LoadCSV(const SoLib::IO::CSV &csv) {
 	}
 	const auto holePos = mapChip_->GetChipPos(MapChip::ChipType::kHole);
 
+	// 長さの予約
 	holeList_.reserve(holePos.size());
 
 	for (Vector3 pos : holePos) {
 
-		auto holeItem = holeList_.emplace_back(std::make_unique<Hole>()).get();
+		Hole *holeItem = holeList_.emplace_back(std::make_unique<Hole>()).get();
 
 		holeItem->Init();
 		pos.z = 5.f;
@@ -169,36 +179,36 @@ void Stage::DrawFarObject()
 {
 	mapChip_->Draw();
 
-	for (auto& pin : pinList_) {
+	for (auto &pin : pinList_) {
 		pin->Draw();
 	}
 
-	for (auto& spawner : spawnerList_) {
+	for (auto &spawner : spawnerList_) {
 		spawner->Draw();
 	}
 
-	for (auto& ball : ballList_) {
+	for (auto &ball : ballList_) {
 		ball->Draw();
 	}
 
-	for (auto& hole : holeList_) {
+	for (auto &hole : holeList_) {
 		hole->Draw();
 	}
 
-	static auto* const blockManager = BlockManager::GetInstance();
+	static auto *const blockManager = BlockManager::GetInstance();
 
 	blockManager->AddBox(stageModel_, IBlock{ .transformMat_ = transMat_,.color_ = 0xFFFFFFFF });
 }
 
 void Stage::DrawNearObject()
 {
-	for (auto& sword : swordList_) {
+	for (auto &sword : swordList_) {
 		sword->Draw();
 	}
-	for (auto& punch : punchList_) {
+	for (auto &punch : punchList_) {
 		punch->Draw();
 	}
-	for (auto& needle : needleList) {
+	for (auto &needle : needleList) {
 		needle->Draw();
 	}
 }

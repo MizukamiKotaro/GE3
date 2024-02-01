@@ -44,6 +44,8 @@ public:
 
 	float GetBeforeRotate() const { return beforeRotate_; }
 
+	void Flip();
+
 private:
 
 	// float collisionDiff_ = 2.f;

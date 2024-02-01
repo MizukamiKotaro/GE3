@@ -248,9 +248,16 @@ Player::State Player::GetState() const {
 }
 
 bool Player::ImGuiWidget() {
-	SoLib::ImGuiWidget(&vMaxHealth_);
-	SoLib::ImGuiWidget(&vAttackTime_);
-	return false;
+	bool isChange = false;
+
+#ifdef _DEBUG
+
+	isChange |= SoLib::ImGuiWidget(&vMaxHealth_);
+	isChange |= SoLib::ImGuiWidget(&vAttackTime_);
+
+#endif // _DEBUG
+
+	return isChange;
 }
 
 void PlayerFacing::Init() {

@@ -36,6 +36,8 @@ public:
 
 	bool IsRight() const;
 
+	void Flip();
+
 private:
 
 	void CalcCollision();
