@@ -36,6 +36,12 @@ public:
 		//Matrix4x4 World;
 	};
 
+	struct HighLumiData {
+		float min;
+		float max;
+		int isToWhite;
+	};
+
 	// namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -83,6 +89,8 @@ private:
 
 	void CreateDSV();
 
+	void CreateHighLumiRes();
+
 	void CreateResources();
 
 private:
@@ -97,6 +105,8 @@ private:
 	ComPtr<ID3D12Resource> transformResource_;
 	TransformationMatrix* transformData_;
 
+	ComPtr<ID3D12Resource> highLumiResource_;
+
 	ComPtr<ID3D12Resource> texResource_;
 	const DescriptorHandles* srvHandles_;
 
@@ -105,6 +115,9 @@ private:
 
 	ComPtr<ID3D12Resource> dsvResource_;
 	const DescriptorHandles* dsvHandles_;
+
+public:
+	HighLumiData* highLumiData_;
 
 private:
 
