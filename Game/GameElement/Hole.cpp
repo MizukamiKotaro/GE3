@@ -5,6 +5,10 @@
 #include "Stage.h"
 #include "MovingBall.h"
 
+std::array<uint32_t, static_cast<uint32_t>(Hole::WeaponType::kMaxSize)> Hole::modelList_;
+void Hole::StaticInit() {
+	modelList_ = { ModelDataManager::GetInstance()->LoadObj("miniSword"),ModelDataManager::GetInstance()->LoadObj("miniHand"),ModelDataManager::GetInstance()->LoadObj("miniArrow") };
+}
 Hole::Hole() {
 }
 
@@ -15,9 +19,10 @@ void Hole::Init() {
 	activeCount_ = 5u;
 
 	position_ = {};
+	rotate_ = Vector3{ 0.f,-90._deg,0.f };
 	radius_ = 0.75f;
 
-	model_ = ModelDataManager::GetInstance()->LoadObj("Sphere");
+	model_ = ModelDataManager::GetInstance()->LoadObj("bumper");
 
 	CalcTransMat();
 
@@ -36,6 +41,7 @@ void Hole::Draw() {
 	static auto *const blockManager = BlockManager::GetInstance();
 
 	blockManager->AddBox(model_, IBlock{ .transformMat_ = transMat_, .color_ = color_ });
+	blockManager->AddBox(modelList_[static_cast<uint32_t>(weaponType_)], IBlock{ .transformMat_ = transMat_, .color_ = color_ });
 }
 
 void Hole::OnCollision([[maybe_unused]] IEntity *other) {
@@ -52,6 +58,10 @@ void Hole::OnCollision([[maybe_unused]] IEntity *other) {
 void Hole::SetWeapon(IWeapon *weapon) {
 	if (weapon) {
 		weapon_ = weapon;
+		if (dynamic_cast<Sword *>(weapon)) { weaponType_ = WeaponType::kSword; }
+		else if (dynamic_cast<Punch *>(weapon)) { weaponType_ = WeaponType::kPunch; }
+		else if (dynamic_cast<Needle *>(weapon)) { weaponType_ = WeaponType::kNeedle; }
+
 	}
 }
 
@@ -83,5 +93,5 @@ void Hole::UpdateBallChacher(const float deltaTime)
 
 void Hole::CalcTransMat() {
 
-	transMat_ = Matrix4x4::MakeAffinMatrix(Vector3::one * radius_ * kModelScale_, Vector3::zero, position_);
+	transMat_ = Matrix4x4::MakeAffinMatrix(Vector3::one * radius_ * kModelScale_, rotate_, position_);
 }

@@ -5,6 +5,7 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 #include "IWeapon.h"
+#include "SoUtils/Math/Euler.h"
 
 class Stage;
 class MovingBall;
@@ -12,11 +13,20 @@ class MovingBall;
 class Hole :public IEntity {
 public:
 
+	enum class WeaponType : uint32_t {
+		kSword,
+		kPunch,
+		kNeedle,
+
+		kMaxSize,
+	};
 
 public:
 
 	Hole();
 	~Hole() = default;
+
+	static void StaticInit();
 
 	void Init() override;
 
@@ -48,8 +58,10 @@ private:
 	uint32_t activeCount_ = 5u;
 
 	uint32_t model_;
+	uint32_t miniModel_;
 
 	Vector3 position_;
+	SoLib::Math::Euler rotate_;
 
 	SoLib::Color::RGB4 color_ = 0xFFFFFFFF;
 
@@ -59,7 +71,10 @@ private:
 
 	IWeapon *weapon_;
 
+	WeaponType weaponType_;
+
 private:
+	static std::array<uint32_t, static_cast<uint32_t>(WeaponType::kMaxSize)> modelList_;
 
 	const float kModelScale_ = 1.f;
 };

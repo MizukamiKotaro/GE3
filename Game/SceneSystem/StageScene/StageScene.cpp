@@ -13,6 +13,7 @@ StageScene::StageScene() {
 	pBlockManager_ = BlockManager::GetInstance();
 
 	collisionRenderer_ = CollisionRenderer::GetInstance();
+	Hole::StaticInit();
 
 }
 
