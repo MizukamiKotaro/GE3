@@ -129,6 +129,10 @@ FaceType Boss::GetFaceType() const
 	return slot_->GetFaceType();
 }
 
+void Boss::DownGrade() {
+	slot_->DownLevel();
+}
+
 void Boss::CalcTransMat() {
 
 	transform_.CalcTransMat();

@@ -57,6 +57,8 @@ public:
 
 	FaceType GetFaceType() const;
 
+	void DownGrade();
+
 	void AddAcceleration(const Vector3 &vec) { acceleration_ += vec; }
 	void SetAcceleration(const Vector3 &vec) { acceleration_ = vec; }
 

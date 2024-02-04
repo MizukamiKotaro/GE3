@@ -38,7 +38,7 @@ void SlotState::Update(const float deltaTime)
 }
 
 void SlotState::OnCollision([[maybe_unused]] IEntity *other) {
-	// ボスであった場合
+	// プレイヤであった場合
 	Player *player = dynamic_cast<Player *>(other);
 	if (player) {
 		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();
@@ -46,6 +46,16 @@ void SlotState::OnCollision([[maybe_unused]] IEntity *other) {
 		player->AddAcceleration(toPlayer * 3.f);
 
 		GetBoss()->AddAcceleration(toPlayer * -1.5f);
+	}
+
+	// 武器であった場合
+	IWeapon *weapon = dynamic_cast<IWeapon *>(other);
+	if (weapon) {
+		if (not stopTimer_.IsActive()) {
+			GetBoss()->DownGrade();
+			slotTimer_.Start();
+
+		}
 	}
 }
 
