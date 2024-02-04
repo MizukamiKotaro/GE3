@@ -73,6 +73,9 @@ private:
 	bool isDrawPunchBlur_;
 	bool isPunchAttack_;
 
+	std::unique_ptr<Blur> playerBlur_;
+	bool isPlayerAttack_;
+
 	std::unique_ptr<HPBar> playerHPBar_;
 	std::unique_ptr<HPBar> bossHPBar_;
 

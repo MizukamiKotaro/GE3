@@ -89,6 +89,9 @@ public:
 
 	void ReflectHole(const Hole &hole);
 
+	// 追加
+	const Vector3& GetVelocity() const { return velocity_; }
+
 private:
 
 	// StateParametor<Player> stateParametor_;
