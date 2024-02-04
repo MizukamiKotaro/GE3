@@ -35,9 +35,6 @@ public:
 	void SetIsRight(const bool* isRight) { isRight_ = isRight; }
 
 private:
-
-private:
-
 	enum ModelType {
 		Sword,
 		SwordB,
@@ -46,6 +43,11 @@ private:
 		Needle,
 		EndModelType,
 	};
+
+	void ChangeGaugeColor();
+
+private:
+
 
 	static const int kMaxGauge_ = 5;
 
@@ -60,6 +62,7 @@ private:
 	std::array<std::unique_ptr<Model>, EndModelType> numbers_;
 	std::array<std::array<std::unique_ptr<Model>, kMaxGauge_>, EndModelType> gauges_;
 	std::array<uint32_t, 6> numberModelDatas_;
+	std::array<int, EndModelType> nums_;
 
 	std::unique_ptr<HighLumi> highLumi_;
 

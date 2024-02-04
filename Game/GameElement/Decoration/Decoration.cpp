@@ -53,7 +53,9 @@ Decoration::Decoration()
 	float angle = 3.14f / kMaxGauge_ * 2;
 
 	for (int i = 0; i < EndModelType; i++) {
-		numbers_[i] = std::make_unique<Model>(numberModelDatas_[5]);
+		nums_[i] = kMaxGauge_;
+
+		numbers_[i] = std::make_unique<Model>(numberModelDatas_[nums_[i]]);
 		numbers_[i]->UnUsedLight();
 		numbers_[i]->transform_.rotate_.y = -3.14f;
 		numbers_[i]->transform_.scale_ = { 2.0f,2.0f,1.0f };
@@ -72,7 +74,7 @@ Decoration::Decoration()
 		for (int j = 0; j < kMaxGauge_; j++) {
 			gauges_[i][j] = std::make_unique<Model>("gauge");
 			gauges_[i][j]->UnUsedLight();
-			gauges_[i][0]->SetColor({ 0.1f,1.0f,0.1f,1.0f });
+			gauges_[i][j]->SetColor({ 0.1f,1.0f,0.1f,1.0f });
 			gauges_[i][j]->transform_.rotate_.y = -3.14f;
 			if (kMaxGauge_ == 5) {
 				gauges_[i][j]->transform_.rotate_.z = angle * 2 - angle * j;
@@ -133,6 +135,7 @@ void Decoration::Update(Camera* camera)
 
 	/*gaussian_->gaussianBlurData_->pickRange = 0.01f;
 	gaussian_->gaussianBlurData_->stepWidth = 0.0025f;*/
+	ChangeGaugeColor();
 
 	WrightPostEffect(camera);
 }
@@ -142,9 +145,9 @@ void Decoration::Draw(Camera* camera)
 	for (int i = 0; i < EndModelType; i++) {
 		decrations_[i]->Draw(*camera);
 		numbers_[i]->Draw(*camera);
-		for (int j = 0; j < kMaxGauge_; j++) {
+		/*for (int j = 0; j < kMaxGauge_; j++) {
 			gauges_[i][j]->Draw(*camera);
-		}
+		}*/
 	}
 
 	if (*isSword_ || *isPunch_ || *isNeedle_) {
@@ -153,9 +156,12 @@ void Decoration::Draw(Camera* camera)
 		//gaussian_->Draw(BlendMode::kBlendModeAdd);
 	}
 
-	/*for (int i = 0; i < EndModelType; i++) {
-		numbers_[i]->Draw(*camera);
-	}*/
+	for (int i = 0; i < EndModelType; i++) {
+		//numbers_[i]->Draw(*camera);
+		for (int j = 0; j < kMaxGauge_; j++) {
+			gauges_[i][j]->Draw(*camera);
+		}
+	}
 }
 
 void Decoration::WrightPostEffect(Camera* camera)
@@ -205,5 +211,26 @@ void Decoration::WrightPostEffect(Camera* camera)
 		post_->Draw();
 
 		gaussian_->PostDrawScene();*/
+	}
+}
+
+void Decoration::ChangeGaugeColor()
+{
+	for (int i = 0; i < EndModelType; i++) {
+		int num = kMaxGauge_ - nums_[i];
+		for (int j = 0; j < kMaxGauge_; j++) {
+			if (nums_[i] == 0) {
+				gauges_[i][j]->SetColor({1.0f,0.14f,0.31f,1.0f});
+			}
+			else {
+				if (i >= num) {
+					float t = float(num) / (kMaxGauge_ - 1);
+					gauges_[i][j]->SetColor({ (1.0f - t) * 0.1f + t * 1.0f ,(1.0f - t) * 1.0f + t * 0.1f,0.1f,1.0f });
+				}
+				else {
+					gauges_[i][j]->SetColor({ 1.0f,0.14f,0.31f,1.0f });
+				}
+			}
+		}
 	}
 }
