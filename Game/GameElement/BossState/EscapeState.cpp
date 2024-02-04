@@ -11,15 +11,15 @@ void EscapeState::Init() {
 void EscapeState::Update([[maybe_unused]] const float deltaTime) {
 	changeTimer_.Update(deltaTime);
 
-	// ステージのポインタ
-	const auto *const stage = IEntity::GetStage();
-	// マップチップ
-	const auto &mapData = stage->GetMapChip()->GetMapData();
+	//// ステージのポインタ
+	//const auto *const stage = IEntity::GetStage();
+	//// マップチップ
+	//const auto &mapData = stage->GetMapChip()->GetMapData();
 
 	auto &bossTransform = GetBoss()->GetTransform();
 
 	// プレイヤに対してのベクトル
-	Vector3 toPlayer = GetPlayer()->GetGrobalPos() - bossTransform.translate_;
+	Vector3 toPlayer = GetPlayer()->GetPos() - bossTransform.translate_;
 
 	// プレイヤから離れるベクトル
 	Vector3 escapeVector = -toPlayer.Normalize() * deltaTime;
@@ -39,4 +39,14 @@ void EscapeState::ChangeState() {
 }
 
 void EscapeState::OnCollision([[maybe_unused]] IEntity *other) {
+
+	// ボスであった場合
+	Player *player = dynamic_cast<Player *>(other);
+	if (player) {
+		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();
+
+		player->AddAcceleration(toPlayer * 5.f);
+
+		GetBoss()->AddAcceleration(toPlayer * -0.5f);
+	}
 }

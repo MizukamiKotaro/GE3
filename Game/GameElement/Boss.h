@@ -57,6 +57,9 @@ public:
 
 	FaceType GetFaceType() const;
 
+	void AddAcceleration(const Vector3 &vec) { acceleration_ += vec; }
+	void SetAcceleration(const Vector3 &vec) { acceleration_ = vec; }
+
 private:
 
 	/// @brief 行列の計算
@@ -81,6 +84,9 @@ private:
 	HPBar *pHPBar_ = nullptr;
 
 	Sphere sphere_;
+
+	Vector3 velocity_;
+	Vector3 acceleration_;
 
 	SimpleTransform transform_;
 

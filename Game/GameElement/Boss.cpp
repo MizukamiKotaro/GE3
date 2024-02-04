@@ -32,9 +32,19 @@ void Boss::Init() {
 	mapChip_ = pStage_->GetMapChip();
 	mapData_ = &mapChip_->GetMapData();
 
+	acceleration_ = {};
+	velocity_ = {};
+
 }
 
 void Boss::Update([[maybe_unused]] const float deltaTime) {
+
+	// 空気抵抗
+	acceleration_ -= velocity_ * (2.f / 60.f);
+
+	velocity_ += acceleration_;
+	transform_.translate_ += velocity_ * deltaTime;
+	acceleration_ = {};
 
 	if (nextState_) {
 		bossState_ = std::move(nextState_);

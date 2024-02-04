@@ -10,6 +10,7 @@
 #include "BossState/IBossState.h"
 #include "Stage.h"
 #include "SoUtils/Math/Math.h"
+#include "Boss.h"
 
 Player::Player() {
 
@@ -312,7 +313,7 @@ void PlayerFacing::Init() {
 }
 
 void PlayerFacing::Update(const float deltaTime) {
-	player_->velocity_ = {};
+	player_->acceleration_ = {};
 	Vector2 inputDir = player_->preInputRStick_;
 	bool isLeft = false;
 

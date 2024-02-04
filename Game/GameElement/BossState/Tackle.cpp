@@ -70,11 +70,12 @@ void TackleState::AttackUpdate() {
 void TackleState::OnCollision(IEntity *other) {
 	Player *player = dynamic_cast<Player *>(other);
 	if (player) {
+		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();
 
 		// ダメージがあるなら接触
 		if (stateArray_[stateIndex_].damage_ > 0.f) {
 			if (player->Damage(stateArray_[stateIndex_].damage_)) {
-
+				player->AddAcceleration(toPlayer * 25.f);
 			}
 		}
 	}

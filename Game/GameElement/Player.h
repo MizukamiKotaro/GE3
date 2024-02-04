@@ -47,6 +47,7 @@ public:
 
 	const Matrix4x4 &GetTransMat() const { return transformMat_; }
 	const Vector3 &GetGrobalPos() const { return *reinterpret_cast<const Vector3 *>(transformMat_.m[3]); }
+	const Vector3 &GetPos() const { return sphere_.center_; }
 
 	float GetRadius() const { return sphere_.radius_; }
 
@@ -90,7 +91,9 @@ public:
 	void ReflectHole(const Hole &hole);
 
 	// 追加
-	const Vector3& GetVelocity() const { return velocity_; }
+	const Vector3 &GetVelocity() const { return velocity_; }
+
+	void AddAcceleration(const Vector3 &vec) { acceleration_ += vec; }
 
 private:
 

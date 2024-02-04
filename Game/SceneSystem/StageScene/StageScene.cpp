@@ -319,12 +319,14 @@ void StageScene::Update()
 
 
 		auto &bossCollision = boss_->GetCollision();
-		if (boss_->IsAttacked()) {
-			if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
-				player_->OnCollision(boss_.get());
-				boss_->OnCollision(player_.get());
-			}
+		//if (boss_->IsAttacked()) {
+
+		if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
+			player_->OnCollision(boss_.get());
+			boss_->OnCollision(player_.get());
 		}
+
+		//}
 
 		stageUI_->Update();
 
@@ -599,7 +601,7 @@ void StageScene::CreatePostEffects()
 			playerBlur_->blurData_->angle = -angle;
 		}
 		else {
-			playerBlur_->blurData_->angle = std::numbers::pi_v<float> + angle;
+			playerBlur_->blurData_->angle = std::numbers::pi_v<float> +angle;
 		}
 
 		pBlockManager_->clear();

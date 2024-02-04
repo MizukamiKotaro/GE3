@@ -37,8 +37,16 @@ void SlotState::Update(const float deltaTime)
 	}
 }
 
-void SlotState::OnCollision([[maybe_unused]] IEntity *other)
-{
+void SlotState::OnCollision([[maybe_unused]] IEntity *other) {
+	// ボスであった場合
+	Player *player = dynamic_cast<Player *>(other);
+	if (player) {
+		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();
+
+		player->AddAcceleration(toPlayer * 3.f);
+
+		GetBoss()->AddAcceleration(toPlayer * -1.5f);
+	}
 }
 
 void SlotState::ChangeState()
