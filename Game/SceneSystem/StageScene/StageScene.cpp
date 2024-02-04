@@ -81,6 +81,9 @@ void StageScene::Init()
 	isDrawPunchBlur_ = false;
 	isPunchAttack_ = false;
 
+	playerBlur_ = std::make_unique<Blur>();
+	isPlayerAttack_ = false;
+
 	isRight_ = true;
 
 	playerHPBar_ = std::make_unique<HPBar>("PlayerHPBar");
@@ -397,6 +400,10 @@ void StageScene::Draw() {
 
 		pBlockManager_->Draw(*camera_.get());
 
+		if (isPlayerAttack_) {
+			playerBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
+
 		if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
 		}
@@ -577,6 +584,39 @@ void StageScene::CreatePostEffects()
 		punchBlur_->PostDrawScene();
 	}
 
+	if (player_->GetState() == Player::State::kTackle) {
+		isPlayerAttack_ = true;
+		playerBlur_->blurData_->isCenterBlur = 0;
+
+		Vector3 velocity = player_->GetVelocity();
+		//float speed = velocity.Length();
+
+		playerBlur_->blurData_->pickRange = 0.08f;
+		playerBlur_->blurData_->stepWidth = 0.005f;
+
+		float angle = std::asinf(velocity.Normalize().y);
+		if (velocity.x <= 0) {
+			playerBlur_->blurData_->angle = -angle;
+		}
+		else {
+			playerBlur_->blurData_->angle = std::numbers::pi_v<float> + angle;
+		}
+
+		pBlockManager_->clear();
+
+		player_->Draw();
+
+		playerBlur_->PreDrawScene();
+
+		pBlockManager_->Draw(*camera_.get());
+
+		playerBlur_->PostDrawScene();
+
+	}
+	else {
+		isPlayerAttack_ = false;
+	}
+
 	decoration_->Update(camera_.get());
 
 	farPostEffect_->PreDrawScene();
@@ -637,6 +677,10 @@ void StageScene::CreatePostEffects()
 		collisionRenderer_->AddCollision(player_->GetSphere());
 
 		pBlockManager_->Draw(*camera_.get());
+
+		if (isPlayerAttack_) {
+			playerBlur_->Draw(BlendMode::kBlendModeAdd);
+		}
 
 		if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
