@@ -114,7 +114,7 @@ inline Vector3 Quaternion::RotateVector(const Vector3 &v) const {
 	return result.vec();
 }
 
-inline Quaternion Quaternion::Slerp(Quaternion start, const Quaternion &end, float t) {
+ Quaternion Quaternion::Slerp(Quaternion start, const Quaternion &end, float t) {
 
 	// 返り値
 	Quaternion result;

@@ -138,6 +138,8 @@ private:
 	float kReflectionPower_ = 0.9f;
 
 	Vector2 kMaxSpeed_ = Vector2{ 1.f,1.f }*15.f;
+
+	SoLib::Math::Euler rotateTarget_;
 };
 
 class IPlayerState {

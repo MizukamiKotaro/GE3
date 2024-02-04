@@ -9,6 +9,7 @@
 #include "Needle.h"
 #include "BossState/IBossState.h"
 #include "Stage.h"
+#include "SoUtils/Math/Math.h"
 
 Player::Player() {
 
@@ -29,6 +30,9 @@ void Player::Init() {
 	model_ = modelManager->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
 	sphere_.radius_ = 0.5f;
+
+	rotate_ = Vector3{ 0.f, SoLib::Math::Angle::PI2, 0.f };
+	rotateTarget_ = Vector3{ 0.f, SoLib::Math::Angle::PI2, 0.f };
 
 	scale_ = Vector3::one * sphere_.radius_ * 2.f;
 	velocity_ = {};
@@ -73,6 +77,10 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 	//		(&acceleration_.x)[i] = std::clamp((&acceleration_.x)[i], -kMaxAcceleration, kMaxAcceleration);
 	//	}
 	//}
+
+	//static const Quaternion rotLeft = Quaternion::LookAt(-Vector3::right);
+
+	rotate_ = SoLib::Lerp(rotate_, rotateTarget_, 0.2f);
 
 	invincibleTime_.Update(deltaTime);
 
@@ -226,7 +234,7 @@ void Player::AttackStart() {
 }
 
 void Player::CalcTransMat() {
-	transformMat_ = Matrix4x4::MakeAffinMatrix(scale_ * sphere_.radius_, rotate_, sphere_.center_);
+	transformMat_ = SoLib::Math::Affine(scale_ * sphere_.radius_, rotate_, sphere_.center_);
 }
 
 bool Player::Damage([[maybe_unused]] IWeapon *weapon) {
@@ -306,12 +314,27 @@ void PlayerFacing::Init() {
 void PlayerFacing::Update(const float deltaTime) {
 	player_->velocity_ = {};
 	Vector2 inputDir = player_->preInputRStick_;
-	if (player_->preInputRStick_.x > 0.f) {
-		player_->rotate_.y = SoLib::Math::Angle::PI;
+	bool isLeft = false;
+
+	// 向いている左右方向
+	if (inputDir.x > 0.f) {
+		player_->rotateTarget_.y = SoLib::Math::Angle::PI;
 	}
 	else {
-		player_->rotate_.y = 0.f;
+		player_->rotateTarget_.y = SoLib::Math::Angle::PI2;
+		isLeft = true;
 	}
+
+	// 向き統一
+	inputDir.x = std::abs(inputDir.x);
+	// 回転作成
+	player_->rotateTarget_.z = std::atan2(inputDir.y, inputDir.x);
+
+	if (isLeft) {
+		// 上下反転
+		player_->rotateTarget_.z *= -1.f;
+	}
+
 }
 
 void PlayerTackle::Init() {
@@ -320,6 +343,9 @@ void PlayerTackle::Init() {
 	player_->acceleration_ += input3d * 15.f;
 
 	activeTime_.Start(player_->vAttackTime_);
+
+	// 向いてる上下方向
+	player_->rotateTarget_.z = 0.f;
 }
 
 void PlayerTackle::Update(const float deltaTime) {
