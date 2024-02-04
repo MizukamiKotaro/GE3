@@ -28,7 +28,7 @@ void Player::Init() {
 
 	model_ = modelManager->LoadObj("Sphere");
 	color_ = 0xFFFFFFFF;
-	sphere_.radius_ = 0.4f;
+	sphere_.radius_ = 0.5f;
 
 	scale_ = Vector3::one * sphere_.radius_ * 2.f;
 	velocity_ = {};
@@ -49,6 +49,8 @@ void Player::Init() {
 		playerModel_->AddBone("Mouth", modelManager->LoadObj("playerMouth"), body);
 
 		playerModel_->SetNumber();
+
+		//modelTransform_->at(playerModel_->GetIndex("Eye", 0)).scale_ = Vector3::one * 5.f;
 
 	}
 
@@ -294,7 +296,7 @@ void Player::ReflectHole(const Hole &hole)
 
 	// 法線の向きがvelocityと逆であれば反射する
 	if (Calc::Dot(velocity_, normalVec) < 0.f) {
-		velocity_ = velocity_.Reflect(normalVec.Normalize(), 0.9f);
+		velocity_ = velocity_.Reflect(normalVec.Normalize(), hole.GetReflectionPow());
 	}
 }
 
@@ -304,6 +306,13 @@ void PlayerFacing::Init() {
 
 void PlayerFacing::Update(const float deltaTime) {
 	player_->velocity_ = {};
+	Vector2 inputDir = player_->preInputRStick_;
+	if (player_->preInputRStick_.x > 0.f) {
+		player_->rotate_.y = SoLib::Math::Angle::PI;
+	}
+	else {
+		player_->rotate_.y = 0.f;
+	}
 }
 
 void PlayerTackle::Init() {

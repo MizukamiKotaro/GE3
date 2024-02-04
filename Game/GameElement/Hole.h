@@ -46,6 +46,8 @@ public:
 
 	static void EndAttack() { Hole::isAttacking_ = false; }
 
+	float GetReflectionPow() const { return 1.2f; }
+
 private:
 
 	void UpdateBallChacher(const float deltaTime);
