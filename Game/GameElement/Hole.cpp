@@ -24,7 +24,7 @@ void Hole::Init() {
 
 	position_ = {};
 	rotate_ = Vector3{ 0.f,-90._deg,0.f };
-	radius_ = 0.75f;
+	radius_ = 1.5f;
 
 	model_ = ModelDataManager::GetInstance()->LoadObj("bumper");
 

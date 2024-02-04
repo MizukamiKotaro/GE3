@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Engine/Base/WinApp/WinApp.h"
 #include "DirectXCommon/DirectXCommon.h"
+#include "SoUtils/Math/Angle.h"
 
 Matrix4x4 Camera::orthographicMat_ = Matrix4x4::MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kWindowWidth), float(WinApp::kWindowHeight), 0.0f, 1.0f);
 
@@ -35,7 +36,7 @@ void Camera::Initialize()
 	transform_.UpdateMatrix();
 
 	Matrix4x4 viewMatrix = Matrix4x4::Inverse(transform_.worldMat_);
-	projectionMatrix_ = Matrix4x4::MakePerspectiveFovMatrix(0.45f, float(WinApp::kWindowWidth) / float(WinApp::kWindowHeight), 0.1f, 1050.0f);
+	projectionMatrix_ = Matrix4x4::MakePerspectiveFovMatrix(20._deg, float(WinApp::kWindowWidth) / float(WinApp::kWindowHeight), 0.1f, 1050.0f);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 }
 

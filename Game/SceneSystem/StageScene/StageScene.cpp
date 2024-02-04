@@ -21,7 +21,7 @@ void StageScene::Init()
 	Hole::StaticInit();
 	collisionRenderer_->Init();
 
-	camera_->transform_.translate_ = { 0.0f,2.0f,-50.0f };
+	camera_->transform_.translate_ = { 0.0f,2.0f,-200.0f };
 	camera_->Update();
 
 	firstCameraPos_ = camera_->transform_.translate_;
@@ -488,7 +488,7 @@ void StageScene::CreatePostEffects()
 			float postRot = sword->GetBeforeRotate();
 			float rot = sword->GetRotateZ();
 			if (rot - postRot <= 0.0f) {
-				swordBlur_->blurData_->angle = std::numbers::pi_v<float> + rot;
+				swordBlur_->blurData_->angle = std::numbers::pi_v<float> +rot;
 			}
 			else {
 				swordBlur_->blurData_->angle = rot;

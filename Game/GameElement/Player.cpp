@@ -76,9 +76,8 @@ void Player::Update([[maybe_unused]] const float deltaTime) {
 
 	invincibleTime_.Update(deltaTime);
 
-	//if (GetState() == State::kMoving) {
+	// 空気抵抗
 	acceleration_ -= velocity_ * (0.6f / 60.f);
-	//}
 
 	if (playerState_) {
 		playerState_->Update(deltaTime);

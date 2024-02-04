@@ -81,5 +81,5 @@ private:
 
 	static bool isAttacking_;
 
-	const float kModelScale_ = 1.f;
+	const float kModelScale_ = 0.75f;
 };
