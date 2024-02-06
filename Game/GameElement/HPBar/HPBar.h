@@ -26,6 +26,8 @@ public:
 
 	void SetDamage(float damage);
 
+	const float GetHP() const { return HP_; }
+
 private:
 
 	void SetGlobalVariable();
