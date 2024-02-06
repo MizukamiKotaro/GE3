@@ -7,7 +7,7 @@ Decoration::Decoration()
 {
 	decrations_[Sword] = std::make_unique<Model>("decoration");
 	decrations_[Sword]->UnUsedLight();
-	decrations_[Sword]->transform_.translate_ = { 13.6f,5.8f,5.0f };
+	decrations_[Sword]->transform_.translate_ = { 13.6f,5.8f,2.0f };
 	decrations_[Sword]->transform_.scale_ = { 1.0f,8.0f,8.0f };
 	decrations_[Sword]->transform_.rotate_.y = -1.57f;
 	decrations_[Sword]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -15,7 +15,7 @@ Decoration::Decoration()
 
 	decrations_[SwordB] = std::make_unique<Model>("decorationB");
 	decrations_[SwordB]->UnUsedLight();
-	decrations_[SwordB]->transform_.translate_ = { -13.6f,5.8f,5.0f };
+	decrations_[SwordB]->transform_.translate_ = { -13.6f,5.8f,2.0f };
 	decrations_[SwordB]->transform_.scale_ = { 1.0f,8.0f,8.0f };
 	decrations_[SwordB]->transform_.rotate_.y = -1.57f;
 	decrations_[SwordB]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -23,7 +23,7 @@ Decoration::Decoration()
 
 	decrations_[Punch] = std::make_unique<Model>("decoration2");
 	decrations_[Punch]->UnUsedLight();
-	decrations_[Punch]->transform_.translate_ = { 13.6f,-7.8f,5.0f };
+	decrations_[Punch]->transform_.translate_ = { 13.6f,-7.8f,2.0f };
 	decrations_[Punch]->transform_.scale_ = { 1.0f,8.0f,8.0f };
 	decrations_[Punch]->transform_.rotate_.y = -1.57f;
 	decrations_[Punch]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -31,7 +31,7 @@ Decoration::Decoration()
 
 	decrations_[PunchB] = std::make_unique<Model>("decoration2B");
 	decrations_[PunchB]->UnUsedLight();
-	decrations_[PunchB]->transform_.translate_ = { -13.6f,-7.8f,5.0f };
+	decrations_[PunchB]->transform_.translate_ = { -13.6f,-7.8f,2.0f };
 	decrations_[PunchB]->transform_.scale_ = { 1.0f,8.0f,8.0f };
 	decrations_[PunchB]->transform_.rotate_.y = -1.57f;
 	decrations_[PunchB]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -39,7 +39,7 @@ Decoration::Decoration()
 
 	decrations_[Needle] = std::make_unique<Model>("decoration1");
 	decrations_[Needle]->UnUsedLight();
-	decrations_[Needle]->transform_.translate_ = { 0.0f,-15.8f,5.0f };
+	decrations_[Needle]->transform_.translate_ = { 0.0f,-15.8f,2.0f };
 	decrations_[Needle]->transform_.scale_ = { 1.0f,8.0f,8.0f };
 	decrations_[Needle]->transform_.rotate_.y = -1.57f;
 	decrations_[Needle]->SetColor({ 0.2f,0.2f,0.2f,1.0f });

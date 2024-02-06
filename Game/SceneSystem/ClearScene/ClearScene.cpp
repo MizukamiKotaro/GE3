@@ -47,7 +47,7 @@ void ClearScene::Init()
 	isPunchAttack_ = false;
 	isRight_ = true;
 	stage_->Update(0.f);
-	decoration_->Update(camera_.get());
+	decoration_->tcUpdate(camera_.get());
 
 	slot_ = std::make_unique<Slot>();
 	slot_->ClearInit();
@@ -56,9 +56,9 @@ void ClearScene::Init()
 	hoge.rotate_ = { 0.52f,3.732f,0.0f };
 	slot_->Update(camera_.get());
 
-	space_ = std::make_unique<Sprite>("Resources/space.png");
+	space_ = std::make_unique<Sprite>("Resources/gameEnd.png");
 	space_->pos_ = { 640.0f,600.0f };
-	space_->size_ *= 0.6f;
+	space_->size_ *= 0.4f;
 	space_->Update();
 
 	se_.Load("Resources/select.wav");
@@ -72,14 +72,6 @@ void ClearScene::Update()
 		ChangeScene(SELECT);
 	}
 
-	auto &hoge = slot_->GetTransform();
-
-	ImGui::Begin("a");
-	ImGui::DragFloat3("da", &hoge.translate_.x, 0.1f);
-	ImGui::DragFloat3("d", &hoge.rotate_.x, 0.01f);
-	ImGui::DragFloat3("a", &hoge.scale_.x, 0.01f);
-	ImGui::End();
-	camera_->Update();
 
 #endif // _DEBUG
 

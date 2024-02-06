@@ -136,9 +136,9 @@ void StageScene::Init()
 
 	CreatePostEffects();
 
-	space_ = std::make_unique<Sprite>("Resources/space.png");
+	space_ = std::make_unique<Sprite>("Resources/gameStart.png");
 	space_->pos_ = { 640.0f,600.0f };
-	space_->size_ *= 0.6f;
+	space_->size_ *= 0.4f;
 	space_->Update();
 
 	se_.Load("Resources/SE/start.wav");
