@@ -40,7 +40,7 @@ void EscapeState::ChangeState() {
 
 void EscapeState::OnCollision([[maybe_unused]] IEntity *other) {
 
-	// ボスであった場合
+	// プレイヤであった場合
 	Player *player = dynamic_cast<Player *>(other);
 	if (player) {
 		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();

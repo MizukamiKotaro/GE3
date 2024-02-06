@@ -543,6 +543,9 @@
     <ClCompile Include="Engine\Utils\SoUtils\Math\Math.cpp">
       <Filter>Engine\Utils\SoUtils\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\HipDrop.cpp">
+      <Filter>Game\GameElement\BossState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -928,6 +931,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\DirectionArrow.h">
       <Filter>Game\GameElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BossState\HipDrop.h">
+      <Filter>Game\GameElement\BossState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

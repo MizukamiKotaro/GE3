@@ -54,7 +54,7 @@ void Boss::Update([[maybe_unused]] const float deltaTime) {
 		bossState_->Update(deltaTime);
 
 		// ステージのサイズに合わせて座標を調整
-		const Vector2 stageSize{ static_cast<float>(mapData_->GetCols()) / 2.f - (transform_.scale_.x * 2.f + 1.5f), static_cast<float>(mapData_->GetRows()) / 2.f - (transform_.scale_.y * 2.f + 3.f) };
+		const Vector2 stageSize = GetStageRange();
 
 		// 画面内に収める処理
 		transform_.translate_.x = std::clamp<float>(transform_.translate_.x, -stageSize.x, stageSize.x);
@@ -127,6 +127,10 @@ void Boss::StopSlot() {
 FaceType Boss::GetFaceType() const
 {
 	return slot_->GetFaceType();
+}
+
+Vector2 Boss::GetStageRange() const {
+	return Vector2{ static_cast<float>(mapData_->GetCols()) / 2.f - (transform_.scale_.x * 2.f + 1.5f), static_cast<float>(mapData_->GetRows()) / 2.f - (transform_.scale_.y * 2.f + 3.f) };
 }
 
 void Boss::DownGrade() {

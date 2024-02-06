@@ -57,10 +57,13 @@ public:
 
 	FaceType GetFaceType() const;
 
+	Vector2 GetStageRange() const;
+
 	void DownGrade();
 
 	void AddAcceleration(const Vector3 &vec) { acceleration_ += vec; }
 	void SetAcceleration(const Vector3 &vec) { acceleration_ = vec; }
+	void SetVelocity(const Vector3 &vec) { velocity_ = vec; }
 
 private:
 

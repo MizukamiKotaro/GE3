@@ -2,6 +2,7 @@
 #include "../Boss.h"
 #include "../Player.h"
 #include "Tackle.h"
+#include "HipDrop.h"
 
 SlotState::SlotState()
 {
@@ -20,8 +21,8 @@ void SlotState::Update(const float deltaTime)
 	slotTimer_.Update(deltaTime);
 	stopTimer_.Update(deltaTime);
 
-	// スロットの制限時間が来たら停止
-	if (slotTimer_.IsActive() && slotTimer_.IsFinish()) {
+	// スロットの制限時間が来たら停止 もしくは 顔が悪い場合は即終了
+	if ((slotTimer_.IsActive() && slotTimer_.IsFinish()) || (GetBoss()->GetFaceType() == FaceType::kBad && not stopTimer_.IsActive())) {
 		// スロットも停止
 		GetBoss()->StopSlot();
 		// 停止のタイマー
@@ -59,7 +60,22 @@ void SlotState::OnCollision([[maybe_unused]] IEntity *other) {
 	}
 }
 
-void SlotState::ChangeState()
-{
-	GetBoss()->ChangeState<TackleState>();
+void SlotState::ChangeState() {
+	auto *const boss = GetBoss();
+	switch (GetFaceType()) {
+	case IBossState::FaceState::kOko:
+		boss->ChangeState<TackleState>();
+		break;
+	case IBossState::FaceState::kNormal:
+		boss->ChangeState<HipDrop>();
+		break;
+	case IBossState::FaceState::kSad:
+		boss->ChangeState<HipDrop>();
+		break;
+	case IBossState::FaceState::kBad:
+		boss->ChangeState<HipDrop>();
+		break;
+	default:
+		break;
+	}
 }

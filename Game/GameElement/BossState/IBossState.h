@@ -38,6 +38,8 @@ public:
 
 	static void SetFaceType(const FaceType face);
 
+	static FaceState GetFaceType() { return faceState_; }
+
 protected:
 
 	static Boss *const GetBoss() { return pBoss_; }

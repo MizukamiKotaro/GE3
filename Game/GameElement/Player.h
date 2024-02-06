@@ -107,7 +107,7 @@ private:
 	std::unique_ptr<IPlayerState> playerState_;
 
 	float health_;
-	VariantItem<float> vMaxHealth_{ "MaxHealth", 100.f };
+	VariantItem<float> vMaxHealth_{ "MaxHealth", 200.f };
 	HPBar *pHPBar_;
 
 	VariantItem<float> vAttackTime_{ "AttackTime", 0.75f };
