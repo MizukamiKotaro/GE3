@@ -144,6 +144,8 @@ public:
 
 	AudioItem &operator=(uint32_t handle) { audioHandle_ = handle; return *this; }
 
+	void Load(const std::string& filename) { audioHandle_ = audio_->LoadWave(filename); }
+
 	void Play(bool loopFlag = false, float volume = 1.0f) { voiceHandle_ = audio_->Play(audioHandle_, loopFlag, volume); }
 
 	void Stop() { audio_->Stop(voiceHandle_); }

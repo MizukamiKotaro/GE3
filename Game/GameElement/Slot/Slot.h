@@ -26,6 +26,8 @@ public:
 	Slot();
 
 	void Initialize();
+	void ClearInit();
+
 	void PostEffectWright(Camera *camera);
 
 	void Update(Camera *camera);

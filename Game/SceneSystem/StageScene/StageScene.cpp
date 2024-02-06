@@ -135,6 +135,13 @@ void StageScene::Init()
 	farPostEffect_ = std::make_unique<PostEffect>();
 
 	CreatePostEffects();
+
+	space_ = std::make_unique<Sprite>("Resources/space.png");
+	space_->pos_ = { 640.0f,600.0f };
+	space_->size_ *= 0.6f;
+	space_->Update();
+
+	se_.Load("Resources/select.wav");
 }
 
 void StageScene::Update()
@@ -354,6 +361,10 @@ void StageScene::Draw() {
 		for (const std::unique_ptr<Sprite> &sprite : slotMirrors_) {
 			sprite->Draw();
 		}
+
+		if (!isStart_) {
+			space_->Draw();
+		}
 	}
 	else {
 		backgroundSprite_->Draw();
@@ -435,6 +446,7 @@ void StageScene::TitleUpdate(float deltaTime)
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
+		se_.Play(false, 0.8f);
 	}
 
 	if (isStart_) {
