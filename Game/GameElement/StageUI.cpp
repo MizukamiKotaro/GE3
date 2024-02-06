@@ -28,9 +28,12 @@ void StageUI::Update()
 
 void StageUI::Draw(const Camera& camera)
 {
-	for (const std::unique_ptr<Sprite>& sprite : sprites_) {
+	/*for (const std::unique_ptr<Sprite>& sprite : sprites_) {
 		sprite->Draw(camera);
-	}
+	}*/
+	sprites_[SpriteNames::MOVE]->Draw(camera);
+	//sprites_[SpriteNames::JUMP] = std::make_unique<Sprite>("Resources/jump.png");
+	sprites_[SpriteNames::ATTACK]->Draw(camera);
 }
 
 void StageUI::SetGlobalVariable()

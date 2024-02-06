@@ -186,12 +186,12 @@ void StageScene::Update()
 	collisionRenderer_->ImGuiWidget("Collision");
 
 #endif // _DEBUG
-	if (bossHPBar_->GetHP() <= 0.0f) {
+	if (bossHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::X) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
 		BGM.Stop();
 	}
-	if (playerHPBar_->GetHP() <= 0.0f) {
+	if (playerHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::B) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
 		ChangeScene(STAGE);
 		BGM.Stop();
