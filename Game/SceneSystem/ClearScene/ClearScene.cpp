@@ -89,7 +89,7 @@ void ClearScene::Update()
 	}
 
 	player_->Update();
-	decoration_->Update(camera_.get());
+	decoration_->tcUpdate(camera_.get());
 	slot_->Update(camera_.get());
 }
 
@@ -109,7 +109,7 @@ void ClearScene::Draw()
 
 	post_->Draw();
 
-	decoration_->Draw(camera_.get());
+	decoration_->tcDraw(camera_.get());
 
 	pBlockManager_->clear();
 	stage_->DrawNearObject();

@@ -140,6 +140,28 @@ void Decoration::Update(Camera* camera)
 	WrightPostEffect(camera);
 }
 
+void Decoration::tcUpdate(Camera* camera)
+{
+	texcoodY_ += 10.0f;
+	if (texcoodY_ >= 720.0f) {
+		texcoodY_ -= 720.0f;
+	}
+	rainbow_->SetTextureTopLeft({ 0.0f,texcoodY_ });
+
+	for (int i = 0; i < EndModelType; i++) {
+		//decrations_[i]->Update();
+		//numbers_[i]->Update();
+		//denominators_[i]->Update();
+		//slashes_[i]->Update();
+	}
+
+	/*gaussian_->gaussianBlurData_->pickRange = 0.01f;
+	gaussian_->gaussianBlurData_->stepWidth = 0.0025f;*/
+	ChangeGaugeColor();
+
+	Wright(camera);
+}
+
 void Decoration::Draw(Camera* camera)
 {
 	for (int i = 0; i < EndModelType; i++) {
@@ -162,6 +184,15 @@ void Decoration::Draw(Camera* camera)
 	//		gauges_[i][j]->Draw(*camera);
 	//	}
 	//}
+}
+
+void Decoration::tcDraw(Camera* camera)
+{
+	for (int i = 0; i < EndModelType; i++) {
+		decrations_[i]->Draw(*camera);
+	}
+
+	post_->Draw();
 }
 
 void Decoration::WrightPostEffect(Camera* camera)
@@ -212,6 +243,25 @@ void Decoration::WrightPostEffect(Camera* camera)
 
 		gaussian_->PostDrawScene();*/
 	}
+}
+
+void Decoration::Wright(Camera* camera)
+{
+	highLumi_->PreDrawScene();
+
+	for (int i = 0; i < ModelType::EndModelType; i++) {
+		decrations_[i]->Draw(*camera);
+	}
+
+	highLumi_->PostDrawScene();
+
+	post_->PreDrawScene();
+
+	rainbow_->Draw();
+
+	highLumi_->Draw(BlendMode::kBlendModeMultiply);
+
+	post_->PostDrawScene();
 }
 
 void Decoration::ChangeGaugeColor()

@@ -616,35 +616,41 @@ void StageScene::CreatePostEffects()
 		playerBlur_->blurData_->isCenterBlur = 0;
 
 		Vector3 velocity = player_->GetVelocity();
-		//float speed = velocity.Length();
+		float speed = velocity.Length();
 
-		playerBlur_->blurData_->pickRange = 0.08f;
-		playerBlur_->blurData_->stepWidth = 0.005f;
+		float t = std::clamp(speed, 4.0f, 14.0f);
+		t = (t - 4.0f) * 0.1f;
 
-		float angle = std::asinf(velocity.Normalize().y);
-		if (velocity.x <= 0) {
-			playerBlur_->blurData_->angle = -angle;
+		if (t > 0.0f) {
+			playerBlur_->blurData_->pickRange = 0.01f * (1.0f - t) + 0.05f * t;
+			playerBlur_->blurData_->stepWidth = 0.001f * (1.0f - t) + 0.004f * t;
+
+			float angle = std::asinf(velocity.Normalize().y);
+			if (velocity.x <= 0) {
+				playerBlur_->blurData_->angle = -angle;
+			}
+			else {
+				playerBlur_->blurData_->angle = std::numbers::pi_v<float> +angle;
+			}
+
+			pBlockManager_->clear();
+
+			player_->Draw();
+
+			playerBlur_->PreDrawScene();
+
+			pBlockManager_->Draw(*camera_.get());
+
+			playerBlur_->PostDrawScene();
 		}
 		else {
-			playerBlur_->blurData_->angle = std::numbers::pi_v<float> +angle;
+			isPlayerAttack_ = false;
 		}
-
-		pBlockManager_->clear();
-
-		player_->Draw();
-
-		playerBlur_->PreDrawScene();
-
-		pBlockManager_->Draw(*camera_.get());
-
-		playerBlur_->PostDrawScene();
 
 	}
 	else {
 		isPlayerAttack_ = false;
 	}
-
-	decoration_->Update(camera_.get());
 
 	farPostEffect_->PreDrawScene();
 
@@ -659,10 +665,12 @@ void StageScene::CreatePostEffects()
 
 	if (isTitle_) {
 
+		decoration_->tcUpdate(camera_.get());
+
 		postEffect_->PreDrawScene();
 
 		farPostEffect_->Draw();
-		decoration_->Draw(camera_.get());
+		decoration_->tcDraw(camera_.get());
 
 		pBlockManager_->clear();
 		stage_->DrawNearObject();
@@ -722,5 +730,8 @@ void StageScene::CreatePostEffects()
 		}
 
 		postEffect_->PostDrawScene();
+	}
+	else {
+		decoration_->Update(camera_.get());
 	}
 }
