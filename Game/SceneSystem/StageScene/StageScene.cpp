@@ -141,7 +141,9 @@ void StageScene::Init()
 	space_->size_ *= 0.6f;
 	space_->Update();
 
-	se_.Load("Resources/select.wav");
+	se_.Load("Resources/SE/start.wav");
+	BGM.Load("Resources/SE/BGM.wav");
+	BGM.Play(true, 0.4f);
 }
 
 void StageScene::Update()
@@ -153,6 +155,7 @@ void StageScene::Update()
 	if (input_->PressedKey(DIK_SPACE)) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
+		BGM.Stop();
 	}
 
 	ImGui::Begin("StageEditor");
@@ -446,7 +449,7 @@ void StageScene::TitleUpdate(float deltaTime)
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
-		se_.Play(false, 0.8f);
+		se_.Play(false, 0.6f);
 	}
 
 	if (isStart_) {

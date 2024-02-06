@@ -96,4 +96,5 @@ private:
 	std::unique_ptr<Sprite> space_;
 
 	AudioItem se_;
+	AudioItem BGM;
 };
