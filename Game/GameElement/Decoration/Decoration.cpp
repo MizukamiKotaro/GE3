@@ -144,7 +144,7 @@ void Decoration::Draw(Camera* camera)
 {
 	for (int i = 0; i < EndModelType; i++) {
 		decrations_[i]->Draw(*camera);
-		numbers_[i]->Draw(*camera);
+		//numbers_[i]->Draw(*camera);
 		/*for (int j = 0; j < kMaxGauge_; j++) {
 			gauges_[i][j]->Draw(*camera);
 		}*/
@@ -156,12 +156,12 @@ void Decoration::Draw(Camera* camera)
 		//gaussian_->Draw(BlendMode::kBlendModeAdd);
 	}
 
-	for (int i = 0; i < EndModelType; i++) {
-		//numbers_[i]->Draw(*camera);
-		for (int j = 0; j < kMaxGauge_; j++) {
-			gauges_[i][j]->Draw(*camera);
-		}
-	}
+	//for (int i = 0; i < EndModelType; i++) {
+	//	//numbers_[i]->Draw(*camera);
+	//	for (int j = 0; j < kMaxGauge_; j++) {
+	//		gauges_[i][j]->Draw(*camera);
+	//	}
+	//}
 }
 
 void Decoration::WrightPostEffect(Camera* camera)
@@ -174,26 +174,26 @@ void Decoration::WrightPostEffect(Camera* camera)
 		if (*isSword_) {
 			if (*isRight_) {
 				decrations_[Sword]->Draw(*camera);
-				numbers_[Sword]->Draw(*camera);
+				//numbers_[Sword]->Draw(*camera);
 			}
 			else {
 				decrations_[SwordB]->Draw(*camera);
-				numbers_[SwordB]->Draw(*camera);
+				//numbers_[SwordB]->Draw(*camera);
 			}
 		}
 		if (*isPunch_) {
 			if (*isRight_) {
 				decrations_[Punch]->Draw(*camera);
-				numbers_[Punch]->Draw(*camera);
+				//numbers_[Punch]->Draw(*camera);
 			}
 			else {
 				decrations_[PunchB]->Draw(*camera);
-				numbers_[PunchB]->Draw(*camera);
+				//numbers_[PunchB]->Draw(*camera);
 			}
 		}
 		if (*isNeedle_) {
 			decrations_[Needle]->Draw(*camera);
-			numbers_[Needle]->Draw(*camera);
+			//numbers_[Needle]->Draw(*camera);
 		}
 
 		highLumi_->PostDrawScene();
