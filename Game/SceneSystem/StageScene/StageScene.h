@@ -92,4 +92,8 @@ private:
 
 	std::unique_ptr<Decoration> decoration_;
 	std::unique_ptr<PostEffect> farPostEffect_;
+
+	std::unique_ptr<Sprite> space_;
+
+	AudioItem se_;
 };

@@ -62,4 +62,8 @@ private:
 	std::unique_ptr<PostEffect> post_;
 
 	std::unique_ptr<Slot> slot_;
+
+	std::unique_ptr<Sprite> space_;
+
+	AudioItem se_;
 };

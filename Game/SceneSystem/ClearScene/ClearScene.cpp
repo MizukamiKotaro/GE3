@@ -55,6 +55,13 @@ void ClearScene::Init()
 	hoge.translate_ = { 0.3f,-10.3f,-20.9f };
 	hoge.rotate_ = { 0.52f,3.732f,0.0f };
 	slot_->Update(camera_.get());
+
+	space_ = std::make_unique<Sprite>("Resources/space.png");
+	space_->pos_ = { 640.0f,600.0f };
+	space_->size_ *= 0.6f;
+	space_->Update();
+
+	se_.Load("Resources/select.wav");
 }
 
 void ClearScene::Update()
@@ -75,6 +82,11 @@ void ClearScene::Update()
 	camera_->Update();
 
 #endif // _DEBUG
+
+	if (input_->PressedGamePadButton(Input::GamePadButton::A)) {
+		ChangeScene(STAGE);
+		se_.Play(false, 0.8f);
+	}
 
 	player_->Update();
 	decoration_->Update(camera_.get());
@@ -106,6 +118,7 @@ void ClearScene::Draw()
 	slot_->Draw(camera_.get());
 	player_->Draw(camera_.get());
 	//clearSprite_->Draw();
+	space_->Draw();
 
 	BlackDraw();
 
