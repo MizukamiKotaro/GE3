@@ -20,7 +20,11 @@ public:
 
 	void Update(Camera* camera);
 
+	void tcUpdate(Camera* camera);
+
 	void Draw(Camera* camera);
+
+	void tcDraw(Camera* camera);
 
 public:
 
@@ -35,6 +39,8 @@ public:
 	void SetIsRight(const bool* isRight) { isRight_ = isRight; }
 
 private:
+	void Wright(Camera* camera);
+
 	enum ModelType {
 		Sword,
 		SwordB,

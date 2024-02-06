@@ -135,6 +135,15 @@ void StageScene::Init()
 	farPostEffect_ = std::make_unique<PostEffect>();
 
 	CreatePostEffects();
+
+	space_ = std::make_unique<Sprite>("Resources/space.png");
+	space_->pos_ = { 640.0f,600.0f };
+	space_->size_ *= 0.6f;
+	space_->Update();
+
+	se_.Load("Resources/SE/start.wav");
+	BGM.Load("Resources/SE/BGM.wav");
+	BGM.Play(true, 0.4f);
 }
 
 void StageScene::Update()
@@ -146,6 +155,7 @@ void StageScene::Update()
 	if (input_->PressedKey(DIK_SPACE)) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
+		BGM.Stop();
 	}
 
 	ImGui::Begin("StageEditor");
@@ -176,6 +186,16 @@ void StageScene::Update()
 	collisionRenderer_->ImGuiWidget("Collision");
 
 #endif // _DEBUG
+	if (bossHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::X) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
+		// シーン切り替え
+		ChangeScene(CLEAR);
+		BGM.Stop();
+	}
+	if (playerHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::B) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
+		// シーン切り替え
+		ChangeScene(STAGE);
+		BGM.Stop();
+	}
 
 	if (isTitle_) {
 		TitleUpdate(deltaTime);
@@ -354,6 +374,10 @@ void StageScene::Draw() {
 		for (const std::unique_ptr<Sprite> &sprite : slotMirrors_) {
 			sprite->Draw();
 		}
+
+		if (!isStart_) {
+			space_->Draw();
+		}
 	}
 	else {
 		backgroundSprite_->Draw();
@@ -435,6 +459,7 @@ void StageScene::TitleUpdate(float deltaTime)
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
+		se_.Play(false, 0.6f);
 	}
 
 	if (isStart_) {
@@ -591,35 +616,41 @@ void StageScene::CreatePostEffects()
 		playerBlur_->blurData_->isCenterBlur = 0;
 
 		Vector3 velocity = player_->GetVelocity();
-		//float speed = velocity.Length();
+		float speed = velocity.Length();
 
-		playerBlur_->blurData_->pickRange = 0.08f;
-		playerBlur_->blurData_->stepWidth = 0.005f;
+		float t = std::clamp(speed, 4.0f, 14.0f);
+		t = (t - 4.0f) * 0.1f;
 
-		float angle = std::asinf(velocity.Normalize().y);
-		if (velocity.x <= 0) {
-			playerBlur_->blurData_->angle = -angle;
+		if (t > 0.0f) {
+			playerBlur_->blurData_->pickRange = 0.01f * (1.0f - t) + 0.05f * t;
+			playerBlur_->blurData_->stepWidth = 0.001f * (1.0f - t) + 0.004f * t;
+
+			float angle = std::asinf(velocity.Normalize().y);
+			if (velocity.x <= 0) {
+				playerBlur_->blurData_->angle = -angle;
+			}
+			else {
+				playerBlur_->blurData_->angle = std::numbers::pi_v<float> +angle;
+			}
+
+			pBlockManager_->clear();
+
+			player_->Draw();
+
+			playerBlur_->PreDrawScene();
+
+			pBlockManager_->Draw(*camera_.get());
+
+			playerBlur_->PostDrawScene();
 		}
 		else {
-			playerBlur_->blurData_->angle = std::numbers::pi_v<float> +angle;
+			isPlayerAttack_ = false;
 		}
-
-		pBlockManager_->clear();
-
-		player_->Draw();
-
-		playerBlur_->PreDrawScene();
-
-		pBlockManager_->Draw(*camera_.get());
-
-		playerBlur_->PostDrawScene();
 
 	}
 	else {
 		isPlayerAttack_ = false;
 	}
-
-	decoration_->Update(camera_.get());
 
 	farPostEffect_->PreDrawScene();
 
@@ -634,10 +665,12 @@ void StageScene::CreatePostEffects()
 
 	if (isTitle_) {
 
+		decoration_->tcUpdate(camera_.get());
+
 		postEffect_->PreDrawScene();
 
 		farPostEffect_->Draw();
-		decoration_->Draw(camera_.get());
+		decoration_->tcDraw(camera_.get());
 
 		pBlockManager_->clear();
 		stage_->DrawNearObject();
@@ -697,5 +730,8 @@ void StageScene::CreatePostEffects()
 		}
 
 		postEffect_->PostDrawScene();
+	}
+	else {
+		decoration_->Update(camera_.get());
 	}
 }
