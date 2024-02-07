@@ -226,6 +226,8 @@ void StageScene::Update()
 		boss_->AudioStop();
 	}
 
+	back_->Update();
+
 	if (isTu_) {
 		if(input_->PressedGamePadButton(Input::GamePadButton::START) ||
 			input_->PressedGamePadButton(Input::GamePadButton::A) ||

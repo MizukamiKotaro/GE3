@@ -30,4 +30,12 @@ private:
 	std::unique_ptr<PostEffect> post_;
 
 	std::unique_ptr<Model> model_;
+
+	std::unique_ptr<Sprite> rainbow_;
+	float texcoodY_;
+
+	std::unique_ptr<Sprite> ho_;
+	std::unique_ptr<PostEffect> af_;
+
+	std::unique_ptr<HighLumi> high_;
 };

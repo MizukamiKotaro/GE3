@@ -89,6 +89,7 @@ void ClearScene::Update()
 		se_.Play(false, 0.5f);
 		ea_.Stop();
 	}
+	back_->Update();
 
 	player_->Update();
 	decoration_->tcUpdate(camera_.get());

@@ -8,6 +8,7 @@
 BackGround::BackGround()
 {
 	back_ = std::make_unique<Sprite>("Resources/back.png");
+	ho_ = std::make_unique<Sprite>("Resources/backB.png");
 	//gaus_ = std::make_unique<GaussianBlur>();
 
 
@@ -25,6 +26,13 @@ BackGround::BackGround()
 	model_->transform_.scale_ = { 34.8f,19.8f,1.0f };
 	model_->Update();
 
+	rainbow_ = std::make_unique<Sprite>("Resources/rainbow.png");
+	texcoodY_ = 0.0f;
+
+	af_ = std::make_unique<PostEffect>();
+
+	high_ = std::make_unique<HighLumi>();
+
 	blur0_->blurData_->angle = 1.57f;
 	blur0_->blurData_->pickRange = 0.006f;
 	blur0_->blurData_->stepWidth = 0.001f;
@@ -32,16 +40,28 @@ BackGround::BackGround()
 	blur1_->blurData_->pickRange = 0.004f;
 	blur1_->blurData_->stepWidth = 0.001f;
 
+	high_->PreDrawScene();
+	ho_->Draw();
+	high_->PostDrawScene();
+
+	af_->PreDrawScene();
+	rainbow_->Draw();
+	high_->Draw(BlendMode::kBlendModeMultiply);
+	af_->PostDrawScene();
+
 	blur0_->PreDrawScene();
-	back_->Draw();
+	//back_->Draw();
+	af_->Draw();
 	blur0_->PostDrawScene();
 
 	blur1_->PreDrawScene();
-	back_->Draw();
+	//back_->Draw();
+	af_->Draw();
 	blur1_->PostDrawScene();
 
 	post_->PreDrawScene();
 	back_->Draw();
+	af_->Draw();
 	blur0_->Draw(BlendMode::kBlendModeAdd);
 	blur1_->Draw(BlendMode::kBlendModeAdd);
 	post_->PostDrawScene();
@@ -62,7 +82,33 @@ void BackGround::Update()
 	ImGui::End();
 	model_->Update();*/
 #endif // _DEBUG
+	texcoodY_ += 10.0f;
+	if (texcoodY_ >= 720.0f) {
+		texcoodY_ -= 720.0f;
+	}
+	rainbow_->SetTextureTopLeft({ 0.0f,texcoodY_ });
 
+	af_->PreDrawScene();
+	rainbow_->Draw();
+	high_->Draw(BlendMode::kBlendModeMultiply);
+	af_->PostDrawScene();
+
+	blur0_->PreDrawScene();
+	//back_->Draw();
+	af_->Draw();
+	blur0_->PostDrawScene();
+
+	blur1_->PreDrawScene();
+	//back_->Draw();
+	af_->Draw();
+	blur1_->PostDrawScene();
+
+	post_->PreDrawScene();
+	back_->Draw();
+	af_->Draw();
+	blur0_->Draw(BlendMode::kBlendModeAdd);
+	blur1_->Draw(BlendMode::kBlendModeAdd);
+	post_->PostDrawScene();
 }
 
 void BackGround::Draw()

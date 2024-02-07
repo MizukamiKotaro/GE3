@@ -100,6 +100,7 @@ void GameOverScene::Update()
 		hoge.translate_.y = -5.0f;
 		vel_ = 0.7f;
 	}
+	back_->Update();
 
 	player_->oUpdate();
 	decoration_->tcUpdate(camera_.get());
