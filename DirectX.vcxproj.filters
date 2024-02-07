@@ -553,7 +553,7 @@
       <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameElement\BossState\RotateState.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

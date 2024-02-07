@@ -3,6 +3,7 @@
 #include "../Player.h"
 #include "Tackle.h"
 #include "HipDrop.h"
+#include "RotateState.h"
 
 SlotState::SlotState()
 {
@@ -70,7 +71,7 @@ void SlotState::ChangeState() {
 		boss->ChangeState<HipDrop>();
 		break;
 	case IBossState::FaceState::kSad:
-		boss->ChangeState<HipDrop>();
+		boss->ChangeState<RotateState>();
 		break;
 	case IBossState::FaceState::kBad:
 		boss->ChangeState<HipDrop>();

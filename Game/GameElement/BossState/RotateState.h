@@ -33,6 +33,8 @@ public:
 
 	void StartUpUpdate(const float deltaTime);
 
+	void RotateInit();
+
 	void RotateUpdate(const float deltaTime);
 
 private:

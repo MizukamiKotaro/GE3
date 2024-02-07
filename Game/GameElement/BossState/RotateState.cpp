@@ -7,7 +7,7 @@ void RotateState::Init()
 {
 	stateArray_.push_back(AttackParameter{ .totalTime_ = 0.75f, .damage_ = false, .initFunc_ = &RotateState::StartUpInit, .updateFunc_ = &RotateState::StartUpUpdate });
 
-	stateArray_.push_back(AttackParameter{ .totalTime_ = 3.f, .damage_ = true, .updateFunc_ = &RotateState::RotateUpdate });
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 3.f, .damage_ = true, .initFunc_ = &RotateState::RotateInit, .updateFunc_ = &RotateState::RotateUpdate });
 	stateArray_.push_back(AttackParameter{ .totalTime_ = 1.f, .damage_ = false, });
 
 	stateArray_.push_back(AttackParameter{ .initFunc_ = &RotateState::ChangeState });
@@ -75,6 +75,26 @@ void RotateState::StartUpUpdate(const float deltaTime)
 
 }
 
+void RotateState::RotateInit() {
+	scaleTimer_.Start(0.75f);
+}
+
 void RotateState::RotateUpdate(const float deltaTime)
 {
+
+	Boss *boss = GetBoss();
+	auto &transform = boss->GetTransform();
+
+	scaleTimer_.Update(deltaTime);
+	if (scaleTimer_.IsFinish()) {
+		scaleTimer_.Start();
+		scaleCount_++;
+	}
+	if (scaleCount_ >= 3u) {
+		NextParam();
+	}
+
+	transform.rotate_.z = SoLib::Lerp(0.f, SoLib::Math::Angle::PI2, SoLib::easeInOutSine(scaleTimer_.GetProgress()));
+
+
 }
