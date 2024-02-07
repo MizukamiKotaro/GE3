@@ -207,3 +207,10 @@ void Audio::SetVolume(uint32_t voiceHandle, float volume) {
 }
 
 Audio *const AudioItem::audio_ = Audio::GetInstance();
+
+AudioItem::~AudioItem()
+{
+	if (IsPlaying()) {
+		Stop();
+	}
+}

@@ -8,6 +8,7 @@
 #include "PostEffect/Blur/Blur.h"
 #include "GlobalVariables/GlobalVariables.h"
 #include <string>
+#include "Audio.h"
 
 class Camera;
 
@@ -127,4 +128,7 @@ private:
 	float timeCount_;
 
 	std::array<int, 3> faceTypes_;
+
+	AudioItem ro_;
+	AudioItem st_;
 };
