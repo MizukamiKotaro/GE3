@@ -104,7 +104,7 @@ Decoration::Decoration()
 	isFirst_ = true;
 
 	se_.Load("Resources/SE/gimmick.wav");
-	volume_ = 0.6f;
+	volume_ = 0.4f;
 }
 
 void Decoration::Initialize()

@@ -3,12 +3,20 @@
 #include "Input.h"
 #include "FrameInfo/FrameInfo.h"
 
+#include "SceneSystem/TitleScene/TitleScene.h"
+#include "SceneSystem/StageScene/StageScene.h"
+#include "SceneSystem/ClearScene/ClearScene.h"
+#include "SceneSystem/SelectScene/SelectScene.h"
+#include "SceneSystem/GameOverScene/GameOverScene.h"
+#include "Camera.h"
+
 SceneManager::SceneManager()
 {
 	sceneArr_[TITLE] = std::make_unique<TitleScene>();
 	sceneArr_[SELECT] = std::make_unique<SelectScene>();
 	sceneArr_[STAGE] = std::make_unique<StageScene>();
 	sceneArr_[CLEAR] = std::make_unique<ClearScene>();
+	sceneArr_[GAME_OVER] = std::make_unique<GameOverScene>();
 
 	//IScene::sceneNo_ = TITLE;
 	IScene::sceneNo_ = STAGE;

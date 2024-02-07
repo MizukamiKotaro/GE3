@@ -28,6 +28,7 @@ public:
 
 	void Initialize();
 	void ClearInit();
+	void GameOverInit();
 
 	void PostEffectWright(Camera *camera);
 
@@ -53,6 +54,8 @@ public:
 	void StartGekiOkoRotation();
 
 	auto &GetTransform() { return plane_->transform_; }
+
+	void AudioStop() { ro_.Stop(); }
 
 private:
 

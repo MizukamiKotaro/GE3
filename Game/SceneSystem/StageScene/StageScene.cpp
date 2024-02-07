@@ -143,7 +143,7 @@ void StageScene::Init()
 
 	se_.Load("Resources/SE/start.wav");
 	BGM.Load("Resources/SE/BGM.wav");
-	BGM.Play(true, 0.4f);
+	BGM.Play(true, 0.2f);
 	boundSe_.Load("Resources/SE/bound.wav");
 
 	isTu_ = false;
@@ -211,18 +211,33 @@ void StageScene::Update()
 	ImGui::DragFloat2("af", &rule_->size_.x, 0.1f);
 	ImGui::End();
 	rule_->Update();
-
-#endif // _DEBUG
-	if (bossHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::X) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
+	if ((input_->PressingGamePadButton(Input::GamePadButton::X) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
 		BGM.Stop();
-	}
-	if (playerHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::B) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
+		boss_->AudioStop();
+}
+	if ((input_->PressingGamePadButton(Input::GamePadButton::B) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
-		ChangeScene(STAGE);
+		ChangeScene(GAME_OVER);
 		BGM.Stop();
+		boss_->AudioStop();
 	}
+#endif // _DEBUG
+	if (bossHPBar_->GetHP() <= 0.0) {
+		// シーン切り替え
+		ChangeScene(CLEAR);
+		BGM.Stop();
+		boss_->AudioStop();
+	}
+	if (playerHPBar_->GetHP() <= 0.0f) {
+		// シーン切り替え
+		ChangeScene(GAME_OVER);
+		BGM.Stop();
+		boss_->AudioStop();
+	}
+
+	back_->Update();
 
 	if (isTu_) {
 		if(input_->PressedGamePadButton(Input::GamePadButton::START) ||
@@ -234,7 +249,7 @@ void StageScene::Update()
 			tuback_->SetIsInvisible(true);
 			tu_->SetIsInvisible(true);
 			rule_->SetIsInvisible(false);
-			selectSe_.Play(false, 0.8f);
+			selectSe_.Play(false, 0.5f);
 		}
 	}
 	else {
@@ -244,7 +259,7 @@ void StageScene::Update()
 			tuback_->SetIsInvisible(false);
 			tu_->SetIsInvisible(false);
 			rule_->SetIsInvisible(true);
-			selectSe_.Play(false, 0.8f);
+			selectSe_.Play(false, 0.5f);
 		}
 
 		if (isTitle_) {
@@ -310,7 +325,7 @@ void StageScene::Update()
 
 						player_->OnCollision(hole.get());
 
-						boundSe_.Play(false, 0.6f);
+						boundSe_.Play(false, 0.2f);
 					}
 				}
 			}
@@ -493,9 +508,9 @@ void StageScene::Draw() {
 
 		pBlockManager_->Draw(*camera_.get());
 
-		if (isDrawSwordBlur_) {
+		/*if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
-		}
+		}*/
 
 		if (isDrawNeedleBlur_) {
 			needleBlur_->Draw(BlendMode::kBlendModeAdd);
@@ -526,7 +541,7 @@ void StageScene::TitleUpdate(float deltaTime)
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
-		se_.Play(false, 0.6f);
+		se_.Play(false, 0.4f);
 	}
 
 	if (isStart_) {
@@ -784,9 +799,9 @@ void StageScene::CreatePostEffects()
 			playerBlur_->Draw(BlendMode::kBlendModeAdd);
 		}
 
-		if (isDrawSwordBlur_) {
+		/*if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
-		}
+		}*/
 
 		if (isDrawNeedleBlur_) {
 			needleBlur_->Draw(BlendMode::kBlendModeAdd);

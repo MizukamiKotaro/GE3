@@ -23,10 +23,22 @@ ClearPlayer::ClearPlayer()
 		hoges_[i]->Update();
 	}
 	vel_ = 0.0f;
+
+	time_ = 0.0f;
 }
 
 void ClearPlayer::Initialize()
 {
+	hoges_[0]->transform_.translate_ = { 0.3f, -10.3f, -20.9f };
+	hoges_[0]->transform_.rotate_ = { 0.0f,-0.95f,0.1f };
+
+	for (int i = 0; i < 4; i++) {
+		hoges_[i]->Update();
+	}
+
+	vel_ = 0.0f;
+
+	time_ = 0.0f;
 }
 
 void ClearPlayer::Update()
@@ -39,6 +51,18 @@ void ClearPlayer::Update()
 		hoges_[0]->transform_.translate_.y = -5.0f;
 		vel_ = 0.7f;
 	}
+
+	for (int i = 0; i < 4; i++) {
+		hoges_[i]->Update();
+	}
+}
+
+void ClearPlayer::oUpdate()
+{
+
+	time_ += FrameInfo::GetInstance()->GetDeltaTime();
+
+
 
 	for (int i = 0; i < 4; i++) {
 		hoges_[i]->Update();

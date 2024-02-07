@@ -20,6 +20,8 @@ public:
 
 	void Update();
 
+	void oUpdate();
+
 	void Draw(Camera* camera);
 
 private:
@@ -27,4 +29,6 @@ private:
 	std::array<std::unique_ptr<Model>, 4> hoges_;
 
 	float vel_;
+
+	float time_;
 };
