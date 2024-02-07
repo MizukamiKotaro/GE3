@@ -73,6 +73,8 @@ public:
 
 	void SetTextureSize(const Vector2& texSize);
 
+	void SetIsInvisible(bool is) { isInvisible_ = is; }
+
 private:
 	Sprite() = default;
 
