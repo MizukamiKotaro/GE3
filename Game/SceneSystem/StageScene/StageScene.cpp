@@ -544,6 +544,7 @@ void StageScene::Draw() {
 void StageScene::TitleUpdate(float deltaTime)
 {
 	stage_->Update(0.f);
+	player_->Update(0.f);
 
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A) ||
 		input_->PressedKey(DIK_SPACE)
