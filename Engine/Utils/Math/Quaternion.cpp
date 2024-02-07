@@ -48,7 +48,7 @@ Quaternion operator/(const Quaternion &a, const float b) {
 	return result;
 }
 
-inline Quaternion operator*(const Quaternion &a, const Quaternion &b) {
+Quaternion operator*(const Quaternion &a, const Quaternion &b) {
 	Quaternion result;
 
 	// ベクトル部の算出 ( 実数部は Vector3への代入時に切り捨て )
@@ -59,11 +59,11 @@ inline Quaternion operator*(const Quaternion &a, const Quaternion &b) {
 	return result;
 }
 
-inline Quaternion &operator*=(Quaternion &a, const Quaternion &b) {
+Quaternion &operator*=(Quaternion &a, const Quaternion &b) {
 	return a = a * b;;
 }
 
-inline Quaternion Quaternion::Conjugation() const {
+Quaternion Quaternion::Conjugation() const {
 	Quaternion result = *this;
 
 	// 符号反転
@@ -72,14 +72,14 @@ inline Quaternion Quaternion::Conjugation() const {
 	return result;
 }
 
-inline Quaternion Quaternion::Inverse() const {
+Quaternion Quaternion::Inverse() const {
 	const float lengthSQ = this->LengthSQ();
 	if (lengthSQ == 0.f) { return *this; }
 
 	return this->Conjugation() / lengthSQ;
 }
 
-inline Quaternion Quaternion::Normalize() const {
+Quaternion Quaternion::Normalize() const {
 	// 長さ
 	float length = this->Length();
 	// もし長さが0ならそのまま返す( 0なので )
@@ -88,33 +88,33 @@ inline Quaternion Quaternion::Normalize() const {
 	return *this / length;
 }
 
-inline Quaternion Quaternion::AnyAxisRotation(const Vector3Norm &axis, float angle) {
+Quaternion Quaternion::AnyAxisRotation(const Vector3Norm &axis, float angle) {
 	float halfAngle = angle / 2.f;
 	return Quaternion{ axis * std::sin(halfAngle), std::cos(halfAngle) };
 }
 
 
-inline float Quaternion::LengthSQ() const {
+float Quaternion::LengthSQ() const {
 	return Calc::Dot<4u>(&this->x, &this->x);
 }
 
-inline float Quaternion::Length() const {
+float Quaternion::Length() const {
 
 	return std::sqrt(LengthSQ());
 }
 
-inline Vector3 Quaternion::RotateVector(const Vector3 &a, const Quaternion &b) {
+Vector3 Quaternion::RotateVector(const Vector3 &a, const Quaternion &b) {
 
 	return b.RotateVector(a);
 }
 
-inline Vector3 Quaternion::RotateVector(const Vector3 &v) const {
+Vector3 Quaternion::RotateVector(const Vector3 &v) const {
 	Quaternion result = *this * Quaternion{ v } *this->Conjugation();
 
 	return result.vec();
 }
 
- Quaternion Quaternion::Slerp(Quaternion start, const Quaternion &end, float t) {
+Quaternion Quaternion::Slerp(Quaternion start, const Quaternion &end, float t) {
 
 	// 返り値
 	Quaternion result;
@@ -140,7 +140,7 @@ inline Vector3 Quaternion::RotateVector(const Vector3 &v) const {
 	return result;
 }
 
-inline Quaternion Quaternion::LookAt(const Vector3Norm &direction) {
+Quaternion Quaternion::LookAt(const Vector3Norm &direction) {
 	return DirectionToDirection(Vector3::front, direction);
 }
 
