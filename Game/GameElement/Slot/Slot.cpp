@@ -73,6 +73,9 @@ Slot::Slot()
 	//globalVariable_ = GlobalVariables::GetInstance();
 
 	SetGlobalVariable();
+
+	st_.Load("Resources/SE/rotate.wav");
+	ro_.Load("Resources/SE/stop.wav");
 }
 
 void Slot::Initialize() {
@@ -155,6 +158,8 @@ void Slot::StartRotation()
 		isRotStop_[i] = false;
 		rotSpeed_[i] = rand->RandFloat(70.0f, 100.0f);
 	}
+
+	ro_.Play(true, 0.6f);
 }
 
 void Slot::StopRotation()
@@ -355,6 +360,8 @@ void Slot::Rotation2()
 						isRotStop_[i] = true;
 						faceTypes_[i] = acrossNum_;
 						timeCount_ = 0.0f;
+
+						st_.Play(false, 0.8f);
 					}
 					else if (timeCount_ >= 0.2f && isRotStop_[0] && i == 2 && isAcross_[i]) {
 						if (isAcross_[i] && acrossNum_ != faceTypes_[0]) {
@@ -366,6 +373,8 @@ void Slot::Rotation2()
 							faceTypes_[i] = acrossNum_;
 							isRotStop_[i] = true;
 							timeCount_ = 0.0f;
+
+							st_.Play(false, 0.8f);
 						}
 					}
 					else if (isRotStop_[2] && timeCount_ >= 0.2f) {
@@ -378,6 +387,8 @@ void Slot::Rotation2()
 							isRotStop_[i] = true;
 							isRot_ = false;
 							timeCount_ = 0.0f;
+							ro_.Stop();
+							st_.Play(false, 0.8f);
 						}
 					}
 				}
@@ -426,6 +437,7 @@ void Slot::Rotation2()
 						isRotStop_[i] = true;
 						faceType_ = acrossNum_;
 						timeCount_ = 0.0f;
+						st_.Play(false, 0.8f);
 					}
 					else if (timeCount_ >= 0.3f && isRotStop_[0] && i == 2 && isAcross_[i]) {
 						if (isAcross_[i] && acrossNum_ == faceType_) {
@@ -437,6 +449,7 @@ void Slot::Rotation2()
 
 							isRotStop_[i] = true;
 							timeCount_ = 0.0f;
+							st_.Play(false, 0.8f);
 						}
 					}
 					else if (isRotStop_[2] && isStop_) {
@@ -449,6 +462,8 @@ void Slot::Rotation2()
 							isRotStop_[i] = true;
 							isRot_ = false;
 							timeCount_ = 0.0f;
+							st_.Play(false, 0.8f);
+							ro_.Stop();
 						}
 					}
 				}

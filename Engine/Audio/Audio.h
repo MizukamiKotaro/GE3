@@ -140,7 +140,7 @@ public:
 	AudioItem(uint32_t handle) :audioHandle_(handle) {}
 	AudioItem(const AudioItem &) = default;
 
-	~AudioItem() = default;
+	~AudioItem();
 
 	AudioItem &operator=(uint32_t handle) { audioHandle_ = handle; return *this; }
 
@@ -152,7 +152,7 @@ public:
 
 	void Pause() { audio_->Pause(voiceHandle_); }
 
-	bool IsPlaying() { audio_->IsPlaying(voiceHandle_); }
+	bool IsPlaying() { return audio_->IsPlaying(voiceHandle_); }
 
 	void ReStart() { audio_->ReStart(voiceHandle_); }
 
