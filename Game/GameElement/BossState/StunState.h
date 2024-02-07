@@ -17,5 +17,8 @@ public:
 
 private:
 	// ストップタイマー
-	SoLib::Time::DeltaTimer stopTimer_;
+	SoLib::Time::DeltaTimer stateTimer_;
+
+	SoLib::Time::DeltaTimer invincibleTime_;
+
 };
