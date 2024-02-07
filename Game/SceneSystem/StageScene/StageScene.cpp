@@ -508,9 +508,9 @@ void StageScene::Draw() {
 
 		pBlockManager_->Draw(*camera_.get());
 
-		if (isDrawSwordBlur_) {
+		/*if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
-		}
+		}*/
 
 		if (isDrawNeedleBlur_) {
 			needleBlur_->Draw(BlendMode::kBlendModeAdd);
@@ -799,9 +799,9 @@ void StageScene::CreatePostEffects()
 			playerBlur_->Draw(BlendMode::kBlendModeAdd);
 		}
 
-		if (isDrawSwordBlur_) {
+		/*if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
-		}
+		}*/
 
 		if (isDrawNeedleBlur_) {
 			needleBlur_->Draw(BlendMode::kBlendModeAdd);
