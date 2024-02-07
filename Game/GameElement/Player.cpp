@@ -59,6 +59,9 @@ void Player::Init() {
 
 	}
 
+	arrowModel_ = modelManager->LoadObj("playerArrow");
+	arrowMat_ = Matrix4x4::MakeRotateAxisAngle(Vector3::up, SoLib::Math::Angle::PI);
+
 	health_ = vMaxHealth_;
 
 }
@@ -132,6 +135,10 @@ void Player::Draw() {
 
 	//barrier_->Draw();
 	playerModel_->Draw(*modelMat_);
+
+	if (dynamic_cast<PlayerFacing *>(playerState_.get())) {
+		blockManager->AddBox(arrowModel_, IBlock{ .transformMat_ = arrowMat_ });
+	}
 
 	//blockManager->AddBox(model_, IBlock{ .transformMat_ = transformMat_,.color_ = color_ });
 }
@@ -324,6 +331,7 @@ void PlayerFacing::Init() {
 void PlayerFacing::Update(const float deltaTime) {
 	player_->acceleration_ = {};
 	Vector2 inputDir = player_->preInputRStick_;
+	const float rotate = std::atan2(inputDir.y, inputDir.x);
 	bool isLeft = false;
 
 	// 向いている左右方向
@@ -344,6 +352,17 @@ void PlayerFacing::Update(const float deltaTime) {
 		// 上下反転
 		player_->rotateTarget_.z *= -1.f;
 	}
+
+	player_->arrowFacing_ = Quaternion::AnyAxisRotation(Vector3::front, rotate - SoLib::Math::Angle::hPI);
+
+	player_->arrowMat_ = Matrix4x4::MakeScaleMatrix(Vector3::one * 0.25f);
+
+	player_->arrowMat_ *= Matrix4x4::MakeRotateAxisAngle(Vector3::up, SoLib::Math::Angle::PI) * Matrix4x4::MakeRotateMatrix(player_->arrowFacing_);
+
+	*reinterpret_cast<Vector3 *>(player_->arrowMat_.m[3]) = player_->arrowFacing_.RotateVector(Vector3::up * 1.f) + player_->sphere_.center_;
+
+
+
 
 }
 

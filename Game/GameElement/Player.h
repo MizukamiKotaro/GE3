@@ -127,6 +127,10 @@ private:
 	uint32_t model_;
 	SoLib::Color::RGB4 color_;
 
+	uint32_t arrowModel_;
+	Quaternion arrowFacing_;
+	Matrix4x4 arrowMat_;
+
 	std::unique_ptr<DirectionArrow> directionArrow_ = nullptr;
 
 	SoLib::Time::DeltaTimer invincibleTime_;
