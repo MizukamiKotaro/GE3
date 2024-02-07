@@ -13,7 +13,7 @@ Boss::Boss() {
 void Boss::Init() {
 	transform_.scale_ = Vector3{ 3.2f,1.8f,1.0f };
 	transform_.rotate_ = Vector3{ 0.f, 180._deg, 0.f };
-	transform_.translate_ = Vector3{0.f,3.f,0.f};
+	transform_.translate_ = Vector3{ 0.f,3.f,0.f };
 
 
 	if (slot_) {
@@ -26,6 +26,8 @@ void Boss::Init() {
 
 	CalcTransMat();
 	CalcCollision();
+	TransferData();
+	slot_->Update(pCamera_);
 
 	health_ = vMaxHealth_;
 
