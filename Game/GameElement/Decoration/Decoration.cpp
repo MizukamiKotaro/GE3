@@ -87,6 +87,8 @@ Decoration::Decoration()
 				Vector3(radius * std::sinf(gauges_[i][j]->transform_.rotate_.z), -radius * std::cosf(gauges_[i][j]->transform_.rotate_.z), 1.0f);
 			gauges_[i][j]->Update();
 		}
+
+		isGimmick_[i] = false;
 	}
 
 	rainbow_ = std::make_unique<Sprite>("Resources/rainbow.png");
@@ -100,6 +102,9 @@ Decoration::Decoration()
 
 	post_ = std::make_unique<PostEffect>();
 	isFirst_ = true;
+
+	se_.Load("Resources/SE/gimmick.wav");
+	volume_ = 0.6f;
 }
 
 void Decoration::Initialize()
@@ -206,25 +211,84 @@ void Decoration::WrightPostEffect(Camera* camera)
 			if (*isRight_) {
 				decrations_[Sword]->Draw(*camera);
 				//numbers_[Sword]->Draw(*camera);
+
+				for (int i = 0; i < EndModelType; i++) {
+					if (i != Sword) {
+						isGimmick_[i] = false;
+					}
+					else {
+						if (!isGimmick_[i]) {
+							se_.Play(false, volume_);
+						}
+						isGimmick_[i] = true;
+					}
+				}
 			}
 			else {
 				decrations_[SwordB]->Draw(*camera);
 				//numbers_[SwordB]->Draw(*camera);
+
+				for (int i = 0; i < EndModelType; i++) {
+					if (i != SwordB) {
+						isGimmick_[i] = false;
+					}
+					else {
+						if (!isGimmick_[i]) {
+							se_.Play(false, volume_);
+						}
+						isGimmick_[i] = true;
+					}
+				}
 			}
 		}
 		if (*isPunch_) {
 			if (*isRight_) {
 				decrations_[Punch]->Draw(*camera);
 				//numbers_[Punch]->Draw(*camera);
+
+				for (int i = 0; i < EndModelType; i++) {
+					if (i != Punch) {
+						isGimmick_[i] = false;
+					}
+					else {
+						if (!isGimmick_[i]) {
+							se_.Play(false, volume_);
+						}
+						isGimmick_[i] = true;
+					}
+				}
 			}
 			else {
 				decrations_[PunchB]->Draw(*camera);
 				//numbers_[PunchB]->Draw(*camera);
+
+				for (int i = 0; i < EndModelType; i++) {
+					if (i != PunchB) {
+						isGimmick_[i] = false;
+					}
+					else {
+						if (!isGimmick_[i]) {
+							se_.Play(false, volume_);
+						}
+						isGimmick_[i] = true;
+					}
+				}
 			}
 		}
 		if (*isNeedle_) {
 			decrations_[Needle]->Draw(*camera);
 			//numbers_[Needle]->Draw(*camera);
+			for (int i = 0; i < EndModelType; i++) {
+				if (i != Needle) {
+					isGimmick_[i] = false;
+				}
+				else {
+					if (!isGimmick_[i]) {
+						se_.Play(false, volume_);
+					}
+					isGimmick_[i] = true;
+				}
+			}
 		}
 
 		highLumi_->PostDrawScene();
@@ -242,6 +306,11 @@ void Decoration::WrightPostEffect(Camera* camera)
 		post_->Draw();
 
 		gaussian_->PostDrawScene();*/
+	}
+	else {
+		for (int i = 0; i < EndModelType; i++) {
+			isGimmick_[i] = false;
+		}
 	}
 }
 

@@ -8,6 +8,7 @@
 #include "PostEffect/HighLumi/HighLumi.h"
 #include "PostEffect/GaussianBlur/GaussianBlur.h"
 #include "PostEffect/PostEffect.h"
+#include "Audio.h"
 
 class Camera;
 
@@ -69,6 +70,10 @@ private:
 	std::array<std::array<std::unique_ptr<Model>, kMaxGauge_>, EndModelType> gauges_;
 	std::array<uint32_t, 6> numberModelDatas_;
 	std::array<int, EndModelType> nums_;
+
+	std::array<bool, EndModelType> isGimmick_;
+	AudioItem se_;
+	float volume_;
 
 	std::unique_ptr<HighLumi> highLumi_;
 

@@ -97,4 +97,5 @@ private:
 
 	AudioItem se_;
 	AudioItem BGM;
+	AudioItem boundSe_;
 };

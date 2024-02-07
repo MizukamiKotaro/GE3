@@ -144,6 +144,7 @@ void StageScene::Init()
 	se_.Load("Resources/SE/start.wav");
 	BGM.Load("Resources/SE/BGM.wav");
 	BGM.Play(true, 0.4f);
+	boundSe_.Load("Resources/SE/bound.wav");
 }
 
 void StageScene::Update()
@@ -260,6 +261,7 @@ void StageScene::Update()
 
 					player_->OnCollision(hole.get());
 
+					boundSe_.Play(false, 0.6f);
 				}
 			}
 		}
@@ -385,14 +387,6 @@ void StageScene::Draw() {
 		farPostEffect_->Draw();
 		decoration_->Draw(camera_.get());
 
-		pBlockManager_->clear();
-		stage_->DrawNearObject();
-		/*stage_->Draw();
-
-		player_->Draw();
-
-		boss_->Draw();*/
-
 		collisionRenderer_->AddCollision(player_->GetSphere());
 
 		// 剣の配列から、当たり判定を取得して有効なら描画する
@@ -424,11 +418,16 @@ void StageScene::Draw() {
 
 		collisionRenderer_->AddCollision(player_->GetSphere());
 
-		pBlockManager_->Draw(*camera_.get());
-
 		if (isPlayerAttack_) {
 			playerBlur_->Draw(BlendMode::kBlendModeAdd);
 		}
+
+
+		pBlockManager_->clear();
+		player_->Draw();
+		stage_->DrawNearObject();
+
+		pBlockManager_->Draw(*camera_.get());
 
 		if (isDrawSwordBlur_) {
 			swordBlur_->Draw(BlendMode::kBlendModeAdd);
@@ -622,8 +621,8 @@ void StageScene::CreatePostEffects()
 		t = (t - 4.0f) * 0.1f;
 
 		if (t > 0.0f) {
-			playerBlur_->blurData_->pickRange = 0.01f * (1.0f - t) + 0.05f * t;
-			playerBlur_->blurData_->stepWidth = 0.001f * (1.0f - t) + 0.004f * t;
+			playerBlur_->blurData_->pickRange = 0.001f * (1.0f - t) + 0.05f * t;
+			playerBlur_->blurData_->stepWidth = 0.0001f * (1.0f - t) + 0.004f * t;
 
 			float angle = std::asinf(velocity.Normalize().y);
 			if (velocity.x <= 0) {
@@ -656,7 +655,6 @@ void StageScene::CreatePostEffects()
 
 	pBlockManager_->clear();
 	stage_->DrawFarObject();
-	player_->Draw();
 	boss_->Draw();
 
 	pBlockManager_->Draw(*camera_.get());
@@ -674,6 +672,7 @@ void StageScene::CreatePostEffects()
 
 		pBlockManager_->clear();
 		stage_->DrawNearObject();
+		player_->Draw();
 		/*stage_->Draw();
 
 		player_->Draw();
