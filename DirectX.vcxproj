@@ -222,6 +222,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Game\GameElement\BackGround\BackGround.cpp" />
     <ClCompile Include="Game\GameElement\BallSpawner.cpp" />
     <ClCompile Include="Game\GameElement\Barrier.cpp" />
     <ClCompile Include="Game\GameElement\Boss.cpp" />
@@ -370,6 +371,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\Shape\Sphere.h" />
     <ClInclude Include="Engine\Utils\Shape\Triangle.h" />
     <ClInclude Include="Engine\Utils\Transform\Transform.h" />
+    <ClInclude Include="Game\GameElement\BackGround\BackGround.h" />
     <ClInclude Include="Game\GameElement\BallSpawner.h" />
     <ClInclude Include="Game\GameElement\Barrier.h" />
     <ClInclude Include="Game\GameElement\Boss.h" />

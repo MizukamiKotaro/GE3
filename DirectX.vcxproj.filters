@@ -226,6 +226,9 @@
     <Filter Include="Game\GameElement\ClearPlayer">
       <UniqueIdentifier>{bca825b4-cb43-4ff5-90b9-cd340651ca22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\BackGround">
+      <UniqueIdentifier>{875aaf62-e291-4cac-8173-ba1c7c5ccdb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -554,6 +557,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\BossState\RotateState.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\BackGround\BackGround.cpp">
+      <Filter>Game\GameElement\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -949,6 +955,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\BossState\RotateState.h">
       <Filter>Game\GameElement\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BackGround\BackGround.h">
+      <Filter>Game\GameElement\BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

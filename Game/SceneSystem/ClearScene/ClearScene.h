@@ -30,6 +30,7 @@
 #include "PostEffect/PostEffect.h"
 #include "GameElement/Decoration/Decoration.h"
 #include "GameElement/ClearPlayer/ClearPlayer.h"
+#include "GameElement/BackGround/BackGround.h"
 
 class ClearScene : public IScene
 {
@@ -66,4 +67,6 @@ private:
 	std::unique_ptr<Sprite> space_;
 
 	AudioItem se_;
+
+	std::unique_ptr<BackGround> back_;
 };

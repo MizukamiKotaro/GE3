@@ -164,6 +164,8 @@ void StageScene::Init()
 	rule_->Update();
 
 	selectSe_.Load("Resources/select.wav");
+
+	back_ = std::make_unique<BackGround>();
 }
 
 void StageScene::Update()
@@ -425,6 +427,7 @@ void StageScene::Draw() {
 
 	if (isTitle_) {
 		backgroundSprite_->Draw();
+		back_->Draw();
 
 		postEffect_->Draw();
 
@@ -440,6 +443,7 @@ void StageScene::Draw() {
 	}
 	else {
 		backgroundSprite_->Draw();
+		back_->Draw();
 
 		farPostEffect_->Draw();
 		decoration_->Draw(camera_.get());
