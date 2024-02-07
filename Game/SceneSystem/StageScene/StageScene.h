@@ -27,6 +27,7 @@
 #include "GameElement/TitleObject/TitleObject.h"
 #include "PostEffect/PostEffect.h"
 #include "GameElement/Decoration/Decoration.h"
+#include "GameElement/BackGround/BackGround.h"
 
 class StageScene : public IScene {
 public:
@@ -104,4 +105,6 @@ private:
 	std::unique_ptr<Sprite> tuback_;
 	std::unique_ptr<Sprite> rule_;
 	AudioItem selectSe_;
+
+	std::unique_ptr<BackGround> back_;
 };

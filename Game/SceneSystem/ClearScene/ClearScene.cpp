@@ -62,6 +62,8 @@ void ClearScene::Init()
 	space_->Update();
 
 	se_.Load("Resources/select.wav");
+
+	back_ = std::make_unique<BackGround>();
 }
 
 void ClearScene::Update()
@@ -98,6 +100,7 @@ void ClearScene::Draw()
 	Kyoko::PreDraw();
 
 	backgroundSprite_->Draw();
+	back_->Draw();
 
 	post_->Draw();
 
