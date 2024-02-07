@@ -69,4 +69,5 @@ private:
 	AudioItem se_;
 
 	std::unique_ptr<BackGround> back_;
+	std::unique_ptr<Sprite> clear_;
 };

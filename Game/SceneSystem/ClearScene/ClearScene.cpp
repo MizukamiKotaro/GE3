@@ -64,6 +64,10 @@ void ClearScene::Init()
 	se_.Load("Resources/select.wav");
 
 	back_ = std::make_unique<BackGround>();
+	clear_ = std::make_unique<Sprite>("Resources/clear.png");
+	clear_->size_ *= 0.8f;
+	clear_->pos_.y = 220.0f;
+	clear_->Update();
 }
 
 void ClearScene::Update()
@@ -115,6 +119,7 @@ void ClearScene::Draw()
 	player_->Draw(camera_.get());
 	//clearSprite_->Draw();
 	space_->Draw();
+	clear_->Draw();
 
 	BlackDraw();
 
