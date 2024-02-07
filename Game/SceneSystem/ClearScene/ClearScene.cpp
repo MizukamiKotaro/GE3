@@ -85,6 +85,7 @@ void ClearScene::Update()
 	player_->Update();
 	decoration_->tcUpdate(camera_.get());
 	slot_->Update(camera_.get());
+	back_->Update();
 }
 
 void ClearScene::Draw()
@@ -100,7 +101,7 @@ void ClearScene::Draw()
 	Kyoko::PreDraw();
 
 	backgroundSprite_->Draw();
-	back_->Draw();
+	back_->cDraw(camera_.get());
 
 	post_->Draw();
 
