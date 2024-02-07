@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <array>
 
 #include "SoUtils/Math/Euler.h"
 #include "Stage.h"
@@ -46,8 +47,8 @@ public:
 	}
 
 	/// @brief 当たり判定の取得
-	/// @return 球体コライダ
-	const Sphere &GetCollision() const { return sphere_; }
+	/// @return コライダ
+	const std::array<Sphere, 2u> &GetCollision() const { return collision_; }
 
 	/// @brief スロットの開始
 	void StartSlot();
@@ -88,7 +89,7 @@ private:
 
 	HPBar *pHPBar_ = nullptr;
 
-	Sphere sphere_;
+	std::array<Sphere,2u> collision_;
 
 	Vector3 velocity_;
 	Vector3 acceleration_;

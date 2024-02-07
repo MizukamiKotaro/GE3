@@ -555,6 +555,9 @@
     <ClCompile Include="Game\GameElement\BossState\HipDrop.cpp">
       <Filter>Game\GameElement\BossState</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\RotateState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Game\GameElement\BackGround\BackGround.cpp">
       <Filter>Game\GameElement\BackGround</Filter>
     </ClCompile>
@@ -948,6 +951,9 @@
       <Filter>Game\GameElement\ClearPlayer</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\BossState\HipDrop.h">
+      <Filter>Game\GameElement\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BossState\RotateState.h">
       <Filter>Game\GameElement\BossState</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\BackGround\BackGround.h">

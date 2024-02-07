@@ -25,26 +25,26 @@ struct Quaternion final {
 
 	/// @brief 共役クォータニオン関数
 	/// @return 共役クォータニオン
-	inline Quaternion Conjugation() const;
+	Quaternion Conjugation() const;
 
 	/// @brief 逆クォータニオン関数
 	/// @return 逆クォータニオン
-	inline Quaternion Inverse() const;
+	Quaternion Inverse() const;
 
 	/// @brief 二乗ノルム
 	/// @return 二乗したクォータニオンの長さ
-	inline float LengthSQ() const;
+	float LengthSQ() const;
 
 	/// @brief ノルム
 	/// @return クォータニオンの長さ
-	inline float Length() const;
+	float Length() const;
 
 	/// @brief 正規化関数
 	/// @return 単位クォータニオン
-	inline Quaternion Normalize() const;
+	Quaternion Normalize() const;
 
-	static inline Vector3 RotateVector(const Vector3 &a, const Quaternion &b);
-	inline Vector3 RotateVector(const Vector3 &v) const;
+	static  Vector3 RotateVector(const Vector3 &a, const Quaternion &b);
+	Vector3 RotateVector(const Vector3 &v) const;
 
 	static Quaternion AnyAxisRotation(const Vector3Norm &axis, float angle);
 

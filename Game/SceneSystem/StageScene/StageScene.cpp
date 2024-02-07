@@ -352,12 +352,15 @@ void StageScene::Update()
 						sword->OnCollision(player_.get());
 					}
 
-					if (not sword->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+				for (auto &bossCollision : boss_->GetCollision()) {
+					if (not sword->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
 						boss_->OnCollision(sword.get());
 						sword->OnCollision(boss_.get());
+						break;
 					}
 				}
 			}
+		}
 
 			for (const auto& punch : *stage_->GetPunchList()) {
 				auto* collision = punch->GetCollision();
@@ -367,35 +370,41 @@ void StageScene::Update()
 						punch->OnCollision(player_.get());
 					}
 
-					if (not punch->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+				for (auto &bossCollision : boss_->GetCollision()) {
+					if (not punch->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
 						boss_->OnCollision(punch.get());
 						punch->OnCollision(boss_.get());
 					}
 				}
 			}
-			for (const auto& needle : *stage_->GetNeedleList()) {
-				auto* collision = needle->GetCollision();
-				if (collision) {
-					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-						player_->OnCollision(needle.get());
-						needle->OnCollision(player_.get());
-					}
+		}
+		for (const auto &needle : *stage_->GetNeedleList()) {
+			auto *collision = needle->GetCollision();
+			if (collision) {
+				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+					player_->OnCollision(needle.get());
+					needle->OnCollision(player_.get());
+				}
+				for (auto &bossCollision : boss_->GetCollision()) {
 
-					if (not needle->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+					if (not needle->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
 						boss_->OnCollision(needle.get());
 						needle->OnCollision(boss_.get());
+						break;
 					}
 				}
 			}
+		}
 
 
-			auto& bossCollision = boss_->GetCollision();
-			//if (boss_->IsAttacked()) {
+		//if (boss_->IsAttacked()) {
 
+		for (auto &bossCollision : boss_->GetCollision()) {
 			if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
 				player_->OnCollision(boss_.get());
 				boss_->OnCollision(player_.get());
 			}
+		}
 
 			//}
 
@@ -469,6 +478,9 @@ void StageScene::Draw() {
 		}
 
 		collisionRenderer_->AddCollision(player_->GetSphere());
+		for (auto &collsion : boss_->GetCollision()) {
+			collisionRenderer_->AddCollision(collsion);
+		}
 
 		if (isPlayerAttack_) {
 			playerBlur_->Draw(BlendMode::kBlendModeAdd);

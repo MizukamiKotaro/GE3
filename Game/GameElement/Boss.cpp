@@ -1,5 +1,6 @@
 #include "Boss.h"
 #include "BossState/EscapeState.h"
+#include "Quaternion.h"
 
 Boss::Boss() {
 	slot_ = std::make_unique<Slot>();
@@ -14,7 +15,6 @@ void Boss::Init() {
 	transform_.rotate_ = Vector3{ 0.f, 180._deg, 0.f };
 	transform_.translate_ = Vector3::zero;
 
-	sphere_.radius_ = 1.f;
 
 	if (slot_) {
 		slot_->Initialize();
@@ -146,9 +146,16 @@ void Boss::CalcTransMat() {
 
 void Boss::CalcCollision() {
 
-	sphere_.center_ = transform_.translate_;
-	sphere_.center_.z = 0.f;
+	Vector3 centor = transform_.translate_;
 
+	Vector3 diff = Quaternion::AnyAxisRotation(Vector3::front, transform_.rotate_.z).RotateVector(Vector3::right) * (transform_.scale_.x - transform_.scale_.y);
+	diff.z = 0.f;
+	collision_[0].center_ = centor - diff;
+	collision_[1].center_ = centor + diff;
+
+	for (auto &sphere : collision_) {
+		sphere.radius_ = transform_.scale_.y;
+	}
 }
 
 void Boss::TransferData() {
