@@ -4,11 +4,12 @@
 #include "EscapeState.h"
 
 void HipDrop::Init() {
-	stateArray_[0u] = AttackParameter{ .totalTime_ = 1.5f, .damage_ = false, .initFunc_ = &HipDrop::StartUpInit, .updateFunc_ = &HipDrop::StartUpUpdate };
-	stateArray_[1u] = AttackParameter{ .totalTime_ = 10.f, .damage_ = false, .updateFunc_ = &HipDrop::FollowUpdate };
-	stateArray_[2u] = AttackParameter{ .totalTime_ = 0.5f, .damage_ = true, .initFunc_ = &HipDrop::FallDownInit, .updateFunc_ = &HipDrop::FallDownUpdate };
-	stateArray_[3u] = AttackParameter{ .totalTime_ = 2.f, .damage_ = false, };
-	stateArray_[4u] = AttackParameter{ .initFunc_ = &HipDrop::ChangeState };
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 1.5f, .damage_ = false, .initFunc_ = &HipDrop::StartUpInit, .updateFunc_ = &HipDrop::StartUpUpdate });
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 10.f, .damage_ = false, .updateFunc_ = &HipDrop::FollowUpdate });
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 0.25f, .damage_ = false, });
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 0.5f, .damage_ = true, .initFunc_ = &HipDrop::FallDownInit, .updateFunc_ = &HipDrop::FallDownUpdate });
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 2.f, .damage_ = false, });
+	stateArray_.push_back(AttackParameter{ .initFunc_ = &HipDrop::ChangeState });
 
 	stateTimer_.Start(stateArray_[stateIndex_].totalTime_);
 	if (stateArray_[stateIndex_].initFunc_) {
@@ -48,7 +49,13 @@ void HipDrop::OnCollision(IEntity *other) {
 	if (player) {
 		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();
 
-		player->AddAcceleration(toPlayer * 7.5f);
+		player->AddAcceleration(toPlayer * 5.f);
+
+		// ダメージがあるなら接触
+		if (stateArray_[stateIndex_].damage_) {
+			if (player->Damage(1.f)) {
+			}
+		}
 	}
 }
 

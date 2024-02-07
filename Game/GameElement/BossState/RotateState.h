@@ -37,7 +37,11 @@ public:
 
 	void RotateUpdate(const float deltaTime);
 
+	void EndRotateUpdate(const float deltaTime);
+
 private:
+
+	Vector3 defaultScale_;
 
 	std::vector<AttackParameter> stateArray_;
 	uint32_t stateIndex_ = 0u;

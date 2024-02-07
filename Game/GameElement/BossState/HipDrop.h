@@ -53,7 +53,7 @@ private:
 	Vector3 beginPos_;
 	Vector3 endPos_;
 
-	std::array<AttackParameter, 5u> stateArray_;
+	std::vector<AttackParameter> stateArray_;
 	uint32_t stateIndex_ = 0u;
 	SoLib::DeltaTimer stateTimer_;
 

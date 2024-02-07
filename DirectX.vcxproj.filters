@@ -561,6 +561,9 @@
     <ClCompile Include="Game\GameElement\BackGround\BackGround.cpp">
       <Filter>Game\GameElement\BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\BossState\StunState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -958,6 +961,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\BackGround\BackGround.h">
       <Filter>Game\GameElement\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\BossState\StunState.h">
+      <Filter>Game\GameElement\BossState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

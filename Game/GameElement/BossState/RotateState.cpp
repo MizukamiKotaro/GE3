@@ -5,13 +5,17 @@
 
 void RotateState::Init()
 {
+
+	defaultScale_ = GetBoss()->GetTransform().scale_;
+
 	stateArray_.push_back(AttackParameter{ .totalTime_ = 0.75f, .damage_ = false, .initFunc_ = &RotateState::StartUpInit, .updateFunc_ = &RotateState::StartUpUpdate });
 
 	stateArray_.push_back(AttackParameter{ .totalTime_ = 3.f, .damage_ = true, .initFunc_ = &RotateState::RotateInit, .updateFunc_ = &RotateState::RotateUpdate });
-	stateArray_.push_back(AttackParameter{ .totalTime_ = 1.f, .damage_ = false, });
+	stateArray_.push_back(AttackParameter{ .totalTime_ = 1.f, .damage_ = false, .updateFunc_ = &RotateState::EndRotateUpdate });
 
 	stateArray_.push_back(AttackParameter{ .initFunc_ = &RotateState::ChangeState });
 
+	stateTimer_.Start(stateArray_[stateIndex_].totalTime_);
 }
 
 void RotateState::Update(const float deltaTime)
@@ -35,13 +39,25 @@ void RotateState::Update(const float deltaTime)
 	}
 }
 
-void RotateState::OnCollision(IEntity *other)
-{
+void RotateState::OnCollision(IEntity *other) {
+
+	Player *player = dynamic_cast<Player *>(other);
+	if (player) {
+		Vector3 toPlayer = Vector3{ player->GetSphere().center_ - GetBoss()->GetTransform().translate_ }.Normalize();
+
+		// ダメージがあるなら接触
+		if (stateArray_[stateIndex_].damage_) {
+			if (player->Damage(1.f)) {
+				player->AddAcceleration(toPlayer * 5.f);
+			}
+		}
+	}
+
 }
 
 bool RotateState::IsAttacked() const
 {
-	return false;
+	return stateArray_[stateIndex_].damage_;
 }
 
 void RotateState::ChangeState() {
@@ -63,15 +79,14 @@ void RotateState::NextParam()
 	}
 }
 
-void RotateState::StartUpInit()
-{
+void RotateState::StartUpInit() {
 }
 
 void RotateState::StartUpUpdate(const float deltaTime)
 {
 	Boss *boss = GetBoss();
 
-	boss->GetTransform().scale_;
+	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(1.f, 0.75f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
 
 }
 
@@ -96,5 +111,16 @@ void RotateState::RotateUpdate(const float deltaTime)
 
 	transform.rotate_.z = SoLib::Lerp(0.f, SoLib::Math::Angle::PI2, SoLib::easeInOutSine(scaleTimer_.GetProgress()));
 
+
+	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(0.75f, 1.75f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
+
+
+}
+
+void RotateState::EndRotateUpdate(const float deltaTime) {
+
+	Boss *boss = GetBoss();
+
+	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(1.75f, 1.f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
 
 }
