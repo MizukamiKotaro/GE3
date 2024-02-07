@@ -112,7 +112,7 @@ void RotateState::RotateUpdate(const float deltaTime)
 	transform.rotate_.z = SoLib::Lerp(0.f, SoLib::Math::Angle::PI2, SoLib::easeInOutSine(scaleTimer_.GetProgress()));
 
 
-	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(0.75f, 1.75f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
+	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(0.75f, 1.25f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
 
 
 }
@@ -121,6 +121,6 @@ void RotateState::EndRotateUpdate(const float deltaTime) {
 
 	Boss *boss = GetBoss();
 
-	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(1.75f, 1.f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
+	boss->GetTransform().scale_ = defaultScale_ * SoLib::Lerp(1.25f, 1.f, SoLib::easeInOutBack(stateTimer_.GetProgress()));
 
 }

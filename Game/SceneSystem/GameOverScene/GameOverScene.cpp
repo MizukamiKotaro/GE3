@@ -52,7 +52,7 @@ void GameOverScene::Init()
 
 	slot_ = std::make_unique<Slot>();
 	slot_->GameOverInit();
-	auto& hoge = slot_->GetTransform();
+	auto &hoge = slot_->GetTransform();
 	hoge.translate_ = { -7.9f,-5.0f,-5.0f };
 	hoge.rotate_ = { 0.0f,3.2f,0.0f };
 	slot_->Update(camera_.get());
@@ -85,7 +85,8 @@ void GameOverScene::Update()
 
 #endif // _DEBUG
 
-	if (input_->PressedGamePadButton(Input::GamePadButton::A)) {
+	if (input_->PressedGamePadButton(Input::GamePadButton::A) ||
+		input_->PressedKey(DIK_SPACE)) {
 		ChangeScene(STAGE);
 		se_.Play(false, 0.5f);
 		ea_.Stop();
@@ -93,7 +94,7 @@ void GameOverScene::Update()
 
 	vel_ -= 0.04f;
 
-	auto& hoge = slot_->GetTransform();
+	auto &hoge = slot_->GetTransform();
 	hoge.translate_.y += vel_;
 
 	if (hoge.translate_.y <= -5.0f) {

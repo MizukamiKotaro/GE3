@@ -51,7 +51,7 @@ void ClearScene::Init()
 
 	slot_ = std::make_unique<Slot>();
 	slot_->ClearInit();
-	auto& hoge = slot_->GetTransform();
+	auto &hoge = slot_->GetTransform();
 	hoge.translate_ = { 0.3f,-10.3f,-20.9f };
 	hoge.rotate_ = { 0.52f,3.732f,0.0f };
 	slot_->Update(camera_.get());
@@ -84,7 +84,9 @@ void ClearScene::Update()
 
 #endif // _DEBUG
 
-	if (input_->PressedGamePadButton(Input::GamePadButton::A)) {
+	if (input_->PressedGamePadButton(Input::GamePadButton::A) ||
+		input_->PressedKey(DIK_SPACE)
+		) {
 		ChangeScene(STAGE);
 		se_.Play(false, 0.5f);
 		ea_.Stop();

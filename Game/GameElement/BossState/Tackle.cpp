@@ -58,7 +58,7 @@ void TackleState::AttackStart() {
 
 	Vector3 diff = GetPlayer()->GetGrobalPos() - transform.translate_;
 
-	attackVec_.diff = diff.Normalize() * 7.5f;
+	attackVec_.diff = diff.Normalize() * 15.f;
 
 }
 
