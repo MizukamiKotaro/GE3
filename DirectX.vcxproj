@@ -251,6 +251,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Sword.cpp" />
     <ClCompile Include="Game\GameElement\TitleObject\TitleObject.cpp" />
     <ClCompile Include="Game\SceneSystem\ClearScene\ClearScene.cpp" />
+    <ClCompile Include="Game\SceneSystem\GameOverScene\GameOverScene.cpp" />
     <ClCompile Include="Game\SceneSystem\IScene\IScene.cpp" />
     <ClCompile Include="Game\SceneSystem\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Game\SceneSystem\SelectScene\SelectScene.cpp" />
@@ -402,6 +403,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\TitleObject\TitleObject.h" />
     <ClInclude Include="Game\GameElement\DirectionArrow.h" />
     <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h" />
+    <ClInclude Include="Game\SceneSystem\GameOverScene\GameOverScene.h" />
     <ClInclude Include="Game\SceneSystem\IScene\IScene.h" />
     <ClInclude Include="Game\SceneSystem\SceneManager\SceneManager.h" />
     <ClInclude Include="Game\SceneSystem\SelectScene\SelectScene.h" />

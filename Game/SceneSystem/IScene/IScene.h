@@ -10,7 +10,7 @@
 #include "Sprite.h"
 #include <memory>
 
-enum SCENE { TITLE, SELECT, STAGE, CLEAR };
+enum SCENE { TITLE, SELECT, STAGE, CLEAR, GAME_OVER };
 
 enum class Transition {
 	kFromBlack,

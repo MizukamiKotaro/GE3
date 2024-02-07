@@ -1,7 +1,7 @@
-#include "ClearScene.h"
+#include "GameOverScene.h"
 #include "Kyoko.h"
 
-ClearScene::ClearScene()
+GameOverScene::GameOverScene()
 {
 	FirstInit();
 
@@ -11,7 +11,7 @@ ClearScene::ClearScene()
 
 }
 
-void ClearScene::Init()
+void GameOverScene::Init()
 {
 	camera_->transform_.translate_ = { -19.8f,-17.0f,-67.2f };
 	camera_->transform_.rotate_ = { -0.2f,0.3f,0.0f };
@@ -27,6 +27,7 @@ void ClearScene::Init()
 	stage_->SetWeapon();
 
 	player_ = std::make_unique<ClearPlayer>();
+	player_->Initialize();
 
 	post_ = std::make_unique<PostEffect>();
 
@@ -50,10 +51,10 @@ void ClearScene::Init()
 	decoration_->tcUpdate(camera_.get());
 
 	slot_ = std::make_unique<Slot>();
-	slot_->ClearInit();
+	slot_->GameOverInit();
 	auto& hoge = slot_->GetTransform();
-	hoge.translate_ = { 0.3f,-10.3f,-20.9f };
-	hoge.rotate_ = { 0.52f,3.732f,0.0f };
+	hoge.translate_ = { -7.9f,-5.0f,-5.0f };
+	hoge.rotate_ = { 0.0f,3.2f,0.0f };
 	slot_->Update(camera_.get());
 
 	space_ = std::make_unique<Sprite>("Resources/gameEnd.png");
@@ -64,16 +65,16 @@ void ClearScene::Init()
 	se_.Load("Resources/select.wav");
 
 	back_ = std::make_unique<BackGround>();
-	clear_ = std::make_unique<Sprite>("Resources/clear.png");
+	clear_ = std::make_unique<Sprite>("Resources/gameover.png");
 	clear_->size_ *= 0.8f;
 	clear_->pos_.y = 220.0f;
 	clear_->Update();
 
-	ea_.Load("Resources/SE/clear.wav");
+	ea_.Load("Resources/SE/gameOver.wav");
 	ea_.Play(false, 0.5f);
 }
 
-void ClearScene::Update()
+void GameOverScene::Update()
 {
 #ifdef _DEBUG
 	if (input_->PressedKey(DIK_SPACE)) {
@@ -89,13 +90,23 @@ void ClearScene::Update()
 		se_.Play(false, 0.8f);
 	}
 
-	player_->Update();
+	vel_ -= 0.04f;
+
+	auto& hoge = slot_->GetTransform();
+	hoge.translate_.y += vel_;
+
+	if (hoge.translate_.y <= -5.0f) {
+		hoge.translate_.y = -5.0f;
+		vel_ = 0.7f;
+	}
+
+	player_->oUpdate();
 	decoration_->tcUpdate(camera_.get());
 	slot_->Update(camera_.get());
 	back_->Update();
 }
 
-void ClearScene::Draw()
+void GameOverScene::Draw()
 {
 	post_->PreDrawScene();
 	pBlockManager_->clear();

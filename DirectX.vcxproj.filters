@@ -229,6 +229,9 @@
     <Filter Include="Game\GameElement\BackGround">
       <UniqueIdentifier>{875aaf62-e291-4cac-8173-ba1c7c5ccdb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\SceneSystem\GameOverScene">
+      <UniqueIdentifier>{0d04f646-acb8-404f-97f5-d315aaabfd71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\imgui\imgui.cpp">
@@ -560,6 +563,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\BackGround\BackGround.cpp">
       <Filter>Game\GameElement\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneSystem\GameOverScene\GameOverScene.cpp">
+      <Filter>Game\SceneSystem\GameOverScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -958,6 +964,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\BackGround\BackGround.h">
       <Filter>Game\GameElement\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneSystem\GameOverScene\GameOverScene.h">
+      <Filter>Game\SceneSystem\GameOverScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

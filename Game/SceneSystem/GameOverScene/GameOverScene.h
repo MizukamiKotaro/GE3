@@ -32,10 +32,10 @@
 #include "GameElement/ClearPlayer/ClearPlayer.h"
 #include "GameElement/BackGround/BackGround.h"
 
-class ClearScene : public IScene
+class GameOverScene : public IScene
 {
 public:
-	ClearScene();
+	GameOverScene();
 
 	void Init() override;
 	void Update() override;
@@ -70,6 +70,8 @@ private:
 
 	std::unique_ptr<BackGround> back_;
 	std::unique_ptr<Sprite> clear_;
+
+	float vel_;
 
 	AudioItem ea_;
 };

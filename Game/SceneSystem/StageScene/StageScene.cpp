@@ -217,11 +217,13 @@ void StageScene::Update()
 		// シーン切り替え
 		ChangeScene(CLEAR);
 		BGM.Stop();
+		boss_->AudioStop();
 	}
 	if (playerHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::B) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
-		ChangeScene(STAGE);
+		ChangeScene(GAME_OVER);
 		BGM.Stop();
+		boss_->AudioStop();
 	}
 
 	if (isTu_) {

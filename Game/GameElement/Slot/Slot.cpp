@@ -110,6 +110,25 @@ void Slot::ClearInit()
 	DownToTop();
 }
 
+void Slot::GameOverInit()
+{
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			slot_[i][j]->pos_ = { 640.0f + slot_[i][j]->size_.x * (-1 + i), 360.0f + (slot_[i][j]->size_.y + interval_) * (-1 + j) };
+			if (j == 2) {
+				slot_[i][j]->pos_.y -= (slot_[i][j]->size_.y + interval_);
+			}
+			if (j == 1) {
+				slot_[i][j]->pos_.y += (slot_[i][j]->size_.y + interval_);
+			}
+			slot_[i][j]->Update();
+		}
+		isRotStop_[i] = true;
+	}
+	SetGlobalVariable();
+	DownToTop();
+}
+
 void Slot::Update(Camera* camera) {
 
 	Input* input = Input::GetInstance();

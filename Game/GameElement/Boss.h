@@ -66,6 +66,8 @@ public:
 	void SetAcceleration(const Vector3 &vec) { acceleration_ = vec; }
 	void SetVelocity(const Vector3 &vec) { velocity_ = vec; }
 
+	// 追加
+	void AudioStop() { slot_->AudioStop(); }
 private:
 
 	/// @brief 行列の計算
