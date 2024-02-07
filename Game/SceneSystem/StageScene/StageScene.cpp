@@ -174,11 +174,11 @@ void StageScene::Update()
 	[[maybe_unused]] const float deltaTime = std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f);
 
 #ifdef _DEBUG
-	if (input_->PressedKey(DIK_SPACE)) {
-		// シーン切り替え
-		ChangeScene(CLEAR);
-		BGM.Stop();
-	}
+	//if (input_->PressedKey(DIK_SPACE)) {
+	//	// シーン切り替え
+	//	ChangeScene(CLEAR);
+	//	BGM.Stop();
+	//}
 
 	ImGui::Begin("StageEditor");
 	stage_->ImGuiWidget();
@@ -216,7 +216,7 @@ void StageScene::Update()
 		ChangeScene(CLEAR);
 		BGM.Stop();
 		boss_->AudioStop();
-}
+	}
 	if ((input_->PressingGamePadButton(Input::GamePadButton::B) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
 		ChangeScene(GAME_OVER);
@@ -240,11 +240,16 @@ void StageScene::Update()
 	back_->Update();
 
 	if (isTu_) {
-		if(input_->PressedGamePadButton(Input::GamePadButton::START) ||
+		if (input_->PressedGamePadButton(Input::GamePadButton::START) ||
 			input_->PressedGamePadButton(Input::GamePadButton::A) ||
-			input_->PressedGamePadButton(Input::GamePadButton::B) || 
+			input_->PressedGamePadButton(Input::GamePadButton::B) ||
 			input_->PressedGamePadButton(Input::GamePadButton::X) ||
-			input_->PressedGamePadButton(Input::GamePadButton::Y)) {
+			input_->PressedGamePadButton(Input::GamePadButton::Y) ||
+			input_->PressedKey(DIK_ESCAPE) ||
+			input_->PressedKey(DIK_SPACE)
+
+
+			) {
 			isTu_ = false;
 			tuback_->SetIsInvisible(true);
 			tu_->SetIsInvisible(true);
@@ -254,7 +259,9 @@ void StageScene::Update()
 	}
 	else {
 
-		if (input_->PressedGamePadButton(Input::GamePadButton::START)) {
+		if (input_->PressedGamePadButton(Input::GamePadButton::START) ||
+			input_->PressedKey(DIK_ESCAPE)
+			) {
 			isTu_ = true;
 			tuback_->SetIsInvisible(false);
 			tu_->SetIsInvisible(false);
@@ -274,9 +281,9 @@ void StageScene::Update()
 			player_->Update(deltaTime);
 			player_->ImGuiWidget();
 
-			for (auto& ball : *stage_->GetBallList()) {
+			for (auto &ball : *stage_->GetBallList()) {
 
-				const auto& sphere = ball->GetSphere();
+				const auto &sphere = ball->GetSphere();
 
 				if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
 
@@ -286,7 +293,7 @@ void StageScene::Update()
 
 				}
 
-				for (const auto& pin : *stage_->GetPinList()) {
+				for (const auto &pin : *stage_->GetPinList()) {
 
 					if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
 
@@ -297,7 +304,7 @@ void StageScene::Update()
 					}
 				}
 
-				for (const auto& hole : *stage_->GetHoleList()) {
+				for (const auto &hole : *stage_->GetHoleList()) {
 
 					Vector3 holePos = hole->GetPos();
 					holePos.z = 0.f;
@@ -313,8 +320,8 @@ void StageScene::Update()
 
 			}
 			{
-				const Sphere& sphere = player_->GetSphere();
-				for (const auto& hole : *stage_->GetHoleList()) {
+				const Sphere &sphere = player_->GetSphere();
+				for (const auto &hole : *stage_->GetHoleList()) {
 
 					Vector3 holePos = hole->GetPos();
 					holePos.z = 0.f;
@@ -330,8 +337,8 @@ void StageScene::Update()
 				}
 			}
 
-			for (const auto& sword : *stage_->GetSwordList()) {
-				auto* collision = sword->GetCollision();
+			for (const auto &sword : *stage_->GetSwordList()) {
+				auto *collision = sword->GetCollision();
 				if (collision) {
 					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 						player_->OnCollision(sword.get());
@@ -340,8 +347,8 @@ void StageScene::Update()
 				}
 			}
 
-			for (const auto& punch : *stage_->GetPunchList()) {
-				auto* collision = punch->GetCollision();
+			for (const auto &punch : *stage_->GetPunchList()) {
+				auto *collision = punch->GetCollision();
 				if (collision) {
 					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 						player_->OnCollision(punch.get());
@@ -349,8 +356,8 @@ void StageScene::Update()
 					}
 				}
 			}
-			for (const auto& needle : *stage_->GetNeedleList()) {
-				auto* collision = needle->GetCollision();
+			for (const auto &needle : *stage_->GetNeedleList()) {
+				auto *collision = needle->GetCollision();
 				if (collision) {
 					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 						player_->OnCollision(needle.get());
@@ -359,67 +366,67 @@ void StageScene::Update()
 				}
 			}
 
-			for (const auto& sword : *stage_->GetSwordList()) {
-				auto* collision = sword->GetCollision();
+			for (const auto &sword : *stage_->GetSwordList()) {
+				auto *collision = sword->GetCollision();
 				if (collision) {
 					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 						player_->OnCollision(sword.get());
 						sword->OnCollision(player_.get());
 					}
 
-				for (auto &bossCollision : boss_->GetCollision()) {
-					if (not sword->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
-						boss_->OnCollision(sword.get());
-						sword->OnCollision(boss_.get());
-						break;
+					for (auto &bossCollision : boss_->GetCollision()) {
+						if (not sword->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
+							boss_->OnCollision(sword.get());
+							sword->OnCollision(boss_.get());
+							break;
+						}
 					}
 				}
 			}
-		}
 
-			for (const auto& punch : *stage_->GetPunchList()) {
-				auto* collision = punch->GetCollision();
+			for (const auto &punch : *stage_->GetPunchList()) {
+				auto *collision = punch->GetCollision();
 				if (collision) {
 					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
 						player_->OnCollision(punch.get());
 						punch->OnCollision(player_.get());
 					}
 
-				for (auto &bossCollision : boss_->GetCollision()) {
-					if (not punch->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
-						boss_->OnCollision(punch.get());
-						punch->OnCollision(boss_.get());
+					for (auto &bossCollision : boss_->GetCollision()) {
+						if (not punch->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
+							boss_->OnCollision(punch.get());
+							punch->OnCollision(boss_.get());
+						}
 					}
 				}
 			}
-		}
-		for (const auto &needle : *stage_->GetNeedleList()) {
-			auto *collision = needle->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(needle.get());
-					needle->OnCollision(player_.get());
-				}
-				for (auto &bossCollision : boss_->GetCollision()) {
+			for (const auto &needle : *stage_->GetNeedleList()) {
+				auto *collision = needle->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(needle.get());
+						needle->OnCollision(player_.get());
+					}
+					for (auto &bossCollision : boss_->GetCollision()) {
 
-					if (not needle->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
-						boss_->OnCollision(needle.get());
-						needle->OnCollision(boss_.get());
-						break;
+						if (not needle->GetIsHitBoss() && Collision::IsCollision(bossCollision, *collision)) {
+							boss_->OnCollision(needle.get());
+							needle->OnCollision(boss_.get());
+							break;
+						}
 					}
 				}
 			}
-		}
 
 
-		//if (boss_->IsAttacked()) {
+			//if (boss_->IsAttacked()) {
 
-		for (auto &bossCollision : boss_->GetCollision()) {
-			if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
-				player_->OnCollision(boss_.get());
-				boss_->OnCollision(player_.get());
+			for (auto &bossCollision : boss_->GetCollision()) {
+				if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
+					player_->OnCollision(boss_.get());
+					boss_->OnCollision(player_.get());
+				}
 			}
-		}
 
 			//}
 
@@ -538,7 +545,9 @@ void StageScene::TitleUpdate(float deltaTime)
 {
 	stage_->Update(0.f);
 
-	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
+	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A) ||
+		input_->PressedKey(DIK_SPACE)
+		) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
 		se_.Play(false, 0.4f);

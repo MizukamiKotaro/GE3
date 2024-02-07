@@ -149,7 +149,16 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 	inputRight.y = static_cast<float>(input->PressingKey(DIK_UP) - input->PressingKey(DIK_DOWN));
 
 	if (Calc::MakeLength(inputRight) <= 0.f) {
+		inputRight.x = static_cast<float>(input->PressingKey(DIK_D) - input->PressingKey(DIK_A));
+		inputRight.y = static_cast<float>(input->PressingKey(DIK_W) - input->PressingKey(DIK_S));
+	}
+
+	if (Calc::MakeLength(inputRight) <= 0.f) {
 		inputRight = input->GetGamePadRStick();
+
+	}
+	if (Calc::MakeLength(inputRight) <= 0.f) {
+		inputRight = input->GetGamePadLStick();
 
 	}
 
@@ -170,14 +179,14 @@ void Player::InputAction(Input *const input, const float deltaTime) {
 	}
 
 
-	Vector2 inputLeft = input->GetGamePadLStick();
+	/*Vector2 inputLeft = input->GetGamePadLStick();
 	if (inputLeft.x == 0.f) {
 		inputLeft.x -= input->PressingKey(DIK_A);
 		inputLeft.x += input->PressingKey(DIK_D);
 	}
 	if (inputLeft.x) {
 		Move(inputLeft.x * 500.f, deltaTime * deltaTime);
-	}
+	}*/
 
 	/*if (isLanding_ && (input->PressingKey(DIK_SPACE) || input->PressingGamePadButton(Input::GamePadButton::A) || input->PressingGamePadButton(Input::GamePadButton::RIGHT_SHOULDER))) {
 		acceleration_.y += 15.f;
