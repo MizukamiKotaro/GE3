@@ -70,7 +70,7 @@ void ClearScene::Init()
 	clear_->Update();
 
 	ea_.Load("Resources/SE/clear.wav");
-	ea_.Play(false, 0.5f);
+	ea_.Play(false, 0.3f);
 }
 
 void ClearScene::Update()
@@ -86,7 +86,8 @@ void ClearScene::Update()
 
 	if (input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		ChangeScene(STAGE);
-		se_.Play(false, 0.8f);
+		se_.Play(false, 0.5f);
+		ea_.Stop();
 	}
 
 	player_->Update();

@@ -71,7 +71,7 @@ void GameOverScene::Init()
 	clear_->Update();
 
 	ea_.Load("Resources/SE/gameOver.wav");
-	ea_.Play(false, 0.5f);
+	ea_.Play(false, 0.3f);
 }
 
 void GameOverScene::Update()
@@ -87,7 +87,8 @@ void GameOverScene::Update()
 
 	if (input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		ChangeScene(STAGE);
-		se_.Play(false, 0.8f);
+		se_.Play(false, 0.5f);
+		ea_.Stop();
 	}
 
 	vel_ -= 0.04f;

@@ -143,7 +143,7 @@ void StageScene::Init()
 
 	se_.Load("Resources/SE/start.wav");
 	BGM.Load("Resources/SE/BGM.wav");
-	BGM.Play(true, 0.4f);
+	BGM.Play(true, 0.2f);
 	boundSe_.Load("Resources/SE/bound.wav");
 
 	isTu_ = false;
@@ -236,7 +236,7 @@ void StageScene::Update()
 			tuback_->SetIsInvisible(true);
 			tu_->SetIsInvisible(true);
 			rule_->SetIsInvisible(false);
-			selectSe_.Play(false, 0.8f);
+			selectSe_.Play(false, 0.5f);
 		}
 	}
 	else {
@@ -246,7 +246,7 @@ void StageScene::Update()
 			tuback_->SetIsInvisible(false);
 			tu_->SetIsInvisible(false);
 			rule_->SetIsInvisible(true);
-			selectSe_.Play(false, 0.8f);
+			selectSe_.Play(false, 0.5f);
 		}
 
 		if (isTitle_) {
@@ -312,7 +312,7 @@ void StageScene::Update()
 
 						player_->OnCollision(hole.get());
 
-						boundSe_.Play(false, 0.6f);
+						boundSe_.Play(false, 0.2f);
 					}
 				}
 			}
@@ -528,7 +528,7 @@ void StageScene::TitleUpdate(float deltaTime)
 	if (!isStart_ && input_->PressedGamePadButton(Input::GamePadButton::A)) {
 		isStart_ = true;
 		countEaseTime_ = 0.0f;
-		se_.Play(false, 0.6f);
+		se_.Play(false, 0.4f);
 	}
 
 	if (isStart_) {
