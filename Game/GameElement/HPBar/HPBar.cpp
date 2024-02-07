@@ -33,7 +33,7 @@ HPBar::HPBar(const std::string& groupName)
 	sprites_[SpriteNames::kFrame]->SetColor({ 0.1f,0.1f,0.1f,1.0f });
 	sprites_[SpriteNames::kHP]->SetColor({ 0.2f,1.0f,0.4f,1.0f });
 	sprites_[SpriteNames::kBack]->SetColor({ 0.2f,0.2f,0.2f,1.0f });
-	sprites_[SpriteNames::kDamage]->SetColor({ 0.8f,0.4f,0.2f,1.0f });
+	sprites_[SpriteNames::kDamage]->SetColor({ 1.0f,0.1f,0.1f,1.0f });
 
 	SetGlobalVariable();
 

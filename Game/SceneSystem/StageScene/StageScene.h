@@ -98,4 +98,10 @@ private:
 	AudioItem se_;
 	AudioItem BGM;
 	AudioItem boundSe_;
+
+	std::unique_ptr<Sprite> tu_;
+	bool isTu_;
+	std::unique_ptr<Sprite> tuback_;
+	std::unique_ptr<Sprite> rule_;
+	AudioItem selectSe_;
 };

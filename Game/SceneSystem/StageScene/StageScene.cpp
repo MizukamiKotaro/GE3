@@ -145,6 +145,25 @@ void StageScene::Init()
 	BGM.Load("Resources/SE/BGM.wav");
 	BGM.Play(true, 0.4f);
 	boundSe_.Load("Resources/SE/bound.wav");
+
+	isTu_ = false;
+	tuback_ = std::make_unique<Sprite>("Resources/white.png");
+	tuback_->size_ = { 1280.0f,720.0f };
+	tuback_->SetColor({ 0.0f,0.0f,0.0f,0.8f });
+	tuback_->SetIsInvisible(true);
+	tuback_->Update();
+
+	tu_ = std::make_unique<Sprite>("Resources/tutorial.png");
+	tu_->size_ *= 0.2f;
+	tu_->Update();
+	tu_->SetIsInvisible(true);
+
+	rule_ = std::make_unique<Sprite>("Resources/rule.png");
+	rule_->size_ *= 0.35f;
+	rule_->pos_ = { 1100.0f,50.0f };
+	rule_->Update();
+
+	selectSe_.Load("Resources/select.wav");
 }
 
 void StageScene::Update()
@@ -186,6 +205,11 @@ void StageScene::Update()
 
 	collisionRenderer_->ImGuiWidget("Collision");
 
+	ImGui::Begin("ad");
+	ImGui::DragFloat2("af", &rule_->size_.x, 0.1f);
+	ImGui::End();
+	rule_->Update();
+
 #endif // _DEBUG
 	if (bossHPBar_->GetHP() <= 0.0f || (input_->PressingGamePadButton(Input::GamePadButton::X) && input_->PressingGamePadButton(Input::GamePadButton::Y))) {
 		// シーン切り替え
@@ -198,164 +222,188 @@ void StageScene::Update()
 		BGM.Stop();
 	}
 
-	if (isTitle_) {
-		TitleUpdate(deltaTime);
+	if (isTu_) {
+		if(input_->PressedGamePadButton(Input::GamePadButton::START) ||
+			input_->PressedGamePadButton(Input::GamePadButton::A) ||
+			input_->PressedGamePadButton(Input::GamePadButton::B) || 
+			input_->PressedGamePadButton(Input::GamePadButton::X) ||
+			input_->PressedGamePadButton(Input::GamePadButton::Y)) {
+			isTu_ = false;
+			tuback_->SetIsInvisible(true);
+			tu_->SetIsInvisible(true);
+			rule_->SetIsInvisible(false);
+			selectSe_.Play(false, 0.8f);
+		}
 	}
 	else {
-		camera_->Update();
-		stage_->Update(deltaTime);
 
-
-		player_->InputAction(input_, deltaTime);
-		player_->Update(deltaTime);
-		player_->ImGuiWidget();
-
-		for (auto &ball : *stage_->GetBallList()) {
-
-			const auto &sphere = ball->GetSphere();
-
-			if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
-
-				player_->OnCollision(ball.get());
-
-				ball->OnCollision(player_.get());
-
-			}
-
-			for (const auto &pin : *stage_->GetPinList()) {
-
-				if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
-
-					pin->OnCollision(ball.get());
-
-					ball->OnCollision(pin.get());
-
-				}
-			}
-
-			for (const auto &hole : *stage_->GetHoleList()) {
-
-				Vector3 holePos = hole->GetPos();
-				holePos.z = 0.f;
-
-				if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
-
-					hole->OnCollision(ball.get());
-
-					ball->OnCollision(hole.get());
-
-				}
-			}
-
-		}
-		{
-			const Sphere &sphere = player_->GetSphere();
-			for (const auto &hole : *stage_->GetHoleList()) {
-
-				Vector3 holePos = hole->GetPos();
-				holePos.z = 0.f;
-
-				if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
-
-					hole->OnCollision(player_.get());
-
-					player_->OnCollision(hole.get());
-
-					boundSe_.Play(false, 0.6f);
-				}
-			}
+		if (input_->PressedGamePadButton(Input::GamePadButton::START)) {
+			isTu_ = true;
+			tuback_->SetIsInvisible(false);
+			tu_->SetIsInvisible(false);
+			rule_->SetIsInvisible(true);
+			selectSe_.Play(false, 0.8f);
 		}
 
-		for (const auto &sword : *stage_->GetSwordList()) {
-			auto *collision = sword->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(sword.get());
-					sword->OnCollision(player_.get());
+		if (isTitle_) {
+			TitleUpdate(deltaTime);
+		}
+		else {
+			camera_->Update();
+			stage_->Update(deltaTime);
+
+
+			player_->InputAction(input_, deltaTime);
+			player_->Update(deltaTime);
+			player_->ImGuiWidget();
+
+			for (auto& ball : *stage_->GetBallList()) {
+
+				const auto& sphere = ball->GetSphere();
+
+				if (player_->GetRadius() + sphere.radius_ >= Calc::MakeLength(player_->GetGrobalPos() - sphere.center_)) {
+
+					player_->OnCollision(ball.get());
+
+					ball->OnCollision(player_.get());
+
+				}
+
+				for (const auto& pin : *stage_->GetPinList()) {
+
+					if (pin->GetRadius() + sphere.radius_ >= Calc::MakeLength(pin->GetPos() - sphere.center_)) {
+
+						pin->OnCollision(ball.get());
+
+						ball->OnCollision(pin.get());
+
+					}
+				}
+
+				for (const auto& hole : *stage_->GetHoleList()) {
+
+					Vector3 holePos = hole->GetPos();
+					holePos.z = 0.f;
+
+					if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
+
+						hole->OnCollision(ball.get());
+
+						ball->OnCollision(hole.get());
+
+					}
+				}
+
+			}
+			{
+				const Sphere& sphere = player_->GetSphere();
+				for (const auto& hole : *stage_->GetHoleList()) {
+
+					Vector3 holePos = hole->GetPos();
+					holePos.z = 0.f;
+
+					if (hole->GetRadius() + sphere.radius_ >= Calc::MakeLength(holePos - sphere.center_)) {
+
+						hole->OnCollision(player_.get());
+
+						player_->OnCollision(hole.get());
+
+						boundSe_.Play(false, 0.6f);
+					}
 				}
 			}
-		}
 
-		for (const auto &punch : *stage_->GetPunchList()) {
-			auto *collision = punch->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(punch.get());
-					punch->OnCollision(player_.get());
+			for (const auto& sword : *stage_->GetSwordList()) {
+				auto* collision = sword->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(sword.get());
+						sword->OnCollision(player_.get());
+					}
 				}
 			}
-		}
-		for (const auto &needle : *stage_->GetNeedleList()) {
-			auto *collision = needle->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(needle.get());
-					needle->OnCollision(player_.get());
+
+			for (const auto& punch : *stage_->GetPunchList()) {
+				auto* collision = punch->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(punch.get());
+						punch->OnCollision(player_.get());
+					}
 				}
 			}
-		}
-
-		for (const auto &sword : *stage_->GetSwordList()) {
-			auto *collision = sword->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(sword.get());
-					sword->OnCollision(player_.get());
-				}
-
-				if (not sword->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
-					boss_->OnCollision(sword.get());
-					sword->OnCollision(boss_.get());
+			for (const auto& needle : *stage_->GetNeedleList()) {
+				auto* collision = needle->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(needle.get());
+						needle->OnCollision(player_.get());
+					}
 				}
 			}
-		}
 
-		for (const auto &punch : *stage_->GetPunchList()) {
-			auto *collision = punch->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(punch.get());
-					punch->OnCollision(player_.get());
-				}
+			for (const auto& sword : *stage_->GetSwordList()) {
+				auto* collision = sword->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(sword.get());
+						sword->OnCollision(player_.get());
+					}
 
-				if (not punch->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
-					boss_->OnCollision(punch.get());
-					punch->OnCollision(boss_.get());
-				}
-			}
-		}
-		for (const auto &needle : *stage_->GetNeedleList()) {
-			auto *collision = needle->GetCollision();
-			if (collision) {
-				if (Collision::IsCollision(player_->GetSphere(), *collision)) {
-					player_->OnCollision(needle.get());
-					needle->OnCollision(player_.get());
-				}
-
-				if (not needle->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
-					boss_->OnCollision(needle.get());
-					needle->OnCollision(boss_.get());
+					if (not sword->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+						boss_->OnCollision(sword.get());
+						sword->OnCollision(boss_.get());
+					}
 				}
 			}
+
+			for (const auto& punch : *stage_->GetPunchList()) {
+				auto* collision = punch->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(punch.get());
+						punch->OnCollision(player_.get());
+					}
+
+					if (not punch->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+						boss_->OnCollision(punch.get());
+						punch->OnCollision(boss_.get());
+					}
+				}
+			}
+			for (const auto& needle : *stage_->GetNeedleList()) {
+				auto* collision = needle->GetCollision();
+				if (collision) {
+					if (Collision::IsCollision(player_->GetSphere(), *collision)) {
+						player_->OnCollision(needle.get());
+						needle->OnCollision(player_.get());
+					}
+
+					if (not needle->GetIsHitBoss() && Collision::IsCollision(boss_->GetCollision(), *collision)) {
+						boss_->OnCollision(needle.get());
+						needle->OnCollision(boss_.get());
+					}
+				}
+			}
+
+
+			auto& bossCollision = boss_->GetCollision();
+			//if (boss_->IsAttacked()) {
+
+			if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
+				player_->OnCollision(boss_.get());
+				boss_->OnCollision(player_.get());
+			}
+
+			//}
+
+			stageUI_->Update();
+
+			boss_->Update(deltaTime);
+
+			playerHPBar_->Update(camera_.get());
+			bossHPBar_->Update(camera_.get());
 		}
-
-
-		auto &bossCollision = boss_->GetCollision();
-		//if (boss_->IsAttacked()) {
-
-		if (Collision::IsCollision(player_->GetSphere(), bossCollision)) {
-			player_->OnCollision(boss_.get());
-			boss_->OnCollision(player_.get());
-		}
-
-		//}
-
-		stageUI_->Update();
-
-		boss_->Update(deltaTime);
-
-		playerHPBar_->Update(camera_.get());
-		bossHPBar_->Update(camera_.get());
 	}
 }
 
@@ -443,8 +491,12 @@ void StageScene::Draw() {
 
 		playerHPBar_->Draw();
 		bossHPBar_->Draw();
-		stageUI_->Draw(*camera_.get());
+		//stageUI_->Draw(*camera_.get());
 	}
+
+	tuback_->Draw();
+	tu_->Draw();
+	rule_->Draw();
 
 	// フレームの終了
 	BlackDraw();
